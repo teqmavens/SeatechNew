@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:elevation="12dp"
+    android:fitsSystemWindows="true"
+    android:minHeight="?attr/actionBarSize">
+    <!--<ImageView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:src="@drawable/menuicon"-->
+    <!--android:layout_gravity="left"/>-->
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/cdhour_icon"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            app:srcCompat="@drawable/currenthr_icon"
+            android:layout_marginRight="12dp"
+            app:layout_constraintRight_toLeftOf="@+id/inboxicon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/inboxicon"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            app:srcCompat="@drawable/messageicon"
+            android:layout_marginRight="12dp"
+            app:layout_constraintRight_toLeftOf="@+id/notificationicon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/notificationicon"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            app:srcCompat="@drawable/notificationbell"
+            android:layout_marginRight="12dp"
+            app:layout_constraintRight_toLeftOf="@+id/userimage"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/userimage"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="@color/appbasiccolor"
+            android:layout_marginRight="12dp"
+            app:layout_constraintRight_toLeftOf="@+id/username"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/appbasiccolor"
+            app:layout_constraintRight_toLeftOf="@+id/menu_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="JOhn"
+            android:textSize="@dimen/smalltextsize"/>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/menu_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/menudot" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.Toolbar>

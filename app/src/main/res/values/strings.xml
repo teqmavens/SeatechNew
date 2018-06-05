@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Seatech</string>
+    <string name="username">Username</string>
+    <string name="pwd">Password</string>
+    <string name="rememberme">Remember me</string>
+    <string name="forgotpwd"><ul>Forgot Password?</ul></string>
+    <string name="login">Login</string>
+    <string name="dashboard_text">Dashboard</string>
+    <string name="detailpage">Detail Page</string>
+    <string name="timesheet">Timesheet</string>
+    <string name="myprofile">My Profile</string>
+    <string name="changepwd">Change Password</string>
+    <string name="logout">LogOut</string>
+    <string name="status">Status</string>
+    <string name="edit">Edit</string>
+    <string name="email">Email - </string>
+    <string name="phoneno">Phone Number - </string>
+    <string name="updateprofile">Update Profile</string>
+</resources>

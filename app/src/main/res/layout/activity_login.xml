@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    
+    <data>
+        <variable
+            name="loginactivity"
+            type="teq.development.seatech.LoginActivity"></variable>
+    </data>
+    
+<android.support.constraint.ConstraintLayout 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/left"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/line"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_weight=".36">
+
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    </android.support.constraint.ConstraintLayout>
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toRightOf="@+id/left"
+        app:layout_constraintRight_toLeftOf="@+id/right"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="#000000"></View>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/right"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toRightOf="@+id/line"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_weight=".64">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/topimage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/et_username"
+            android:layout_width="0dp"
+            android:layout_height="68dp"
+            android:background="@drawable/etloginbg"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topimage"
+            android:drawableLeft="@drawable/et_username"
+            android:hint="@string/username"
+            android:textSize="@dimen/mediumtextsize"
+            android:paddingLeft="@dimen/drawablepadding"
+            android:drawablePadding="@dimen/drawablepadding"
+            android:textColor="@color/appbasiccolor"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"/>
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/et_pwd"
+            android:layout_width="0dp"
+            android:layout_height="68dp"
+            android:background="@drawable/etloginbg"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_username"
+            android:drawableLeft="@drawable/etpwd"
+            android:hint="@string/pwd"
+            android:textSize="@dimen/mediumtextsize"
+            android:paddingLeft="@dimen/drawablepadding"
+            android:drawablePadding="@dimen/drawablepadding"
+            android:textColor="@color/appbasiccolor"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"/>
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/et_pwd"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="@dimen/drawablepadding"
+            android:text="@string/rememberme"
+            android:paddingLeft="12dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/smalltextsize"
+            android:layout_marginLeft="80dp"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/forgotpwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/et_pwd"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="@dimen/drawablepadding"
+            android:layout_marginRight="80dp"
+            android:textSize="@dimen/smalltextsize"
+            android:textColor="@color/appbasiccolor"
+            android:text="@string/forgotpwd"/>
+
+
+        <android.support.v7.widget.AppCompatButton
+            android:layout_width="0dp"
+            android:layout_height="68dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@drawable/bg_loginbtn"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:layout_marginTop="60dp"
+            android:text="@string/login"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/largetextsize"
+            android:textAllCaps="false"
+            android:onClick="@{()->loginactivity.onClickLogin()}"
+            app:layout_constraintTop_toBottomOf="@+id/forgotpwd"/>
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>
+</layout>

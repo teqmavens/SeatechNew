@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="myprofile"
+            type="teq.development.seatech.Profile.MyProfileFragment"></variable>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/mediumtextsize"
+            android:text="@string/myprofile"
+            android:textColor="@color/appbasiccolor"
+            android:textSize="@dimen/mediumtextsize"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/appbasiccolor"></View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/smalltextsize"
+            android:background="@drawable/etloginbg"
+            android:orientation="horizontal">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".48"
+                android:padding="@dimen/smalltextsize">
+
+                <ImageView
+                    android:id="@+id/profileimage"
+                    android:layout_width="90dp"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="@dimen/smalltextsize"
+                    android:background="@color/appbasiccolor"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/username"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/smalltextsize"
+                    android:text="John"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/mediumtextsize"
+                    app:layout_constraintLeft_toRightOf="@+id/profileimage"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/profileimage" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/gender"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mediumtextsize"
+                    android:text="Male"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/mediumtextsize"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/username"
+                    app:layout_constraintTop_toBottomOf="@+id/username" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/dob"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mediumtextsize"
+                    android:text="Male"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/mediumtextsize"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/username"
+                    app:layout_constraintTop_toBottomOf="@+id/gender" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/usertype"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mediumtextsize"
+                    android:text="Super Admin"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/mediumtextsize"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/username"
+                    app:layout_constraintTop_toBottomOf="@+id/dob" />
+
+                <LinearLayout
+                    android:id="@+id/llstatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mediumtextsize"
+                    android:orientation="horizontal"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/username"
+                    app:layout_constraintTop_toBottomOf="@+id/usertype">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/status"
+                        android:textColor="@color/appbasiccolor"
+                        android:textSize="@dimen/mediumtextsize" />
+
+                    <ToggleButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/smalltextsize" />
+
+                </LinearLayout>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/btmtext"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxdsdxxxxxxxxxxxxxxxxxxx"
+                    android:textSize="@dimen/mediumtextsize"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llstatus" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/smalltextsize"
+                android:layout_weight=".36"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="@dimen/smalltextsize">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/emailkey"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/email"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/mediumtextsize"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/emailvalue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="john@gmail.comssss"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/mediumtextsize"
+                    app:layout_constraintLeft_toRightOf="@+id/emailkey"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/phonekey"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/smalltextsize"
+                    android:text="@string/phoneno"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/mediumtextsize"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/emailvalue" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/phonevalue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="123456"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/mediumtextsize"
+                    app:layout_constraintLeft_toRightOf="@+id/phonekey"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/phonekey" />
+
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".16">
+
+                <android.support.v7.widget.AppCompatButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/largetextsize"
+                    android:background="@drawable/bg_loginbtn"
+                    android:onClick="@{()->myprofile.OnClickEdit()}"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="@dimen/mediumtextsize"
+                    android:paddingRight="@dimen/mediumtextsize"
+                    android:paddingTop="10dp"
+                    android:text="@string/edit"
+                    android:textAllCaps="false"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/mediumtextsize"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>
