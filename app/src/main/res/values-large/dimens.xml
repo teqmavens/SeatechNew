@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="toolbarheight">48dp</dimen>
     <dimen name="extralarge_textsize">38dp</dimen>
     <dimen name="largetextsize">28dp</dimen>
     <dimen name="mediumtextsize">24dp</dimen>
     <dimen name="smalltextsize">20dp</dimen>
+    <dimen name="verysmalltextsize">15dp</dimen>
     <dimen name="drawablepadding">18dp</dimen>
+    <dimen name="smallpadding">8dp</dimen>
+    <dimen name="verysmallpadding">4dp</dimen>
 </resources>

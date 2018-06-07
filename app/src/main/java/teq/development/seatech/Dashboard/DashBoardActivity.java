@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import teq.development.seatech.Profile.ChangePwdFragment;
 import teq.development.seatech.Profile.MyProfileFragment;
 import teq.development.seatech.R;
 
@@ -40,12 +41,10 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         menu_icon = (ImageView) findViewById(R.id.menu_icon);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.navigation_icon);
-
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         displayLeft(new LeftDrawer());
         menu_icon.setOnClickListener(this);
-
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -152,6 +151,8 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
 
                 if(item.getTitle().toString().equalsIgnoreCase("My Profile")){
                     replaceFragment(new MyProfileFragment());
+                } else if(item.getTitle().toString().equalsIgnoreCase("Change Password")) {
+                    replaceFragment(new ChangePwdFragment());
                 }
                 return true;
             }

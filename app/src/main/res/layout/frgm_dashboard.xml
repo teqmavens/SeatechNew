@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="frgmdashboard"
+            type="teq.development.seatech.Dashboard.DashBoardFragment"></variable>
+    </data>
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -7,27 +15,357 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".22">
+        android:layout_weight=".26"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/verysmallpadding"
+            android:paddingLeft="@dimen/smallpadding"
+            android:paddingRight="@dimen/smallpadding"
+            android:paddingTop="@dimen/verysmallpadding">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/jobsforyou"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/jobsforyou"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="italic|bold" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/currentdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/smalltextsize"
+                android:layout_toRightOf="@+id/jobsforyou"
+                android:text="(09-08-2018)"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/previousdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/smalltextsize"
+                android:layout_toRightOf="@+id/currentdate"
+                android:drawablePadding="2dp"
+                android:drawableRight="@drawable/leftarrow"
+                android:text="@string/previousdate"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/nextdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/smallpadding"
+                android:layout_toRightOf="@+id/previousdate"
+                android:drawableLeft="@drawable/rightarrow"
+                android:drawablePadding="2dp"
+                android:text="@string/nextdate"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize" />
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/particulardate_work"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/smalltextsize"
+                android:layout_toRightOf="@+id/nextdate"
+                android:padding="@dimen/smallpadding"
+                app:srcCompat="@drawable/small_calendar" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/startstopjob_bg"
+                android:gravity="center"
+                android:paddingLeft="@dimen/smallpadding"
+                android:paddingRight="@dimen/smallpadding"
+                android:paddingTop="@dimen/verysmallpadding"
+                android:paddingBottom="@dimen/verysmallpadding"
+                android:text="@string/startstop_time"
+                android:textAllCaps="false"
+                android:onClick="@{()->frgmdashboard.OnClickStartTime()}"
+                android:textColor="@color/white"
+                android:textSize="@dimen/verysmalltextsize" />
+
+        </RelativeLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/black"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"></View>
+
+            <LinearLayout
+                android:id="@+id/llheader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#9FC5F8"
+                android:padding="2dp"
+                app:layout_constraintTop_toBottomOf="@+id/view1">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".11"
+                    android:gravity="center"
+                    android:text="@string/customername"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".11"
+                    android:gravity="center"
+                    android:text="@string/jobticketno"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".11"
+                    android:gravity="center"
+                    android:text="@string/jobtype"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".11"
+                    android:gravity="center"
+                    android:text="@string/boatlocation"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".11"
+                    android:gravity="center"
+                    android:text="@string/time"
+
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".11"
+                    android:gravity="center"
+                    android:text="@string/techsupervisor"
+
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".11"
+                    android:gravity="center"
+                    android:text="@string/othermem"
+
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".11"
+                    android:gravity="center"
+                    android:text="@string/partlocation"
+
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".11"
+                    android:gravity="center"
+                    android:text="@string/techdashnotes"
+
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/black"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/llheader"></View>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcyview_jobs"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view2">
+
+            </android.support.v7.widget.RecyclerView>
+        </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".24"
+        android:background="@color/appbasiccolor">
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".22"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/smallpadding"
+        android:paddingRight="@dimen/smallpadding">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/verysmallpadding"
+            android:paddingLeft="@dimen/smallpadding"
+            android:paddingTop="@dimen/verysmallpadding"
+            android:text="@string/urgentmsg"
+            android:textColor="@color/black"
+            android:textSize="@dimen/verysmalltextsize"
+            android:textStyle="italic|bold" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcyview_urgentmsg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/dashboardlinebg"></android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight=".28"
-        android:background="#ff5678">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/smallpadding"
+        android:paddingLeft="@dimen/smallpadding"
+        android:paddingRight="@dimen/smallpadding">
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".22">
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/verysmallpadding"
+            android:paddingLeft="@dimen/smallpadding"
+            android:paddingTop="@dimen/verysmallpadding"
+            android:text="@string/pickupjobs"
+            android:textColor="@color/black"
+            android:textSize="@dimen/verysmalltextsize"
+            android:textStyle="italic|bold" />
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".28">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/dashboardlinebg"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llpickup_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="1dp"
+                android:background="@drawable/dashboardlinepickup"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".2"
+                    android:gravity="center"
+                    android:text="@string/customername"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".2"
+                    android:gravity="center"
+                    android:text="@string/jobticketno"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".2"
+                    android:gravity="center"
+                    android:text="@string/customertype"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".2"
+                    android:gravity="center"
+                    android:text="@string/region"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".2"
+                    android:gravity="center"
+                    android:text="@string/action"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black">
+            </View>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcyview_pickupjobs"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
 </LinearLayout>
+</layout>

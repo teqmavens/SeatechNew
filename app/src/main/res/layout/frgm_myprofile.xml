@@ -41,12 +41,14 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".48"
-                android:padding="@dimen/smalltextsize">
+                android:paddingRight="@dimen/smallpadding"
+                android:paddingTop="@dimen/smalltextsize"
+                android:paddingLeft="@dimen/smalltextsize">
 
                 <ImageView
                     android:id="@+id/profileimage"
-                    android:layout_width="90dp"
-                    android:layout_height="80dp"
+                    android:layout_width="120dp"
+                    android:layout_height="110dp"
                     android:layout_marginTop="@dimen/smalltextsize"
                     android:background="@color/appbasiccolor"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -80,7 +82,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/mediumtextsize"
-                    android:text="Male"
+                    android:text="8th June 1992"
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/mediumtextsize"
                     app:layout_constraintRight_toRightOf="parent"
@@ -117,10 +119,12 @@
                         android:textColor="@color/appbasiccolor"
                         android:textSize="@dimen/mediumtextsize" />
 
-                    <ToggleButton
+                    <android.support.v7.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/smalltextsize" />
+                        android:checked="true"
+                        android:layout_marginLeft="@dimen/smalltextsize"
+                        android:button="@drawable/status_customcheckbox" />
 
                 </LinearLayout>
 
@@ -131,6 +135,7 @@
                     android:layout_marginTop="60dp"
                     android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxdsdxxxxxxxxxxxxxxxxxxx"
                     android:textSize="@dimen/mediumtextsize"
+                    android:textColor="@color/appbasiccolor"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llstatus" />
@@ -159,7 +164,7 @@
                     android:id="@+id/emailvalue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="john@gmail.comssss"
+                    android:text="john@gmail.com"
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/mediumtextsize"
                     app:layout_constraintLeft_toRightOf="@+id/emailkey"
@@ -201,14 +206,14 @@
                     android:layout_marginTop="@dimen/largetextsize"
                     android:background="@drawable/bg_loginbtn"
                     android:onClick="@{()->myprofile.OnClickEdit()}"
-                    android:paddingBottom="10dp"
+
                     android:paddingLeft="@dimen/mediumtextsize"
                     android:paddingRight="@dimen/mediumtextsize"
-                    android:paddingTop="10dp"
+
                     android:text="@string/edit"
                     android:textAllCaps="false"
                     android:textColor="#ffffff"
-                    android:textSize="@dimen/mediumtextsize"
+                    android:textSize="@dimen/smalltextsize"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
