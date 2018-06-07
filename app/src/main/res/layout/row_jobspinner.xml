@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/textspinner"
+        android:singleLine="true"
+        android:layout_width="match_parent"
+        android:textColor="@color/black"
+        android:text="dfdffdff"
+        android:background="@color/appbasiccolor"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/smalltextsize"
+        android:ellipsize="marquee"/>
+
+</LinearLayout>

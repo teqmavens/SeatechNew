@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="rowpickupjobs"
+            type="teq.development.seatech.Dashboard.Adapter.AdapterPickUpJobs"></variable>
+    </data>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="3dp"
+    android:paddingRight="3dp"
+    android:paddingTop="@dimen/verysmallpadding"
+    android:paddingBottom="@dimen/verysmallpadding"
+    android:orientation="horizontal">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".2"
+        android:gravity="center"
+        android:text="Johnyy"
+        android:textColor="@color/black"
+        android:textSize="@dimen/verysmalltextsize" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".2"
+        android:gravity="center"
+        android:text="123456"
+        android:textColor="@color/appbasiccolor"
+        android:textSize="@dimen/verysmalltextsize" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".2"
+        android:gravity="center"
+        android:text="special customer"
+        android:textColor="@color/black"
+        android:textSize="@dimen/verysmalltextsize" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".2"
+        android:gravity="center"
+        android:text="@string/region"
+        android:textColor="@color/black"
+        android:textSize="@dimen/verysmalltextsize" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".2"
+        android:gravity="center"
+        android:text="@string/action"
+        android:textColor="@color/appbasiccolor"
+        android:textSize="@dimen/verysmalltextsize" />
+
+</LinearLayout>
+</layout>
