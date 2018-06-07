@@ -20,7 +20,7 @@
     <string name="role">Role -  </string>
     <string name="description">Description -  </string>
     <string name="savechanges">Save Changes</string>
-    <string name="currentpwd">Current Password -  </string>
+    <string name="currentpwd">    Current Password -  </string>
     <string name="newpwd">New Password -  </string>
     <string name="reenterpwd">Re-Enter Password -  </string>
     <string name="jobsforyou"><u>Jobs For You</u></string>
@@ -29,7 +29,7 @@
     <string name="startstop_time">Start/Stop Time or Job Change</string>
     <string name="customername">Customer Name</string>
     <string name="jobticketno">Job Ticket No.</string>
-    <string name="jobtype">Job Type</string>
+    <string name="jobtype">Job Type:</string>
     <string name="boatlocation">Boat Location</string>
     <string name="time">Time</string>
     <string name="techsupervisor">Tech Supervisor</string>
@@ -56,4 +56,24 @@
     <string name="needpart">Need Parts</string>
     <string name="needestimate">Need Estimate</string>
     <string name="changeorder">Need Change Order</string>
+    <string name="rep">REP:</string>
+    <string name="jobselection">Job Selection:</string>
+    <string name="serviceinstall"><![CDATA[Service & Installation]]></string>
+    <string name="ifbid">(If Bid):</string>
+    <string name="qcperson">QC person:</string>
+    <string name="supervisor">Supervisor:</string>
+    <string name="jobcomplete">Job Complete - </string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="maybe">May be</string>
+    <string name="owneraware">Is Caption/Owner aware - </string>
+    <string-array name="laborcode_array">
+        <item>TRAVEL TIME</item>
+        <item>SERVICE TIME</item>
+        <item>LUNCH</item>
+        <item>SHOP WORK TIME</item>
+        <item>DONE FOR THE DAY</item>
+        <item>VACATION</item>
+        <item>SICK</item>
+    </string-array>
 </resources>

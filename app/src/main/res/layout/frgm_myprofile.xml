@@ -33,7 +33,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/smalltextsize"
+            android:layout_margin="@dimen/verysmalltextsize"
             android:background="@drawable/etloginbg"
             android:orientation="horizontal">
 
@@ -41,9 +41,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".48"
-                android:paddingRight="@dimen/smallpadding"
-                android:paddingTop="@dimen/smalltextsize"
-                android:paddingLeft="@dimen/smalltextsize">
+                android:paddingRight="@dimen/verysmallpadding"
+                android:paddingTop="@dimen/verysmalltextsize"
+                android:paddingLeft="@dimen/verysmalltextsize">
 
                 <ImageView
                     android:id="@+id/profileimage"
@@ -60,7 +60,7 @@
                     android:layout_marginLeft="@dimen/smalltextsize"
                     android:text="John"
                     android:textColor="@color/appbasiccolor"
-                    android:textSize="@dimen/mediumtextsize"
+                    android:textSize="@dimen/smalltextsize"
                     app:layout_constraintLeft_toRightOf="@+id/profileimage"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/profileimage" />
@@ -72,7 +72,7 @@
                     android:layout_marginTop="@dimen/mediumtextsize"
                     android:text="Male"
                     android:textColor="@color/appbasiccolor"
-                    android:textSize="@dimen/mediumtextsize"
+                    android:textSize="@dimen/smalltextsize"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/username"
                     app:layout_constraintTop_toBottomOf="@+id/username" />
@@ -84,7 +84,7 @@
                     android:layout_marginTop="@dimen/mediumtextsize"
                     android:text="8th June 1992"
                     android:textColor="@color/appbasiccolor"
-                    android:textSize="@dimen/mediumtextsize"
+                    android:textSize="@dimen/smalltextsize"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/username"
                     app:layout_constraintTop_toBottomOf="@+id/gender" />
@@ -96,7 +96,7 @@
                     android:layout_marginTop="@dimen/mediumtextsize"
                     android:text="Super Admin"
                     android:textColor="@color/appbasiccolor"
-                    android:textSize="@dimen/mediumtextsize"
+                    android:textSize="@dimen/smalltextsize"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/username"
                     app:layout_constraintTop_toBottomOf="@+id/dob" />
@@ -117,7 +117,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/status"
                         android:textColor="@color/appbasiccolor"
-                        android:textSize="@dimen/mediumtextsize" />
+                        android:textSize="@dimen/smalltextsize" />
 
                     <android.support.v7.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
@@ -134,7 +134,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="60dp"
                     android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxdsdxxxxxxxxxxxxxxxxxxx"
-                    android:textSize="@dimen/mediumtextsize"
+                    android:textSize="@dimen/smalltextsize"
                     android:textColor="@color/appbasiccolor"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -145,11 +145,10 @@
             <android.support.constraint.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/smalltextsize"
                 android:layout_weight=".36"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:paddingTop="@dimen/smalltextsize">
+                android:paddingLeft="@dimen/smallpadding"
+                android:paddingRight="@dimen/smallpadding"
+                android:paddingTop="@dimen/mediumtextsize">
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/emailkey"
@@ -157,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/email"
                     android:textColor="@color/appbasiccolor"
-                    android:textSize="@dimen/mediumtextsize"
+                    android:textSize="@dimen/smalltextsize"
                     app:layout_constraintLeft_toLeftOf="parent" />
 
                 <android.support.v7.widget.AppCompatTextView
@@ -166,7 +165,7 @@
                     android:layout_height="wrap_content"
                     android:text="john@gmail.com"
                     android:textColor="@color/appbasiccolor"
-                    android:textSize="@dimen/mediumtextsize"
+                    android:textSize="@dimen/smalltextsize"
                     app:layout_constraintLeft_toRightOf="@+id/emailkey"
                     app:layout_constraintRight_toRightOf="parent" />
 
@@ -177,7 +176,7 @@
                     android:layout_marginTop="@dimen/smalltextsize"
                     android:text="@string/phoneno"
                     android:textColor="@color/appbasiccolor"
-                    android:textSize="@dimen/mediumtextsize"
+                    android:textSize="@dimen/smalltextsize"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/emailvalue" />
 
@@ -187,7 +186,7 @@
                     android:layout_height="wrap_content"
                     android:text="123456"
                     android:textColor="@color/appbasiccolor"
-                    android:textSize="@dimen/mediumtextsize"
+                    android:textSize="@dimen/smalltextsize"
                     app:layout_constraintLeft_toRightOf="@+id/phonekey"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/phonekey" />
@@ -209,7 +208,6 @@
 
                     android:paddingLeft="@dimen/mediumtextsize"
                     android:paddingRight="@dimen/mediumtextsize"
-
                     android:text="@string/edit"
                     android:textAllCaps="false"
                     android:textColor="#ffffff"
