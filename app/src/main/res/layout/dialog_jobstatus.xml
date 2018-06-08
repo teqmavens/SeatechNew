@@ -12,7 +12,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         android:gravity="center"
         android:orientation="vertical"
@@ -28,7 +28,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/jobcomplete"
                 android:textColor="@color/black"
-                android:textSize="@dimen/smalltextsize"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="bold"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/checkboxyes" />
@@ -65,7 +66,8 @@
                 android:gravity="left"
                 android:text="@string/techlaborperform"
                 android:textColor="@color/black"
-                android:textSize="@dimen/smalltextsize"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/jobcomplete" />
 
@@ -93,7 +95,8 @@
                 android:layout_marginTop="@dimen/smalltextsize"
                 android:text="@string/supplyamount"
                 android:textColor="@color/black"
-                android:textSize="@dimen/smalltextsize"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="bold"
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:paddingTop="@dimen/smallpadding"
@@ -124,7 +127,8 @@
                 android:layout_marginTop="@dimen/largetextsize"
                 android:text="@string/owneraware"
                 android:textColor="@color/black"
-                android:textSize="@dimen/smalltextsize"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="bold"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/checkbox_yesowner"
@@ -156,7 +160,8 @@
                 android:layout_marginTop="@dimen/largetextsize"
                 android:text="@string/notbillable"
                 android:textColor="@color/black"
-                android:textSize="@dimen/smalltextsize"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="bold"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/checkbox_yesbillable"

@@ -69,6 +69,13 @@
     <string name="owneraware">Is Caption/Owner aware</string>
     <string name="supplyamount">Supply Amount</string>
     <string name="notbillable">Should any part or all of your time be considered not billable to the customer?</string>
+    <string name="doesowner_needtoknow">DOES THE OWNER NEED TO KNOW ANYTHING SPECIFIC OR NEEDS TO FOLLOW UP ON ANYTHING?</string>
+    <string name="submit">Submit</string>
+    <string name="whodecide">Who would be best to decide if it is finished?</string>
+    <string name="check_internet_connection">Check Internet Connection</string>
+    <string name="fieldempty">Field is empty</string>
+    <string name="pwdnotmatch">The passwords does not match!</string>
+    <string name="needurgent">Need Urgent</string>
     <string-array name="laborcode_array">
         <item>TRAVEL TIME</item>
         <item>SERVICE TIME</item>

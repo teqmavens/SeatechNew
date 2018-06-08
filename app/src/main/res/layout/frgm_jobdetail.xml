@@ -627,6 +627,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/verysmalltextsize"
             android:padding="@dimen/verysmallpadding"
+            android:onClick="@{()->frgmjobdetail.onClickNeedPart()}"
             app:layout_constraintHorizontal_weight=".25"
             app:layout_constraintLeft_toRightOf="@+id/startstopbtn"
             app:layout_constraintRight_toLeftOf="@+id/needestimatebtn"
