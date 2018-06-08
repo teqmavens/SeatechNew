@@ -62,11 +62,13 @@
     <string name="ifbid">(If Bid):</string>
     <string name="qcperson">QC person:</string>
     <string name="supervisor">Supervisor:</string>
-    <string name="jobcomplete">Job Complete - </string>
+    <string name="jobcomplete">Job Complete</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="maybe">May be</string>
-    <string name="owneraware">Is Caption/Owner aware - </string>
+    <string name="owneraware">Is Caption/Owner aware</string>
+    <string name="supplyamount">Supply Amount</string>
+    <string name="notbillable">Should any part or all of your time be considered not billable to the customer?</string>
     <string-array name="laborcode_array">
         <item>TRAVEL TIME</item>
         <item>SERVICE TIME</item>
