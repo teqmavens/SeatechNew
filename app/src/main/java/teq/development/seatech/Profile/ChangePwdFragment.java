@@ -29,7 +29,6 @@ import teq.development.seatech.databinding.FrgmChangepwdBinding;
 
 public class ChangePwdFragment extends Fragment {
 
-
     FrgmChangepwdBinding binding;
     DashBoardActivity activity;
     Context context;

@@ -2,6 +2,8 @@ package teq.development.seatech.JobDetail;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -82,12 +87,20 @@ public class JobDetailFragment extends Fragment {
         }
     }
 
-   public void onClickJobChange(){
+    public void onClickJobChange(){
         showDialog();
     }
 
     public void onClickNeedPart(){
+        showDialogNeedPart();
+    }
 
+    public void onClickNeedEstimate(View v){
+        dialogNeedEstimate(v);
+    }
+
+    public void onClickNeedChangeOrder(View v){
+        dialogNeedChangeOrder();
     }
 
     void showDialog() {
@@ -104,13 +117,37 @@ public class JobDetailFragment extends Fragment {
 
     void showDialogNeedPart() {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        Fragment prev = getFragmentManager().findFragmentByTag("dialogneedpart");
         if (prev != null) {
             ft.remove(prev);
         }
         ft.addToBackStack(null);
         // Create and show the dialog.
         DialogFragment newFragment = NeedPartDialog.newInstance(8);
-        newFragment.show(ft, "dialog");
+        newFragment.show(ft, "dialogneedpart");
+    }
+
+    private void dialogNeedEstimate(View anchorview) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialogneedestimate");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+        // Create and show the dialog.
+        DialogFragment newFragment = NeedEstimateDialog.newInstance(8);
+        newFragment.show(ft, "dialogneedestimate");
+    }
+
+    private void dialogNeedChangeOrder() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialogneedchgorder");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+        // Create and show the dialog.
+        DialogFragment newFragment = NeedChangeOrderDialog.newInstance(8);
+        newFragment.show(ft, "dialogneedchgorder");
     }
 }

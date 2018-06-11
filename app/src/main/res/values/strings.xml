@@ -76,6 +76,26 @@
     <string name="fieldempty">Field is empty</string>
     <string name="pwdnotmatch">The passwords does not match!</string>
     <string name="needurgent">Need Urgent</string>
+    <string name="partdesc">Part Description</string>
+    <string name="howfast">How fast do we need it?</string>
+    <string name="approveprice">Does customer need to approve price?</string>
+    <string name="selectmanuf">Select Manufacturer</string>
+    <string name="techsupportno">Tech Support Contact No.</string>
+    <string name="partno">Part No.</string>
+    <string name="serialno">Serial No.</string>
+    <string name="failuredesc">Failure Description</string>
+    <string name="techsupportname">Tech Support Name</string>
+    <string name="rmaorcase">RMA# or Case# from MFG tech support</string>
+    <string name="doesmanfdeem">Does manufacturer deem this warranty?</string>
+    <string name="advancerepl">Advance replacement?</string>
+    <string name="needloaner">Need Loaner?</string>
+    <string name="partsoldby_seatecch">Was part sold by seatech?</string>
+    <string name="notsure">Not Sure</string>
+    <string name="needquote">Need Quote</string>
+    <string name="additionalnotes">Additional Notes</string>
+    <string name="save">Save</string>
+    <string name="addmorepart">Add more parts</string>
+    <string name="cancel">Cancel</string>
     <string-array name="laborcode_array">
         <item>TRAVEL TIME</item>
         <item>SERVICE TIME</item>
