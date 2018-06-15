@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import java.util.List;
 
 import teq.development.seatech.Dashboard.Adapter.AdapterDashbrdUrgentMsg;
 import teq.development.seatech.Dashboard.DashBoardActivity;
+import teq.development.seatech.JobDetail.Adapter.AdapterDashbrdUrgentMsgDetail;
 import teq.development.seatech.R;
 import teq.development.seatech.databinding.FrgmJobdetailBinding;
 
@@ -33,7 +35,8 @@ public class JobDetailFragment extends Fragment {
 
     private DashBoardActivity activity;
     private Context context;
-    private AdapterDashbrdUrgentMsg adapterurgentmsg;
+    private AdapterDashbrdUrgentMsgDetail adapterurgentmsg;
+    FrgmJobdetailBinding binding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,7 +49,7 @@ public class JobDetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.frgm_jobdetail, container, false);
-        FrgmJobdetailBinding binding = DataBindingUtil.bind(rootView);
+        binding = DataBindingUtil.bind(rootView);
         binding.setFrgmjobdetail(this);
         initViews(binding);
         return rootView;
@@ -56,12 +59,13 @@ public class JobDetailFragment extends Fragment {
         LinearLayoutManager lLManagerUrgentJobs = new LinearLayoutManager(getActivity());
         lLManagerUrgentJobs.setOrientation(LinearLayoutManager.VERTICAL);
         binding.rcyviewUrgentmsg.setLayoutManager(lLManagerUrgentJobs);
-        adapterurgentmsg = new AdapterDashbrdUrgentMsg(context);
+        adapterurgentmsg = new AdapterDashbrdUrgentMsgDetail(context);
         binding.rcyviewUrgentmsg.setAdapter(adapterurgentmsg);
+      //  binding.textnotes.setCompoundDrawablesWithIntrinsicBounds(null, null, AppCompatResources.getDrawable(context,R.drawable.plus), null);
 
         List<String> list = new ArrayList<String>();
         list.add("Job1");
-        list.add("JOb2");
+        list.add("Job2");
         list.add("Job3");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_item, list);
@@ -74,12 +78,22 @@ public class JobDetailFragment extends Fragment {
         lcAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerLc.setAdapter(lcAdapter);
 
+        List<String> listtime = new ArrayList<String>();
+        listtime.add("01:45");
+        listtime.add("02:00");
+        listtime.add("02:15");
+        listtime.add("02:30");
+        listtime.add("02:45");
+        ArrayAdapter<String> dataAdaptertime = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_item, listtime);
+        dataAdaptertime.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.timespinner.setAdapter(dataAdaptertime);
     }
 
     public class JobItemSelectedListener implements AdapterView.OnItemSelectedListener{
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            Toast.makeText(activity, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(activity, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -101,6 +115,18 @@ public class JobDetailFragment extends Fragment {
 
     public void onClickNeedChangeOrder(View v){
         dialogNeedChangeOrder();
+    }
+
+    public void OnClickViewComment() {
+        dialogViewComment();
+    }
+
+    public void OnClickAddTech(){
+        dialogAddTechNotes();
+    }
+
+    public void OnClickUpload() {
+        dialogUploadImage();
     }
 
     void showDialog() {
@@ -149,5 +175,45 @@ public class JobDetailFragment extends Fragment {
         // Create and show the dialog.
         DialogFragment newFragment = NeedChangeOrderDialog.newInstance(8);
         newFragment.show(ft, "dialogneedchgorder");
+    }
+
+    private void dialogViewComment() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialogviewcomment");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+        // Create and show the dialog.
+        DialogFragment newFragment = ViewCommentDialog.newInstance(8);
+        newFragment.show(ft, "dialogviewcomment");
+    }
+
+    private void dialogAddTechNotes() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("addtech");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+        // Create and show the dialog.
+        DialogFragment newFragment = AddTechNotesDialog.newInstance(8);
+        newFragment.show(ft, "addtech");
+    }
+
+    private void dialogUploadImage() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("addtech");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+        // Create and show the dialog.
+        DialogFragment newFragment = UploadImageDialog.newInstance(8);
+        newFragment.show(ft, "addtech");
+    }
+
+    public void OnClicksubmit(){
+        binding.etLaborperform.setText("");
     }
 }

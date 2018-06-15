@@ -34,6 +34,7 @@ public class MyProfileFragment extends Fragment {
     DashBoardActivity activity;
     FrgmMyprofileBinding binding;
     Context context;
+   // TextView t
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class MyProfileFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.frgm_myprofile,container,false);
         binding = DataBindingUtil.bind(rootView);
         binding.setMyprofile(this);
+
         if (HandyObject.checkInternetConnection(context)) {
             setLocaldata();
             getProfileTask();
@@ -98,24 +100,40 @@ public class MyProfileFragment extends Fragment {
     }
 
     private void setLocaldata(){
-        binding.username.setText(HandyObject.getPrams(context,AppConstants.LOGINTEQ_USERNAME));
-        binding.gender.setText(HandyObject.getPrams(context,AppConstants.LOGINTEQ_GENDER));
-        binding.dob.setText(HandyObject.getPrams(context,AppConstants.LOGINTEQ_DOB).split("T")[0]);
-        binding.usertype.setText(HandyObject.getPrams(context,AppConstants.LOGINTEQ_ROLE));
-        binding.emailvalue.setText(HandyObject.getPrams(context,AppConstants.LOGINTEQ_EMAIL));
-        binding.phonevalue.setText(HandyObject.getPrams(context,AppConstants.LOGINTEQ_PHONE));
+        binding.username.setText(" "+HandyObject.getPrams(context,AppConstants.LOGINTEQ_USERNAME));
+        if(HandyObject.getPrams(context,AppConstants.LOGINTEQ_GENDER).equalsIgnoreCase("F")) {
+            binding.gender.setText(" "+getString(R.string.female));
+        } else {
+            binding.gender.setText(" "+getString(R.string.male));
+        }
+        binding.dob.setText(" "+HandyObject.getPrams(context,AppConstants.LOGINTEQ_DOB));
+        binding.usertype.setText(" "+HandyObject.getPrams(context,AppConstants.LOGINTEQ_ROLE));
+        binding.emailvalue.setText(" "+HandyObject.getPrams(context,AppConstants.LOGINTEQ_EMAIL));
+        binding.phonevalue.setText(" "+HandyObject.getPrams(context,AppConstants.LOGINTEQ_PHONE));
+      //  binding.getRoot().findViewById(R.id.phonevalue).setText(" "+HandyObject.getPrams(context,AppConstants.LOGINTEQ_PHONE));
+        binding.btmtext.setText(HandyObject.getPrams(context,AppConstants.LOGINTEQ_DESCRIPTION));
+        binding.profileimage.setImageURI(HandyObject.getPrams(context, AppConstants.LOGINTEQ_IMAGE));
+              binding.dojvalue.setText(" "+HandyObject.getPrams(context, AppConstants.LOGINTEQ_JOININGDATE));
+        if(HandyObject.getPrams(context,AppConstants.LOGINTEQ_STATUS).equalsIgnoreCase("1")) {
+                binding.checkboxstatus.setChecked(true);
+        } else {
+            binding.checkboxstatus.setChecked(false);
+        }
     }
 
     private void saveProfileData(JSONObject jobj) {
         try {
-            HandyObject.putPrams(context, AppConstants.LOGIN_SESSIONID, jobj.getString("session_id"));
+          //  HandyObject.putPrams(context, AppConstants.LOGIN_SESSIONID, jobj.getString("session_id"));
             HandyObject.putPrams(context, AppConstants.LOGINTEQ_USERNAME, jobj.getString("username"));
             HandyObject.putPrams(context, AppConstants.LOGINTEQ_EMAIL, jobj.getString("email"));
             HandyObject.putPrams(context, AppConstants.LOGINTEQ_GENDER, jobj.getString("gender"));
             HandyObject.putPrams(context, AppConstants.LOGINTEQ_IMAGE, jobj.getString("image"));
             HandyObject.putPrams(context, AppConstants.LOGINTEQ_DOB, jobj.getString("dob"));
             HandyObject.putPrams(context, AppConstants.LOGINTEQ_PHONE, jobj.getString("phone"));
-            HandyObject.putPrams(context, AppConstants.LOGINTEQ_ROLE, jobj.getString("role_id"));
+            HandyObject.putPrams(context, AppConstants.LOGINTEQ_ROLE, jobj.getString("role"));
+            HandyObject.putPrams(context, AppConstants.LOGINTEQ_DESCRIPTION, jobj.getString("description"));
+            HandyObject.putPrams(context, AppConstants.LOGINTEQ_STATUS, jobj.getString("status"));
+            HandyObject.putPrams(context, AppConstants.LOGINTEQ_JOININGDATE, jobj.getString("joining_date"));
             setLocaldata();
         } catch (Exception e){}
 

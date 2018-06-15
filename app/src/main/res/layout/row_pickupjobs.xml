@@ -8,10 +8,10 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="3dp"
+    android:paddingLeft="2dp"
     android:paddingRight="3dp"
-    android:paddingTop="@dimen/verysmallpadding"
-    android:paddingBottom="@dimen/verysmallpadding"
+    android:paddingTop="@dimen/smallpadding"
+    android:paddingBottom="@dimen/smallpadding"
     android:orientation="horizontal">
 
     <android.support.v7.widget.AppCompatTextView
@@ -22,15 +22,27 @@
         android:text="Johnyy"
         android:textColor="@color/black"
         android:textSize="@dimen/verysmalltextsize" />
-
-    <android.support.v7.widget.AppCompatTextView
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_weight=".2">
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/ticketno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="123456"
+            android:textColor="@color/appbasiccolor"
+            android:textSize="@dimen/verysmalltextsize" />
+    </LinearLayout>
+    <!--<android.support.v7.widget.AppCompatTextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight=".2"
         android:gravity="center"
         android:text="123456"
         android:textColor="@color/appbasiccolor"
-        android:textSize="@dimen/verysmalltextsize" />
+        android:textSize="@dimen/verysmalltextsize" />-->
 
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="0dp"
@@ -50,14 +62,21 @@
         android:textColor="@color/black"
         android:textSize="@dimen/verysmalltextsize" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight=".2"
         android:gravity="center"
-        android:text="@string/action"
-        android:textColor="@color/appbasiccolor"
-        android:textSize="@dimen/verysmalltextsize" />
+        android:layout_weight=".2">
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action"
+            android:textColor="@color/appbasiccolor"
+            android:textSize="@dimen/verysmalltextsize" />
+    </LinearLayout>
+
+
 
 </LinearLayout>
 </layout>

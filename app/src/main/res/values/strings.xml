@@ -1,9 +1,12 @@
 <resources>
+    <string name="Apikey_Map">AIzaSyA2mC3WKBSbZOwepQ4phMdQ98HyodAyamw</string>
     <string name="app_name">Seatech</string>
     <string name="username">Username</string>
+    <string name="usernameprofile">Username - </string>
     <string name="pwd">Password</string>
     <string name="rememberme">Remember me</string>
     <string name="forgotpwd"><u>Forgot Password?</u></string>
+    <string name="forgotpwdd">Forgot Password</string>
     <string name="login">Login</string>
     <string name="dashboard_text">Dashboard</string>
     <string name="detailpage">Detail Page</string>
@@ -14,7 +17,7 @@
     <string name="status">Status -  </string>
     <string name="edit">Edit</string>
     <string name="email">Email -  </string>
-    <string name="phoneno">Phone Number -  </string>
+    <string name="phoneno">Phone -  </string>
     <string name="updateprofile">Update Profile</string>
     <string name="dob">D.O.B -  </string>
     <string name="role">Role -  </string>
@@ -96,13 +99,41 @@
     <string name="save">Save</string>
     <string name="addmorepart">Add more parts</string>
     <string name="cancel">Cancel</string>
+    <string name="returnimmed">Can we return immediately to the job?</string>
+    <string name="alreadyscheduled" >Are we already scheduled to be back on the job?</string>
+    <string name="selectreason">Select appropriate reason:</string>
+    <string name="waitingonparts">Waiting on Parts</string>
+    <string name="factoryrepair">Factory Repair</string>
+    <string name="waitngfrcustmr">Waiting for customer/other reason</string>
+    <string name="exceptiontoplcy">Exception to policy</string>
+    <string name="installation">Installation</string>
+    <string name="otherreason">Other reason</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="gender">Gender -  </string>
+    <string name="search">search</string>
+    <string name="pickupjobsdr">Pick Up Jobs</string>
+    <string name="selectlabrcode">Select Labor Code</string>
+    <string name="vacation">Vacation</string>
+    <string name="sick">Sick</string>
+    <string name="enterstarttime">Enter Start time</string>
+    <string name="joiningdate">Joining Date -</string>
+    <string name="waitingfrcus">Waiting for customer</string>
+    <string name="enteramount">Enter amount</string>
+    <string name="normal">Normal</string>
+    <string name="deadline">Deadline</string>
+    <string name="addtechnotes">Add Tech Notes</string>
+    <string name="browseimage">Select Image</string>
+    <string name="viewtechnotes">View Tech Notes</string>
+    <string name="viewtecjnotesvalue">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sagittis commodo mollis. Fusce rhoncus sapien elit, ac imperdiet turpis pharetra in. Donec eu lectus velit. Cras aliquet posuere mi. Vivamus at elit metus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum sed varius tortor, sit amet interdum urna.</string>
+    <string name="descriptionnew">Description...</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
     <string-array name="laborcode_array">
         <item>TRAVEL TIME</item>
         <item>SERVICE TIME</item>
         <item>LUNCH</item>
         <item>SHOP WORK TIME</item>
         <item>DONE FOR THE DAY</item>
-        <item>VACATION</item>
-        <item>SICK</item>
     </string-array>
 </resources>

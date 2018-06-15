@@ -15,15 +15,34 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/mediumtextsize"
+                android:text="@string/updateprofile"
+                android:textColor="@color/appbasiccolor"
+                android:textSize="@dimen/mediumtextsize"
+                android:textStyle="bold" />
 
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/mediumtextsize"
-            android:text="@string/updateprofile"
-            android:textColor="@color/appbasiccolor"
-            android:textSize="@dimen/mediumtextsize"
-            android:textStyle="bold" />
+            <android.support.v7.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/largetextsize"
+                android:background="@drawable/bg_loginbtn"
+                android:onClick="@{()->editprofile.OnClickCancel()}"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/verysmalltextsize"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/verysmalltextsize"
+                />
+        </RelativeLayout>
+
 
         <View
             android:layout_width="match_parent"
@@ -41,15 +60,36 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".7"
-                android:padding="@dimen/smalltextsize">
-
-                <ImageView
+                android:padding="@dimen/verysmalltextsize">
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/profileimage"
+                    android:layout_width="120dp"
+                    android:layout_height="110dp"
+                    android:layout_marginTop="@dimen/smalltextsize"
+                    android:background="@drawable/dashboardlinebg"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:placeholderImage="@drawable/profile_addimage"
+                    app:placeholderImageScaleType="centerCrop"
+                    android:scaleType="centerCrop"
+                    app:progressBarImage="@drawable/loading_imagerec"
+                    app:roundAsCircle="false"/>
+                <!--<ImageView
                     android:id="@+id/profileimage"
                     android:layout_width="120dp"
                     android:layout_height="110dp"
                     android:layout_marginTop="@dimen/smalltextsize"
                     android:background="@color/appbasiccolor"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent" />-->
+
+                <ImageView
+                    android:id="@+id/editimage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/edit_pencile"
+                    android:layout_marginTop="@dimen/smallpadding"
+                    android:onClick="@{()->editprofile.OnClickEditImage()}"
+                    app:layout_constraintRight_toRightOf="@+id/profileimage"
+                    app:layout_constraintBottom_toBottomOf="@+id/profileimage"/>
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/dobkey"
@@ -58,7 +98,8 @@
                     android:layout_marginLeft="@dimen/smalltextsize"
                     android:text="@string/dob"
                     android:textColor="@color/appbasiccolor"
-                    android:textSize="@dimen/mediumtextsize"
+                    android:layout_marginTop="@dimen/verysmallpadding"
+                    android:textSize="@dimen/smalltextsize"
                     app:layout_constraintLeft_toRightOf="@+id/profileimage"
                     app:layout_constraintTop_toTopOf="@+id/profileimage" />
 
@@ -71,11 +112,44 @@
                     android:layout_marginLeft="@dimen/smalltextsize"
                     android:layout_marginRight="40dp"
                     android:text="8th March,1992"
-                    android:textSize="@dimen/smalltextsize"
-                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textColor="@color/black"
+                    android:focusable="false"
+                   android:editable="false"
+                    android:onClick="@{()->editprofile.OnClickDOB()}"
                     android:padding="@dimen/smallpadding"
                     app:layout_constraintTop_toTopOf="@+id/profileimage"
                     app:layout_constraintRight_toRightOf="parent"/>
+
+
+
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/phonekey"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phoneno"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/smalltextsize"
+                    android:layout_marginTop="@dimen/mediumtextsize"
+                    android:paddingTop="@dimen/verysmallpadding"
+                    app:layout_constraintEnd_toEndOf="@+id/dobkey"
+                    app:layout_constraintTop_toBottomOf="@+id/et_dob" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/etloginbg"
+                    android:text="12345678"
+                    android:padding="@dimen/smallpadding"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textColor="@color/black"
+                    app:layout_constraintTop_toTopOf="@+id/phonekey"
+                    app:layout_constraintLeft_toLeftOf="@+id/et_dob"
+                    app:layout_constraintRight_toRightOf="@+id/et_dob"/>
+
+
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/rolekey"
@@ -83,10 +157,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/role"
                     android:textColor="@color/appbasiccolor"
-                    android:textSize="@dimen/mediumtextsize"
-                    android:layout_marginTop="@dimen/largetextsize"
-                    app:layout_constraintEnd_toEndOf="@+id/dobkey"
-                    app:layout_constraintTop_toBottomOf="@+id/et_dob" />
+                    android:textSize="@dimen/smalltextsize"
+                    android:layout_marginTop="@dimen/mediumtextsize"
+                    android:paddingTop="@dimen/verysmallpadding"
+                    app:layout_constraintEnd_toEndOf="@+id/phonekey"
+                    app:layout_constraintTop_toBottomOf="@+id/phonekey" />
 
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/et_role"
@@ -94,12 +169,45 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/etloginbg"
                     android:text="Super Admin"
-                    android:textSize="@dimen/smalltextsize"
-                    android:textColor="@color/appbasiccolor"
                     android:padding="@dimen/smallpadding"
+                    android:enabled="false"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textColor="@color/black"
                     app:layout_constraintTop_toTopOf="@+id/rolekey"
                     app:layout_constraintLeft_toLeftOf="@+id/et_dob"
                     app:layout_constraintRight_toRightOf="@+id/et_dob"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/genderkey"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gender"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/smalltextsize"
+                    android:paddingTop="@dimen/verysmallpadding"
+                    android:layout_marginTop="@dimen/mediumtextsize"
+                    app:layout_constraintEnd_toEndOf="@+id/dobkey"
+                    app:layout_constraintTop_toBottomOf="@+id/et_role" />
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/spinnergender"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/etloginbg"
+                    android:textColor="@color/appbasiccolor"
+                    android:padding="@dimen/verysmalltextsize"
+                    app:layout_constraintTop_toTopOf="@+id/genderkey"
+                    app:layout_constraintLeft_toLeftOf="@+id/et_dob"
+                    app:layout_constraintRight_toRightOf="@+id/et_dob"/>
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_downarrow"
+                    app:layout_constraintTop_toTopOf="@+id/spinnergender"
+                    app:layout_constraintBottom_toBottomOf="@+id/spinnergender"
+                    app:layout_constraintRight_toRightOf="@+id/spinnergender"
+                    android:paddingRight="@dimen/smalltextsize"/>
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/statuskey"
@@ -107,17 +215,19 @@
                     android:layout_height="wrap_content"
                     android:text="@string/status"
                     android:textColor="@color/appbasiccolor"
-                    android:textSize="@dimen/mediumtextsize"
+                    android:textSize="@dimen/smalltextsize"
                     android:layout_marginTop="@dimen/largetextsize"
                     app:layout_constraintEnd_toEndOf="@+id/dobkey"
-                    app:layout_constraintTop_toBottomOf="@+id/et_role" />
+                    app:layout_constraintTop_toBottomOf="@+id/spinnergender" />
 
                 <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/checkboxstatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
+                    android:enabled="false"
                     android:button="@drawable/status_customcheckbox"
-                    app:layout_constraintTop_toBottomOf="@+id/et_role"
+                    app:layout_constraintTop_toBottomOf="@+id/spinnergender"
                     android:layout_marginTop="@dimen/mediumtextsize"
                     app:layout_constraintLeft_toLeftOf="@+id/et_dob"/>
 
@@ -127,7 +237,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/description"
                     android:textColor="@color/appbasiccolor"
-                    android:textSize="@dimen/mediumtextsize"
+                    android:textSize="@dimen/smalltextsize"
                     android:layout_marginTop="@dimen/largetextsize"
                     app:layout_constraintEnd_toEndOf="@+id/dobkey"
                     app:layout_constraintTop_toBottomOf="@+id/statuskey" />
@@ -135,12 +245,12 @@
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/et_description"
                     android:layout_width="0dp"
-                    android:layout_height="180dp"
+                    android:layout_height="140dp"
                     android:background="@drawable/etloginbg"
                     android:gravity="top"
-                    android:text="vxcvddsds199sadsadaasasdsadsadasddssdsdsdfdsdsddssdfsdfdsfsdfsdfdsfdsdsfsdfsdfsdfdsfsdfdsfsdfsdfsdfsdfdfsdfsdfsdfsdfsdfsdfsdfsdfsdfdsfdfdsfdfdfsadsadadasdsdasd2"
-                    android:textSize="@dimen/smalltextsize"
-                    android:textColor="@color/appbasiccolor"
+                    android:text="abc"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textColor="@color/black"
                     android:padding="@dimen/smallpadding"
                     app:layout_constraintTop_toTopOf="@+id/descriptionkey"
                     app:layout_constraintLeft_toLeftOf="@+id/et_dob"
@@ -164,7 +274,8 @@
                     android:textAllCaps="false"
                     android:textColor="#ffffff"
                     android:layout_marginBottom="@dimen/smallpadding"
-                    android:textSize="@dimen/smalltextsize"
+                    android:onClick="@{()->editprofile.OnClickSave()}"
+                    android:textSize="@dimen/verysmalltextsize"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" />
             </android.support.constraint.ConstraintLayout>

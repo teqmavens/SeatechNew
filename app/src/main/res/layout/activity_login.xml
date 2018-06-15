@@ -27,7 +27,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
 
-            <android.support.v7.widget.AppCompatImageView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -68,7 +68,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
 
-                <android.support.v7.widget.AppCompatImageView
+                <ImageView
                     android:id="@+id/topimage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
                     android:layout_marginRight="@dimen/loginmargin"
                     android:layout_marginTop="68dp"
                     android:background="@drawable/etloginbg"
-                    android:drawableLeft="@drawable/et_username"
+                    android:inputType="textPersonName"
                     android:drawablePadding="@dimen/drawablepadding"
                     android:hint="@string/username"
                     android:textColor="@color/appbasiccolor"
@@ -93,7 +93,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/topimage" />
-
+                <!-- android:drawableLeft="@drawable/et_username"-->
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/et_pwd"
                     android:layout_width="0dp"
@@ -101,16 +101,17 @@
                     android:padding="@dimen/verysmalltextsize"
                     android:layout_marginTop="40dp"
                     android:background="@drawable/etloginbg"
-                    android:drawableLeft="@drawable/etpwd"
                     android:drawablePadding="@dimen/drawablepadding"
                     android:hint="@string/pwd"
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/smalltextsize"
+                    android:inputType="textPassword"
                     app:layout_constraintLeft_toLeftOf="@+id/et_username"
                     app:layout_constraintRight_toRightOf="@+id/et_username"
                     app:layout_constraintTop_toBottomOf="@+id/et_username" />
-
+               <!-- android:drawableLeft="@drawable/etpwd"-->
                 <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/checkboxremb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/drawablepadding"
@@ -131,6 +132,7 @@
                     android:textSize="@dimen/verysmalltextsize"
                     android:paddingTop="@dimen/smallpadding"
                     android:textStyle="bold"
+                    android:onClick="@{()->loginactivity.onClickFrgtPwd()}"
                     app:layout_constraintRight_toRightOf="@+id/et_username"
                     app:layout_constraintTop_toBottomOf="@+id/et_pwd" />
 

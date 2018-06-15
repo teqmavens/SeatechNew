@@ -19,10 +19,20 @@
         android:layout_height="@dimen/toolbarheight">
         
         <android.support.v7.widget.AppCompatImageView
-            android:layout_width="288dp"
+            android:layout_width="268dp"
             android:layout_height="wrap_content"
             android:src="@drawable/loginlogo"
             app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/sick_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/sick"
+            android:layout_marginRight="12dp"
+            app:layout_constraintRight_toLeftOf="@+id/cdhour_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/cdhour_icon"
@@ -53,7 +63,20 @@
             app:layout_constraintRight_toLeftOf="@+id/userimage"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
-        <android.support.v7.widget.AppCompatImageView
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/userimage"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/dashboardlinebg"
+            android:layout_marginRight="12dp"
+            app:layout_constraintRight_toLeftOf="@+id/username"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:placeholderImage="@drawable/profile_addimage"
+            app:progressBarImage="@drawable/loading_imagerec"
+            app:progressBarImageScaleType="centerCrop"
+            />
+      <!--  <android.support.v7.widget.AppCompatImageView
             android:id="@+id/userimage"
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -61,7 +84,7 @@
             android:layout_marginRight="12dp"
             app:layout_constraintRight_toLeftOf="@+id/username"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"/>-->
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/username"
@@ -72,7 +95,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:text="John"
-            android:textSize="@dimen/smalltextsize"/>
+            android:textSize="@dimen/verysmalltextsize"/>
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/menu_icon"

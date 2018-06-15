@@ -14,6 +14,7 @@
         <item name="android:windowFullscreen">true</item>
         <item name="colorPrimary">@color/appbasiccolor</item>
         <item name="colorPrimaryDark">@color/appbasiccolor</item>
+        <item name="android:orientation">vertical</item>
         <item name="colorAccent">@color/appbasiccolor</item>
     </style>
 

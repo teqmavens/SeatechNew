@@ -10,7 +10,10 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="2dp"
+    android:paddingLeft="2dp"
+    android:paddingRight="2dp"
+    android:paddingTop="@dimen/verysmallpadding"
+    android:paddingBottom="@dimen/verysmallpadding"
     android:orientation="horizontal">
 
     <android.support.v7.widget.AppCompatTextView
@@ -23,11 +26,12 @@
         android:textSize="@dimen/verysmalltextsize" />
 
     <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/jobticketno"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight=".11"
         android:gravity="center"
-        android:text="10001"
+        android:text="CF 10001"
         android:textColor="@color/appbasiccolor"
         android:textSize="@dimen/verysmalltextsize" />
 
@@ -72,7 +76,7 @@
         android:layout_height="match_parent"
         android:layout_weight=".11"
         android:gravity="center"
-        android:text="tech1,tech2dssdfsdfdsfdsfdsfdsfsdf"
+        android:text="tech1,tech2,tech3,tech4"
         android:textColor="@color/black"
         android:textSize="@dimen/verysmalltextsize" />
 
@@ -91,7 +95,9 @@
           android:layout_height="match_parent"
           android:gravity="center"
           android:layout_weight=".11">
+
           <android.support.v7.widget.AppCompatImageView
+              android:id="@+id/notesimage"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               app:srcCompat="@drawable/notes" />

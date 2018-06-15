@@ -2,6 +2,8 @@ package teq.development.seatech.Dashboard;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,8 +20,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +53,9 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
     DrawerLayout mDrawerLayout;
     public ActionBarDrawerToggle mDrawerToggle;
     public Boolean mABoolean = false;
-    public ImageView menu_icon;
+    public ImageView menu_icon,sick_icon;
+    SimpleDraweeView userimage;
+    TextView username;
    // ImageView navigation_icon;
 
     @Override
@@ -53,12 +65,18 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         replaceFragmentWithoutBack(new DashBoardFragment());
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         menu_icon = (ImageView) findViewById(R.id.menu_icon);
+        sick_icon = (ImageView) findViewById(R.id.sick_icon);
+        userimage = (SimpleDraweeView) findViewById(R.id.userimage);
+        username = (TextView) findViewById(R.id.username);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.navigation_icon);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        userimage.setImageURI(HandyObject.getPrams(this,AppConstants.LOGINTEQ_IMAGE));
+        username.setText(HandyObject.getPrams(this,AppConstants.LOGINTEQ_USERNAME));
         displayLeft(new LeftDrawer());
         menu_icon.setOnClickListener(this);
+        sick_icon.setOnClickListener(this);
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -145,10 +163,61 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.menu_icon:
-                Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
                 displyPopup(menu_icon);
                 break;
+            case R.id.sick_icon:
+                displaypopupLeave(sick_icon);
+                break;
         }
+    }
+
+    private void displaypopupLeave(View anchorview) {
+        final PopupWindow popup = new PopupWindow(this);
+        View layout = getLayoutInflater().inflate(R.layout.popup_leave, null);
+        popup.setContentView(layout);
+        popup.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popup.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        popup.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        ImageView cross = (ImageView) layout.findViewById(R.id.cross);
+        Button submit = (Button) layout.findViewById(R.id.submit);
+        final CheckBox cbx_vacation = (CheckBox) layout.findViewById(R.id.cbx_vacation);
+        final CheckBox cbx_sick = (CheckBox) layout.findViewById(R.id.cbx_sick);
+        cbx_vacation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    cbx_sick.setChecked(false);
+                }
+
+            }
+        });
+
+        cbx_sick.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    cbx_vacation.setChecked(false);
+                }
+            }
+        });
+
+        cross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popup.dismiss();
+            }
+        });
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popup.dismiss();
+            }
+        });
+        popup.setOutsideTouchable(true);
+        popup.setFocusable(true);
+        popup.showAsDropDown(anchorview);
     }
 
     private void displyPopup(View view){
@@ -190,6 +259,7 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                                 startActivity(intent_reg);
                                 finish();
                                 overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                HandyObject.clearpref(DashBoardActivity.this);
                             } else {
                                 HandyObject.showAlert(DashBoardActivity.this, jsonObject.getString("message"));
                             }
@@ -208,5 +278,10 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                         HandyObject.stopProgressDialog();
                     }
                 });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

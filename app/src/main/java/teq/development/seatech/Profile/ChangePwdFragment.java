@@ -43,43 +43,49 @@ public class ChangePwdFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.frgm_changepwd,container,false);
+        View rootView = inflater.inflate(R.layout.frgm_changepwd, container, false);
         binding = DataBindingUtil.bind(rootView);
         binding.setChangepassword(this);
         return rootView;
     }
 
-    public void onClickSave(){
+    public void onClickSave() {
         if (binding.etCurrentpwd.getText().toString().length() == 0) {
             binding.etCurrentpwd.setError(getString(R.string.fieldempty));
         } else if (binding.etNewpwd.getText().toString().length() == 0) {
             binding.etNewpwd.setError(getString(R.string.fieldempty));
-        }else if (binding.etReenterpwd.getText().toString().length() == 0) {
+        } else if (binding.etReenterpwd.getText().toString().length() == 0) {
             binding.etReenterpwd.setError(getString(R.string.fieldempty));
-        }else if (binding.etNewpwd.getText().toString().compareTo(binding.etReenterpwd.getText().toString()) != 0) {
+        } else if (binding.etNewpwd.getText().toString().compareTo(binding.etReenterpwd.getText().toString()) != 0) {
             binding.etNewpwd.setError("");
             binding.etReenterpwd.setError("");
             HandyObject.showAlert(context, getString(R.string.pwdnotmatch));
         } else if (HandyObject.checkInternetConnection(context)) {
-            pwdChangeTask(binding.etCurrentpwd.getText().toString(),binding.etNewpwd.getText().toString(),binding.etReenterpwd.getText().toString());
+            pwdChangeTask(binding.etCurrentpwd.getText().toString(), binding.etNewpwd.getText().toString(), binding.etReenterpwd.getText().toString());
         } else {
             HandyObject.showAlert(context, getString(R.string.check_internet_connection));
         }
     }
 
-    private void pwdChangeTask(String currentpwd,String newpwd,String reenterpwd){
+    private void pwdChangeTask(String currentpwd, String newpwd, String reenterpwd) {
         HandyObject.showProgressDialog(context);
-        HandyObject.getApiManagerType().changePwd(currentpwd,newpwd,reenterpwd,HandyObject.getPrams(context,AppConstants.LOGIN_SESSIONID))
+        HandyObject.getApiManagerType().changePwd(currentpwd, newpwd, reenterpwd, HandyObject.getPrams(context, AppConstants.LOGIN_SESSIONID))
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         try {
                             String jsonResponse = response.body().string();
-                            Log.e("response",jsonResponse);
+                            Log.e("response", jsonResponse);
                             JSONObject jsonObject = new JSONObject(jsonResponse);
-                            if (jsonObject.getString("status").toLowerCase().equals("success")){
+                            if (jsonObject.getString("status").toLowerCase().equals("success")) {
                                 HandyObject.showAlert(context, jsonObject.getString("message"));
                                 getFragmentManager().popBackStack();
+                       /*      android.content.Intent intent_reg = new android.content.Intent(getActivity(), teq.development.seatech.LoginActivity.class);
+      intent_reg.setFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK | android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK);
+      getA
+startActivity(intent_reg);*/
+
+
                             } else {
                                 HandyObject.showAlert(context, jsonObject.getString("message"));
                             }
@@ -98,5 +104,9 @@ public class ChangePwdFragment extends Fragment {
                         HandyObject.stopProgressDialog();
                     }
                 });
+    }
+
+    public void OnClickCancel() {
+        getActivity().getSupportFragmentManager().popBackStack();
     }
 }

@@ -13,14 +13,23 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:gravity="center"
-        android:orientation="vertical"
-        android:padding="@dimen/largetextsize">
+        android:background="@android:color/transparent"
+        android:orientation="vertical">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:padding="@dimen/mediumtextsize"
+            android:layout_margin="@dimen/smalltextsize"
+            android:background="@drawable/dashboardlinebg">
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/jobcomplete"
@@ -39,6 +48,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/yes"
+                android:button="@drawable/radiocheckbox"
+                android:paddingLeft="@dimen/smallpadding"
                 app:layout_constraintLeft_toRightOf="@+id/jobcomplete"
                 app:layout_constraintRight_toLeftOf="@+id/checkboxno" />
 
@@ -47,6 +58,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/no"
+                android:button="@drawable/radiocheckbox"
+                android:paddingLeft="@dimen/smallpadding"
                 app:layout_constraintLeft_toRightOf="@+id/checkboxyes"
                 app:layout_constraintRight_toLeftOf="@+id/checkboxmaybe" />
 
@@ -55,6 +68,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/maybe"
+                android:button="@drawable/radiocheckbox"
+                android:paddingLeft="@dimen/smallpadding"
                 app:layout_constraintLeft_toRightOf="@+id/checkboxno"
                 app:layout_constraintRight_toRightOf="parent" />
 
@@ -108,10 +123,11 @@
                 android:id="@+id/et_supplyamount"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:maxHeight="60dp"
                 android:background="@drawable/dashboardlinebg"
-                android:gravity="top"
-                android:hint="@string/enterdesription"
-                android:padding="@dimen/verysmalltextsize"
+                android:gravity="center_vertical"
+                android:hint="@string/enteramount"
+                android:padding="@dimen/smallpadding"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
                 android:textSize="@dimen/verysmalltextsize"
@@ -139,6 +155,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/yes"
+                android:button="@drawable/radiocheckbox"
+                android:paddingLeft="4dp"
                 app:layout_constraintLeft_toRightOf="@+id/owneraware"
                 app:layout_constraintRight_toLeftOf="@+id/checkboxno"
                 app:layout_constraintTop_toTopOf="@+id/owneraware" />
@@ -148,6 +166,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/no"
+                android:button="@drawable/radiocheckbox"
+                android:paddingLeft="@dimen/smallpadding"
                 app:layout_constraintLeft_toRightOf="@+id/checkbox_yesowner"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/owneraware" />
@@ -172,6 +192,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/yes"
+                android:button="@drawable/radiocheckbox"
+                android:paddingLeft="@dimen/smallpadding"
                 app:layout_constraintLeft_toRightOf="@+id/owneraware"
                 app:layout_constraintRight_toLeftOf="@+id/checkboxno"
                 app:layout_constraintTop_toTopOf="@+id/notbillabletext" />
@@ -181,11 +203,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/no"
+                android:button="@drawable/radiocheckbox"
+                android:paddingLeft="@dimen/smallpadding"
                 app:layout_constraintLeft_toRightOf="@+id/checkbox_yesbillable"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/notbillabletext" />
 
-        </android.support.constraint.ConstraintLayout>
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/verysmalltextsize"
+                android:background="@drawable/bg_loginbtn"
+                android:padding="@dimen/verysmalltextsize"
+                android:text="@string/submit"
+                android:onClick="@{()->jobstatusdialog.onClickSubmit()}"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="bold"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/checkbox_nobillable" />
 
+        </android.support.constraint.ConstraintLayout>
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/cross"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{()->jobstatusdialog.onClickCross()}"
+                app:srcCompat="@drawable/crosspopup" />
+        </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 </layout>

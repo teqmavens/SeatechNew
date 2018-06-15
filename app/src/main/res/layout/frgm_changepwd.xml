@@ -16,14 +16,44 @@
         android:background="@color/white"
         android:orientation="vertical">
 
-        <android.support.v7.widget.AppCompatTextView
+       <!-- <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/mediumtextsize"
             android:text="@string/changepwd"
             android:textColor="@color/appbasiccolor"
             android:textSize="@dimen/mediumtextsize"
-            android:textStyle="bold" />
+            android:textStyle="bold" />-->
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/mediumtextsize"
+                android:text="@string/changepwd"
+                android:textColor="@color/appbasiccolor"
+                android:textSize="@dimen/mediumtextsize"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/largetextsize"
+                android:background="@drawable/bg_loginbtn"
+                android:onClick="@{()->changepassword.OnClickCancel()}"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/verysmalltextsize"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/verysmalltextsize"
+                />
+        </RelativeLayout>
+
 
         <View
             android:layout_width="match_parent"
@@ -127,7 +157,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_loginbtn"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/smalltextsize"
+                    android:textSize="@dimen/verysmalltextsize"
                     android:text="@string/savechanges"
                     android:textAllCaps="false"
                     android:paddingLeft="@dimen/smalltextsize"

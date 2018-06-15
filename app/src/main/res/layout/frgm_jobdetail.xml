@@ -7,667 +7,703 @@
             name="frgmjobdetail"
             type="teq.development.seatech.JobDetail.JobDetailFragment"></variable>
     </data>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_vertical"
-    android:orientation="vertical">
-
-
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".33"
-        android:padding="@dimen/smallpadding">
-
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/jobspinner"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:background="@drawable/dashboardlinepickup"
-            app:layout_constraintHorizontal_weight=".62"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:paddingLeft="@dimen/smalltextsize"
-            app:layout_constraintRight_toLeftOf="@+id/timespinner">
-
-        </android.support.v7.widget.AppCompatSpinner>
-
-        <android.support.v7.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_downarrow"
-            app:layout_constraintTop_toTopOf="@+id/jobspinner"
-            app:layout_constraintBottom_toBottomOf="@+id/jobspinner"
-            app:layout_constraintRight_toRightOf="@+id/jobspinner"
-            android:paddingRight="@dimen/smalltextsize"/>
-
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/timespinner"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="@dimen/smalltextsize"
-            android:background="@drawable/dashboardlinepickup"
-            app:layout_constraintHorizontal_weight=".14"
-            app:layout_constraintLeft_toRightOf="@+id/jobspinner"
-            app:layout_constraintRight_toLeftOf="@+id/uploadimage">
-
-        </android.support.v7.widget.AppCompatSpinner>
-
-        <TextView
-            android:id="@+id/uploadimage"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/smalltextsize"
-            android:background="@drawable/bg_loginbtn"
-            android:drawableLeft="@drawable/navigation_icon"
-            android:gravity="center"
-            android:padding="@dimen/smallpadding"
-            android:text="@string/uploadimage"
-            android:textColor="@color/white"
-            app:layout_constraintHorizontal_weight=".24"
-            app:layout_constraintLeft_toRightOf="@+id/timespinner"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/verysmallpadding"
-            android:background="@drawable/dashboardlinebg"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/jobspinner">
-
-
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/leftcl"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".5"
-                android:paddingLeft="@dimen/smallpadding"
-
-                android:paddingRight="@dimen/smallpadding"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/view"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/boatmakeyear_key"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/boatmakeyear"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".44"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/boatmakeyear_value" />
-
-                <TextView
-                    android:id="@+id/boatmakeyear_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="xxxxxxxxxxxxxxxxxxxx"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".56"
-                    app:layout_constraintLeft_toRightOf="@+id/boatmakeyear_key"
-                    app:layout_constraintRight_toRightOf="parent" />
-
-
-                <TextView
-                    android:id="@+id/boatmodel_key"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/verysmallpadding"
-                    android:text="@string/boatmodel"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".44"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/boatmodel_value"
-                    app:layout_constraintTop_toBottomOf="@+id/boatmakeyear_value" />
-
-                <TextView
-                    android:id="@+id/boatmodel_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="xxxxxxxxxxxxxxxxxxxxxx"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".56"
-                    app:layout_constraintLeft_toRightOf="@+id/boatmodel_key"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/boatmodel_key" />
-
-
-                <TextView
-                    android:id="@+id/boatname_key"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/verysmallpadding"
-                    android:text="@string/boatname"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".44"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/boatname_value"
-                    app:layout_constraintTop_toBottomOf="@+id/boatmodel_value" />
-
-                <TextView
-                    android:id="@+id/boatname_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="xxxxxxxxxxxxxxxxxxxxxx"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".56"
-                    app:layout_constraintLeft_toRightOf="@+id/boatname_key"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/boatname_key" />
-
-                <TextView
-                    android:id="@+id/hullid_key"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/verysmallpadding"
-                    android:text="@string/hullid"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".44"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/hullid_value"
-                    app:layout_constraintTop_toBottomOf="@+id/boatname_value" />
-
-                <TextView
-                    android:id="@+id/hullid_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="xxxxxxxxxxxxxxxxxxxxxx"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".56"
-                    app:layout_constraintLeft_toRightOf="@+id/hullid_key"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/hullid_key" />
-
-
-                <TextView
-                    android:id="@+id/captname_key"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/verysmallpadding"
-                    android:text="@string/captname"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".44"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/captname_value"
-                    app:layout_constraintTop_toBottomOf="@+id/hullid_value" />
-
-                <TextView
-                    android:id="@+id/captname_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="xxxxxxxxxxxxxxxxxxxxxx"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".56"
-                    app:layout_constraintLeft_toRightOf="@+id/captname_key"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/captname_key" />
-
-
-                <TextView
-                    android:id="@+id/promisedate_key"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/verysmallpadding"
-                    android:text="@string/promisedate"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".44"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/promisedate_value"
-                    app:layout_constraintTop_toBottomOf="@+id/captname_value" />
-
-                <TextView
-                    android:id="@+id/promisedate_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="xxxxxxxxxxxxxxxxxxxxxx"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".56"
-                    app:layout_constraintLeft_toRightOf="@+id/promisedate_key"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/promisedate_key" />
-
-            </android.support.constraint.ConstraintLayout>
-
-            <View
-                android:id="@+id/view"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/black"
-                app:layout_constraintLeft_toRightOf="@+id/leftcl"
-                app:layout_constraintRight_toLeftOf="@+id/rightcl"></View>
-
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/rightcl"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".5"
-                android:paddingLeft="@dimen/smallpadding"
-
-                android:paddingRight="@dimen/smallpadding"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/view"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/rep_key"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/rep"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".44"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/rep_value" />
-
-                <TextView
-                    android:id="@+id/rep_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="xxxxxxxxxxxxxxxxxxxx"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".56"
-                    app:layout_constraintLeft_toRightOf="@+id/rep_key"
-                    app:layout_constraintRight_toRightOf="parent" />
-
-
-                <TextView
-                    android:id="@+id/jobselection_key"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/verysmallpadding"
-                    android:text="@string/jobselection"
-                    android:textAllCaps="false"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".44"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/jobselection_value"
-                    app:layout_constraintTop_toBottomOf="@+id/rep_value" />
-
-                <TextView
-                    android:id="@+id/jobselection_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="T/M or Bid"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".56"
-                    app:layout_constraintLeft_toRightOf="@+id/jobselection_key"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/jobselection_key" />
-
-
-                <TextView
-                    android:id="@+id/jobtype_key"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/verysmallpadding"
-                    android:text="@string/jobtype"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".44"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/jobtype_value"
-                    app:layout_constraintTop_toBottomOf="@+id/jobselection_value" />
-
-                <TextView
-                    android:id="@+id/jobtype_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/serviceinstall"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".56"
-                    app:layout_constraintLeft_toRightOf="@+id/jobtype_key"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/jobtype_key" />
-
-                <TextView
-                    android:id="@+id/ifbid_key"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/verysmallpadding"
-                    android:text="@string/ifbid"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".44"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/ifbid_value"
-                    app:layout_constraintTop_toBottomOf="@+id/jobtype_value" />
-
-                <TextView
-                    android:id="@+id/ifbid_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="#hours quoted"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".56"
-                    app:layout_constraintLeft_toRightOf="@+id/ifbid_key"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/ifbid_key" />
-
-
-                <TextView
-                    android:id="@+id/qcperson_key"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/verysmallpadding"
-                    android:text="@string/qcperson"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".44"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/qcperson_value"
-                    app:layout_constraintTop_toBottomOf="@+id/ifbid_value" />
-
-                <TextView
-                    android:id="@+id/qcperson_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="xxxxxxxxxxxxxxxxxxxxxx"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".56"
-                    app:layout_constraintLeft_toRightOf="@+id/qcperson_key"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/qcperson_key" />
-
-
-                <TextView
-                    android:id="@+id/supervisor_key"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/verysmallpadding"
-                    android:text="@string/supervisor"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".44"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/supervisor_value"
-                    app:layout_constraintTop_toBottomOf="@+id/qcperson_value" />
-
-                <TextView
-                    android:id="@+id/supervisor_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="xxxxxxxxxxxxxxxxxxxxxx"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/verysmalltextsize"
-                    app:layout_constraintHorizontal_weight=".56"
-                    app:layout_constraintLeft_toRightOf="@+id/supervisor_key"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/supervisor_key" />
-
-            </android.support.constraint.ConstraintLayout>
-        </android.support.constraint.ConstraintLayout>
-
-    </android.support.constraint.ConstraintLayout>
-
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".22"
-        android:paddingBottom="@dimen/verysmallpadding">
-
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/spinner_lc"
-            android:layout_width="0dp"
-            android:layout_height="42dp"
-            android:layout_marginLeft="@dimen/largetextsize"
-            android:layout_marginRight="@dimen/largetextsize"
-            android:background="@drawable/dashboardlinepickup"
-            app:layout_constraintHorizontal_weight=".33"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/hrs_laborcode"></android.support.v7.widget.AppCompatSpinner>
-        <android.support.v7.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_downarrow"
-            app:layout_constraintTop_toTopOf="@+id/spinner_lc"
-            app:layout_constraintBottom_toBottomOf="@+id/spinner_lc"
-            app:layout_constraintRight_toRightOf="@+id/spinner_lc"
-            android:paddingRight="@dimen/smalltextsize"/>
-
-        <TextView
-            android:id="@+id/hrs_laborcode"
-            android:layout_width="0dp"
-            android:layout_height="42dp"
-            android:layout_marginLeft="@dimen/largetextsize"
-            android:layout_marginRight="@dimen/largetextsize"
-            android:background="@drawable/bg_loginbtn"
-            android:gravity="center"
-            android:padding="@dimen/smallpadding"
-            android:text="02:25:40"
-            android:textColor="@color/white"
-            android:textSize="@dimen/verysmalltextsize"
-            app:layout_constraintHorizontal_weight=".33"
-            app:layout_constraintLeft_toRightOf="@+id/spinner_lc"
-            app:layout_constraintRight_toLeftOf="@+id/suppliedamount" />
-
-        <TextView
-            android:id="@+id/suppliedamount"
-            android:layout_width="0dp"
-            android:layout_height="42dp"
-            android:layout_marginLeft="@dimen/largetextsize"
-            android:layout_marginRight="@dimen/largetextsize"
-            android:background="@drawable/bg_loginbtn"
-            android:gravity="center"
-            android:padding="@dimen/smallpadding"
-            android:text="Supplies Amount"
-            android:textColor="@color/white"
-            android:textSize="@dimen/verysmalltextsize"
-            app:layout_constraintHorizontal_weight=".33"
-            app:layout_constraintLeft_toRightOf="@+id/hrs_laborcode"
-            app:layout_constraintRight_toRightOf="parent" />
-
-
-        <TextView
-            android:id="@+id/techLaborperform"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/largetextsize"
-            android:layout_marginTop="@dimen/smallpadding"
-            android:gravity="left"
-            android:text="@string/techlaborperform"
-            android:textColor="@color/black"
-            android:textSize="@dimen/verysmalltextsize"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_lc" />
-
-        <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/et_laborperform"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/dashboardlinebg"
-            android:gravity="top"
-            android:hint="@string/enterdesription"
-            android:padding="@dimen/smallpadding"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="@dimen/verysmalltextsize"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_weight=".5"
-            app:layout_constraintLeft_toLeftOf="@+id/techLaborperform"
-            app:layout_constraintRight_toLeftOf="@+id/previouslabor_comment"
-            app:layout_constraintTop_toBottomOf="@+id/techLaborperform" />
-
-
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/previouslabor_comment"
-            android:layout_width="0dp"
-            android:layout_height="42dp"
-            android:layout_marginLeft="@dimen/largetextsize"
-            android:background="@drawable/startstopjob_bg"
-            android:gravity="center"
-            android:padding="@dimen/smallpadding"
-            android:text="@string/previouslaborcmmnt"
-            android:textColor="@color/white"
-            android:textSize="@dimen/verysmalltextsize"
-            app:layout_constraintHorizontal_weight=".5"
-            app:layout_constraintLeft_toRightOf="@+id/et_laborperform"
-            app:layout_constraintRight_toRightOf="@+id/suppliedamount"
-            app:layout_constraintTop_toBottomOf="@+id/techLaborperform" />
-    </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".22"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/verysmallpadding"
-        android:paddingLeft="@dimen/smallpadding"
-        android:paddingRight="@dimen/smallpadding">
+        android:paddingLeft="@dimen/verysmalltextsize"
+        android:paddingRight="@dimen/verysmalltextsize">
 
-        <android.support.v7.widget.AppCompatTextView
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight=".33"
             android:paddingBottom="@dimen/verysmallpadding"
-            android:paddingLeft="@dimen/smallpadding"
-            android:paddingTop="@dimen/verysmallpadding"
-            android:text="@string/urgentmsg"
-            android:textColor="@color/black"
-            android:textSize="@dimen/verysmalltextsize"
-            android:textStyle="italic|bold" />
+            android:paddingTop="@dimen/verysmallpadding">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rcyview_urgentmsg"
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/jobspinner"
+                android:layout_width="0dp"
+                android:layout_height="34dp"
+                android:background="@drawable/dashboardlinepickup"
+                android:paddingLeft="@dimen/smalltextsize"
+                app:layout_constraintHorizontal_weight=".62"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/timespinner">
+
+            </android.support.v7.widget.AppCompatSpinner>
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/smalltextsize"
+                app:layout_constraintBottom_toBottomOf="@+id/jobspinner"
+                app:layout_constraintRight_toRightOf="@+id/jobspinner"
+                app:layout_constraintTop_toTopOf="@+id/jobspinner"
+                app:srcCompat="@drawable/ic_downarrow" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/timespinner"
+                android:layout_width="0dp"
+                android:layout_height="34dp"
+                android:layout_marginLeft="@dimen/smalltextsize"
+                android:background="@drawable/dashboardlinepickup"
+                app:layout_constraintHorizontal_weight=".14"
+                app:layout_constraintLeft_toRightOf="@+id/jobspinner"
+                app:layout_constraintRight_toLeftOf="@+id/uploadimage">
+
+            </android.support.v7.widget.AppCompatSpinner>
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/smalltextsize"
+                app:layout_constraintBottom_toBottomOf="@+id/timespinner"
+                app:layout_constraintRight_toRightOf="@+id/timespinner"
+                app:layout_constraintTop_toTopOf="@+id/timespinner"
+                app:srcCompat="@drawable/ic_downarrow" />
+
+            <TextView
+                android:id="@+id/uploadimage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/smalltextsize"
+                android:background="@drawable/bg_loginbtn"
+                android:gravity="center"
+                android:padding="@dimen/smallpadding"
+                android:text="@string/uploadimage"
+                android:textColor="@color/white"
+                android:onClick="@{()->frgmjobdetail.OnClickUpload()}"
+                app:layout_constraintHorizontal_weight=".24"
+                app:layout_constraintLeft_toRightOf="@+id/timespinner"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/verysmallpadding"
+                android:background="@drawable/dashboardlinebg"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/jobspinner">
+
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/leftcl"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:paddingLeft="@dimen/smallpadding"
+                    android:paddingRight="@dimen/smallpadding"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/view"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/boatmakeyear_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/boatmakeyear"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/boatmakeyear_value" />
+
+                    <TextView
+                        android:id="@+id/boatmakeyear_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="xxxxxxxxxxxxxxxxxxxx"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/boatmakeyear_key"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <TextView
+                        android:id="@+id/boatmodel_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/verysmallpadding"
+                        android:text="@string/boatmodel"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/boatmodel_value"
+                        app:layout_constraintTop_toBottomOf="@+id/boatmakeyear_value" />
+
+                    <TextView
+                        android:id="@+id/boatmodel_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/boatmodel_key"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/boatmodel_key" />
+
+
+                    <TextView
+                        android:id="@+id/boatname_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/verysmallpadding"
+                        android:text="@string/boatname"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/boatname_value"
+                        app:layout_constraintTop_toBottomOf="@+id/boatmodel_value" />
+
+                    <TextView
+                        android:id="@+id/boatname_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/boatname_key"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/boatname_key" />
+
+                    <TextView
+                        android:id="@+id/hullid_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/verysmallpadding"
+                        android:text="@string/hullid"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/hullid_value"
+                        app:layout_constraintTop_toBottomOf="@+id/boatname_value" />
+
+                    <TextView
+                        android:id="@+id/hullid_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/hullid_key"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/hullid_key" />
+
+
+                    <TextView
+                        android:id="@+id/captname_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/verysmallpadding"
+                        android:text="@string/captname"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/captname_value"
+                        app:layout_constraintTop_toBottomOf="@+id/hullid_value" />
+
+                    <TextView
+                        android:id="@+id/captname_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/captname_key"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/captname_key" />
+
+
+                    <TextView
+                        android:id="@+id/promisedate_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/verysmallpadding"
+                        android:text="@string/promisedate"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/promisedate_value"
+                        app:layout_constraintTop_toBottomOf="@+id/captname_value" />
+
+                    <TextView
+                        android:id="@+id/promisedate_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/promisedate_key"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/promisedate_key" />
+
+                </android.support.constraint.ConstraintLayout>
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/black"
+                    app:layout_constraintLeft_toRightOf="@+id/leftcl"
+                    app:layout_constraintRight_toLeftOf="@+id/rightcl"></View>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/rightcl"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:paddingLeft="@dimen/smallpadding"
+
+                    android:paddingRight="@dimen/smallpadding"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/view"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/rep_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rep"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/rep_value" />
+
+                    <TextView
+                        android:id="@+id/rep_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="xxxxxxxxxxxxxxxxxxxx"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/rep_key"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+
+                    <TextView
+                        android:id="@+id/jobselection_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/verysmallpadding"
+                        android:text="@string/jobselection"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/jobselection_value"
+                        app:layout_constraintTop_toBottomOf="@+id/rep_value" />
+
+                    <TextView
+                        android:id="@+id/jobselection_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="T/M or Bid"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/jobselection_key"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/jobselection_key" />
+
+
+                    <TextView
+                        android:id="@+id/jobtype_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/verysmallpadding"
+                        android:text="@string/jobtype"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/jobtype_value"
+                        app:layout_constraintTop_toBottomOf="@+id/jobselection_value" />
+
+                    <TextView
+                        android:id="@+id/jobtype_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/serviceinstall"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/jobtype_key"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/jobtype_key" />
+
+                    <TextView
+                        android:id="@+id/ifbid_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/verysmallpadding"
+                        android:text="@string/ifbid"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/ifbid_value"
+                        app:layout_constraintTop_toBottomOf="@+id/jobtype_value" />
+
+                    <TextView
+                        android:id="@+id/ifbid_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="#hours quoted"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/ifbid_key"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/ifbid_key" />
+
+
+                    <TextView
+                        android:id="@+id/qcperson_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/verysmallpadding"
+                        android:text="@string/qcperson"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/qcperson_value"
+                        app:layout_constraintTop_toBottomOf="@+id/ifbid_value" />
+
+                    <TextView
+                        android:id="@+id/qcperson_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/qcperson_key"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/qcperson_key" />
+
+
+                    <TextView
+                        android:id="@+id/supervisor_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/verysmallpadding"
+                        android:text="@string/supervisor"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/supervisor_value"
+                        app:layout_constraintTop_toBottomOf="@+id/qcperson_value" />
+
+                    <TextView
+                        android:id="@+id/supervisor_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/supervisor_key"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/supervisor_key" />
+
+                </android.support.constraint.ConstraintLayout>
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/dashboardlinebg">
+            android:layout_height="0dp"
+            android:layout_weight=".22"
+            android:paddingBottom="@dimen/verysmallpadding">
 
-        </android.support.v7.widget.RecyclerView>
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/spinner_lc"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="@dimen/largetextsize"
+                android:layout_marginRight="@dimen/largetextsize"
+                android:background="@drawable/dashboardlinepickup"
+                app:layout_constraintHorizontal_weight=".33"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/hrs_laborcode"></android.support.v7.widget.AppCompatSpinner>
 
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/smalltextsize"
+                app:layout_constraintBottom_toBottomOf="@+id/spinner_lc"
+                app:layout_constraintRight_toRightOf="@+id/spinner_lc"
+                app:layout_constraintTop_toTopOf="@+id/spinner_lc"
+                app:srcCompat="@drawable/ic_downarrow" />
+
+            <TextView
+                android:id="@+id/hrs_laborcode"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="@dimen/largetextsize"
+                android:layout_marginRight="@dimen/largetextsize"
+                android:background="@drawable/bg_loginbtn"
+                android:gravity="center"
+                android:padding="@dimen/smallpadding"
+                android:text="02:25:40"
+                android:textColor="@color/white"
+                android:textSize="@dimen/verysmalltextsize"
+                app:layout_constraintHorizontal_weight=".33"
+                app:layout_constraintLeft_toRightOf="@+id/spinner_lc"
+                app:layout_constraintRight_toLeftOf="@+id/suppliedamount" />
+
+            <TextView
+                android:id="@+id/suppliedamount"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="@dimen/largetextsize"
+                android:layout_marginRight="@dimen/largetextsize"
+                android:background="@drawable/bg_loginbtn"
+                android:gravity="center"
+                android:padding="@dimen/smallpadding"
+                android:text="1000$"
+                android:textColor="@color/white"
+                android:textSize="@dimen/verysmalltextsize"
+                app:layout_constraintHorizontal_weight=".33"
+                app:layout_constraintLeft_toRightOf="@+id/hrs_laborcode"
+                app:layout_constraintRight_toRightOf="parent" />
+
+
+            <TextView
+                android:id="@+id/techLaborperform"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/largetextsize"
+                android:layout_marginTop="@dimen/smallpadding"
+                android:gravity="left"
+                android:text="@string/techlaborperform"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spinner_lc" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_laborperform"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/dashboardlinebg"
+                android:gravity="top"
+                android:hint="@string/enterdesription"
+                android:padding="@dimen/smallpadding"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_weight=".48"
+                app:layout_constraintLeft_toLeftOf="@+id/techLaborperform"
+                app:layout_constraintRight_toLeftOf="@+id/submit_comment"
+                app:layout_constraintTop_toBottomOf="@+id/techLaborperform" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/submit_comment"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="@dimen/smallpadding"
+                android:background="@drawable/startstopjob_bg"
+                android:gravity="center"
+                android:padding="@dimen/smallpadding"
+                android:text="@string/submit"
+                android:onClick="@{()->frgmjobdetail.OnClicksubmit()}"
+                android:textColor="@color/white"
+                android:textSize="@dimen/verysmalltextsize"
+                app:layout_constraintHorizontal_weight=".16"
+                app:layout_constraintLeft_toRightOf="@+id/et_laborperform"
+                app:layout_constraintRight_toLeftOf="@+id/previouslabor_comment"
+                app:layout_constraintTop_toBottomOf="@+id/techLaborperform" />
+
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/previouslabor_comment"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="@dimen/largetextsize"
+                android:background="@drawable/startstopjob_bg"
+                android:gravity="center"
+                android:onClick="@{()->frgmjobdetail.OnClickViewComment()}"
+                android:padding="@dimen/smallpadding"
+                android:text="@string/previouslaborcmmnt"
+                android:textColor="@color/white"
+                android:textSize="@dimen/verysmalltextsize"
+                app:layout_constraintHorizontal_weight=".36"
+                app:layout_constraintLeft_toRightOf="@+id/submit_comment"
+                app:layout_constraintRight_toRightOf="@+id/suppliedamount"
+                app:layout_constraintTop_toBottomOf="@+id/techLaborperform" />
+        </android.support.constraint.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".22"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/verysmallpadding">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/verysmallpadding"
+                android:paddingLeft="@dimen/smallpadding"
+                android:paddingTop="@dimen/verysmallpadding"
+                android:text="@string/urgentmsg"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="italic|bold" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcyview_urgentmsg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/dashboardlinebg">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".33">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/textnotes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/verysmallpadding"
+                android:paddingLeft="@dimen/smallpadding"
+                android:paddingTop="@dimen/smallpadding"
+                android:text="@string/recordnotes_othertechs"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="italic|bold"
+                app:layout_constraintBottom_toTopOf="@+id/rcyview_notestechs"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <!--android:drawableRight="@drawable/plus"-->
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/addtechnotesicon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/plus"
+                android:padding="@dimen/verysmallpadding"
+                android:onClick="@{()->frgmjobdetail.OnClickAddTech()}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/rcyview_notestechs"
+                app:layout_constraintRight_toRightOf="parent"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcyview_notestechs"
+                android:layout_width="0dp"
+                android:layout_height="104dp"
+                android:background="@drawable/dashboardlinebg"
+                app:layout_constraintBottom_toTopOf="@+id/startstopbtn"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textnotes"></android.support.v7.widget.RecyclerView>
+
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/startstopbtn"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginLeft="@dimen/largetextsize"
+                android:layout_marginRight="@dimen/largetextsize"
+                android:layout_marginTop="@dimen/verysmallpadding"
+                android:background="@drawable/dashboardlinepickup"
+                android:onClick="@{()->frgmjobdetail.onClickJobChange()}"
+                android:padding="@dimen/verysmallpadding"
+                android:text="@string/startstop_time"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                app:layout_constraintHorizontal_weight=".25"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/needpartbtn"
+                app:layout_constraintTop_toBottomOf="@+id/rcyview_notestechs" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/needpartbtn"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginLeft="@dimen/largetextsize"
+                android:layout_marginRight="@dimen/largetextsize"
+                android:background="@drawable/dashboardlinepickup"
+                android:onClick="@{()->frgmjobdetail.onClickNeedPart()}"
+                android:padding="@dimen/verysmallpadding"
+                android:text="@string/needpart"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                app:layout_constraintHorizontal_weight=".25"
+                app:layout_constraintLeft_toRightOf="@+id/startstopbtn"
+                app:layout_constraintRight_toLeftOf="@+id/needestimatebtn"
+                app:layout_constraintTop_toTopOf="@+id/startstopbtn" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/needestimatebtn"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginLeft="@dimen/largetextsize"
+                android:layout_marginRight="@dimen/largetextsize"
+                android:background="@drawable/dashboardlinepickup"
+                android:onClick="@{(v)->frgmjobdetail.onClickNeedEstimate(v)}"
+                android:padding="@dimen/verysmallpadding"
+                android:text="@string/needestimate"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                app:layout_constraintHorizontal_weight=".25"
+                app:layout_constraintLeft_toRightOf="@+id/needpartbtn"
+                app:layout_constraintRight_toLeftOf="@+id/changeorderbtn"
+                app:layout_constraintTop_toTopOf="@+id/startstopbtn" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/changeorderbtn"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginLeft="@dimen/largetextsize"
+                android:layout_marginRight="@dimen/largetextsize"
+                android:background="@drawable/dashboardlinepickup"
+                android:onClick="@{(v)->frgmjobdetail.onClickNeedChangeOrder(v)}"
+                android:padding="@dimen/verysmallpadding"
+                android:text="@string/changeorder"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                app:layout_constraintHorizontal_weight=".25"
+                app:layout_constraintLeft_toRightOf="@+id/needestimatebtn"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/startstopbtn" />
+        </android.support.constraint.ConstraintLayout>
     </LinearLayout>
-
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".33"
-        android:paddingLeft="@dimen/smallpadding"
-        android:paddingRight="@dimen/smallpadding">
-
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/textnotes"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:drawableRight="@drawable/plus"
-            android:paddingBottom="@dimen/verysmallpadding"
-            android:paddingLeft="@dimen/smallpadding"
-            android:paddingTop="@dimen/verysmallpadding"
-            android:text="@string/recordnotes_othertechs"
-            android:textColor="@color/black"
-            android:textSize="@dimen/verysmalltextsize"
-            android:textStyle="italic|bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/rcyview_notestechs"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rcyview_notestechs"
-            android:layout_width="0dp"
-            android:layout_height="110dp"
-            android:background="@drawable/dashboardlinebg"
-            app:layout_constraintBottom_toTopOf="@+id/startstopbtn"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textnotes"></android.support.v7.widget.RecyclerView>
-
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/startstopbtn"
-            android:layout_width="0dp"
-            android:layout_height="58dp"
-            android:layout_marginLeft="@dimen/largetextsize"
-            android:layout_marginRight="@dimen/largetextsize"
-            android:layout_marginTop="@dimen/verysmallpadding"
-            android:background="@drawable/dashboardlinepickup"
-            android:text="@string/startstop_time"
-            android:padding="@dimen/verysmallpadding"
-            android:textSize="@dimen/verysmalltextsize"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            app:layout_constraintHorizontal_weight=".25"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:onClick="@{()->frgmjobdetail.onClickJobChange()}"
-            app:layout_constraintRight_toLeftOf="@+id/needpartbtn"
-            app:layout_constraintTop_toBottomOf="@+id/rcyview_notestechs" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/needpartbtn"
-            android:layout_width="0dp"
-            android:layout_height="58dp"
-            android:layout_marginLeft="@dimen/largetextsize"
-            android:layout_marginRight="@dimen/largetextsize"
-            android:background="@drawable/dashboardlinepickup"
-            android:text="@string/needpart"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/verysmalltextsize"
-            android:padding="@dimen/verysmallpadding"
-            android:onClick="@{()->frgmjobdetail.onClickNeedPart()}"
-            app:layout_constraintHorizontal_weight=".25"
-            app:layout_constraintLeft_toRightOf="@+id/startstopbtn"
-            app:layout_constraintRight_toLeftOf="@+id/needestimatebtn"
-            app:layout_constraintTop_toTopOf="@+id/startstopbtn" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/needestimatebtn"
-            android:layout_width="0dp"
-            android:layout_height="58dp"
-            android:layout_marginLeft="@dimen/largetextsize"
-            android:layout_marginRight="@dimen/largetextsize"
-            android:background="@drawable/dashboardlinepickup"
-            android:text="@string/needestimate"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/verysmalltextsize"
-            android:padding="@dimen/verysmallpadding"
-            android:onClick="@{(v)->frgmjobdetail.onClickNeedEstimate(v)}"
-            app:layout_constraintHorizontal_weight=".25"
-            app:layout_constraintLeft_toRightOf="@+id/needpartbtn"
-            app:layout_constraintRight_toLeftOf="@+id/changeorderbtn"
-            app:layout_constraintTop_toTopOf="@+id/startstopbtn" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/changeorderbtn"
-            android:layout_width="0dp"
-            android:layout_height="58dp"
-            android:layout_marginLeft="@dimen/largetextsize"
-            android:layout_marginRight="@dimen/largetextsize"
-            android:background="@drawable/dashboardlinepickup"
-            android:onClick="@{(v)->frgmjobdetail.onClickNeedChangeOrder(v)}"
-            android:text="@string/changeorder"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:padding="@dimen/verysmallpadding"
-            android:textSize="@dimen/verysmalltextsize"
-            app:layout_constraintHorizontal_weight=".25"
-            app:layout_constraintLeft_toRightOf="@+id/needestimatebtn"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/startstopbtn" />
-    </android.support.constraint.ConstraintLayout>
-</LinearLayout>
 </layout>
