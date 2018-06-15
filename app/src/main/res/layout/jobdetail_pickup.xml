@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="jobdetailpickup"
+            type="teq.development.seatech.Dashboard.JobDetailPickupFragment"></variable>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/verysmalltextsize"
+        android:paddingRight="@dimen/verysmalltextsize">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:paddingBottom="@dimen/verysmallpadding"
+            android:paddingTop="@dimen/verysmallpadding">
+
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/verysmallpadding"
+                android:background="@drawable/dashboardlinebg"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/leftcl"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:paddingLeft="@dimen/smallpadding"
+                    android:paddingRight="@dimen/smallpadding"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/view"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/boatmakeyear_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/boatmakeyear"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/boatmakeyear_value" />
+
+                    <TextView
+                        android:id="@+id/boatmakeyear_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="xxxxxxxxxxxxxxxxxxxx"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/boatmakeyear_key"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <TextView
+                        android:id="@+id/boatmodel_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/verysmallpadding"
+                        android:text="@string/boatmodel"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/boatmodel_value"
+                        app:layout_constraintTop_toBottomOf="@+id/boatmakeyear_value" />
+
+                    <TextView
+                        android:id="@+id/boatmodel_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/boatmodel_key"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/boatmodel_key" />
+
+
+                    <TextView
+                        android:id="@+id/boatname_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/verysmallpadding"
+                        android:text="@string/boatname"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/boatname_value"
+                        app:layout_constraintTop_toBottomOf="@+id/boatmodel_value" />
+
+                    <TextView
+                        android:id="@+id/boatname_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/boatname_key"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/boatname_key" />
+
+                    <TextView
+                        android:id="@+id/hullid_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/verysmallpadding"
+                        android:text="@string/hullid"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/hullid_value"
+                        app:layout_constraintTop_toBottomOf="@+id/boatname_value" />
+
+                    <TextView
+                        android:id="@+id/hullid_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/hullid_key"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/hullid_key" />
+
+
+                    <TextView
+                        android:id="@+id/captname_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/verysmallpadding"
+                        android:text="@string/captname"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/captname_value"
+                        app:layout_constraintTop_toBottomOf="@+id/hullid_value" />
+
+                    <TextView
+                        android:id="@+id/captname_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/captname_key"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/captname_key" />
+
+
+                    <TextView
+                        android:id="@+id/promisedate_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/verysmallpadding"
+                        android:text="@string/promisedate"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/promisedate_value"
+                        app:layout_constraintTop_toBottomOf="@+id/captname_value" />
+
+                    <TextView
+                        android:id="@+id/promisedate_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/promisedate_key"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/promisedate_key" />
+
+                </android.support.constraint.ConstraintLayout>
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/black"
+                    app:layout_constraintLeft_toRightOf="@+id/leftcl"
+                    app:layout_constraintRight_toLeftOf="@+id/rightcl"></View>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/rightcl"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:paddingLeft="@dimen/smallpadding"
+
+                    android:paddingRight="@dimen/smallpadding"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/view"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/rep_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rep"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/rep_value" />
+
+                    <TextView
+                        android:id="@+id/rep_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="xxxxxxxxxxxxxxxxxxxx"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/rep_key"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+
+                    <TextView
+                        android:id="@+id/jobselection_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/verysmallpadding"
+                        android:text="@string/jobselection"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/jobselection_value"
+                        app:layout_constraintTop_toBottomOf="@+id/rep_value" />
+
+                    <TextView
+                        android:id="@+id/jobselection_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="T/M or Bid"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/jobselection_key"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/jobselection_key" />
+
+
+                    <TextView
+                        android:id="@+id/jobtype_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/verysmallpadding"
+                        android:text="@string/jobtype"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/jobtype_value"
+                        app:layout_constraintTop_toBottomOf="@+id/jobselection_value" />
+
+                    <TextView
+                        android:id="@+id/jobtype_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/serviceinstall"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/jobtype_key"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/jobtype_key" />
+
+                    <TextView
+                        android:id="@+id/ifbid_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/verysmallpadding"
+                        android:text="@string/ifbid"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/ifbid_value"
+                        app:layout_constraintTop_toBottomOf="@+id/jobtype_value" />
+
+                    <TextView
+                        android:id="@+id/ifbid_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="#hours quoted"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/ifbid_key"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/ifbid_key" />
+
+
+                    <TextView
+                        android:id="@+id/qcperson_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/verysmallpadding"
+                        android:text="@string/qcperson"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/qcperson_value"
+                        app:layout_constraintTop_toBottomOf="@+id/ifbid_value" />
+
+                    <TextView
+                        android:id="@+id/qcperson_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/qcperson_key"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/qcperson_key" />
+
+
+                    <TextView
+                        android:id="@+id/supervisor_key"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/verysmallpadding"
+                        android:text="@string/supervisor"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".44"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/supervisor_value"
+                        app:layout_constraintTop_toBottomOf="@+id/qcperson_value" />
+
+                    <TextView
+                        android:id="@+id/supervisor_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintHorizontal_weight=".56"
+                        app:layout_constraintLeft_toRightOf="@+id/supervisor_key"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/supervisor_key" />
+
+                </android.support.constraint.ConstraintLayout>
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/previouslabor_comment"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="@dimen/largetextsize"
+                android:background="@drawable/startstopjob_bg"
+                android:gravity="center"
+                android:padding="@dimen/smallpadding"
+                android:text="@string/previouslaborcmmnt"
+                android:textColor="@color/white"
+                android:textSize="@dimen/verysmalltextsize"
+                app:layout_constraintHorizontal_weight=".36"
+                android:layout_marginTop="@dimen/verysmalltextsize"
+                android:layout_marginBottom="@dimen/verysmalltextsize"
+                app:layout_constraintLeft_toRightOf="@+id/submit_comment"
+                app:layout_constraintRight_toRightOf="@+id/suppliedamount"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/verysmallpadding">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/verysmallpadding"
+                android:paddingLeft="@dimen/smallpadding"
+                android:paddingTop="@dimen/verysmallpadding"
+                android:text="@string/urgentmsg"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="italic|bold" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcyview_urgentmsg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/dashboardlinebg">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/textnotes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/verysmallpadding"
+                android:paddingLeft="@dimen/smallpadding"
+                android:paddingTop="@dimen/smallpadding"
+                android:text="@string/recordnotes_othertechs"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="italic|bold"
+                app:layout_constraintBottom_toTopOf="@+id/rcyview_notestechs"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <!--android:drawableRight="@drawable/plus"-->
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/addtechnotesicon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/plus"
+                android:padding="@dimen/verysmallpadding"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toTopOf="@+id/rcyview_notestechs"
+                app:layout_constraintRight_toRightOf="parent"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcyview_notestechs"
+                android:layout_width="0dp"
+                android:layout_height="140dp"
+                android:background="@drawable/dashboardlinebg"
+                app:layout_constraintBottom_toTopOf="@+id/startstopbtn"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textnotes"></android.support.v7.widget.RecyclerView>
+
+        </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+</layout>

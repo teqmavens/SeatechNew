@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/dashboardlinebg"
+        android:layout_margin="@dimen/smalltextsize"
+        android:padding="@dimen/mediumtextsize">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/toptext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/returnimmed"
+            android:textColor="@color/black"
+            android:textSize="@dimen/verysmalltextsize"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/checkboxyes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/smalltextsize"
+            app:layout_constraintTop_toBottomOf="@+id/toptext"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/checkboxno"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            android:button="@drawable/radiocheckbox"
+            android:paddingLeft="4dp"
+            android:text="@string/yes"
+            android:padding="@dimen/smallpadding"
+            android:textColor="@color/black"
+            android:textSize="@dimen/verysmalltextsize" />
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/checkboxno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/checkboxyes"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/checkboxyes"
+            android:button="@drawable/radiocheckbox"
+            android:paddingLeft="4dp"
+            android:text="@string/no"
+            android:padding="@dimen/smallpadding"
+            android:textColor="@color/black"
+            android:textSize="@dimen/verysmalltextsize" />
+
+    </android.support.constraint.ConstraintLayout>
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/cross"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/crosspopup" />
+
+</android.support.constraint.ConstraintLayout>

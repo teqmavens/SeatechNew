@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="popupneedestimate"
+            type="teq.development.seatech.JobDetail.NeedEstimateDialog"></variable>
+    </data>
+
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dashboardlinebg"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/smalltextsize"
+        android:padding="@dimen/smalltextsize">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/toptext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/needestimate"
+            android:textColor="@color/black"
+            android:textSize="@dimen/verysmalltextsize"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/checkboxyes" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="@dimen/smalltextsize"
+            android:background="@color/black"></View>
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/checkbox_needestimate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/verysmalltextsize"
+            android:gravity="center_vertical"
+            android:text="@string/needestimate"
+            android:padding="@dimen/smallpadding"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="@dimen/verysmalltextsize" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/largetextsize"
+            android:background="@drawable/bg_loginbtn"
+            android:padding="@dimen/verysmalltextsize"
+            android:text="@string/save"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/verysmalltextsize"
+            android:textStyle="bold"
+            android:onClick="@{()->popupneedestimate.onClickCross()}"
+            app:layout_constraintLeft_toLeftOf="@+id/et_username"
+            app:layout_constraintRight_toRightOf="@+id/et_username"
+            app:layout_constraintTop_toBottomOf="@+id/forgotpwd" />
+    </LinearLayout>
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/cross"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="@{()->popupneedestimate.onClickCross()}"
+        app:srcCompat="@drawable/crosspopup" />
+
+</RelativeLayout>
+</layout>

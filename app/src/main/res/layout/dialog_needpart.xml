@@ -1,0 +1,694 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="dialogneedpart"
+            type="teq.development.seatech.JobDetail.NeedPartDialog"></variable>
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@drawable/dashboardlinebg"
+                android:layout_margin="@dimen/smalltextsize"
+                android:paddingLeft="@dimen/largetextsize"
+                android:paddingRight="@dimen/largetextsize"
+                android:paddingTop="@dimen/largetextsize"
+                android:paddingBottom="@dimen/verysmalltextsize">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/needurgent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="@string/needurgent"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/checkbox_yesurgent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/checkbox_yesurgent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:button="@drawable/radiocheckbox"
+                    android:paddingLeft="@dimen/smallpadding"
+                    app:layout_constraintLeft_toRightOf="@+id/needurgent"
+                    app:layout_constraintRight_toLeftOf="@+id/checkbox_nourgent"
+                    app:layout_constraintTop_toTopOf="@+id/needurgent" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/checkbox_nourgent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no"
+                    android:button="@drawable/radiocheckbox"
+                    android:paddingLeft="@dimen/smallpadding"
+                    app:layout_constraintLeft_toRightOf="@+id/checkbox_yesurgent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/needurgent" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/partdesc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/smalltextsize"
+                    android:paddingTop="@dimen/smallpadding"
+                    android:text="@string/partdesc"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/checkbox_yesurgent"
+                    app:layout_constraintTop_toBottomOf="@+id/checkbox_yesurgent" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_supplyamount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/dashboardlinebg"
+                    android:gravity="top"
+                    android:padding="@dimen/smallpadding"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintLeft_toRightOf="@+id/partdesc"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/partdesc" />
+
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/howfast"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/largetextsize"
+                    android:text="@string/howfast"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/cbxneed_normal"
+                    app:layout_constraintTop_toBottomOf="@+id/et_supplyamount" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/cbxneed_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/normal"
+                    android:button="@drawable/radiocheckbox"
+                    android:paddingLeft="@dimen/smallpadding"
+                    app:layout_constraintLeft_toLeftOf="@+id/checkbox_yesurgent"
+                    app:layout_constraintTop_toTopOf="@+id/howfast" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/cbxneed_deadline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/deadline"
+                    android:button="@drawable/radiocheckbox"
+                    android:paddingLeft="@dimen/smallpadding"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/howfast" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/needtoapprove"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/largetextsize"
+                    android:text="@string/approveprice"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/cbxneed_normal"
+                    app:layout_constraintTop_toBottomOf="@+id/howfast" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/cbxappove_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:button="@drawable/radiocheckbox"
+                    android:paddingLeft="@dimen/smallpadding"
+                    app:layout_constraintLeft_toLeftOf="@+id/checkbox_yesurgent"
+                    app:layout_constraintTop_toTopOf="@+id/needtoapprove" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/cbxappove_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no"
+                    android:button="@drawable/radiocheckbox"
+                    android:paddingLeft="@dimen/smallpadding"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/needtoapprove" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/selectmanuf"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/largetextsize"
+                    android:paddingTop="@dimen/smallpadding"
+                    android:text="@string/selectmanuf"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/checkbox_yesurgent"
+                    app:layout_constraintTop_toBottomOf="@+id/needtoapprove" />
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/spinner_selectmanuf"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/dashboardlinebg"
+                    android:padding="@dimen/verysmalltextsize"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintLeft_toRightOf="@+id/selectmanuf"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/selectmanuf" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/smalltextsize"
+                    app:layout_constraintBottom_toBottomOf="@+id/spinner_selectmanuf"
+                    app:layout_constraintRight_toRightOf="@+id/spinner_selectmanuf"
+                    app:layout_constraintTop_toTopOf="@+id/spinner_selectmanuf"
+                    app:srcCompat="@drawable/ic_downarrow" />
+
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/techsupportno"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/largetextsize"
+                    android:paddingTop="@dimen/smallpadding"
+                    android:text="@string/techsupportno"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/checkbox_yesurgent"
+                    app:layout_constraintTop_toBottomOf="@+id/selectmanuf" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_techsupportno"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/dashboardlinebg"
+                    android:gravity="top"
+                    android:padding="@dimen/smallpadding"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintLeft_toRightOf="@+id/techsupportno"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/techsupportno" />
+
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/partno"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/largetextsize"
+                    android:paddingTop="@dimen/smallpadding"
+                    android:text="@string/partno"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/checkbox_yesurgent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_techsupportno" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_partno"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/dashboardlinebg"
+                    android:gravity="top"
+                    android:padding="@dimen/smallpadding"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintLeft_toRightOf="@+id/partno"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/partno" />
+
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/serialno"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/largetextsize"
+                    android:paddingTop="@dimen/smallpadding"
+                    android:text="@string/serialno"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/checkbox_yesurgent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_partno" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_serialno"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/dashboardlinebg"
+                    android:gravity="top"
+                    android:padding="@dimen/smallpadding"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintLeft_toRightOf="@+id/serialno"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/serialno" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/failuredesc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/largetextsize"
+                    android:paddingTop="@dimen/smallpadding"
+                    android:text="@string/failuredesc"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/checkbox_yesurgent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_serialno" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_failuredesc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/dashboardlinebg"
+                    android:gravity="top"
+                    android:padding="@dimen/smallpadding"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintLeft_toRightOf="@+id/failuredesc"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/failuredesc" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/techsupportname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/largetextsize"
+                    android:paddingTop="@dimen/smallpadding"
+                    android:text="@string/techsupportname"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/checkbox_yesurgent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_failuredesc" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_techsupportname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/dashboardlinebg"
+                    android:gravity="top"
+                    android:padding="@dimen/smallpadding"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintLeft_toRightOf="@+id/techsupportname"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/techsupportname" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/rmaorcase"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/largetextsize"
+                    android:paddingTop="@dimen/smallpadding"
+                    android:text="@string/rmaorcase"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/checkbox_yesurgent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_techsupportname" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_rmaorcase"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/dashboardlinebg"
+                    android:gravity="top"
+                    android:padding="@dimen/smallpadding"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintLeft_toRightOf="@+id/rmaorcase"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/rmaorcase" />
+
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/doesmanfdeem"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/largetextsize"
+                    android:text="@string/doesmanfdeem"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/cbxneed_normal"
+                    app:layout_constraintTop_toBottomOf="@+id/et_rmaorcase" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/cbxdoesmanfdeem_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:button="@drawable/radiocheckbox"
+                    android:paddingLeft="@dimen/smallpadding"
+                    app:layout_constraintLeft_toLeftOf="@+id/checkbox_yesurgent"
+                    app:layout_constraintTop_toTopOf="@+id/doesmanfdeem" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/cbxdoesmanfdeem_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no"
+                    android:button="@drawable/radiocheckbox"
+                    android:paddingLeft="@dimen/smallpadding"
+                    app:layout_constraintLeft_toRightOf="@+id/cbxdoesmanfdeem_yes"
+                    app:layout_constraintRight_toLeftOf="@+id/cbxdoesmanfdeem_maybe"
+                    app:layout_constraintTop_toTopOf="@+id/doesmanfdeem" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/cbxdoesmanfdeem_maybe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/maybe"
+                    android:button="@drawable/radiocheckbox"
+                    android:paddingLeft="@dimen/smallpadding"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/doesmanfdeem" />
+
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/advancerepl"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/largetextsize"
+                    android:text="@string/advancerepl"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/cbxadvancerepl_yes"
+                    app:layout_constraintTop_toBottomOf="@+id/doesmanfdeem" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/cbxadvancerepl_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:button="@drawable/radiocheckbox"
+                    android:paddingLeft="@dimen/smallpadding"
+                    app:layout_constraintLeft_toLeftOf="@+id/checkbox_yesurgent"
+                    app:layout_constraintTop_toTopOf="@+id/advancerepl" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/cbxadvancerepl_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no"
+                    android:button="@drawable/radiocheckbox"
+                    android:paddingLeft="@dimen/smallpadding"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/advancerepl" />
+
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/needloaner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/largetextsize"
+                    android:text="@string/needloaner"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/cbxneedloaner_yes"
+                    app:layout_constraintTop_toBottomOf="@+id/advancerepl" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/cbxneedloaner_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:button="@drawable/radiocheckbox"
+                    android:paddingLeft="@dimen/smallpadding"
+                    app:layout_constraintLeft_toLeftOf="@+id/checkbox_yesurgent"
+                    app:layout_constraintTop_toTopOf="@+id/needloaner" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/cbxneedloaner_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no"
+                    android:button="@drawable/radiocheckbox"
+                    android:paddingLeft="@dimen/smallpadding"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/needloaner" />
+
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/partsoldby_seatecch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/largetextsize"
+                    android:text="@string/partsoldby_seatecch"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/cbxneed_normal"
+                    app:layout_constraintTop_toBottomOf="@+id/needloaner" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/cbxpartsoldby_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:button="@drawable/radiocheckbox"
+                    android:paddingLeft="@dimen/smallpadding"
+                    app:layout_constraintLeft_toLeftOf="@+id/checkbox_yesurgent"
+                    app:layout_constraintTop_toTopOf="@+id/partsoldby_seatecch" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/cbxpartsoldby_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no"
+                    android:button="@drawable/radiocheckbox"
+                    android:paddingLeft="@dimen/smallpadding"
+                    app:layout_constraintLeft_toRightOf="@+id/cbxpartsoldby_yes"
+                    app:layout_constraintRight_toLeftOf="@+id/cbxpartsoldby_notsure"
+                    app:layout_constraintTop_toTopOf="@+id/partsoldby_seatecch" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/cbxpartsoldby_notsure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/notsure"
+                    android:button="@drawable/radiocheckbox"
+                    android:paddingLeft="@dimen/smallpadding"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/partsoldby_seatecch" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/needquote"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/largetextsize"
+                    android:text="@string/needquote"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/cbxneedquote_yes"
+                    app:layout_constraintTop_toBottomOf="@+id/partsoldby_seatecch" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/cbxneedquote_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:button="@drawable/radiocheckbox"
+                    android:paddingLeft="@dimen/smallpadding"
+                    app:layout_constraintLeft_toLeftOf="@+id/checkbox_yesurgent"
+                    app:layout_constraintTop_toTopOf="@+id/needquote" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/cbxneedquote_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no"
+                    android:button="@drawable/radiocheckbox"
+                    android:paddingLeft="@dimen/smallpadding"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/needquote" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/uploadimage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/largetextsize"
+                    android:text="@string/uploadimage"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/cbxneedquote_yes"
+                    app:layout_constraintTop_toBottomOf="@+id/needquote" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/uploadimageview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/verysmallpadding"
+                    app:layout_constraintLeft_toLeftOf="@+id/checkbox_yesurgent"
+                    app:layout_constraintTop_toTopOf="@+id/uploadimage"
+                    app:srcCompat="@drawable/uploadfile" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/additionalnotes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/largetextsize"
+                    android:text="@string/additionalnotes"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/cbxneedquote_yes"
+                    app:layout_constraintTop_toBottomOf="@+id/uploadimage" />
+
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_additnotes"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="@dimen/smallpadding"
+                    android:background="@drawable/dashboardlinebg"
+                    android:gravity="top"
+                    android:padding="@dimen/verysmalltextsize"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/additionalnotes" />
+
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/savebtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/smalltextsize"
+                    android:background="@drawable/bg_loginbtn"
+                    android:paddingLeft="@dimen/smallpadding"
+                    android:paddingRight="@dimen/smallpadding"
+                    android:text="@string/save"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/addmorepartsbtn"
+                    app:layout_constraintTop_toBottomOf="@+id/et_additnotes" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/addmorepartsbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_loginbtn"
+                    android:paddingLeft="@dimen/smallpadding"
+                    android:paddingRight="@dimen/smallpadding"
+                    android:text="@string/addmorepart"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintLeft_toRightOf="@+id/savebtn"
+                    app:layout_constraintRight_toLeftOf="@+id/cancelbtn"
+                    app:layout_constraintTop_toTopOf="@+id/savebtn" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/cancelbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_loginbtn"
+                    android:paddingLeft="@dimen/smallpadding"
+                    android:paddingRight="@dimen/smallpadding"
+                    android:text="@string/cancel"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:onClick="@{()->dialogneedpart.OnClickCancel()}"
+                    app:layout_constraintLeft_toRightOf="@+id/addmorepartsbtn"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/savebtn" />
+
+
+            </android.support.constraint.ConstraintLayout>
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/cross"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/crosspopup"
+                    android:onClick="@{()->dialogneedpart.onClickCross()}"/>
+            </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
+</layout>

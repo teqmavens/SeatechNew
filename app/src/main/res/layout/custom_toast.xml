@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/toastbg">
+
+        <TextView
+            android:id="@+id/txtMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:typeface="sans"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/smalltextsize"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/smalltextsize" />
+    </RelativeLayout>
+</RelativeLayout>

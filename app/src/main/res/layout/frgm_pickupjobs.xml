@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="frgmpickupjobs"
+            type="teq.development.seatech.Dashboard.PickUpJobsFragment"></variable>
+    </data>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/smalltextsize">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/smallpadding"
+            android:paddingBottom="@dimen/smallpadding">
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/verysmallpadding"
+                android:paddingLeft="@dimen/smallpadding"
+                android:paddingTop="@dimen/verysmallpadding"
+                android:text="@string/pickupjobs"
+                android:textColor="@color/black"
+                android:textSize="@dimen/smalltextsize"
+                android:textStyle="italic|bold" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_search"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:maxHeight="30dp"
+                android:layout_centerHorizontal="true"
+                android:paddingTop="@dimen/verysmallpadding"
+                android:paddingBottom="@dimen/verysmallpadding"
+                android:paddingRight="@dimen/verysmallpadding"
+                android:paddingLeft="@dimen/verysmalltextsize"
+                android:background="@drawable/etloginbg"
+                android:hint="@string/search"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textColor="@color/black"
+                android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+
+        <!--<android.support.v7.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/verysmallpadding"
+            android:paddingLeft="@dimen/smallpadding"
+            android:paddingTop="@dimen/verysmallpadding"
+            android:text="@string/pickupjobs"
+            android:textColor="@color/black"
+            android:textSize="@dimen/verysmalltextsize"
+            android:textStyle="italic|bold" />-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/dashboardlinebg"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llpickup_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/smallpadding"
+                android:background="@drawable/dashboardlinepickup"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".2"
+                    android:gravity="center"
+                    android:text="@string/customername"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".2"
+                    android:gravity="center"
+                    android:text="@string/jobticketno"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".2"
+                    android:gravity="center"
+                    android:text="@string/customertype"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".2"
+                    android:gravity="center"
+                    android:text="@string/region"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".2"
+                    android:gravity="center"
+                    android:text="@string/action"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black">
+            </View>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcyview_pickupjobs"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+</LinearLayout>
+</layout>
