@@ -12,24 +12,26 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/lightgray"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".35"
-            android:orientation="vertical">
+            android:layout_weight=".36"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/smallpadding"
+            android:paddingRight="@dimen/smallpadding">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/verysmallpadding"
                 android:paddingLeft="@dimen/smallpadding"
                 android:paddingRight="@dimen/smallpadding"
                 android:paddingTop="@dimen/verysmallpadding">
 
-                <android.support.v7.widget.AppCompatTextView
+                <!--<android.support.v7.widget.AppCompatTextView
                     android:id="@+id/jobsforyou"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -37,15 +39,14 @@
                     android:text="@string/jobsforyou"
                     android:textColor="@color/black"
                     android:textSize="@dimen/verysmalltextsize"
-                    android:textStyle="italic|bold" />
+                    android:textStyle="italic|bold" />-->
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/currentdate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/smalltextsize"
-                    android:layout_toRightOf="@+id/jobsforyou"
+                    android:layout_marginLeft="@dimen/verysmallpadding"
                     android:text="(09-08-2018)"
                     android:textColor="@color/black"
                     android:textSize="@dimen/verysmalltextsize" />
@@ -61,7 +62,6 @@
                     android:text="@string/previousdate"
                     android:textColor="@color/black"
                     android:textSize="@dimen/verysmalltextsize" />
-
                 <!--android:drawableRight="@drawable/leftarrow"-->
 
                 <android.support.v7.widget.AppCompatTextView
@@ -106,6 +106,56 @@
 
             </RelativeLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/appbasiccolor"></View>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:paddingLeft="@dimen/verysmallpadding"
+                android:paddingTop="@dimen/smallpadding"
+                android:text="@string/urgentmsg"
+                android:textColor="@color/appbasiccolor"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="italic|bold" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardElevation="@dimen/verysmallpadding"
+                app:cardCornerRadius="4dp">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rcyview_urgentmsg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </android.support.v7.widget.RecyclerView>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".37"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/verysmallpadding"
+                android:paddingLeft="@dimen/verysmalltextsize"
+                android:paddingTop="@dimen/smallpadding"
+                android:text="@string/jobsforyou"
+                android:textColor="@color/appbasiccolor"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="italic|bold" />
+
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -115,7 +165,7 @@
                     android:id="@+id/view1"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:background="@color/black"
+                    android:background="@color/white"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"></View>
 
@@ -123,7 +173,7 @@
                     android:id="@+id/llheader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#9FC5F8"
+                    android:background="@color/appbasiccolor"
                     android:orientation="horizontal"
                     android:paddingBottom="@dimen/verysmallpadding"
                     android:paddingLeft="2dp"
@@ -137,7 +187,7 @@
                         android:layout_weight=".11"
                         android:gravity="center"
                         android:text="@string/customername"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/verysmalltextsize" />
 
                     <android.support.v7.widget.AppCompatTextView
@@ -146,7 +196,7 @@
                         android:layout_weight=".11"
                         android:gravity="center"
                         android:text="@string/jobticketno"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/verysmalltextsize" />
 
                     <android.support.v7.widget.AppCompatTextView
@@ -154,8 +204,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight=".11"
                         android:gravity="center"
-                        android:text="@string/jobtype"
-                        android:textColor="@color/black"
+                        android:text="@string/jobtypedash"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/verysmalltextsize" />
 
                     <android.support.v7.widget.AppCompatTextView
@@ -164,7 +214,7 @@
                         android:layout_weight=".11"
                         android:gravity="center"
                         android:text="@string/boatlocation"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/verysmalltextsize" />
 
                     <android.support.v7.widget.AppCompatTextView
@@ -174,7 +224,7 @@
                         android:gravity="center"
                         android:text="@string/time"
 
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/verysmalltextsize" />
 
                     <android.support.v7.widget.AppCompatTextView
@@ -184,7 +234,7 @@
                         android:gravity="center"
                         android:text="@string/techsupervisor"
 
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/verysmalltextsize" />
 
                     <android.support.v7.widget.AppCompatTextView
@@ -194,7 +244,7 @@
                         android:gravity="center"
                         android:text="@string/othermem"
 
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/verysmalltextsize" />
 
                     <android.support.v7.widget.AppCompatTextView
@@ -203,8 +253,7 @@
                         android:layout_weight=".11"
                         android:gravity="center"
                         android:text="@string/partlocation"
-
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/verysmalltextsize" />
 
                     <android.support.v7.widget.AppCompatTextView
@@ -213,8 +262,7 @@
                         android:layout_weight=".11"
                         android:gravity="center"
                         android:text="@string/techdashnotes"
-
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/verysmalltextsize" />
                 </LinearLayout>
 
@@ -222,7 +270,7 @@
                     android:id="@+id/view2"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:background="@color/black"
+                    android:background="@color/white"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llheader"></View>
@@ -256,39 +304,10 @@
             android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".31" />
+            android:layout_weight=".3" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".33"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/smallpadding"
-            android:paddingRight="@dimen/smallpadding">
 
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/verysmallpadding"
-                android:paddingLeft="@dimen/verysmallpadding"
-                android:paddingTop="@dimen/smallpadding"
-                android:text="@string/urgentmsg"
-                android:textColor="@color/black"
-                android:textSize="@dimen/verysmalltextsize"
-                android:textStyle="italic|bold" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rcyview_urgentmsg"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/dashboardlinebg"></android.support.v7.widget.RecyclerView>
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".01"></View>
 
         <!--<LinearLayout
             android:layout_width="match_parent"

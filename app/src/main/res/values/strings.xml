@@ -33,6 +33,7 @@
     <string name="customername">Customer Name</string>
     <string name="jobticketno">Job Ticket No.</string>
     <string name="jobtype">Job Type:</string>
+    <string name="jobtypedash">Job Type</string>
     <string name="boatlocation">Boat Location</string>
     <string name="time">Time</string>
     <string name="techsupervisor">Tech Supervisor</string>
@@ -55,7 +56,7 @@
     <string name="techlaborperform">Tech Labor Performed:</string>
     <string name="enterdesription">Enter Description....</string>
     <string name="previouslaborcmmnt">View Previous Labor Performed Comments</string>
-    <string name="recordnotes_othertechs">Off the record notes to other techs</string>
+    <string name="recordnotes_othertechs"><u>Last Off the record note entered for this job:</u></string>
     <string name="needpart">Need Parts</string>
     <string name="needestimate">Need Estimate</string>
     <string name="changeorder">Need Change Order</string>
@@ -129,6 +130,10 @@
     <string name="descriptionnew">Description...</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="dashboard_notes"><u>Dashboard Notes</u></string>
+    <string name="submitlabor_perform">Submit My Labor Performed for this job</string>
+    <string name="addnew_offrecordnote">Add a new Off the record notes for this job</string>
+    <string name="valuesupplies">Value of supplies used for this job:</string>
     <string-array name="laborcode_array">
         <item>TRAVEL TIME</item>
         <item>SERVICE TIME</item>

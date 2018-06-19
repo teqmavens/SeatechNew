@@ -5,6 +5,8 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -23,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import teq.development.seatech.Dashboard.Adapter.AdapterDashbrdUrgentMsg;
@@ -37,6 +40,13 @@ public class JobDetailFragment extends Fragment {
     private Context context;
     private AdapterDashbrdUrgentMsgDetail adapterurgentmsg;
     FrgmJobdetailBinding binding;
+    private long startTime = 0L;
+
+    private Handler customHandler = new Handler();
+    long timeInMilliseconds = 0L;
+    long timeSwapBuff = 0L;
+    long updatedTime = 0L;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,8 +70,9 @@ public class JobDetailFragment extends Fragment {
         lLManagerUrgentJobs.setOrientation(LinearLayoutManager.VERTICAL);
         binding.rcyviewUrgentmsg.setLayoutManager(lLManagerUrgentJobs);
         adapterurgentmsg = new AdapterDashbrdUrgentMsgDetail(context);
+        binding.rcyviewUrgentmsg.setNestedScrollingEnabled(false);
         binding.rcyviewUrgentmsg.setAdapter(adapterurgentmsg);
-      //  binding.textnotes.setCompoundDrawablesWithIntrinsicBounds(null, null, AppCompatResources.getDrawable(context,R.drawable.plus), null);
+        //  binding.textnotes.setCompoundDrawablesWithIntrinsicBounds(null, null, AppCompatResources.getDrawable(context,R.drawable.plus), null);
 
         List<String> list = new ArrayList<String>();
         list.add("Job1");
@@ -73,27 +84,88 @@ public class JobDetailFragment extends Fragment {
         binding.jobspinner.setAdapter(dataAdapter);
         binding.jobspinner.setOnItemSelectedListener(new JobItemSelectedListener());
 
-        ArrayAdapter<CharSequence> lcAdapter =  ArrayAdapter.createFromResource(getActivity(),R.array.laborcode_array,
+        ArrayAdapter<CharSequence> lcAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.laborcode_array,
                 android.R.layout.simple_spinner_item);
         lcAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerLc.setAdapter(lcAdapter);
+        binding.spinnerLc.setOnItemSelectedListener(new LCItemSelectedListener());
+        updateTimeSpinner();
+    }
 
+    private void updateTimeSpinner() {
+        getplusminus(getNear15Minute());
+    }
+
+    public static int getNear15Minute() {
+        Calendar calendar = Calendar.getInstance();
+        int minutes = calendar.get(Calendar.MINUTE);
+        int mod = minutes % 15;
+        int res = 0;
+        if ((mod) >= 8) {
+            res = minutes + (15 - mod);
+        } else {
+            res = minutes - mod;
+        }
+        return (res % 60);
+    }
+
+    public void getplusminus(int n) {
         List<String> listtime = new ArrayList<String>();
-        listtime.add("01:45");
-        listtime.add("02:00");
-        listtime.add("02:15");
-        listtime.add("02:30");
-        listtime.add("02:45");
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.MINUTE, n);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.add(Calendar.MINUTE, -15);
+        //  Toast.makeText(activity, calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE), Toast.LENGTH_SHORT).show();
+        listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+
+        calendar.add(Calendar.MINUTE, 15);
+        //  Toast.makeText(activity, calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE), Toast.LENGTH_SHORT).show();
+        listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+
+        calendar.add(Calendar.MINUTE, 15);
+        // Toast.makeText(activity, calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE), Toast.LENGTH_SHORT).show();
+        listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
         ArrayAdapter<String> dataAdaptertime = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_item, listtime);
         dataAdaptertime.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.timespinner.setAdapter(dataAdaptertime);
+
+
     }
 
-    public class JobItemSelectedListener implements AdapterView.OnItemSelectedListener{
+    private Runnable updateTimerThread = new Runnable() {
+
+        public void run() {
+            timeInMilliseconds = SystemClock.uptimeMillis() - startTime;
+            updatedTime = timeSwapBuff + timeInMilliseconds;
+            int secs = (int) (updatedTime / 1000);
+            int mins = secs / 60;
+            secs = secs % 60;
+            int hrs = mins / 60;
+            //int milliseconds = (int) (updatedTime % 1000);
+          /*  binding.uploadimage.setText("" + mins + ":"
+
+                    + String.format("%02d", secs) + ":"
+
+                    + String.format("%03d", updatedTime));*/
+            binding.uploadimage.setText(hrs + ":" + mins + ":" + String.format("%02d", secs));
+            customHandler.postDelayed(this, 0);
+        }
+    };
+
+    private String manageMinutes(int min) {
+        if (min == 0) {
+            return "00";
+        } else {
+            return String.valueOf(min);
+        }
+    }
+
+    public class JobItemSelectedListener implements AdapterView.OnItemSelectedListener {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-          //  Toast.makeText(activity, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(activity, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -101,19 +173,40 @@ public class JobDetailFragment extends Fragment {
         }
     }
 
-    public void onClickJobChange(){
+    public class LCItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            Toast.makeText(activity, "lcsleect", Toast.LENGTH_SHORT).show();
+            customHandler.removeCallbacks(updateTimerThread);
+
+            customHandler = new Handler();
+            startTime = 0L;
+            timeInMilliseconds = 0L;
+            timeSwapBuff = 0L;
+            updatedTime = 0L;
+
+            startTime = SystemClock.uptimeMillis();
+            customHandler.postDelayed(updateTimerThread, 1000);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
+    }
+
+    public void onClickJobChange() {
         showDialog();
     }
 
-    public void onClickNeedPart(){
+    public void onClickNeedPart() {
         showDialogNeedPart();
     }
 
-    public void onClickNeedEstimate(View v){
+    public void onClickNeedEstimate(View v) {
         dialogNeedEstimate(v);
     }
 
-    public void onClickNeedChangeOrder(View v){
+    public void onClickNeedChangeOrder(View v) {
         dialogNeedChangeOrder();
     }
 
@@ -121,7 +214,7 @@ public class JobDetailFragment extends Fragment {
         dialogViewComment();
     }
 
-    public void OnClickAddTech(){
+    public void OnClickAddTech() {
         dialogAddTechNotes();
     }
 
@@ -213,7 +306,9 @@ public class JobDetailFragment extends Fragment {
         newFragment.show(ft, "addtech");
     }
 
-    public void OnClicksubmit(){
+
+    public void OnClicksubmit() {
         binding.etLaborperform.setText("");
     }
+
 }

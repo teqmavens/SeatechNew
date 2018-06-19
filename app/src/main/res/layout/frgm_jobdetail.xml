@@ -3,12 +3,787 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="frgmjobdetail"
             type="teq.development.seatech.JobDetail.JobDetailFragment"></variable>
     </data>
 
-    <LinearLayout
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/lightgray"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/verysmallpadding"
+            android:paddingBottom="@dimen/smallpadding"
+            android:paddingLeft="@dimen/verysmalltextsize"
+            android:paddingRight="@dimen/verysmalltextsize">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/verysmallpadding"
+                android:paddingTop="@dimen/verysmallpadding">
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/jobspinner"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/dashboardlinepickup"
+                    android:paddingLeft="@dimen/smalltextsize"
+                    app:layout_constraintHorizontal_weight=".40"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/spinner_lc">
+
+                </android.support.v7.widget.AppCompatSpinner>
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/smalltextsize"
+                    app:layout_constraintBottom_toBottomOf="@+id/jobspinner"
+                    app:layout_constraintRight_toRightOf="@+id/jobspinner"
+                    app:layout_constraintTop_toTopOf="@+id/jobspinner"
+                    app:srcCompat="@drawable/ic_downarrow" />
+
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/spinner_lc"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_marginLeft="@dimen/largetextsize"
+                    android:background="@drawable/dashboardlinepickup"
+                    app:layout_constraintHorizontal_weight=".26"
+                    app:layout_constraintLeft_toRightOf="@+id/jobspinner"
+                    app:layout_constraintRight_toLeftOf="@+id/timespinner"></android.support.v7.widget.AppCompatSpinner>
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/smalltextsize"
+                    app:layout_constraintBottom_toBottomOf="@+id/spinner_lc"
+                    app:layout_constraintRight_toRightOf="@+id/spinner_lc"
+                    app:layout_constraintTop_toTopOf="@+id/spinner_lc"
+                    app:srcCompat="@drawable/ic_downarrow" />
+
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/timespinner"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_marginLeft="@dimen/smalltextsize"
+                    android:background="@drawable/dashboardlinepickup"
+                    app:layout_constraintHorizontal_weight=".16"
+                    app:layout_constraintLeft_toRightOf="@+id/spinner_lc"
+                    app:layout_constraintRight_toLeftOf="@+id/uploadimage"></android.support.v7.widget.AppCompatSpinner>
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/smalltextsize"
+                    app:layout_constraintBottom_toBottomOf="@+id/timespinner"
+                    app:layout_constraintRight_toRightOf="@+id/timespinner"
+                    app:layout_constraintTop_toTopOf="@+id/timespinner"
+                    app:srcCompat="@drawable/ic_downarrow" />
+
+                <TextView
+                    android:id="@+id/uploadimage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/smalltextsize"
+                    android:background="@drawable/bg_loginbtn"
+                    android:gravity="center"
+                    android:onClick="@{()->frgmjobdetail.OnClickUpload()}"
+                    android:padding="@dimen/smallpadding"
+                    android:text="@string/uploadimage"
+                    android:textColor="@color/white"
+                    app:layout_constraintHorizontal_weight=".18"
+                    app:layout_constraintLeft_toRightOf="@+id/timespinner"
+                    app:layout_constraintRight_toRightOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/smallpadding"
+                android:paddingTop="@dimen/verysmallpadding"
+                android:text="@string/urgentmsg"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="italic|bold" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/verysmallpadding"
+                app:cardElevation="@dimen/verysmallpadding">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rcyview_urgentmsg"
+                    android:layout_width="match_parent"
+                    android:layout_height="156dp">
+
+                </android.support.v7.widget.RecyclerView>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/smallpadding"
+                android:paddingTop="@dimen/verysmallpadding"
+                android:text="@string/dashboard_notes"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="italic|bold" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/verysmallpadding"
+                app:cardElevation="@dimen/verysmallpadding">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rcyview_dashbrdnotes"
+                    android:layout_width="match_parent"
+                    android:layout_height="156dp">
+
+                </android.support.v7.widget.RecyclerView>
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/textnotes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/smallpadding"
+                android:paddingTop="@dimen/smallpadding"
+                android:text="@string/recordnotes_othertechs"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="italic|bold" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/verysmallpadding"
+                app:cardElevation="@dimen/verysmallpadding">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rcyview_notestechs"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp">
+
+                </android.support.v7.widget.RecyclerView>
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/verysmallpadding"
+                android:layout_marginBottom="@dimen/smallpadding"
+                app:cardCornerRadius="@dimen/verysmallpadding"
+                app:cardElevation="@dimen/verysmallpadding">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/verysmallpadding"
+                    android:orientation="horizontal">
+
+
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/leftcl"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:paddingLeft="@dimen/smallpadding"
+                        android:paddingRight="@dimen/smallpadding"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/view"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/boatmakeyear_key"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/boatmakeyear"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".44"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@+id/boatmakeyear_value" />
+
+                        <TextView
+                            android:id="@+id/boatmakeyear_value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="xxxxxxxxxxxxxxxxxxxx"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".56"
+                            app:layout_constraintLeft_toRightOf="@+id/boatmakeyear_key"
+                            app:layout_constraintRight_toRightOf="parent" />
+
+                        <TextView
+                            android:id="@+id/boatmodel_key"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/verysmallpadding"
+                            android:text="@string/boatmodel"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".44"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@+id/boatmodel_value"
+                            app:layout_constraintTop_toBottomOf="@+id/boatmakeyear_value" />
+
+                        <TextView
+                            android:id="@+id/boatmodel_value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".56"
+                            app:layout_constraintLeft_toRightOf="@+id/boatmodel_key"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/boatmodel_key" />
+
+
+                        <TextView
+                            android:id="@+id/boatname_key"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/verysmallpadding"
+                            android:text="@string/boatname"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".44"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@+id/boatname_value"
+                            app:layout_constraintTop_toBottomOf="@+id/boatmodel_value" />
+
+                        <TextView
+                            android:id="@+id/boatname_value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".56"
+                            app:layout_constraintLeft_toRightOf="@+id/boatname_key"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/boatname_key" />
+
+                        <TextView
+                            android:id="@+id/hullid_key"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/verysmallpadding"
+                            android:text="@string/hullid"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".44"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@+id/hullid_value"
+                            app:layout_constraintTop_toBottomOf="@+id/boatname_value" />
+
+                        <TextView
+                            android:id="@+id/hullid_value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".56"
+                            app:layout_constraintLeft_toRightOf="@+id/hullid_key"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/hullid_key" />
+
+
+                        <TextView
+                            android:id="@+id/captname_key"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/verysmallpadding"
+                            android:text="@string/captname"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".44"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@+id/captname_value"
+                            app:layout_constraintTop_toBottomOf="@+id/hullid_value" />
+
+                        <TextView
+                            android:id="@+id/captname_value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".56"
+                            app:layout_constraintLeft_toRightOf="@+id/captname_key"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/captname_key" />
+
+
+                        <TextView
+                            android:id="@+id/promisedate_key"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/verysmallpadding"
+                            android:text="@string/promisedate"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".44"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@+id/promisedate_value"
+                            app:layout_constraintTop_toBottomOf="@+id/captname_value" />
+
+                        <TextView
+                            android:id="@+id/promisedate_value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".56"
+                            app:layout_constraintLeft_toRightOf="@+id/promisedate_key"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/promisedate_key" />
+
+                    </android.support.constraint.ConstraintLayout>
+
+                    <View
+                        android:id="@+id/view"
+                        android:layout_width="1dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:background="@color/black"
+                        app:layout_constraintLeft_toRightOf="@+id/leftcl"
+                        app:layout_constraintRight_toLeftOf="@+id/rightcl"></View>
+
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/rightcl"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:paddingLeft="@dimen/largetextsize"
+
+                        android:paddingRight="@dimen/smallpadding"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@+id/view"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/rep_key"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/rep"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".44"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@+id/rep_value" />
+
+                        <TextView
+                            android:id="@+id/rep_value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="xxxxxxxxxxxxxxxxxxxx"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".56"
+                            app:layout_constraintLeft_toRightOf="@+id/rep_key"
+                            app:layout_constraintRight_toRightOf="parent" />
+
+
+                        <TextView
+                            android:id="@+id/jobselection_key"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/verysmallpadding"
+                            android:text="@string/jobselection"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".44"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@+id/jobselection_value"
+                            app:layout_constraintTop_toBottomOf="@+id/rep_value" />
+
+                        <TextView
+                            android:id="@+id/jobselection_value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="T/M or Bid"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".56"
+                            app:layout_constraintLeft_toRightOf="@+id/jobselection_key"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/jobselection_key" />
+
+
+                        <TextView
+                            android:id="@+id/jobtype_key"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/verysmallpadding"
+                            android:text="@string/jobtype"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".44"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@+id/jobtype_value"
+                            app:layout_constraintTop_toBottomOf="@+id/jobselection_value" />
+
+                        <TextView
+                            android:id="@+id/jobtype_value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/serviceinstall"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".56"
+                            app:layout_constraintLeft_toRightOf="@+id/jobtype_key"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/jobtype_key" />
+
+                        <TextView
+                            android:id="@+id/ifbid_key"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/verysmallpadding"
+                            android:text="@string/ifbid"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".44"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@+id/ifbid_value"
+                            app:layout_constraintTop_toBottomOf="@+id/jobtype_value" />
+
+                        <TextView
+                            android:id="@+id/ifbid_value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="#hours quoted"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".56"
+                            app:layout_constraintLeft_toRightOf="@+id/ifbid_key"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/ifbid_key" />
+
+
+                        <TextView
+                            android:id="@+id/qcperson_key"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/verysmallpadding"
+                            android:text="@string/qcperson"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".44"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@+id/qcperson_value"
+                            app:layout_constraintTop_toBottomOf="@+id/ifbid_value" />
+
+                        <TextView
+                            android:id="@+id/qcperson_value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".56"
+                            app:layout_constraintLeft_toRightOf="@+id/qcperson_key"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/qcperson_key" />
+
+
+                        <TextView
+                            android:id="@+id/supervisor_key"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/verysmallpadding"
+                            android:text="@string/supervisor"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".44"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@+id/supervisor_value"
+                            app:layout_constraintTop_toBottomOf="@+id/qcperson_value" />
+
+                        <TextView
+                            android:id="@+id/supervisor_value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="xxxxxxxxxxxxxxxxxxxxxx"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize"
+                            app:layout_constraintHorizontal_weight=".56"
+                            app:layout_constraintLeft_toRightOf="@+id/supervisor_key"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/supervisor_key" />
+
+                    </android.support.constraint.ConstraintLayout>
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/smallpadding">
+
+                <TextView
+                    android:id="@+id/techLaborperform"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/smallpadding"
+                    android:gravity="left"
+                    android:text="@string/techlaborperform"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_laborperform"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/verysmallpadding"
+                    android:background="@drawable/dashboardlinebg"
+                    android:gravity="top"
+                    android:hint="@string/enterdesription"
+                    android:paddingBottom="@dimen/toolbarheight"
+                    android:paddingLeft="@dimen/smallpadding"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintBottom_toTopOf="@+id/submitlabor_performbtn"
+                    app:layout_constraintHorizontal_weight=".68"
+                    app:layout_constraintLeft_toLeftOf="@+id/techLaborperform"
+                    app:layout_constraintRight_toLeftOf="@+id/llsupplies"
+                    app:layout_constraintTop_toBottomOf="@+id/techLaborperform" />
+
+                <LinearLayout
+                    android:id="@+id/llsupplies"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/et_laborperform"
+                    app:layout_constraintHorizontal_weight=".32"
+                    app:layout_constraintLeft_toRightOf="@+id/et_laborperform"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/valuesupplies"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="@dimen/mediumtextsize"
+                        android:paddingLeft="@dimen/smallpadding"
+                        android:layout_marginTop="@dimen/smallpadding"
+                        android:text="@string/valuesupplies"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/et_valuesupplies"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/dashboardlinebg"
+                        android:layout_marginLeft="@dimen/verysmallpadding"
+                        android:layout_marginRight="@dimen/verysmallpadding"
+                        android:text="$45"
+                        android:padding="@dimen/smallpadding"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black"
+                        android:textSize="@dimen/verysmalltextsize" />
+
+                </LinearLayout>
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/submitlabor_performbtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/largetextsize"
+                    android:layout_marginRight="@dimen/largetextsize"
+                    android:layout_marginTop="@dimen/smallpadding"
+                    android:background="@drawable/jobdetailbtnbg"
+                    android:padding="@dimen/verysmallpadding"
+                    android:text="@string/submitlabor_perform"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintHorizontal_weight=".25"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/previouslabor_comment"
+                    app:layout_constraintTop_toBottomOf="@+id/et_laborperform" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/previouslabor_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/largetextsize"
+                    android:layout_marginRight="@dimen/largetextsize"
+                    android:background="@drawable/jobdetailbtnbg"
+                    android:onClick="@{()->frgmjobdetail.OnClickViewComment()}"
+                    android:padding="@dimen/verysmallpadding"
+                    android:text="@string/previouslaborcmmnt"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintHorizontal_weight=".25"
+                    app:layout_constraintLeft_toRightOf="@+id/submitlabor_performbtn"
+                    app:layout_constraintRight_toLeftOf="@+id/addnew_offrecordnote"
+                    app:layout_constraintTop_toTopOf="@+id/submitlabor_performbtn" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/addnew_offrecordnote"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/largetextsize"
+                    android:layout_marginRight="@dimen/largetextsize"
+                    android:background="@drawable/jobdetailbtnbg"
+                    android:onClick="@{()->frgmjobdetail.OnClickAddTech()}"
+                    android:padding="@dimen/verysmallpadding"
+                    android:text="@string/addnew_offrecordnote"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintHorizontal_weight=".25"
+                    app:layout_constraintLeft_toRightOf="@+id/previouslabor_comment"
+                    app:layout_constraintRight_toLeftOf="@+id/view_offrecordnote"
+                    app:layout_constraintTop_toTopOf="@+id/submitlabor_performbtn" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/view_offrecordnote"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/largetextsize"
+                    android:layout_marginRight="@dimen/largetextsize"
+                    android:background="@drawable/jobdetailbtnbg"
+                    android:padding="@dimen/verysmallpadding"
+                    android:text="@string/addnew_offrecordnote"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintHorizontal_weight=".25"
+                    app:layout_constraintLeft_toRightOf="@+id/addnew_offrecordnote"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/submitlabor_performbtn" />
+
+
+                <!-- <android.support.v7.widget.AppCompatTextView
+                     android:id="@+id/previouslabor_comment"
+                     android:layout_width="0dp"
+                     android:layout_height="36dp"
+                     android:layout_marginLeft="@dimen/largetextsize"
+                     android:background="@drawable/startstopjob_bg"
+                     android:gravity="center"
+                     android:onClick="@{()->frgmjobdetail.OnClickViewComment()}"
+                     android:padding="@dimen/smallpadding"
+                     android:text="@string/previouslaborcmmnt"
+                     android:textColor="@color/white"
+                     android:textSize="@dimen/verysmalltextsize"
+                     app:layout_constraintHorizontal_weight=".36"
+                     app:layout_constraintLeft_toRightOf="@+id/submit_comment"
+                     app:layout_constraintRight_toRightOf="@+id/suppliedamount"
+                     app:layout_constraintTop_toBottomOf="@+id/techLaborperform" />-->
+
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/startstopbtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/largetextsize"
+                    android:layout_marginRight="@dimen/largetextsize"
+                    android:layout_marginTop="@dimen/smallpadding"
+                    android:background="@drawable/jobdetailbtnbg"
+                    android:onClick="@{()->frgmjobdetail.onClickJobChange()}"
+                    android:padding="@dimen/verysmallpadding"
+                    android:text="@string/startstop_time"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintHorizontal_weight=".25"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/needpartbtn"
+                    app:layout_constraintTop_toBottomOf="@+id/submitlabor_performbtn" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/needpartbtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/largetextsize"
+                    android:layout_marginRight="@dimen/largetextsize"
+                    android:background="@drawable/jobdetailbtnbg"
+                    android:onClick="@{()->frgmjobdetail.onClickNeedPart()}"
+                    android:padding="@dimen/verysmallpadding"
+                    android:text="@string/needpart"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintHorizontal_weight=".25"
+                    app:layout_constraintLeft_toRightOf="@+id/startstopbtn"
+                    app:layout_constraintRight_toLeftOf="@+id/needestimatebtn"
+                    app:layout_constraintTop_toTopOf="@+id/startstopbtn" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/needestimatebtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/largetextsize"
+                    android:layout_marginRight="@dimen/largetextsize"
+                    android:background="@drawable/jobdetailbtnbg"
+                    android:onClick="@{(v)->frgmjobdetail.onClickNeedEstimate(v)}"
+                    android:padding="@dimen/verysmallpadding"
+                    android:text="@string/needestimate"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintHorizontal_weight=".25"
+                    app:layout_constraintLeft_toRightOf="@+id/needpartbtn"
+                    app:layout_constraintRight_toLeftOf="@+id/changeorderbtn"
+                    app:layout_constraintTop_toTopOf="@+id/startstopbtn" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/changeorderbtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/largetextsize"
+                    android:layout_marginRight="@dimen/largetextsize"
+                    android:background="@drawable/jobdetailbtnbg"
+                    android:onClick="@{(v)->frgmjobdetail.onClickNeedChangeOrder(v)}"
+                    android:padding="@dimen/verysmallpadding"
+                    android:text="@string/changeorder"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintHorizontal_weight=".25"
+                    app:layout_constraintLeft_toRightOf="@+id/needestimatebtn"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/startstopbtn" />
+            </android.support.constraint.ConstraintLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
@@ -608,7 +1383,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-            <!--android:drawableRight="@drawable/plus"-->
+            &lt;!&ndash;android:drawableRight="@drawable/plus"&ndash;&gt;
 
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/addtechnotesicon"
@@ -705,5 +1480,5 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/startstopbtn" />
         </android.support.constraint.ConstraintLayout>
-    </LinearLayout>
+    </LinearLayout>-->
 </layout>

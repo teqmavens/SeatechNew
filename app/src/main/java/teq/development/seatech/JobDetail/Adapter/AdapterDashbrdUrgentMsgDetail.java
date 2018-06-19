@@ -17,7 +17,6 @@ public class AdapterDashbrdUrgentMsgDetail extends RecyclerView.Adapter<AdapterD
 
     public AdapterDashbrdUrgentMsgDetail(Context context) {
         this.context = context;
-
     }
 
     @NonNull

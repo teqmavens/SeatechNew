@@ -97,7 +97,7 @@ public class DashBoardFragment extends Fragment {
                 LatLng latlong1 = new LatLng(39.755812, 105.221218);
                 LatLng latlong2 = new LatLng(39.6659845, 105.243887);
                 LatLng latlong3 = new LatLng(39.6333213, 105.3172146);
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(latlong2).zoom(6).build();
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(latlong2).zoom(8).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 googleMap.addMarker(new MarkerOptions().position(latlong1).title("Marker Title").snippet("Marker Description").
                         icon(BitmapDescriptorFactory.fromResource(R.drawable.mappinpng)));
@@ -121,7 +121,6 @@ public class DashBoardFragment extends Fragment {
         binding.map.onLowMemory();
     }
 
-
     private void initViews(FrgmDashboardBinding binding) {
         LinearLayoutManager lLManagerJobs = new LinearLayoutManager(getActivity());
         lLManagerJobs.setOrientation(LinearLayoutManager.VERTICAL);
@@ -134,19 +133,20 @@ public class DashBoardFragment extends Fragment {
         binding.rcyviewUrgentmsg.setLayoutManager(lLManagerUrgentJobs);
         adapterurgentmsg = new AdapterDashbrdUrgentMsg(context,DashBoardFragment.this);
         binding.rcyviewUrgentmsg.setAdapter(adapterurgentmsg);
-        // DateTime((dt.Ticks / d.Ticks) * d.Ticks);
-
-        // binding.rec.setLayoutManager(linearLayoutManager);
     }
 
     public void OnClickStartTime() {
         // Toast.makeText(activity, String.valueOf(getNear15Minute()), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(activity, String.valueOf(getplusminus(getNear15Minute())), Toast.LENGTH_SHORT).show();
+        //getplusminus(getNear15Minute());
         activity.replaceFragment(new JobDetailFragment());
     }
 
     public static int getNear15Minute() {
         Calendar calendar = Calendar.getInstance();
         int minutes = calendar.get(Calendar.MINUTE);
+     //   calendar
+
         int mod = minutes % 15;
         int res = 0;
         if ((mod) >= 8) {
@@ -157,20 +157,24 @@ public class DashBoardFragment extends Fragment {
         return (res % 60);
     }
 
+    public void getplusminus(int n) {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.MINUTE, n);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.add(Calendar.MINUTE,-15);
+        Toast.makeText(activity, calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE), Toast.LENGTH_SHORT).show();
+
+        calendar.add(Calendar.MINUTE,15);
+        Toast.makeText(activity, calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE), Toast.LENGTH_SHORT).show();
+
+        calendar.add(Calendar.MINUTE,15);
+        Toast.makeText(activity, calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE), Toast.LENGTH_SHORT).show();
+    }
+
     public Date getQuarter() {
         Calendar calendar = Calendar.getInstance();
         int mins = calendar.get(Calendar.MINUTE);
-
-      /*  if (mins < 15) {
-            mins = 0;
-        } else if (mins < 30) {
-            mins = 15;
-        } else if (mins < 45) {
-            mins = 30;
-        } else {
-            mins = 45;
-        }*/
-
         if (mins >= 0 && mins < 8) {
             mins = 0;
         } else if (mins >= 8 && mins < 23) {
@@ -185,7 +189,6 @@ public class DashBoardFragment extends Fragment {
         calendar.set(Calendar.MINUTE, mins);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-
         return calendar.getTime();
     }
 
