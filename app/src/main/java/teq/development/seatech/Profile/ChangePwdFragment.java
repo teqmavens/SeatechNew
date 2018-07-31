@@ -1,6 +1,7 @@
 package teq.development.seatech.Profile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,7 +22,9 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import teq.development.seatech.App;
 import teq.development.seatech.Dashboard.DashBoardActivity;
+import teq.development.seatech.LoginActivity;
 import teq.development.seatech.R;
 import teq.development.seatech.Utils.AppConstants;
 import teq.development.seatech.Utils.HandyObject;
@@ -84,10 +87,16 @@ public class ChangePwdFragment extends Fragment {
       intent_reg.setFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK | android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK);
       getA
 startActivity(intent_reg);*/
-
-
                             } else {
                                 HandyObject.showAlert(context, jsonObject.getString("message"));
+                                if(jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
+                                    HandyObject.clearpref(getActivity());
+                                    App.appInstance.stopTimer();
+                                    Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
+                                    startActivity(intent_reg);
+                                    getActivity().finish();
+                                    getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                }
                             }
                         } catch (IOException e) {
                             e.printStackTrace();

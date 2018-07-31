@@ -62,10 +62,13 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import teq.development.seatech.App;
 import teq.development.seatech.Dashboard.DashBoardActivity;
+import teq.development.seatech.LoginActivity;
 import teq.development.seatech.R;
 import teq.development.seatech.Utils.AppConstants;
 import teq.development.seatech.Utils.HandyObject;
+import teq.development.seatech.Utils.UserPicture;
 import teq.development.seatech.databinding.FrgmEditprofileBinding;
 
 public class EditProfileFragment extends Fragment {
@@ -155,7 +158,6 @@ public class EditProfileFragment extends Fragment {
 
         String myFormat = "MMM dd yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
-
         binding.etDob.setText(sdf.format(myCalendar.getTime()));
 
     }
@@ -235,7 +237,6 @@ public class EditProfileFragment extends Fragment {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
-
             }
 
             if (photoFile != null) {
@@ -262,7 +263,7 @@ public class EditProfileFragment extends Fragment {
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_SALON" + timeStamp + "_";
+        String imageFileName = "PNG_SEATECH" + timeStamp + "_";
         String dir = "";
         File file = null;
         try {
@@ -272,7 +273,7 @@ public class EditProfileFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        imageFile = new File(file, imageFileName + ".jpg");
+        imageFile = new File(file, imageFileName + ".png");
 
         return imageFile;
     }
@@ -285,25 +286,37 @@ public class EditProfileFragment extends Fragment {
                 String imagepath = getPath(selectedImageUri);
 
                 imageFile = new File(imagepath);
-                HandyObject.showAlert(getActivity(), imageFile.getAbsolutePath());
-                Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-                binding.profileimage.setImageBitmap(myBitmap);
+                //HandyObject.showAlert(getActivity(), imageFile.getAbsolutePath());
+              //  Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+             //   binding.profileimage.setImageBitmap(myBitmap);
+              //  binding.profileimage.setImageURI(selectedImageUri);
                 //   uploadImageToSrver();
+              try {
+                  Bitmap bitmap = new UserPicture(selectedImageUri, context.getContentResolver()).getBitmap();
+                  binding.profileimage.setImageBitmap(bitmap);
+              } catch (Exception e){}
+
+
             }
         } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
 
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
-                Log.i("imageUri below:", "" + Uri.fromFile(imageFile));
+                Log.e("imageUri below:", "" + Uri.fromFile(imageFile));
                 //uploadImageToSrver();
-                HandyObject.showAlert(getActivity(), imageFile.getAbsolutePath());
-                Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-                binding.profileimage.setImageBitmap(myBitmap);
+                //HandyObject.showAlert(getActivity(), imageFile.getAbsolutePath());
+               // Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+              //  binding.profileimage.setImageBitmap(myBitmap);
+              //  binding.profileimage.setImageURI(Uri.fromFile(imageFile));
+                try {
+                    Bitmap bitmap = new UserPicture(Uri.fromFile(imageFile), context.getContentResolver()).getBitmap();
+                    binding.profileimage.setImageBitmap(bitmap);
+                } catch (Exception e){}
 
             } else {
                 Uri fileUri = FileProvider.getUriForFile(getActivity(),
                         "com.example.android.fileprovider", imageFile);
                 Log.i("imageUri:", "" + fileUri);
-                HandyObject.showAlert(getActivity(), imageFile.getAbsolutePath());
+                //HandyObject.showAlert(getActivity(), imageFile.getAbsolutePath());
                 Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
                 binding.profileimage.setImageBitmap(myBitmap);
                 //  uploadImageToSrver();
@@ -508,6 +521,14 @@ public class EditProfileFragment extends Fragment {
                                 getActivity().getSupportFragmentManager().popBackStack();
                             } else {
                                 HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
+                                if(jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
+                                    HandyObject.clearpref(getActivity());
+                                    App.appInstance.stopTimer();
+                                    Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
+                                    startActivity(intent_reg);
+                                    getActivity().finish();
+                                    getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                }
                             }
 
                         } catch (IOException e) {
@@ -555,5 +576,35 @@ public class EditProfileFragment extends Fragment {
             e.printStackTrace();
         }
         return "";
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.e("onActivityCre","yes");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.e("onPause","onPause");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("onResume","onResume");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("onDestroy","onDestroy");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.e("onDestroyView","onDestroyView");
     }
 }

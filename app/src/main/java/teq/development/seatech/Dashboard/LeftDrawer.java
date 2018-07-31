@@ -12,10 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import teq.development.seatech.JobDetail.JobDetailFragment;
+import teq.development.seatech.PickUpJobs.PickUpJobsFragment;
 import teq.development.seatech.R;
+import teq.development.seatech.Timesheet.TimeSheetFragment;
+import teq.development.seatech.Utils.AppConstants;
+import teq.development.seatech.Utils.HandyObject;
 import teq.development.seatech.databinding.MenuDrawerBinding;
 
-public class LeftDrawer extends Fragment{
+public class LeftDrawer extends Fragment {
 
     private DashBoardActivity activity;
     private Context context;
@@ -30,28 +34,40 @@ public class LeftDrawer extends Fragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootview = inflater.inflate(R.layout.menu_drawer,container,false);
+        View rootview = inflater.inflate(R.layout.menu_drawer, container, false);
         MenuDrawerBinding binding = DataBindingUtil.bind(rootview);
         binding.setMenudrawer(this);
         return rootview;
     }
 
-    public void OnClickDashboard(){
+    public void OnClickDashboard() {
         activity.replaceFragment(new DashBoardFragment());
         activity.mDrawerLayout.closeDrawers();
     }
 
-    public void OnClickDetailPage(){
-        activity.replaceFragment(new JobDetailFragment());
+    public void OnClickDetailPage() {
+
+        if (isJobRunning() == true) {
+            activity.replaceFragment(new JobDetailFragment());
+            activity.mDrawerLayout.closeDrawers();
+        }
+    }
+
+    public void OnClickTimesheet() {
+        activity.replaceFragment(new TimeSheetFragment());
         activity.mDrawerLayout.closeDrawers();
     }
 
-    public void OnClickTimesheet(){
-        activity.mDrawerLayout.closeDrawers();
-    }
-
-    public void OnClickPickupJobs(){
+    public void OnClickPickupJobs() {
         activity.replaceFragment(new PickUpJobsFragment());
         activity.mDrawerLayout.closeDrawers();
+    }
+
+    boolean isJobRunning() {
+        if (HandyObject.getPrams(context, AppConstants.ISJOB_RUNNING).equalsIgnoreCase("yes")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

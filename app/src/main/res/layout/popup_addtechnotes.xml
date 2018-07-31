@@ -36,7 +36,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginTop="@dimen/smalltextsize"
+                android:layout_marginTop="@dimen/verysmalltextsize"
                 android:background="@color/black"></View>
 
             <android.support.v7.widget.AppCompatEditText
@@ -44,6 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginTop="@dimen/verysmalltextsize"
+                android:maxHeight="200dp"
                 android:background="@drawable/dashboardlinebg"
                 android:gravity="top"
                 android:padding="@dimen/smallpadding"

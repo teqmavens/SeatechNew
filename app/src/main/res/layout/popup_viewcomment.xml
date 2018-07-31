@@ -7,6 +7,7 @@
             name="popupviewcomment"
             type="teq.development.seatech.JobDetail.ViewCommentDialog"></variable>
     </data>
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,23 +29,67 @@
                 android:text="@string/previouslaborcmmnt"
                 android:textColor="@color/black"
                 android:textSize="@dimen/verysmalltextsize"
-                android:textStyle="bold"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/checkboxyes" />
+                android:textStyle="bold" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginTop="@dimen/smalltextsize"
+                android:layout_marginTop="@dimen/smallpadding"
                 android:background="@color/black"></View>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/smallpadding"
+                android:layout_marginTop="@dimen/verysmalltextsize"
+                android:background="@drawable/dashboardlinebg"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/datetime"
+                    android:layout_weight=".3"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/paerson"
+                    android:layout_weight=".3"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold" />
+
+               <!-- <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time"
+                    android:layout_weight=".2"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold" />-->
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/comment"
+                    android:gravity="center"
+                    android:layout_weight=".4"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/dashboardlinebg"
-                android:layout_marginTop="@dimen/verysmalltextsize">
+                >
 
             </android.support.v7.widget.RecyclerView>
 

@@ -128,6 +128,7 @@
                 android:gravity="center_vertical"
                 android:hint="@string/enteramount"
                 android:padding="@dimen/smallpadding"
+                android:inputType="number"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
                 android:textSize="@dimen/verysmalltextsize"

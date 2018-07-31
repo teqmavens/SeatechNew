@@ -47,6 +47,17 @@
             android:button="@drawable/radiocheckbox"
             android:textColor="@color/black"
             android:textSize="@dimen/verysmalltextsize" />
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/cbx_doneforday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/smallpadding"
+            android:text="Done for the day"
+            android:padding="@dimen/smalltextsize"
+            android:button="@drawable/radiocheckbox"
+            android:textColor="@color/black"
+            android:textSize="@dimen/verysmalltextsize" />
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/submit"
             android:layout_width="wrap_content"

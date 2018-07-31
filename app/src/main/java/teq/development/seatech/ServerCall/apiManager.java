@@ -11,9 +11,11 @@ public class apiManager {
 
 
     private static Retrofit retrofit = null;
-    private static Retrofit retrofitadmin = null;
+    private static Retrofit retrofitadmin,retrofitjobs ,retrofitmain= null;
+    private static String MainBaseApiURL = "http://tqmstaging.com/seatech/";
     private static String BaseApiAddress = "http://tqmstaging.com/seatech/users/";
     private static String BaseApiAddressadmin = "http://tqmstaging.com/seatech/admin/users/";
+    private static String BaseApiAddressjobs= "http://tqmstaging.com/seatech/jobs/";
 
     public static Retrofit getApiManager() {
 
@@ -34,6 +36,28 @@ public class apiManager {
                     .build();
         //}
         return retrofitadmin;
+    }
+
+    public static Retrofit getApiAddressjobs() {
+
+        //  if (retrofitadmin == null) {
+        retrofitjobs = new Retrofit.Builder()
+                .baseUrl(BaseApiAddressjobs)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        //}
+        return retrofitjobs;
+    }
+
+    public static Retrofit getApiManagerMain() {
+
+        if (retrofitmain == null) {
+            retrofitmain = new Retrofit.Builder()
+                    .baseUrl(MainBaseApiURL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return retrofitmain;
     }
 
 }

@@ -27,7 +27,7 @@
             app:layout_constraintRight_toLeftOf="@+id/checkboxyes" />
 
         <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/et_laborperform"
+            android:id="@+id/et_needtoknow"
             android:layout_width="match_parent"
             android:layout_height="110dp"
             android:layout_marginTop="@dimen/verysmalltextsize"
@@ -35,6 +35,7 @@
             android:gravity="top"
             android:hint="@string/enterdesription"
             android:padding="@dimen/smalltextsize"
+            android:focusable="true"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             android:textSize="@dimen/verysmalltextsize" />

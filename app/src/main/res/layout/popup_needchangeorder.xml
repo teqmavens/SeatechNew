@@ -40,7 +40,7 @@
             android:background="@color/black"></View>
 
         <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/et_laborperform"
+            android:id="@+id/et_description"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_marginTop="@dimen/verysmalltextsize"
@@ -51,6 +51,19 @@
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             android:textSize="@dimen/verysmalltextsize" />
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/checkbox_needestimate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/verysmalltextsize"
+            android:gravity="center_vertical"
+            android:text="@string/ugent"
+            android:padding="@dimen/smallpadding"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="@dimen/verysmalltextsize" />
+
 
         <android.support.v7.widget.AppCompatButton
             android:layout_width="wrap_content"
@@ -63,7 +76,7 @@
             android:textColor="#ffffff"
             android:textSize="@dimen/verysmalltextsize"
             android:textStyle="bold"
-            android:onClick="@{()->popupneedchangeorder.onClickCross()}"
+            android:onClick="@{()->popupneedchangeorder.onClickSave()}"
             app:layout_constraintLeft_toLeftOf="@+id/et_username"
             app:layout_constraintRight_toRightOf="@+id/et_username"
             app:layout_constraintTop_toBottomOf="@+id/forgotpwd" />

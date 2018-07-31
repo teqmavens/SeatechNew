@@ -59,8 +59,17 @@
             <android.support.constraint.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".7"
+                android:layout_weight=".74"
                 android:padding="@dimen/verysmalltextsize">
+                <!--<ImageView
+                    android:id="@+id/profileimage"
+                    android:layout_width="120dp"
+                    android:layout_height="110dp"
+                    android:layout_marginTop="@dimen/smalltextsize"
+
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:scaleType="centerCrop"
+                  />-->
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/profileimage"
                     android:layout_width="120dp"
@@ -110,7 +119,6 @@
                     app:layout_constraintLeft_toRightOf="@+id/dobkey"
                     android:background="@drawable/etloginbg"
                     android:layout_marginLeft="@dimen/smalltextsize"
-                    android:layout_marginRight="40dp"
                     android:text="8th March,1992"
                     android:textSize="@dimen/verysmalltextsize"
                     android:textColor="@color/black"
@@ -261,7 +269,7 @@
             <android.support.constraint.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".3"
+                android:layout_weight=".26"
                 android:padding="@dimen/smalltextsize">
 
                 <android.support.v7.widget.AppCompatButton

@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/smallpadding"
             android:text="@string/waitingonparts"
-            android:padding="@dimen/smalltextsize"
+            android:padding="@dimen/verysmalltextsize"
             android:textColor="@color/black"
             android:button="@drawable/radiocheckbox"
             android:textSize="@dimen/verysmalltextsize" />
@@ -41,9 +41,9 @@
             android:id="@+id/cbx_fcrtyrpr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/smallpadding"
+            android:layout_marginTop="@dimen/verysmallpadding"
             android:text="@string/factoryrepair"
-            android:padding="@dimen/smalltextsize"
+            android:padding="@dimen/verysmalltextsize"
             android:textColor="@color/black"
             android:button="@drawable/radiocheckbox"
             android:textSize="@dimen/verysmalltextsize" />
@@ -51,9 +51,20 @@
             android:id="@+id/cbx_wtngcstmr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/smallpadding"
+            android:layout_marginTop="@dimen/verysmallpadding"
             android:text="@string/waitngfrcustmr"
-            android:padding="@dimen/smalltextsize"
+            android:padding="@dimen/verysmalltextsize"
+            android:button="@drawable/radiocheckbox"
+            android:textColor="@color/black"
+            android:textSize="@dimen/verysmalltextsize" />
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/cbx_otherreason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/verysmallpadding"
+            android:text="@string/otherreason"
+            android:padding="@dimen/verysmalltextsize"
             android:button="@drawable/radiocheckbox"
             android:textColor="@color/black"
             android:textSize="@dimen/verysmalltextsize" />
@@ -61,9 +72,9 @@
             android:id="@+id/cbx_exception"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/smallpadding"
+            android:layout_marginTop="@dimen/verysmallpadding"
             android:text="@string/exceptiontoplcy"
-            android:padding="@dimen/smalltextsize"
+            android:padding="@dimen/verysmalltextsize"
             android:button="@drawable/radiocheckbox"
             android:textColor="@color/black"
             android:textSize="@dimen/verysmalltextsize" />

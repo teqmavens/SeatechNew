@@ -16,7 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import java.util.ArrayList;
+
+import teq.development.seatech.Dashboard.Skeleton.DashboardNotes_Skeleton;
 import teq.development.seatech.JobDetail.Adapter.AdapterViewComment;
 import teq.development.seatech.R;
 import teq.development.seatech.databinding.PopupNeedchangeorderBinding;
@@ -25,11 +29,14 @@ public class ViewCommentDialog extends DialogFragment {
     Dialog dialog;
 
     AdapterViewComment adapter;
+    static ArrayList<DashboardNotes_Skeleton> arrayListLaborPerform;
+    static String typeDialog;
 
-    public static ViewCommentDialog newInstance(int num) {
+    public static ViewCommentDialog newInstance(ArrayList<DashboardNotes_Skeleton> arrayListLaborPerf,String type) {
         ViewCommentDialog f = new ViewCommentDialog();
         Bundle args = new Bundle();
-        args.putInt("num", num);
+        arrayListLaborPerform = arrayListLaborPerf;
+        typeDialog = type;
         f.setArguments(args);
         return f;
     }
@@ -37,7 +44,7 @@ public class ViewCommentDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.popup_viewcomment,container,false);
+        View rootView = inflater.inflate(R.layout.popup_viewcomment, container, false);
         initViews(rootView);
         return rootView;
     }
@@ -45,11 +52,17 @@ public class ViewCommentDialog extends DialogFragment {
     private void initViews(View rootView) {
         RecyclerView recyclerview = (RecyclerView) rootView.findViewById(R.id.recyclerview);
         ImageView cross = (ImageView) rootView.findViewById(R.id.cross);
+        TextView toptext = (TextView) rootView.findViewById(R.id.toptext);
         LinearLayoutManager lLManagerUrgentJobs = new LinearLayoutManager(getActivity());
         lLManagerUrgentJobs.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerview.setLayoutManager(lLManagerUrgentJobs);
-        adapter = new AdapterViewComment(getActivity());
+        adapter = new AdapterViewComment(getActivity(),arrayListLaborPerform);
         recyclerview.setAdapter(adapter);
+        if(typeDialog.equalsIgnoreCase("viewcommment")) {
+            toptext.setText(getString(R.string.previouslaborcmmnt));
+        } else {
+            toptext.setText(getString(R.string.viewprev_offrecordnote));
+        }
 
         cross.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,8 +80,9 @@ public class ViewCommentDialog extends DialogFragment {
         int height = dm.heightPixels;
         int width = dm.widthPixels;
         ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
-        params.width = width-420;
-        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;;
+        params.width = width - 220;
+    //    params.height = ViewGroup.LayoutParams.WRAP_CONTENT-300;
+        params.height = height - 320;
         getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
     }
 
@@ -78,9 +92,10 @@ public class ViewCommentDialog extends DialogFragment {
         dialog = super.onCreateDialog(savedInstanceState);
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
         return dialog;
     }
-
 
 
     public void onClickCross() {

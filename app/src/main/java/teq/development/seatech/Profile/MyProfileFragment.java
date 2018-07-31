@@ -22,6 +22,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import teq.development.seatech.App;
 import teq.development.seatech.Dashboard.DashBoardActivity;
 import teq.development.seatech.LoginActivity;
 import teq.development.seatech.R;
@@ -34,7 +35,7 @@ public class MyProfileFragment extends Fragment {
     DashBoardActivity activity;
     FrgmMyprofileBinding binding;
     Context context;
-   // TextView t
+    // TextView t
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class MyProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.frgm_myprofile,container,false);
+        View rootView = inflater.inflate(R.layout.frgm_myprofile, container, false);
         binding = DataBindingUtil.bind(rootView);
         binding.setMyprofile(this);
 
@@ -60,26 +61,35 @@ public class MyProfileFragment extends Fragment {
         return rootView;
     }
 
-    public void OnClickEdit(){
+    public void OnClickEdit() {
         activity.replaceFragment(new EditProfileFragment());
     }
 
-    private void getProfileTask(){
+    private void getProfileTask() {
         HandyObject.showProgressDialog(context);
-        HandyObject.getApiManagerType().getProfile(HandyObject.getPrams(context,AppConstants.LOGINTEQ_ID),HandyObject.getPrams(context,AppConstants.LOGIN_SESSIONID))
+        HandyObject.getApiManagerType().getProfile(HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID), HandyObject.getPrams(context, AppConstants.LOGIN_SESSIONID))
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         try {
                             String jsonResponse = response.body().string();
-                            Log.e("response",jsonResponse);
+                            Log.e("response", jsonResponse);
                             JSONObject jsonObject = new JSONObject(jsonResponse);
-                            if (jsonObject.getString("status").toLowerCase().equals("success")){
+                            if (jsonObject.getString("status").toLowerCase().equals("success")) {
                                 JSONObject dataobj = jsonObject.getJSONObject("data");
                                 saveProfileData(dataobj);
                             } else {
-                                setLocaldata();
                                 HandyObject.showAlert(context, jsonObject.getString("message"));
+                                if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
+                                    HandyObject.clearpref(getActivity());
+                                    App.appInstance.stopTimer();
+                                    Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
+                                    startActivity(intent_reg);
+                                    getActivity().finish();
+                                    getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                } else {
+                                    setLocaldata();
+                                }
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -99,23 +109,23 @@ public class MyProfileFragment extends Fragment {
                 });
     }
 
-    private void setLocaldata(){
-        binding.username.setText(" "+HandyObject.getPrams(context,AppConstants.LOGINTEQ_USERNAME));
-        if(HandyObject.getPrams(context,AppConstants.LOGINTEQ_GENDER).equalsIgnoreCase("F")) {
-            binding.gender.setText(" "+getString(R.string.female));
+    private void setLocaldata() {
+        binding.username.setText(" " + HandyObject.getPrams(context, AppConstants.LOGINTEQ_USERNAME));
+        if (HandyObject.getPrams(context, AppConstants.LOGINTEQ_GENDER).equalsIgnoreCase("F")) {
+            binding.gender.setText(" " + getString(R.string.female));
         } else {
-            binding.gender.setText(" "+getString(R.string.male));
+            binding.gender.setText(" " + getString(R.string.male));
         }
-        binding.dob.setText(" "+HandyObject.getPrams(context,AppConstants.LOGINTEQ_DOB));
-        binding.usertype.setText(" "+HandyObject.getPrams(context,AppConstants.LOGINTEQ_ROLE));
-        binding.emailvalue.setText(" "+HandyObject.getPrams(context,AppConstants.LOGINTEQ_EMAIL));
-        binding.phonevalue.setText(" "+HandyObject.getPrams(context,AppConstants.LOGINTEQ_PHONE));
-      //  binding.getRoot().findViewById(R.id.phonevalue).setText(" "+HandyObject.getPrams(context,AppConstants.LOGINTEQ_PHONE));
-        binding.btmtext.setText(HandyObject.getPrams(context,AppConstants.LOGINTEQ_DESCRIPTION));
+        binding.dob.setText(" " + HandyObject.getPrams(context, AppConstants.LOGINTEQ_DOB));
+        binding.usertype.setText(" " + HandyObject.getPrams(context, AppConstants.LOGINTEQ_ROLE));
+        binding.emailvalue.setText(" " + HandyObject.getPrams(context, AppConstants.LOGINTEQ_EMAIL));
+        binding.phonevalue.setText(" " + HandyObject.getPrams(context, AppConstants.LOGINTEQ_PHONE));
+        //  binding.getRoot().findViewById(R.id.phonevalue).setText(" "+HandyObject.getPrams(context,AppConstants.LOGINTEQ_PHONE));
+        binding.btmtext.setText(HandyObject.getPrams(context, AppConstants.LOGINTEQ_DESCRIPTION));
         binding.profileimage.setImageURI(HandyObject.getPrams(context, AppConstants.LOGINTEQ_IMAGE));
-              binding.dojvalue.setText(" "+HandyObject.getPrams(context, AppConstants.LOGINTEQ_JOININGDATE));
-        if(HandyObject.getPrams(context,AppConstants.LOGINTEQ_STATUS).equalsIgnoreCase("1")) {
-                binding.checkboxstatus.setChecked(true);
+        binding.dojvalue.setText(" " + HandyObject.getPrams(context, AppConstants.LOGINTEQ_JOININGDATE));
+        if (HandyObject.getPrams(context, AppConstants.LOGINTEQ_STATUS).equalsIgnoreCase("1")) {
+            binding.checkboxstatus.setChecked(true);
         } else {
             binding.checkboxstatus.setChecked(false);
         }
@@ -123,7 +133,7 @@ public class MyProfileFragment extends Fragment {
 
     private void saveProfileData(JSONObject jobj) {
         try {
-          //  HandyObject.putPrams(context, AppConstants.LOGIN_SESSIONID, jobj.getString("session_id"));
+            //  HandyObject.putPrams(context, AppConstants.LOGIN_SESSIONID, jobj.getString("session_id"));
             HandyObject.putPrams(context, AppConstants.LOGINTEQ_USERNAME, jobj.getString("username"));
             HandyObject.putPrams(context, AppConstants.LOGINTEQ_EMAIL, jobj.getString("email"));
             HandyObject.putPrams(context, AppConstants.LOGINTEQ_GENDER, jobj.getString("gender"));
@@ -135,7 +145,8 @@ public class MyProfileFragment extends Fragment {
             HandyObject.putPrams(context, AppConstants.LOGINTEQ_STATUS, jobj.getString("status"));
             HandyObject.putPrams(context, AppConstants.LOGINTEQ_JOININGDATE, jobj.getString("joining_date"));
             setLocaldata();
-        } catch (Exception e){}
+        } catch (Exception e) {
+        }
 
     }
 }

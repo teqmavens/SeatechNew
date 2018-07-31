@@ -1,5 +1,5 @@
 <resources>
-    <string name="Apikey_Map">AIzaSyA2mC3WKBSbZOwepQ4phMdQ98HyodAyamw</string>
+    <string name="Apikey_Map">AIzaSyBa9_zqiGyTdJUEpFTZUqhxJU9cgv7oA6c</string>
     <string name="app_name">Seatech</string>
     <string name="username">Username</string>
     <string name="usernameprofile">Username - </string>
@@ -51,15 +51,15 @@
     <string name="boatmodel"><![CDATA[Boat Model & Length:]]></string>
     <string name="boatname">Boat Name:</string>
     <string name="hullid">Hull ID#:</string>
-    <string name="captname">Capt Name:</string>
+    <string name="captname">Captain Name:</string>
     <string name="promisedate">Promise Date:</string>
-    <string name="techlaborperform">Tech Labor Performed:</string>
+    <string name="techlaborperform"><u>Tech Labor Performed</u></string>
     <string name="enterdesription">Enter Description....</string>
-    <string name="previouslaborcmmnt">View Previous Labor Performed Comments</string>
-    <string name="recordnotes_othertechs"><u>Last Off the record note entered for this job:</u></string>
-    <string name="needpart">Need Parts</string>
-    <string name="needestimate">Need Estimate</string>
-    <string name="changeorder">Need Change Order</string>
+    <string name="previouslaborcmmnt">View Previous Labor Entries</string>
+    <string name="recordnotes_othertechs"><u>Last Off the record note entered for this job</u></string>
+    <string name="needpart">Need Parts/Start Repair Process</string>
+    <string name="needestimate">Need Estimate from sales</string>
+    <string name="changeorder">Need Change Order from service</string>
     <string name="rep">REP:</string>
     <string name="jobselection">Job Selection:</string>
     <string name="serviceinstall"><![CDATA[Service & Installation]]></string>
@@ -101,11 +101,12 @@
     <string name="addmorepart">Add more parts</string>
     <string name="cancel">Cancel</string>
     <string name="returnimmed">Can we return immediately to the job?</string>
-    <string name="alreadyscheduled" >Are we already scheduled to be back on the job?</string>
+    <string name="alreadyscheduled">Are we already scheduled to be back on the job?</string>
     <string name="selectreason">Select appropriate reason:</string>
     <string name="waitingonparts">Waiting on Parts</string>
     <string name="factoryrepair">Factory Repair</string>
-    <string name="waitngfrcustmr">Waiting for customer/other reason</string>
+    <!-- <string name="waitngfrcustmr">Waiting for customer/other reason</string>-->
+    <string name="waitngfrcustmr">Waiting for customer</string>
     <string name="exceptiontoplcy">Exception to policy</string>
     <string name="installation">Installation</string>
     <string name="otherreason">Other reason</string>
@@ -133,12 +134,142 @@
     <string name="dashboard_notes"><u>Dashboard Notes</u></string>
     <string name="submitlabor_perform">Submit My Labor Performed for this job</string>
     <string name="addnew_offrecordnote">Add a new Off the record notes for this job</string>
+    <string name="viewprev_offrecordnote">View Previous Off the Record Notes</string>
     <string name="valuesupplies">Value of supplies used for this job:</string>
+    <string name="date">Date</string>
+    <string name="paerson">Person</string>
+    <string name="comment">Comment</string>
+    <string name="datetime"><![CDATA[Date&Time]]></string>
+    <string name="notbilled">How many hours should not be billed?</string>
+    <string name="whynotbilled">Why should the hours not be billed?</string>
+    <string name="nourgentmsg">No Urgent message</string>
+    <string name="withoutinter_noprenextjob">Without internet connection you are not able to fetch previous or next day jobs.</string>
+    <string name="withoutinter_nodailyreport">Without internet connection you are not able to fetch particular day job record.</string>
+    <string name="cannotstart_newjob">You can\'t start new Job as a job is already running.</string>
+    <string name="nojobs_tostart">You have no job to start.</string>
+    <string name="onlystatrt_currentdayjob">You can only start current day job.</string>
+    <string name="pleaseselectcode">Please Select Labor Code.</string>
+    <string name="backtolist">Back</string>
+    <string name="cantselect_futtime">Can\'t select future time</string>
+    <string name="uploadedimage"><u>Uploaded Images</u></string>
+    <string name="nouploadedimage">No image available</string>
+    <string name="jobdes"><u>Job description</u></string>
+    <string name="cannt_logoutjobrunning">Can\'t logout, a job is already running.</string>
+    <string name="selectjobtype">Please Select Job Type</string>
+    <string name="supplyamountreq">Supply amount is required.</string>
+    <string name="nodashbrdnotes">No dashborad notes</string>
+    <string name="ispartforrepair">Is this part for repair?</string>
+    <string name="orpart_forsale">Or a part for sale?</string>
+    <string name="quantityNeeded">Quantity Needed</string>
+    <string name="manufname">Manufacturer Name</string>
+    <string name="manufphonekey">Manufacturer Phone</string>
+    <string name="rmareqkey">Rma required</string>
+    <string name="manufcommentkey">Comment</string>
+    <string name="sendPartReq">Send Parts Request</string>
+    <string name="sendRepairReq">Send Repair Request</string>
+    <string name="selectneedurgent">Need Urgent?</string>
+    <string name="partdesc_empty">Please enter part description</string>
+    <string name="howfastneedit">How fast need it?</string>
+    <string name="partnoreq">Part No Required</string>
+    <string name="quantityneededblank">Quantity needed field is blank</string>
+    <string name="partforrepairorsale">Is this part for repair or sale?</string>
+    <string name="serialnoblank">Serial No Required</string>
+    <string name="Failuredescblank">Failure description Required</string>
+    <string name="Techsupportnameblank">Tech support name required.</string>
+    <string name="accordingtomanf">According to the manufacturer, you must be with this equipment during a support call to get an RMA#</string>
+    <string name="ok">Ok</string>
+    <string name="cantwait">I can’t wait any longer – send repair request anyway.</string>
+    <string name="ttltime">Total Time</string>
+    <string name="ttlweekhrs">Total Week Hours</string>
+    <string name="jobticket">Job Ticket</string>
+    <string name="laborcode">Labour Code</string>
+    <string name="labourdescription">Labour Description</string>
+    <string name="hours">Hours</string>
+    <string name="canselectweekdate">You can select only current week date.</string>
+    <string name="statuskey">Status</string>
+    <string name="or">OR</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="clear">Clear</string>
+    <string name="weektotal">Week\'s Total</string>
+    <string name="week">Week</string>
+    <string name="billabe">Billable</string>
+    <string name="nonbillabe">Non billable</string>
+    <string name="total">Total</string>
+    <string name="weekdate">Week/Date</string>
+    <string name="statusmonth">Status</string>
+    <string name="viewDetail">View Detail</string>
+    <string name="viewDetailunderline"><u>ViewDetail</u></string>
+    <string name="previousweek">Previous Week</string>
+    <string name="nextweek">Next Week</string>
+    <string name="nextmonth">Next Month</string>
+    <string name="previousmonth">Previous Month</string>
+    <string name="selectbothdates">Please select both dates.</string>
+    <string name="scheduletech">Schedule Technician</string>
+    <string name="selecttech">Select Technician</string>
+    <string name="choosetech">Choose a Technician</string>
+    <string name="appttypeKey">Appointment Type</string>
+    <string name="startdateKey">Start Date</string>
+    <string name="starttimeKey">Start Time</string>
+    <string name="durationKey">Duration</string>
+    <string name="apptmtconfirm">Appointment Confirm</string>
+    <string name="techdashmemoKey">Technician Dashboard Memo</string>
+    <string name="select">Select</string>
+    <string name="pleaseseltec">Please select technician first</string>
+    <string name="startdatereq">Start Date Required</string>
+    <string name="etStarttimereq">Start Time Required</string>
+    <string name="durationreq">Duration Required</string>
+    <string name="estimatedhrKey">Estimated Hours</string>
+    <string name="needanotherprod">Do you need another part?</string>
+    <string name="nodatafound">No Data Found</string>
+    <string name="trywthdiff">You can try with different date.</string>
+    <string name="done">Done</string>
+    <string name="ugent">Urgent</string>
+    <string name="deadlinedateReq">Deadline date required</string>
+    <string name="selectappttype">Appointment type required</string>
+    <string name="rmaorcasereq">Rma or Case Required.</string>
+    <string name="pleaseselectmanuf">Please Select Manufacturer.</string>
+    <string name="tryafter">No pickup jobs available.</string>
+    <string name="norecordFound">No record Found</string>
     <string-array name="laborcode_array">
         <item>TRAVEL TIME</item>
         <item>SERVICE TIME</item>
         <item>LUNCH</item>
         <item>SHOP WORK TIME</item>
-        <item>DONE FOR THE DAY</item>
     </string-array>
+    <string-array name="status_array">
+        <item>All</item>
+        <item>Open</item>
+        <item>Submitted</item>
+    </string-array>
+    <string-array name="week_array1st">
+        <item>Current Month</item>
+        <item>Current Week</item>
+        <item>Select Month</item>
+    </string-array>
+    <string-array name="apptmnttype_array">
+        <item><u>Select Appointment Type:</u></item>
+        <item>Firm Time or Day</item>
+        <item>Firm Day or Deadline</item>
+        <item>As soon as you Can</item>
+    </string-array>
+    <!--<string-array name="week_arrayselmonth">
+        <item>Current Month</item>
+        <item>Current Week</item>
+        <item>Selected Month</item>
+          <item>Selected Month</item>
+        <item>Selected Week</item>
+        <item>Selected Date</item>
+    </string-array>
+    <string-array name="week_arrayselweek">
+        <item>Current Month</item>
+        <item>Current Week</item>
+        <item>Selected Week</item>
+    </string-array>
+
+    <string-array name="week_arrayselDate">
+        <item>Current Month</item>
+        <item>Current Week</item>
+        <item>Selected Date</item>
+    </string-array>-->
 </resources>

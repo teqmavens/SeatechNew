@@ -1,8 +1,13 @@
 package teq.development.seatech.Dashboard;
 
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,17 +30,36 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import teq.development.seatech.App;
 import teq.development.seatech.Dashboard.Adapter.AdapterDashbrdUrgentMsg;
 import teq.development.seatech.Dashboard.Adapter.AdapterJosbForYou;
-import teq.development.seatech.Dashboard.Adapter.AdapterPickUpJobs;
+import teq.development.seatech.Dashboard.Skeleton.AllJobsSkeleton;
+import teq.development.seatech.Dashboard.Skeleton.DashboardNotes_Skeleton;
 import teq.development.seatech.JobDetail.JobDetailFragment;
-import teq.development.seatech.JobDetail.NeedChangeOrderDialog;
+import teq.development.seatech.JobDetail.JobDetailStaticFragment;
+import teq.development.seatech.LoginActivity;
 import teq.development.seatech.R;
+import teq.development.seatech.Utils.AppConstants;
+import teq.development.seatech.Utils.HandyObject;
+import teq.development.seatech.database.ParseOpenHelper;
 import teq.development.seatech.databinding.FrgmDashboardBinding;
 
 public class DashBoardFragment extends Fragment {
@@ -43,10 +68,16 @@ public class DashBoardFragment extends Fragment {
     private DashBoardActivity activity;
     private Context context;
     private AdapterJosbForYou adapterjobs;
-    //   private AdapterPickUpJobs adapterpickup;
     private AdapterDashbrdUrgentMsg adapterurgentmsg;
+    private ArrayList<AllJobsSkeleton> jobsArrayList;
+    GoogleMap googleMap;
+    SQLiteDatabase database;
     Calendar myCalendar;
+    Marker marker;
+    boolean localdata;
+    Cursor cursor;
     DatePickerDialog.OnDateSetListener date;
+    ArrayList<Marker> arraylistmarker = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,7 +92,6 @@ public class DashBoardFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.frgm_dashboard, container, false);
         binding = DataBindingUtil.bind(rootView);
         binding.setFrgmdashboard(this);
-        initViews();
         binding.map.onCreate(savedInstanceState);
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -72,39 +102,25 @@ public class DashBoardFragment extends Fragment {
         return rootView;
     }
 
-    private void initViews() {
-        myCalendar = Calendar.getInstance();
-        date = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                // updateLabel();
-            }
-        };
-        binding.previousdate.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(context, R.drawable.leftarrow), null, null, null);
-        binding.nextdate.setCompoundDrawablesWithIntrinsicBounds(null, null, AppCompatResources.getDrawable(context, R.drawable.rightarrow), null);
-    }
 
     @Override
     public void onResume() {
         binding.map.onResume();
         super.onResume();
+        Log.e("DashFragresume", "DashFragresume");
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         binding.map.getMapAsync(new OnMapReadyCallback() {
             @Override
-            public void onMapReady(GoogleMap googleMap) {
-                LatLng latlong1 = new LatLng(39.755812, 105.221218);
-                LatLng latlong2 = new LatLng(39.6659845, 105.243887);
-                LatLng latlong3 = new LatLng(39.6333213, 105.3172146);
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(latlong2).zoom(8).build();
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                googleMap.addMarker(new MarkerOptions().position(latlong1).title("Marker Title").snippet("Marker Description").
-                        icon(BitmapDescriptorFactory.fromResource(R.drawable.mappinpng)));
-                googleMap.addMarker(new MarkerOptions().position(latlong2).title("Marker Title").snippet("Marker Description").
-                        icon(BitmapDescriptorFactory.fromResource(R.drawable.mappinpng)));
-                googleMap.addMarker(new MarkerOptions().position(latlong3).title("Marker Title").snippet("Marker Description").
-                        icon(BitmapDescriptorFactory.fromResource(R.drawable.mappinpng)));
+            public void onMapReady(GoogleMap gmap) {
+                googleMap = gmap;
+                new DatabaseFetch().execute();
+                getAllDataTask(HandyObject.parseDateToYMD(HandyObject.getCurrentDate()));
+
             }
         });
     }
@@ -113,6 +129,7 @@ public class DashBoardFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         binding.map.onDestroy();
+        Log.e("DashFRagment Destroy", "DashFRagment Destroy");
     }
 
     @Override
@@ -122,89 +139,106 @@ public class DashBoardFragment extends Fragment {
     }
 
     private void initViews(FrgmDashboardBinding binding) {
+        jobsArrayList = new ArrayList<>();
+        adapterjobs = new AdapterJosbForYou(context, jobsArrayList, DashBoardFragment.this);
+        database = ParseOpenHelper.getInstance(context).getWritableDatabase();
         LinearLayoutManager lLManagerJobs = new LinearLayoutManager(getActivity());
         lLManagerJobs.setOrientation(LinearLayoutManager.VERTICAL);
         binding.rcyviewJobs.setLayoutManager(lLManagerJobs);
-        adapterjobs = new AdapterJosbForYou(context,DashBoardFragment.this);
-        binding.rcyviewJobs.setAdapter(adapterjobs);
+      /*  adapterjobs = new AdapterJosbForYou(context, jobsArrayList, DashBoardFragment.this);
+        binding.rcyviewJobs.setAdapter(adapterjobs);*/
 
-        LinearLayoutManager lLManagerUrgentJobs = new LinearLayoutManager(getActivity());
+       /* LinearLayoutManager lLManagerUrgentJobs = new LinearLayoutManager(getActivity());
         lLManagerUrgentJobs.setOrientation(LinearLayoutManager.VERTICAL);
         binding.rcyviewUrgentmsg.setLayoutManager(lLManagerUrgentJobs);
-        adapterurgentmsg = new AdapterDashbrdUrgentMsg(context,DashBoardFragment.this);
-        binding.rcyviewUrgentmsg.setAdapter(adapterurgentmsg);
+        adapterurgentmsg = new AdapterDashbrdUrgentMsg(context, DashBoardFragment.this);
+        binding.rcyviewUrgentmsg.setAdapter(adapterurgentmsg);*/
+
+        myCalendar = Calendar.getInstance();
+        date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                if (view.isShown()) {
+                    updateLabel();
+                }
+            }
+        };
+
+        binding.currentdate.setText(HandyObject.getCurrentDate());
+        binding.previousdate.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(context, R.drawable.leftarrow), null, null, null);
+        binding.nextdate.setCompoundDrawablesWithIntrinsicBounds(null, null, AppCompatResources.getDrawable(context, R.drawable.rightarrow), null);
+    }
+
+
+    private void updateLabel() {
+        binding.currentdate.setText(HandyObject.getDateFromPicker(myCalendar.getTime()));
+        getAllDataTask(HandyObject.parseDateToYMD(binding.currentdate.getText().toString()));
     }
 
     public void OnClickStartTime() {
-        // Toast.makeText(activity, String.valueOf(getNear15Minute()), Toast.LENGTH_SHORT).show();
-       // Toast.makeText(activity, String.valueOf(getplusminus(getNear15Minute())), Toast.LENGTH_SHORT).show();
-        //getplusminus(getNear15Minute());
-        activity.replaceFragment(new JobDetailFragment());
-    }
-
-    public static int getNear15Minute() {
-        Calendar calendar = Calendar.getInstance();
-        int minutes = calendar.get(Calendar.MINUTE);
-     //   calendar
-
-        int mod = minutes % 15;
-        int res = 0;
-        if ((mod) >= 8) {
-            res = minutes + (15 - mod);
+        if (isJobRunning() == true) {
+            HandyObject.showAlert(context, getString(R.string.cannotstart_newjob));
         } else {
-            res = minutes - mod;
+            if (HandyObject.getCurrentDate().split("\\s+")[1].equalsIgnoreCase(binding.currentdate.getText().toString().split("\\s+")[1])) {
+                if (jobsArrayList.size() == 0) {
+                    HandyObject.showAlert(context, getString(R.string.nojobs_tostart));
+                } else {
+                    activity.replaceFragment(new JobDetailFragment());
+                }
+            } else {
+                HandyObject.showAlert(context, getString(R.string.onlystatrt_currentdayjob));
+            }
         }
-        return (res % 60);
     }
 
-    public void getplusminus(int n) {
-        Calendar calendar = Calendar.getInstance();
+    public void OnClickNextDate() {
 
-        calendar.set(Calendar.MINUTE, n);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.add(Calendar.MINUTE,-15);
-        Toast.makeText(activity, calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE), Toast.LENGTH_SHORT).show();
-
-        calendar.add(Calendar.MINUTE,15);
-        Toast.makeText(activity, calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE), Toast.LENGTH_SHORT).show();
-
-        calendar.add(Calendar.MINUTE,15);
-        Toast.makeText(activity, calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE), Toast.LENGTH_SHORT).show();
-    }
-
-    public Date getQuarter() {
-        Calendar calendar = Calendar.getInstance();
-        int mins = calendar.get(Calendar.MINUTE);
-        if (mins >= 0 && mins < 8) {
-            mins = 0;
-        } else if (mins >= 8 && mins < 23) {
-            mins = 15;
-        } else if (mins >= 23 && mins < 38) {
-            mins = 30;
-        } else if (mins >= 38 && mins < 53) {
-            mins = 45;
+        if (HandyObject.checkInternetConnection(context)) {
+            binding.currentdate.setText(HandyObject.getNextDate(myCalendar));
+            //  HandyObject.showAlert(context, HandyObject.parseDateToYMD(binding.currentdate.getText().toString()));
+            getAllDataTask(HandyObject.parseDateToYMD(binding.currentdate.getText().toString()));
         } else {
-            mins = 0;
+            HandyObject.showAlert(getActivity(), getString(R.string.withoutinter_noprenextjob));
         }
-        calendar.set(Calendar.MINUTE, mins);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        return calendar.getTime();
+    }
+
+    public void OnClickPreviousDate() {
+        if (HandyObject.checkInternetConnection(context)) {
+            binding.currentdate.setText(HandyObject.getPreviousDate(myCalendar));
+            // HandyObject.showAlert(context, HandyObject.parseDateToYMD(binding.currentdate.getText().toString()));
+            getAllDataTask(HandyObject.parseDateToYMD(binding.currentdate.getText().toString()));
+        } else {
+            HandyObject.showAlert(getActivity(), getString(R.string.withoutinter_noprenextjob));
+        }
     }
 
     public void OnClickCalendar() {
-        new DatePickerDialog(getActivity(), date, myCalendar
-                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        if (HandyObject.checkInternetConnection(context)) {
+            new DatePickerDialog(getActivity(), date, myCalendar
+                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        } else {
+            HandyObject.showAlert(getActivity(), getString(R.string.withoutinter_noprenextjob));
+        }
     }
 
-    public void onClickTicketNo(){
-        activity.replaceFragment(new JobDetailFragment());
+    public void onClickTicketNo(int position) {
+        JobDetailStaticFragment jb = new JobDetailStaticFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("position", position);
+        bundle.putString("position_ticketId", jobsArrayList.get(position).getJobticketNo());
+        jb.setArguments(bundle);
+        activity.replaceFragment(jb);
     }
-    public void onClickNotes(){
-        dialogTechViewNotes();
+
+    public void onClickNotes(int position) {
+        dialogTechViewNotes(position);
     }
-    private void dialogTechViewNotes() {
+
+    private void dialogTechViewNotes(int position) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("dialogviewnotes");
         if (prev != null) {
@@ -212,7 +246,268 @@ public class DashBoardFragment extends Fragment {
         }
         ft.addToBackStack(null);
         // Create and show the dialog.
-        DialogFragment newFragment = ViewTechNotesDialog.newInstance(8);
+        DialogFragment newFragment = ViewTechNotesDialog.newInstance(position);
         newFragment.show(ft, "dialogviewnotes");
+    }
+
+    private void getAllDataTask(final String date) {
+        HandyObject.getApiManagerTypeJobs().getDashboradData(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), date, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        try {
+                            String jsonResponse = response.body().string();
+                            Log.e("responseDash", jsonResponse);
+                            JSONObject jsonObject = new JSONObject(jsonResponse);
+                            if (jsonObject.getString("status").toLowerCase().equals("success")) {
+                                jobsArrayList.clear();
+                                arraylistmarker.clear();
+                                googleMap.clear();
+                                database.delete(ParseOpenHelper.TABLENAME_ALLJOBS, ParseOpenHelper.TECHID + "=?", new String[]{HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)});
+                                database.delete(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, ParseOpenHelper.TECHIDCURRDAY + "=?", new String[]{HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)});
+                                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                Gson gson = new Gson();
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jobjInside = jsonArray.getJSONObject(i);
+                                    AllJobsSkeleton skeleton = new AllJobsSkeleton();
+                                    skeleton.setCustomerName(jobjInside.getString("customer_name"));
+                                    skeleton.setJobticketNo(jobjInside.getString("job_id"));
+                                    skeleton.setJobType(jobjInside.getString("job_type"));
+                                    skeleton.setBoatLocation(jobjInside.getString("boat_address"));
+                                    skeleton.setSupplyamount(jobjInside.getString("supply_amount"));
+                                    skeleton.setJobdescription(jobjInside.getString("job_description"));
+                                    skeleton.setTime("9:00");
+                                    skeleton.setTechSupervisor(jobjInside.getString("supervisor"));
+                                    skeleton.setOtherMembers("other_member");
+                                    skeleton.setPartLocation("Peermuchllaa");
+                                    skeleton.setBoatmakeYear(jobjInside.getString("boat_make_year"));
+                                    skeleton.setBoatmodelLength(jobjInside.getString("boat_model_length"));
+                                    skeleton.setBoatName(jobjInside.getString("boat_name"));
+                                    skeleton.setHullid(jobjInside.getString("hull_id"));
+                                    skeleton.setCaptainname(jobjInside.getString("captain_name"));
+                                    skeleton.setPromisedate(jobjInside.getString("promise_ending_date"));
+                                    skeleton.setRep(jobjInside.getString("rep"));
+                                    skeleton.setJobselection(jobjInside.getString("job_selection"));
+                                    skeleton.setIfbid(jobjInside.getString("bid_hours"));
+                                    skeleton.setQcPerson(jobjInside.getString("qc"));
+                                    skeleton.setJoblatitude(jobjInside.getString("job_lattitude"));
+                                    skeleton.setJoblongitude(jobjInside.getString("job_longitude"));
+
+
+                                    JSONArray jArray_DashNotes = jobjInside.getJSONArray("TechDashboard");
+                                    ArrayList<DashboardNotes_Skeleton> arraylistDashNotes = new ArrayList<>();
+                                    for (int k = 0; k < jArray_DashNotes.length(); k++) {
+                                        JSONObject jobj_dashnotes = jArray_DashNotes.getJSONObject(k);
+                                        DashboardNotes_Skeleton dashnotes_ske = new DashboardNotes_Skeleton();
+                                        dashnotes_ske.setCreatedAt(jobj_dashnotes.getString("created_at"));
+                                        dashnotes_ske.setNoteWriter(jobj_dashnotes.getString("note_writer"));
+                                        dashnotes_ske.setNotes(jobj_dashnotes.getString("notes"));
+                                        arraylistDashNotes.add(dashnotes_ske);
+                                    }
+
+                                    JSONArray jArray_Labrperformed = jobjInside.getJSONArray("TechLabourPerformed");
+                                    ArrayList<DashboardNotes_Skeleton> arraylistLabrperformed = new ArrayList<>();
+                                    for (int k = 0; k < jArray_Labrperformed.length(); k++) {
+                                        JSONObject jobj_dashnotes = jArray_Labrperformed.getJSONObject(k);
+                                        DashboardNotes_Skeleton dashnotes_ske = new DashboardNotes_Skeleton();
+                                        dashnotes_ske.setCreatedAt(jobj_dashnotes.getString("created_at"));
+                                        dashnotes_ske.setNoteWriter(jobj_dashnotes.getString("note_writer"));
+                                        dashnotes_ske.setNotes(jobj_dashnotes.getString("notes"));
+                                        arraylistLabrperformed.add(dashnotes_ske);
+                                    }
+
+                                    JSONArray jArray_OffTheRecord = jobjInside.getJSONArray("OffTheRecord");
+                                    ArrayList<DashboardNotes_Skeleton> arraylistOffTheRecord = new ArrayList<>();
+                                    for (int k = 0; k < jArray_OffTheRecord.length(); k++) {
+                                        JSONObject jobj_dashnotes = jArray_OffTheRecord.getJSONObject(k);
+                                        DashboardNotes_Skeleton dashnotes_ske = new DashboardNotes_Skeleton();
+                                        dashnotes_ske.setCreatedAt(jobj_dashnotes.getString("created_at"));
+                                        dashnotes_ske.setNoteWriter(jobj_dashnotes.getString("note_writer"));
+                                        dashnotes_ske.setNotes(jobj_dashnotes.getString("notes"));
+                                        arraylistOffTheRecord.add(dashnotes_ske);
+                                    }
+
+
+                                    JSONArray jArray_upldImages = jobjInside.getJSONArray("uploads");
+                                    ArrayList<String> arraylistupldImages = new ArrayList<>();
+                                    for (int k = 0; k < jArray_upldImages.length(); k++) {
+                                        arraylistupldImages.add(jArray_upldImages.getString(k));
+                                    }
+
+
+                                    // skeleton.setArrayList(arraylistDashNotes);
+                                    jobsArrayList.add(skeleton);
+                                    String jobsSke_databse = gson.toJson(skeleton);
+                                    String dashnotes = gson.toJson(arraylistDashNotes);
+                                    String laborPerformed = gson.toJson(arraylistLabrperformed);
+                                    String OffTheRecord = gson.toJson(arraylistOffTheRecord);
+                                    String UploadedImages = gson.toJson(arraylistupldImages);
+
+                                    ContentValues cv = new ContentValues();
+                                    cv.put(ParseOpenHelper.TECHID, HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID));
+                                    cv.put(ParseOpenHelper.JOBID, jobjInside.getString("job_id"));
+                                    cv.put(ParseOpenHelper.JOBSSKELETON, jobsSke_databse);
+                                    cv.put(ParseOpenHelper.JOBSTECHDASHBOARDNOTES, dashnotes);
+                                    cv.put(ParseOpenHelper.JOBSTECHLABORPERFORM, laborPerformed);
+                                    cv.put(ParseOpenHelper.JOBSTECHOFFTHERECORD, OffTheRecord);
+                                    cv.put(ParseOpenHelper.JOBSTECHUPLOADEDIMAGES, UploadedImages);
+                                    long idd = database.insert(ParseOpenHelper.TABLENAME_ALLJOBS, null, cv);
+                                    Log.e("table", String.valueOf(idd));
+                                    setJobMarkers(jobsArrayList.get(i).getJoblatitude(), jobsArrayList.get(i).getJoblongitude());
+
+                                    if (date.split("-")[2].equalsIgnoreCase(binding.currentdate.getText().toString().split("\\s+")[1])) {
+                                        ContentValues cv_current = new ContentValues();
+                                        cv_current.put(ParseOpenHelper.TECHIDCURRDAY, HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID));
+                                        cv_current.put(ParseOpenHelper.JOBIDCURRDAY, jobjInside.getString("job_id"));
+                                        cv_current.put(ParseOpenHelper.JOBSSKELETONCURRDAY, jobsSke_databse);
+                                        cv_current.put(ParseOpenHelper.JOBSTECHDASHBOARDNOTESCURRDAY, dashnotes);
+                                        cv_current.put(ParseOpenHelper.JOBSTECHLABORPERFORMCURRDAY, laborPerformed);
+                                        cv_current.put(ParseOpenHelper.JOBSTECHOFFTHERECORDCURRDAY, OffTheRecord);
+                                        cv_current.put(ParseOpenHelper.JOBSTECHUPLOADEDIMAGESCURRDAY, UploadedImages);
+                                        long iddc = database.insert(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, null, cv_current);
+                                        Log.e("tableCurrentDay", String.valueOf(iddc));
+                                    }
+                                }
+
+                                if (localdata == false) {
+                                    LatLng latlong1 = new LatLng(Double.parseDouble(jsonArray.getJSONObject(0).getString("job_lattitude")), Double.parseDouble(jsonArray.getJSONObject(0).getString("job_longitude")));
+                                    CameraPosition cameraPosition = new CameraPosition.Builder().target(latlong1).zoom(2).build();
+                                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                                }
+                                localdata = false;
+                                adapterjobs.notifyDataSetChanged();
+                            } else {
+                                jobsArrayList.clear();
+                                arraylistmarker.clear();
+                                googleMap.clear();
+                                adapterjobs.notifyDataSetChanged();
+                              /*  database.delete(ParseOpenHelper.TABLENAME_ALLJOBS, ParseOpenHelper.TECHID + "=?", new String[]{HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)});*/
+                                HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
+                                if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
+                                    HandyObject.clearpref(getActivity());
+                                    App.appInstance.stopTimer();
+                                    Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
+                                    startActivity(intent_reg);
+                                    getActivity().finish();
+                                    getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                }
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } finally {
+                            //  HandyObject.stopProgressDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.e("responseError", t.getMessage());
+                        HandyObject.stopProgressDialog();
+                    }
+                });
+    }
+
+    private void setJobMarkers(String latitude, String longitude) {
+        LatLng latlong = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+        marker = googleMap.addMarker(new MarkerOptions().position(latlong).title("Marker Title").snippet("Marker Description").
+                icon(BitmapDescriptorFactory.fromResource(R.drawable.mappinpng)));
+        arraylistmarker.add(marker);
+    }
+
+    private void setJobMarkersLocal(String latitude, String longitude) {
+        LatLng latlong = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+        marker = googleMap.addMarker(new MarkerOptions().position(latlong).title("Marker Title").snippet("Marker Description").
+                icon(BitmapDescriptorFactory.fromResource(R.drawable.mappinpng)));
+        arraylistmarker.add(marker);
+    }
+
+    boolean isJobRunning() {
+        if (HandyObject.getPrams(context, AppConstants.ISJOB_RUNNING).equalsIgnoreCase("yes")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.e("DashFragment onPause", "DashFragment onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.e("DashFragment onStop", "DashFragment onStop");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.e("DashFnt onDeoyView", "DashFragment onDestroyView");
+    }
+
+    public class DatabaseFetch extends AsyncTask<ArrayList<AllJobsSkeleton>, Void, ArrayList<AllJobsSkeleton>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            HandyObject.showProgressDialog(getActivity());
+        }
+
+        @Override
+        protected ArrayList<AllJobsSkeleton> doInBackground(ArrayList<AllJobsSkeleton>... arrayLists) {
+            jobsArrayList.clear();
+            Gson gson = new Gson();
+            cursor = database.query(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, null, ParseOpenHelper.TECHIDCURRDAY + "=?", new String[]{HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)}, null, null, null);
+            cursor.moveToFirst();
+            if (cursor != null) {
+                if (cursor.getCount() > 0) {
+                    while (!cursor.isAfterLast()) {
+                        Type type = new TypeToken<AllJobsSkeleton>() {
+                        }.getType();
+                        String getSke = cursor.getString(cursor.getColumnIndex(ParseOpenHelper.JOBSSKELETONCURRDAY));
+
+                        AllJobsSkeleton ske = gson.fromJson(getSke, type);
+                        jobsArrayList.add(ske);
+                        //setJobMarkers(jobsArrayList.get(cursor.getPosition()).getJoblatitude(), jobsArrayList.get(cursor.getPosition()).getJoblongitude());
+                        cursor.moveToNext();
+                    }
+                    cursor.close();
+                    localdata = true;
+                    // binding.rcyviewJobs.setAdapter(adapterjobs);
+                } else {
+                    //binding.rcyviewJobs.setAdapter(adapterjobs);
+                    //  HandyObject.showAlert(context, "cursor not greater than zero");
+                }
+
+            } else {
+                // HandyObject.showAlert(context, "cursor null");
+            }
+            return jobsArrayList;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<AllJobsSkeleton> allJobsSkeletons) {
+            super.onPostExecute(allJobsSkeletons);
+            if (cursor != null) {
+                if (cursor.getCount() > 0) {
+                    LatLng latlong1 = new LatLng(Double.parseDouble(allJobsSkeletons.get(0).getJoblatitude()), Double.parseDouble(allJobsSkeletons.get(0).getJoblongitude()));
+                    CameraPosition cameraPosition = new CameraPosition.Builder().target(latlong1).zoom(2).build();
+                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    binding.rcyviewJobs.setAdapter(adapterjobs);
+
+                    for (int i = 0; i < jobsArrayList.size(); i++) {
+                        setJobMarkers(jobsArrayList.get(i).getJoblatitude(), jobsArrayList.get(i).getJoblongitude());
+                    }
+                } else {
+                    binding.rcyviewJobs.setAdapter(adapterjobs);
+                }
+            }
+            HandyObject.stopProgressDialog();
+
+        }
     }
 }

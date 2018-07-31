@@ -19,6 +19,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -31,19 +32,17 @@
             <android.support.v7.widget.AppCompatButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/verysmalltextsize"
                 android:layout_marginTop="@dimen/largetextsize"
                 android:background="@drawable/bg_loginbtn"
                 android:onClick="@{()->myprofile.OnClickEdit()}"
-               android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/verysmalltextsize"
                 android:text="@string/edit"
                 android:textAllCaps="false"
                 android:textColor="#ffffff"
-                android:textSize="@dimen/verysmalltextsize"
-                 />
+                android:textSize="@dimen/verysmalltextsize" />
         </RelativeLayout>
-
 
 
         <View
@@ -61,40 +60,41 @@
             <android.support.constraint.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".56"
+                android:layout_weight=".6"
+                android:paddingLeft="@dimen/verysmalltextsize"
                 android:paddingRight="@dimen/verysmallpadding"
-                android:paddingTop="@dimen/verysmalltextsize"
-                android:paddingLeft="@dimen/verysmalltextsize">
+                android:paddingTop="@dimen/verysmalltextsize">
+
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/profileimage"
                     android:layout_width="120dp"
                     android:layout_height="110dp"
                     android:layout_marginTop="@dimen/smalltextsize"
                     android:background="@drawable/dashboardlinebg"
+                    android:scaleType="centerCrop"
                     app:layout_constraintTop_toTopOf="parent"
                     app:placeholderImage="@drawable/profile_addimage"
                     app:placeholderImageScaleType="centerCrop"
-                    android:scaleType="centerCrop"
-                    app:progressBarImage="@drawable/loading_imagerec"
-                    />
-               <!-- <ImageView
-                    android:id="@+id/profileimage"
-                    android:layout_width="120dp"
-                    android:layout_height="110dp"
-                    android:layout_marginTop="@dimen/smalltextsize"
-                    android:background="@color/appbasiccolor"
-                    app:layout_constraintTop_toTopOf="parent" />-->
+                    app:progressBarImage="@drawable/loading_imagerec" />
+                <!-- <ImageView
+                     android:id="@+id/profileimage"
+                     android:layout_width="120dp"
+                     android:layout_height="110dp"
+                     android:layout_marginTop="@dimen/smalltextsize"
+                     android:background="@color/appbasiccolor"
+                     app:layout_constraintTop_toTopOf="parent" />-->
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/usernamekey"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/smalltextsize"
                     android:text="@string/usernameprofile"
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/smalltextsize"
                     android:textStyle="bold"
-                    android:layout_marginLeft="@dimen/smalltextsize"
-                    app:layout_constraintTop_toTopOf="@+id/profileimage"
-                    app:layout_constraintLeft_toRightOf="@+id/profileimage" />
+                    app:layout_constraintLeft_toRightOf="@+id/profileimage"
+                    app:layout_constraintTop_toTopOf="@+id/profileimage" />
+
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/username"
                     android:layout_width="0dp"
@@ -110,12 +110,12 @@
                     android:id="@+id/genderkey"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mediumtextsize"
                     android:text="@string/gender"
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/smalltextsize"
                     android:textStyle="bold"
-                    android:layout_marginTop="@dimen/mediumtextsize"
-                    app:layout_constraintEnd_toEndOf="@+id/usernamekey"
+                    app:layout_constraintStart_toStartOf="@+id/usernamekey"
                     app:layout_constraintTop_toBottomOf="@+id/username" />
 
                 <android.support.v7.widget.AppCompatTextView
@@ -125,20 +125,20 @@
                     android:text="Male"
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/smalltextsize"
-                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/genderkey"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/genderkey" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/dobkey"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mediumtextsize"
                     android:text="@string/dob"
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/smalltextsize"
                     android:textStyle="bold"
-                    android:layout_marginTop="@dimen/mediumtextsize"
-                    app:layout_constraintEnd_toEndOf="@+id/usernamekey"
+                    app:layout_constraintStart_toStartOf="@+id/usernamekey"
                     app:layout_constraintTop_toBottomOf="@+id/gender" />
 
                 <android.support.v7.widget.AppCompatTextView
@@ -148,21 +148,23 @@
                     android:text="8th June 1992"
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/smalltextsize"
-                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/dobkey"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/dobkey" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/rolekey"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mediumtextsize"
                     android:text="@string/role"
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/smalltextsize"
                     android:textStyle="bold"
-                    android:layout_marginTop="@dimen/mediumtextsize"
-                    app:layout_constraintEnd_toEndOf="@+id/dobkey"
+
+                    app:layout_constraintStart_toStartOf="@+id/usernamekey"
                     app:layout_constraintTop_toBottomOf="@+id/dob" />
+
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/usertype"
                     android:layout_width="0dp"
@@ -170,65 +172,65 @@
                     android:text="Super Admin"
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/smalltextsize"
-                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/rolekey"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/rolekey" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/statuskey"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mediumtextsize"
                     android:text="@string/status"
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/smalltextsize"
                     android:textStyle="bold"
-                    android:layout_marginTop="@dimen/mediumtextsize"
-                    app:layout_constraintEnd_toEndOf="@+id/dobkey"
-                    app:layout_constraintTop_toBottomOf="@+id/usertype"/>
+                    app:layout_constraintStart_toStartOf="@+id/usernamekey"
+                    app:layout_constraintTop_toBottomOf="@+id/usertype" />
 
                 <android.support.v7.widget.AppCompatCheckBox
                     android:id="@+id/checkboxstatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:button="@drawable/status_customcheckbox"
                     android:layout_marginLeft="@dimen/verysmallpadding"
+                    android:button="@drawable/status_customcheckbox"
+                    android:enabled="false"
                     app:layout_constraintLeft_toRightOf="@+id/statuskey"
-                    app:layout_constraintTop_toTopOf="@+id/statuskey"/>
-               <!-- <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/dojkey"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/joiningdate"
-                    android:textColor="@color/appbasiccolor"
-                    android:textSize="@dimen/smalltextsize"
-                    android:textStyle="bold"
-                    android:layout_marginTop="@dimen/mediumtextsize"
-                    app:layout_constraintEnd_toEndOf="@+id/dobkey"
-                    app:layout_constraintTop_toBottomOf="@+id/statuskey"/>
+                    app:layout_constraintTop_toTopOf="@+id/statuskey" />
+                <!-- <android.support.v7.widget.AppCompatTextView
+                     android:id="@+id/dojkey"
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     android:text="@string/joiningdate"
+                     android:textColor="@color/appbasiccolor"
+                     android:textSize="@dimen/smalltextsize"
+                     android:textStyle="bold"
+                     android:layout_marginTop="@dimen/mediumtextsize"
+                     app:layout_constraintEnd_toEndOf="@+id/dobkey"
+                     app:layout_constraintTop_toBottomOf="@+id/statuskey"/>
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/dojvalue"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Super Admin"
-                    android:textColor="@color/appbasiccolor"
-                    android:textSize="@dimen/smalltextsize"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/dojkey"
-                    app:layout_constraintTop_toTopOf="@+id/dojkey" />-->
+                 <android.support.v7.widget.AppCompatTextView
+                     android:id="@+id/dojvalue"
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     android:text="Super Admin"
+                     android:textColor="@color/appbasiccolor"
+                     android:textSize="@dimen/smalltextsize"
+                     app:layout_constraintRight_toRightOf="parent"
+                     app:layout_constraintLeft_toRightOf="@+id/dojkey"
+                     app:layout_constraintTop_toTopOf="@+id/dojkey" />-->
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/descriptionkey"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/largetextsize"
                     android:text="@string/description"
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/smalltextsize"
                     android:textStyle="bold"
-                    android:layout_marginTop="@dimen/largetextsize"
-                 app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/statuskey"/>
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/statuskey" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/btmtext"
@@ -236,8 +238,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/verysmalltextsize"
                     android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-                    android:textSize="@dimen/smalltextsize"
                     android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/smalltextsize"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/descriptionkey" />
@@ -322,7 +324,7 @@
             <android.support.constraint.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".44"
+                android:layout_weight=".4"
                 android:paddingLeft="@dimen/smallpadding"
                 android:paddingRight="@dimen/smallpadding"
                 android:paddingTop="@dimen/smalltextsize">
@@ -331,13 +333,13 @@
                     android:id="@+id/emailkey"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/smalltextsize"
                     android:text="@string/email"
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/smalltextsize"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="@dimen/smalltextsize"
-                    app:layout_constraintLeft_toLeftOf="parent" />
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/emailvalue"
@@ -347,8 +349,8 @@
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/smalltextsize"
                     app:layout_constraintLeft_toRightOf="@+id/emailkey"
-                    app:layout_constraintTop_toTopOf="@+id/emailkey"
-                    app:layout_constraintRight_toRightOf="parent" />
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/emailkey" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/phonekey"
@@ -377,13 +379,13 @@
                     android:id="@+id/dojkey"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mediumtextsize"
                     android:text="@string/joiningdate"
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/smalltextsize"
                     android:textStyle="bold"
-                    android:layout_marginTop="@dimen/mediumtextsize"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/phonevalue"/>
+                    app:layout_constraintTop_toBottomOf="@+id/phonevalue" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/dojvalue"
@@ -392,13 +394,12 @@
                     android:text="12-4-9"
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/smalltextsize"
-                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/dojkey"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/dojkey" />
 
 
             </android.support.constraint.ConstraintLayout>
-
 
 
         </LinearLayout>

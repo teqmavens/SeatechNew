@@ -9,7 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import teq.development.seatech.Dashboard.DashBoardFragment;
+import teq.development.seatech.Dashboard.Skeleton.AllJobsSkeleton;
 import teq.development.seatech.R;
 import teq.development.seatech.databinding.RowJobsforyouBinding;
 
@@ -17,46 +20,59 @@ public class AdapterJosbForYou extends RecyclerView.Adapter<AdapterJosbForYou.Vi
 
     Context context;
     RowJobsforyouBinding binding;
+    ArrayList<AllJobsSkeleton> jobsArrayList;
     Fragment fragment;
 
-    public AdapterJosbForYou(Context context, Fragment fragment){
+    public AdapterJosbForYou(Context context, ArrayList<AllJobsSkeleton> jobsArrayList, Fragment fragment) {
         this.context = context;
         this.fragment = fragment;
+        this.jobsArrayList = jobsArrayList;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-         binding = DataBindingUtil.inflate(inflater, R.layout.row_jobsforyou,parent,false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.row_jobsforyou, parent, false);
         return new ViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+
+        holder.bind(jobsArrayList.get(position));
         binding.getRoot().findViewById(R.id.jobticketno).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((DashBoardFragment) fragment).onClickTicketNo();
+                ((DashBoardFragment) fragment).onClickTicketNo(position);
             }
         });
 
         binding.getRoot().findViewById(R.id.notesimage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((DashBoardFragment) fragment).onClickNotes();
+                ((DashBoardFragment) fragment).onClickNotes(position);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return jobsArrayList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
+        RowJobsforyouBinding mbinding;
+
         public ViewHolder(RowJobsforyouBinding binding) {
             super(binding.getRoot());
+            mbinding = binding;
+        }
+
+        public void bind(AllJobsSkeleton ske) {
+            mbinding.setRowjobsforyou(ske);
+            mbinding.executePendingBindings();
         }
     }
 }

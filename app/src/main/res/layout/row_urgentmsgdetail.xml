@@ -8,6 +8,13 @@
             type="teq.development.seatech.JobDetail.Adapter.AdapterDashbrdUrgentMsgDetail"></variable>
     </data>
 
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/verysmallpadding"
+        app:cardElevation="@dimen/verysmallpadding"
+        app:cardCornerRadius="@dimen/verysmallpadding">
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,4 +59,5 @@
             android:textSize="@dimen/verysmalltextsize"/>
         <!--android:layout_marginLeft="50dp"-->
     </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
 </layout>

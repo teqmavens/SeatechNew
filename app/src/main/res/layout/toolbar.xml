@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:elevation="12dp"
+    android:elevation="@dimen/smallpadding"
     android:fitsSystemWindows="true"
     android:minHeight="?attr/actionBarSize">
     <!--<ImageView-->
@@ -19,7 +19,7 @@
         android:layout_height="@dimen/toolbarheight">
         
         <android.support.v7.widget.AppCompatImageView
-            android:layout_width="268dp"
+            android:layout_width="248dp"
             android:layout_height="wrap_content"
             android:src="@drawable/loginlogo"
             app:layout_constraintLeft_toLeftOf="parent"/>

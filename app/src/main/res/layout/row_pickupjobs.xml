@@ -1,82 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="rowpickupjobs"
-            type="teq.development.seatech.Dashboard.Adapter.AdapterPickUpJobs"></variable>
+            type="teq.development.seatech.Dashboard.Skeleton.PickUpJobsSkeleton"></variable>
     </data>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingLeft="2dp"
-    android:paddingRight="3dp"
-    android:paddingTop="@dimen/smallpadding"
-    android:paddingBottom="@dimen/smallpadding"
-    android:orientation="horizontal">
 
-    <android.support.v7.widget.AppCompatTextView
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight=".2"
-        android:gravity="center"
-        android:text="Johnyy"
-        android:textColor="@color/black"
-        android:textSize="@dimen/verysmalltextsize" />
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:layout_weight=".2">
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/ticketno"
-            android:layout_width="wrap_content"
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/verysmallpadding"
+        app:cardCornerRadius="@dimen/verysmallpadding"
+        app:cardElevation="@dimen/verysmallpadding">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="123456"
-            android:textColor="@color/appbasiccolor"
-            android:textSize="@dimen/verysmalltextsize" />
-    </LinearLayout>
-    <!--<android.support.v7.widget.AppCompatTextView
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight=".2"
-        android:gravity="center"
-        android:text="123456"
-        android:textColor="@color/appbasiccolor"
-        android:textSize="@dimen/verysmalltextsize" />-->
+            android:orientation="horizontal"
+            android:padding="@dimen/smallpadding">
 
-    <android.support.v7.widget.AppCompatTextView
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight=".2"
-        android:gravity="center"
-        android:text="special customer"
-        android:textColor="@color/black"
-        android:textSize="@dimen/verysmalltextsize" />
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".22"
+                android:gravity="center"
+                android:text="@{rowpickupjobs.customerName}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize" />
 
-    <android.support.v7.widget.AppCompatTextView
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight=".2"
-        android:gravity="center"
-        android:text="@string/region"
-        android:textColor="@color/black"
-        android:textSize="@dimen/verysmalltextsize" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".22"
+                android:gravity="center">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:layout_weight=".2">
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/action"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/action"
-            android:textColor="@color/appbasiccolor"
-            android:textSize="@dimen/verysmalltextsize" />
-    </LinearLayout>
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/ticketno"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{rowpickupjobs.jobTicketNo}"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/verysmalltextsize" />
+            </LinearLayout>
+            <!--<android.support.v7.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:gravity="center"
+                android:text="123456"
+                android:textColor="@color/appbasiccolor"
+                android:textSize="@dimen/verysmalltextsize" />-->
 
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:gravity="center"
+                android:text="@{rowpickupjobs.CustomerType}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize" />
 
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".18"
+                android:gravity="center"
+                android:text="@{rowpickupjobs.RegionName}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize" />
 
-</LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".18"
+                android:gravity="center">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Schedule"
+                    android:textStyle="bold"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/verysmalltextsize" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 </layout>

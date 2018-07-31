@@ -34,12 +34,12 @@ public class AdapterDashbrdUrgentMsg extends RecyclerView.Adapter<AdapterDashbrd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         binding.getRoot().findViewById(R.id.ticketno).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(fragment instanceof DashBoardFragment) {
-                    ((DashBoardFragment) fragment).onClickTicketNo();
+                    ((DashBoardFragment) fragment).onClickTicketNo(position);
                 }
             }
         });

@@ -5,12 +5,13 @@
     <data>
         <variable
             name="rowjobsforyou"
-            type="teq.development.seatech.Dashboard.Adapter.AdapterJosbForYou"></variable>
+            type="teq.development.seatech.Dashboard.Skeleton.AllJobsSkeleton"></variable>
     </data>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/verysmallpadding"
         app:cardElevation="@dimen/verysmallpadding"
         app:cardCornerRadius="@dimen/verysmallpadding">
 
@@ -19,8 +20,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingBottom="@dimen/verysmallpadding"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
             android:paddingTop="@dimen/verysmallpadding">
 
             <android.support.v7.widget.AppCompatTextView
@@ -28,9 +27,11 @@
                 android:layout_height="match_parent"
                 android:layout_weight=".11"
                 android:gravity="center"
-                android:text="John"
+                android:text="@{rowjobsforyou.CustomerName}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/verysmalltextsize" />
+
+           <!-- android:text="@{rowjobsforyou.CustomerName}"-->
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/jobticketno"
@@ -38,64 +39,74 @@
                 android:layout_height="match_parent"
                 android:layout_weight=".11"
                 android:gravity="center"
-                android:text="CF 10001"
+                android:text="@{rowjobsforyou.JobticketNo}"
                 android:textColor="@color/appbasiccolor"
                 android:textSize="@dimen/verysmalltextsize" />
+           <!-- android:text="@{rowjobsforyou.JobticketNo}"-->
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".11"
+                android:gravity="center"
+                android:text="@{rowjobsforyou.JobType}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize" />
+
+           <!-- android:text="@{rowjobsforyou.JobType}"-->
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".11"
                 android:gravity="center"
-                android:text="Service"
+                android:maxLines="2"
+                android:text="@{rowjobsforyou.BoatLocation}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/verysmalltextsize" />
+           <!-- android:text="@{rowjobsforyou.BoatLocation}"-->
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".11"
                 android:gravity="center"
-                android:text="address1"
+                android:text="@{rowjobsforyou.time}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/verysmalltextsize" />
+            <!--android:text="@{rowjobsforyou.time}"-->
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".11"
                 android:gravity="center"
-                android:text="09:00"
+                android:text="@{rowjobsforyou.TechSupervisor}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/verysmalltextsize" />
+
+         <!--   android:text="@{rowjobsforyou.TechSupervisor}"-->
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".11"
                 android:gravity="center"
-                android:text="supervisor1"
+                android:maxLines="2"
+                android:text="@{rowjobsforyou.OtherMembers}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/verysmalltextsize" />
+
+           <!-- android:text="@{rowjobsforyou.OtherMembers}"-->
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".11"
                 android:gravity="center"
-                android:text="tech1,tech2,tech3,tech4"
+                android:text="@{rowjobsforyou.PartLocation}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/verysmalltextsize" />
-
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".11"
-                android:gravity="center"
-                android:text="location1"
-                android:textColor="@color/black"
-                android:textSize="@dimen/verysmalltextsize" />
-
+            <!--android:text="@{rowjobsforyou.PartLocation}"-->
 
             <LinearLayout
                 android:layout_width="0dp"

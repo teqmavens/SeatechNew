@@ -7,12 +7,13 @@
     <CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/textspinner"
         android:singleLine="true"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:textColor="@color/black"
         android:text="dfdffdff"
-        android:background="@color/appbasiccolor"
+        android:maxWidth="158dp"
+        android:textSize="@dimen/verysmalltextsize"
         android:layout_height="wrap_content"
-        android:padding="@dimen/smalltextsize"
+        android:padding="@dimen/smallpadding"
         android:ellipsize="marquee"/>
 
 </LinearLayout>

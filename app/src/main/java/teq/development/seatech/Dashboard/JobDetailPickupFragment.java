@@ -46,7 +46,7 @@ public class JobDetailPickupFragment extends Fragment {
         previouslabor_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogViewComment();
+              //  dialogViewComment();
             }
         });
     }
@@ -55,7 +55,7 @@ public class JobDetailPickupFragment extends Fragment {
         dialogViewComment();
     }*/
 
-    private void dialogViewComment() {
+   /* private void dialogViewComment() {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("dialogviewcomment");
         if (prev != null) {
@@ -65,5 +65,5 @@ public class JobDetailPickupFragment extends Fragment {
         // Create and show the dialog.
         DialogFragment newFragment = ViewCommentDialog.newInstance(8);
         newFragment.show(ft, "dialogviewcomment");
-    }
+    }*/
 }

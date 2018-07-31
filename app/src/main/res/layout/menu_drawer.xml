@@ -30,8 +30,8 @@
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/mediumtextsize"
-            android:layout_marginTop="@dimen/drawablepadding"
+            android:textSize="@dimen/smalltextsize"
+            android:layout_marginTop="@dimen/verysmalltextsize"
             android:textColor="@color/white"
             android:text="@string/dashboard_text"/>
     </LinearLayout>
@@ -51,8 +51,8 @@
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/mediumtextsize"
-            android:layout_marginTop="@dimen/drawablepadding"
+            android:textSize="@dimen/smalltextsize"
+            android:layout_marginTop="@dimen/verysmalltextsize"
             android:textColor="@color/white"
             android:text="@string/detailpage"/>
     </LinearLayout>
@@ -71,8 +71,8 @@
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/mediumtextsize"
-            android:layout_marginTop="@dimen/drawablepadding"
+            android:textSize="@dimen/smalltextsize"
+            android:layout_marginTop="@dimen/verysmalltextsize"
             android:textColor="@color/white"
             android:text="@string/timesheet"/>
     </LinearLayout>
@@ -91,8 +91,8 @@
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/mediumtextsize"
-            android:layout_marginTop="@dimen/drawablepadding"
+            android:textSize="@dimen/smalltextsize"
+            android:layout_marginTop="@dimen/verysmalltextsize"
             android:textColor="@color/white"
             android:text="@string/pickupjobsdr"/>
     </LinearLayout>
