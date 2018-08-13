@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.provider.SyncStateContract;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.support.v4.content.LocalBroadcastManager;
@@ -17,6 +18,10 @@ import com.crashlytics.android.Crashlytics;
 import com.evernote.android.job.JobManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
+
+import java.net.URISyntaxException;
 import java.util.Calendar;
 
 import io.fabric.sdk.android.Fabric;
@@ -134,4 +139,16 @@ public class App extends MultiDexApplication {
 
     }
 
+    private Socket mSocket;
+    {
+        try {
+            mSocket = IO.socket(AppConstants.CHAT_SERVER_URL);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Socket getSocket() {
+        return mSocket;
+    }
 }

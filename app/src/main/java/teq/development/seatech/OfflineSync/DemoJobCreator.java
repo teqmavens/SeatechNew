@@ -17,6 +17,18 @@ public class DemoJobCreator implements JobCreator {
                 return new DemoSyncJob();
             case SyncNeeddPart.TAG:
                 return new SyncNeeddPart();
+            case SyncSubmitLaborPerf.TAG:
+                return new SyncSubmitLaborPerf();
+            case SyncNeedEstimate.TAG:
+                return new SyncNeedEstimate();
+            case SyncLCChange.TAG:
+                return new SyncLCChange();
+            case SyncJobStatus.TAG:
+                return new SyncJobStatus();
+            case SyncUploadImages.TAG:
+                return new SyncUploadImages();
+            case SyncAddPart.TAG:
+                return new SyncAddPart();
             default:
                 return null;
         }

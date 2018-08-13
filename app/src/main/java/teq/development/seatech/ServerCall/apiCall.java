@@ -67,7 +67,7 @@ public interface apiCall {
             @Header("sessionID") String sessionid
     );
 
-    @POST("technician/technician/save-job-uploads.json")
+    @POST("technician/technician/save-job-uploads-old.json")
     @Headers("tokenID: 1234567890234dfg456")
     Call<ResponseBody> addJobImages(
             @Body RequestBody imageData,
@@ -84,22 +84,23 @@ public interface apiCall {
     );
 
     @FormUrlEncoded
-    @POST("technician/technician/save-tech-logs.json")
+    @POST("technician/technician/save-tech-logs-old.json")
     @Headers("tokenID: 1234567890234dfg456")
     Call<ResponseBody> submitLCdata(
-            @Field("tech_id") String techid,
+          /*  @Field("tech_id") String techid,
             @Field("job_id") String jobid,
             @Field("labour_code") String labour_code,
             @Field("start_time") String start_time,
             @Field("end_time") String end_time,
             @Field("hours") String hours,
             @Field("hours_adjusted") String hours_adjusted,
-            @Field("created_by") String created_by,
+            @Field("created_by") String created_by,*/
+            @Field("techlog") String techlog,
             @Header("sessionID") String sessionid
     );
 
     @FormUrlEncoded
-    @POST("technician/technician/save-job-notes.json")
+    @POST("technician/technician/save-job-notes-old.json")
     @Headers("tokenID: 1234567890234dfg456")
     Call<ResponseBody> submitTechLaborPerf(
            /* @Field("created_by") String created_by,
@@ -111,10 +112,10 @@ public interface apiCall {
     );
 
     @FormUrlEncoded
-    @POST("jobs/job-activity-logs.json")
+    @POST("jobs/job-activity-logs-old.json")
     @Headers("tokenID: 1234567890234dfg456")
     Call<ResponseBody> JobStatusData(
-            @Field("tech_id") String techid,
+           /* @Field("tech_id") String techid,
             @Field("job_id") String jobid,
             @Field("job_completed") String job_completed,
             @Field("captain_aware") String captain_aware,
@@ -130,7 +131,8 @@ public interface apiCall {
             @Field("end_time") String end_time,
             @Field("hours") String hours,
             @Field("hours_adjusted") String hours_adjusted,
-            @Field("labour_code") String labour_code,
+            @Field("labour_code") String labour_code,*/
+            @Field("jobactivitylog") String jobactivitylog,
             @Header("sessionID") String sessionid
     );
 
@@ -140,7 +142,7 @@ public interface apiCall {
     Call<ResponseBody> GetManufacturerData();
 
     //Need Part Api
-    @POST("jobs/save-part-request.json")
+    @POST("jobs/save-part-request-old.json")
     @Headers("tokenID: 1234567890234dfg456")
     Call<ResponseBody> NeedPartData(
             @Body RequestBody files,
@@ -207,13 +209,14 @@ public interface apiCall {
     );
 
     @FormUrlEncoded
-    @POST("jobs/get-estimation-request.json")
+    @POST("jobs/get-estimation-request-old.json")
     @Headers("tokenID: 1234567890234dfg456")
     Call<ResponseBody> NeedEstimate(
-            @Field("tech_id") String techid,
+           /* @Field("tech_id") String techid,
             @Field("message") String message,
             @Field("job_id") String jobid,
-            @Field("urgent") String urgent,
+            @Field("urgent") String urgent,*/
+            @Field("jobrequest") String jobrequest,
             @Header("sessionID") String sessionid
     );
 
@@ -223,6 +226,23 @@ public interface apiCall {
     @Headers("tokenID: 1234567890234dfg456")
     Call<ResponseBody> getTicketData(
             @Field("job_id") String jobid,
+            @Header("sessionID") String sessionid
+    );
+
+    //Chat Apis
+    @FormUrlEncoded
+    @POST("jobs/chatJobList.json")
+    @Headers("tokenID: 1234567890234dfg456")
+    Call<ResponseBody> LeftChatJobList(
+            @Field("techid") String jobid,
+            @Header("sessionID") String sessionid
+    );
+
+    @FormUrlEncoded
+    @POST("users/employeesList.json")
+    @Headers("tokenID: 1234567890234dfg456")
+    Call<ResponseBody> AllEmployeeList(
+            @Field("user_id") String userid,
             @Header("sessionID") String sessionid
     );
 }

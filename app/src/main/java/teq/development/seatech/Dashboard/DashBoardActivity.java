@@ -45,9 +45,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import teq.development.seatech.App;
+import teq.development.seatech.Chat.ChatActivity;
 import teq.development.seatech.LoginActivity;
 import teq.development.seatech.OfflineSync.DemoSyncJob;
+import teq.development.seatech.OfflineSync.SyncAddPart;
+import teq.development.seatech.OfflineSync.SyncJobStatus;
+import teq.development.seatech.OfflineSync.SyncLCChange;
+import teq.development.seatech.OfflineSync.SyncNeedEstimate;
 import teq.development.seatech.OfflineSync.SyncNeeddPart;
+import teq.development.seatech.OfflineSync.SyncSubmitLaborPerf;
+import teq.development.seatech.OfflineSync.SyncUploadImages;
 import teq.development.seatech.Profile.ChangePwdFragment;
 import teq.development.seatech.Profile.MyProfileFragment;
 import teq.development.seatech.R;
@@ -61,7 +68,7 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
     DrawerLayout mDrawerLayout;
     public ActionBarDrawerToggle mDrawerToggle;
     public Boolean mABoolean = false;
-    public ImageView menu_icon, sick_icon, cdhour_icon;
+    public ImageView menu_icon, sick_icon, cdhour_icon,chaticon;
     SimpleDraweeView userimage;
     TextView username;
     DatePickerDialog.OnDateSetListener date;
@@ -78,6 +85,7 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         menu_icon = (ImageView) findViewById(R.id.menu_icon);
         sick_icon = (ImageView) findViewById(R.id.sick_icon);
         cdhour_icon = (ImageView) findViewById(R.id.cdhour_icon);
+        chaticon = (ImageView) findViewById(R.id.chaticon);
         userimage = (SimpleDraweeView) findViewById(R.id.userimage);
         username = (TextView) findViewById(R.id.username);
         setSupportActionBar(toolbar);
@@ -90,6 +98,7 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         menu_icon.setOnClickListener(this);
         sick_icon.setOnClickListener(this);
         cdhour_icon.setOnClickListener(this);
+        chaticon.setOnClickListener(this);
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -140,7 +149,6 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                         frgm.setArguments(bundle);
                         replaceFragment(frgm);
                     }
-
                 }
             }
         };
@@ -213,6 +221,12 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                     // Toast.makeText(this, R.string.withoutinter_noprenextjob, Toast.LENGTH_SHORT).show();
                     HandyObject.showAlert(DashBoardActivity.this, getString(R.string.withoutinter_nodailyreport));
                 }
+                break;
+            case R.id.chaticon:
+                Intent intent_reg = new Intent(DashBoardActivity.this, ChatActivity.class);
+                startActivity(intent_reg);
+              //  finish();
+                overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
                 break;
         }
     }
@@ -341,15 +355,6 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         popup.showAsDropDown(view);
     }
 
-    boolean isJobRunning() {
-        if (HandyObject.getPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING).equalsIgnoreCase("yes")) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
     private void LogoutTask() {
         HandyObject.showProgressDialog(this);
         HandyObject.getApiManagerType().logout(HandyObject.getPrams(this, AppConstants.LOGINTEQ_ID), HandyObject.getPrams(this, AppConstants.LOGIN_SESSIONID))
@@ -411,13 +416,6 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
     protected void onDestroy() {
         super.onDestroy();
         Log.e("Activity OnDestroy", "Activity OnDestroy");
-        // HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING, "no");
-        /*if (DashBoardActivity.onbackppress == true) {
-            DashBoardActivity.onbackppress = false;
-            HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING, "yes");
-        } else {
-            HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING, "no");
-        }*/
     }
 
     @Override
@@ -467,5 +465,20 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         super.onStart();
         DemoSyncJob.scheduleJob();
         SyncNeeddPart.scheduleJob();
+        SyncSubmitLaborPerf.scheduleJob();
+        SyncNeedEstimate.scheduleJob();
+        SyncLCChange.scheduleJob();
+        SyncJobStatus.scheduleJob();
+        SyncUploadImages.scheduleJob();
+        SyncAddPart.scheduleJob();
     }
+
+    boolean isJobRunning() {
+        if (HandyObject.getPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING).equalsIgnoreCase("yes")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

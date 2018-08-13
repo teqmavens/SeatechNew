@@ -29,6 +29,10 @@
             android:screenOrientation="portrait"></activity>
 
         <activity android:name=".database.MainActivity"></activity>
+        <activity android:name=".Chat.ChatActivity"
+            ></activity>
+
+
         <activity android:name=".Utils.PdfActivity" android:screenOrientation="portrait"></activity>
         <meta-data
             android:name="io.fabric.ApiKey"

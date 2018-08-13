@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ClipData;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -48,6 +49,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -70,6 +72,7 @@ import retrofit2.Response;
 import teq.development.seatech.App;
 import teq.development.seatech.JobDetail.Adapter.AdapterManufacturerSpinner;
 import teq.development.seatech.JobDetail.Adapter.AdapterPartUpldImages;
+import teq.development.seatech.JobDetail.Skeleton.AddPartSkeleton;
 import teq.development.seatech.LoginActivity;
 import teq.development.seatech.ManufacturerSkeleton;
 import teq.development.seatech.R;
@@ -99,6 +102,9 @@ public class NeedPartDialog extends DialogFragment {
     DatePickerDialog.OnDateSetListener dateStart;
     String[] all_path = null;
     public static String jobid;
+    SQLiteDatabase database;
+    Gson gson;
+    int partcount;
 
     static NeedPartDialog newInstance(String id) {
         NeedPartDialog f = new NeedPartDialog();
@@ -1143,10 +1149,40 @@ public class NeedPartDialog extends DialogFragment {
 
     private void AddPartToSrver(String urgent, String part_description, String how_fast_needed, String price_approval_required, String partforrepair, String manufacturer_id, String part_no, String quantity_needed, String serial_no, String failure_description, String tech_support_name, String rma_or_case_from_mfg_support,
                                 String mfg_deem_this_warranty, String advance_replacement, String part_sold_by_seatech, String need_loner, String notes) {
+        partcount++;
+        AddPartSkeleton ske = new AddPartSkeleton();
+        ske.setCount(String.valueOf(partcount));
+        ske.setTech_id(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID));
+        ske.setJob_id(jobid);
+        ske.setUrgent(urgent);
+        ske.setPart_description(part_description);
+        ske.setHow_fast_needed(how_fast_needed);
+        ske.setPrice_approval_required(price_approval_required);
+        ske.setPart_for_repair(partforrepair);
+        ske.setManufacturer_id(manufacturer_id);
+        ske.setPart_no(part_no);
+        ske.setQuantity_needed(quantity_needed);
+        ske.setSerial_no(serial_no);
+        ske.setFailure_description(failure_description);
+        ske.setTech_support_name(tech_support_name);
+        ske.setRma_or_case_from_mfg_support(rma_or_case_from_mfg_support);
+        ske.setMfg_deem_this_warranty(mfg_deem_this_warranty);
+        ske.setAdvance_replacement(advance_replacement);
+        ske.setPart_sold_by_seatech(part_sold_by_seatech);
+        ske.setNeed_loner(need_loner);
+        ske.setNotes(notes);
+        ArrayList<AddPartSkeleton> arrayList = new ArrayList<>();
+        arrayList.add(ske);
+
+        gson = new Gson();
+        String part_request = gson.toJson(arrayList);
+        final String insertedTime = HandyObject.ParseDateTimeForNotes(new Date());
+        insertIntoDB(insertedTime, arrayList, all_path);
 
         MultipartBody.Builder builder = new MultipartBody.Builder();
-
         builder.setType(MultipartBody.FORM)
+                .addFormDataPart("part_request", part_request);
+       /* builder.setType(MultipartBody.FORM)
                 .addFormDataPart("tech_id", HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID))
                 .addFormDataPart("job_id", jobid)
                 .addFormDataPart("urgent", urgent)
@@ -1165,64 +1201,77 @@ public class NeedPartDialog extends DialogFragment {
                 .addFormDataPart("advance_replacement", advance_replacement)
                 .addFormDataPart("part_sold_by_seatech", part_sold_by_seatech)
                 .addFormDataPart("need_loner", need_loner)
-                .addFormDataPart("notes", notes);
+                .addFormDataPart("notes", notes);*/
 
         if (all_path == null || all_path.length < 1) {
         } else if (all_path.length > 0) {
             ArrayList<File> imagesData = getImagesData();
-
             // co.showLoading();
             for (int i = 0; i < imagesData.size(); i++) {
                 builder.setType(MultipartBody.FORM)
-                        .addFormDataPart("images[" + i + "]", "image" + i + ".png",
+                        .addFormDataPart("img_" + partcount + "[" + i + "]", "image" + i + ".png",
                                 RequestBody.create(MEDIA_TYPE_FORM, imagesData.get(i)))
                         .build();
             }
         }
+        if (HandyObject.checkInternetConnection(getActivity())) {
+            MultipartBody requestBody = builder.build();
+            HandyObject.showProgressDialog(getActivity());
+            HandyObject.getApiManagerMain().NeedPartData(requestBody, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID)).enqueue(
+                    new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            try {
+                                String jsonResponse = response.body().string();
+                                Log.e("needpart", jsonResponse);
+                                JSONObject jsonObject = new JSONObject(jsonResponse);
+                                if (jsonObject.getString("status").equalsIgnoreCase("success")) {
+                                    HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
 
-        MultipartBody requestBody = builder.build();
-        HandyObject.showProgressDialog(getActivity());
-        HandyObject.getApiManagerMain().NeedPartData(requestBody, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID)).enqueue(
-                new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        try {
-                            String jsonResponse = response.body().string();
-                            JSONObject jsonObject = new JSONObject(jsonResponse);
-                            if (jsonObject.getString("status").equalsIgnoreCase("success")) {
-                                HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
-                                dialog.dismiss();
-                                NeedAnotherProdDialog();
-                            } else {
-                                HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
-                                if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
-                                    HandyObject.clearpref(getActivity());
-                                    App.appInstance.stopTimer();
-                                    Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
-                                    startActivity(intent_reg);
-                                    getActivity().finish();
-                                    getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                    JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jobjInside = jsonArray.getJSONObject(i);
+                                        String jobid = jobjInside.getString("job_id");
+                                        database.delete(ParseOpenHelper.TABLE_ADDPART, ParseOpenHelper.ADDPARTJOBID + " =? AND " + ParseOpenHelper.ADDPARTCREATEDAT + " = ?",
+                                                new String[]{jobid, insertedTime});
+                                    }
+
+                                    NeedAnotherProdDialog();
+                                } else {
+                                    HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
+                                    if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
+                                        HandyObject.clearpref(getActivity());
+                                        App.appInstance.stopTimer();
+                                        Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
+                                        startActivity(intent_reg);
+                                        getActivity().finish();
+                                        getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                    }
                                 }
                                 dialog.dismiss();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } finally {
+                                //  commonObjects.showHideProgressBar(getActivity());
+                                HandyObject.stopProgressDialog();
                             }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } finally {
-                            //  commonObjects.showHideProgressBar(getActivity());
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Log.e("responseError", t.getMessage());
+                            // commonObjects.showHideProgressBar(getActivity());
                             HandyObject.stopProgressDialog();
                         }
                     }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.e("responseError", t.getMessage());
-                        // commonObjects.showHideProgressBar(getActivity());
-                        HandyObject.stopProgressDialog();
-                    }
-                }
-        );
+            );
+        } else {
+            HandyObject.showAlert(getActivity(), getString(R.string.fetchdata_whenonline));
+            HandyObject.stopProgressDialog();
+            dialog.dismiss();
+        }
     }
 
     private ArrayList<File> getImagesData() {
@@ -1238,5 +1287,40 @@ public class NeedPartDialog extends DialogFragment {
             imagesList.add(file);
         }
         return imagesList;
+    }
+
+    private void insertIntoDB(String time, ArrayList<AddPartSkeleton> arrayList, String[] images) {
+        database = ParseOpenHelper.getInstance(getActivity()).getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(ParseOpenHelper.ADDPARTCOUNT, arrayList.get(0).getCount());
+        cv.put(ParseOpenHelper.ADDPARTTECHID, arrayList.get(0).getTech_id());
+        cv.put(ParseOpenHelper.ADDPARTJOBID, arrayList.get(0).getJob_id());
+        cv.put(ParseOpenHelper.ADDPARTURGENT, arrayList.get(0).getUrgent());
+        cv.put(ParseOpenHelper.ADDPARTDESCRIPTION, arrayList.get(0).getPart_description());
+        cv.put(ParseOpenHelper.ADDPARTHOWFASTNEEDED, arrayList.get(0).getHow_fast_needed());
+        cv.put(ParseOpenHelper.ADDPARTPRICEAPPROVALREQUIRED, arrayList.get(0).getPrice_approval_required());
+        cv.put(ParseOpenHelper.ADDPARTFORREPAIR, arrayList.get(0).getPart_for_repair());
+        cv.put(ParseOpenHelper.ADDPARTMANUFACTID, arrayList.get(0).getManufacturer_id());
+        cv.put(ParseOpenHelper.ADDPARTNO, arrayList.get(0).getPart_no());
+        cv.put(ParseOpenHelper.ADDPARTQUANTITYNEEDED, arrayList.get(0).getQuantity_needed());
+        cv.put(ParseOpenHelper.ADDPARTSERIALNO, arrayList.get(0).getSerial_no());
+        cv.put(ParseOpenHelper.ADDPARTFAILUREDESC, arrayList.get(0).getFailure_description());
+        cv.put(ParseOpenHelper.ADDPARTTECHSUPPORTNAME, arrayList.get(0).getTech_support_name());
+        cv.put(ParseOpenHelper.ADDPARTSETRMAORCASE, arrayList.get(0).getRma_or_case_from_mfg_support());
+        cv.put(ParseOpenHelper.ADDPARTMFGDEEMTHISWARRANTY, arrayList.get(0).getMfg_deem_this_warranty());
+        cv.put(ParseOpenHelper.ADDPARTADVANCEREPLACEMENT, arrayList.get(0).getAdvance_replacement());
+        cv.put(ParseOpenHelper.ADDPARTSOLDBYSEATECH, arrayList.get(0).getPart_sold_by_seatech());
+        cv.put(ParseOpenHelper.ADDPARTNEEDLOANER, arrayList.get(0).getNeed_loner());
+        cv.put(ParseOpenHelper.ADDPARTNOTES, arrayList.get(0).getNotes());
+        cv.put(ParseOpenHelper.ADDPARTCREATEDAT, time);
+        if (images == null || images.length < 1) {
+            cv.put(ParseOpenHelper.ADDPARTUPLOADEDIMAGES, "");
+        } else {
+            ArrayList<File> imagesData = getImagesData();
+            cv.put(ParseOpenHelper.ADDPARTUPLOADEDIMAGES, gson.toJson(imagesData));
+
+        }
+        long idd = database.insert(ParseOpenHelper.TABLE_ADDPART, null, cv);
+
     }
 }

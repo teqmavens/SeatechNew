@@ -9,9 +9,9 @@
     </style>
     <style name="MaterialTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
-        <item name="android:windowNoTitle">true</item>
+       <!-- <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowFullscreen">true</item>-->
         <item name="colorPrimary">@color/appbasiccolor</item>
         <item name="colorPrimaryDark">@color/appbasiccolor</item>
         <item name="android:orientation">vertical</item>

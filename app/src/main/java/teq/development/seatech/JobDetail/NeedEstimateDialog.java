@@ -19,16 +19,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import teq.development.seatech.App;
+import teq.development.seatech.JobDetail.Skeleton.NeedEstimateSkeleton;
 import teq.development.seatech.LoginActivity;
 import teq.development.seatech.R;
 import teq.development.seatech.Utils.AppConstants;
@@ -42,6 +48,7 @@ public class NeedEstimateDialog extends DialogFragment {
     public static String jobid;
     PopupNeedestimateBinding binding;
     SQLiteDatabase database;
+    Gson gson;
 
     static NeedEstimateDialog newInstance(String id) {
         NeedEstimateDialog f = new NeedEstimateDialog();
@@ -59,6 +66,7 @@ public class NeedEstimateDialog extends DialogFragment {
         binding = DataBindingUtil.bind(rootView);
         binding.setPopupneedestimate(this);
         //  initViews();
+        gson = new Gson();
         database = ParseOpenHelper.getInstance(getActivity()).getWritableDatabase();
         return rootView;
     }
@@ -68,23 +76,13 @@ public class NeedEstimateDialog extends DialogFragment {
             HandyObject.showAlert(getActivity(), getString(R.string.fieldempty));
         } else {
             if (binding.checkboxNeedestimate.isChecked()) {
-                insertToDB("1");
+                NeedEstimateTask(binding.etDescription.getText().toString(), jobid, "1");
             } else {
-                insertToDB("0");
+                NeedEstimateTask(binding.etDescription.getText().toString(), jobid, "0");
             }
         }
     }
 
-    private void insertToDB(String urgent) {
-        ContentValues cv = new ContentValues();
-        cv.put(ParseOpenHelper.ESTIMATETECHID, HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID));
-        cv.put(ParseOpenHelper.ESTIMATEJOBID, urgent);
-        cv.put(ParseOpenHelper.ESTIMATEDESCRIPTION, binding.etDescription.getText().toString());
-        cv.put(ParseOpenHelper.ESTIMATEURGENT, urgent);
-        long id = database.insert(ParseOpenHelper.TABLENAME_NEEDESTIMATE, null, cv);
-
-        NeedEstimateTask(binding.etDescription.getText().toString(), jobid, urgent);
-    }
 
     @Override
     public void onResume() {
@@ -112,50 +110,85 @@ public class NeedEstimateDialog extends DialogFragment {
 
     private void NeedEstimateTask(String message, String jobid, String urgent) {
         HandyObject.showProgressDialog(getActivity());
-        HandyObject.getApiManagerMain().NeedEstimate(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), message, jobid, urgent, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
-                .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        try {
-                            String jsonResponse = response.body().string();
-                            Log.e("responsneedestimate", jsonResponse);
-                            JSONObject jsonObject = new JSONObject(jsonResponse);
-                            if (jsonObject.getString("status").toLowerCase().equals("success")) {
-                                dialog.dismiss();
-                                HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
+        NeedEstimateSkeleton needestimate_ske = new NeedEstimateSkeleton();
+        needestimate_ske.setCreatedAt(HandyObject.ParseDateTimeForNotes(new Date()));
+        final String insertedTime = HandyObject.ParseDateTimeForNotes(new Date());
+        needestimate_ske.setMessage(message);
+        needestimate_ske.setTech_id(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID));
+        needestimate_ske.setJob_id(jobid);
+        needestimate_ske.setUrgent(urgent);
+        ArrayList<NeedEstimateSkeleton> needEstimate = new ArrayList<>();
+        needEstimate.add(needestimate_ske);
+        String jobrequest = gson.toJson(needEstimate);
+        insertIntoDB(insertedTime, HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), jobid, message, urgent);
 
+        if (HandyObject.checkInternetConnection(getActivity())) {
+            HandyObject.getApiManagerMain().NeedEstimate(jobrequest, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
+                    /*HandyObject.getApiManagerMain().NeedEstimate(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), message, jobid, urgent, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))*/
+                    .enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            try {
+                                String jsonResponse = response.body().string();
+                                Log.e("responsneedestimate", jsonResponse);
+                                JSONObject jsonObject = new JSONObject(jsonResponse);
+                                if (jsonObject.getString("status").toLowerCase().equals("success")) {
+                                    dialog.dismiss();
+                                    HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
 
-                            } else {
-                                dialog.dismiss();
-                                HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
-                                if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
-                                    HandyObject.clearpref(getActivity());
-                                    App.appInstance.stopTimer();
-                                    Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
-                                    startActivity(intent_reg);
-                                    getActivity().finish();
-                                    getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                    JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jobj = jsonArray.getJSONObject(i);
+                                        //Delete related row from database
+                                        database.delete(ParseOpenHelper.TABLENAME_NEEDESTIMATE, ParseOpenHelper.ESTIMATEJOBID + " =? AND " + ParseOpenHelper.ESTIMATECREATEDAT + " = ?",
+                                                new String[]{jobj.getString("job_id"), insertedTime});
+                                    }
+
+                                } else {
+                                    dialog.dismiss();
+                                    HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
+                                    if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
+                                        HandyObject.clearpref(getActivity());
+                                        App.appInstance.stopTimer();
+                                        Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
+                                        startActivity(intent_reg);
+                                        getActivity().finish();
+                                        getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                    }
                                 }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } finally {
+                                HandyObject.stopProgressDialog();
                             }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } finally {
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Log.e("responseError", t.getMessage());
                             HandyObject.stopProgressDialog();
                         }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.e("responseError", t.getMessage());
-                        HandyObject.stopProgressDialog();
-                    }
-                });
-
+                    });
+        } else {
+            HandyObject.showAlert(getActivity(), getString(R.string.fetchdata_whenonline));
+            HandyObject.stopProgressDialog();
+            dialog.dismiss();
+        }
     }
 
     public void onClickCross() {
         dialog.dismiss();
+    }
+
+    private void insertIntoDB(String time, String techid, String jobid, String description, String urgent) {
+        ContentValues cv = new ContentValues();
+        cv.put(ParseOpenHelper.ESTIMATECREATEDAT, time);
+        cv.put(ParseOpenHelper.ESTIMATETECHID, techid);
+        cv.put(ParseOpenHelper.ESTIMATEJOBID, jobid);
+        cv.put(ParseOpenHelper.ESTIMATEDESCRIPTION, description);
+        cv.put(ParseOpenHelper.ESTIMATEURGENT, urgent);
+        long idd = database.insert(ParseOpenHelper.TABLENAME_NEEDESTIMATE, null, cv);
     }
 }

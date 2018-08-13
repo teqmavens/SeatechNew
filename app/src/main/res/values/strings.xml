@@ -41,6 +41,7 @@
     <string name="partlocation">Part Location</string>
     <string name="techdashnotes">Tech Dash Notes</string>
     <string name="urgentmsg"><u>Urgent Messages</u></string>
+    <string name="urgentmsgcmp">Urgent Messages</string>
     <string name="pickupjobs"><u>Pick Up Jobs</u></string>
     <string name="customertype">Customer Type</string>
     <string name="region">Region</string>
@@ -55,6 +56,7 @@
     <string name="promisedate">Promise Date:</string>
     <string name="techlaborperform"><u>Tech Labor Performed</u></string>
     <string name="enterdesription">Enter Description....</string>
+    <string name="enterdesriptioncompose">Enter Description</string>
     <string name="previouslaborcmmnt">View Previous Labor Entries</string>
     <string name="recordnotes_othertechs"><u>Last Off the record note entered for this job</u></string>
     <string name="needpart">Need Parts/Start Repair Process</string>
@@ -143,6 +145,7 @@
     <string name="notbilled">How many hours should not be billed?</string>
     <string name="whynotbilled">Why should the hours not be billed?</string>
     <string name="nourgentmsg">No Urgent message</string>
+    <string name="withoutinter_nopartidatedata">Without internet connection you are not able to fetch particular day jobs.</string>
     <string name="withoutinter_noprenextjob">Without internet connection you are not able to fetch previous or next day jobs.</string>
     <string name="withoutinter_nodailyreport">Without internet connection you are not able to fetch particular day job record.</string>
     <string name="cannotstart_newjob">You can\'t start new Job as a job is already running.</string>
@@ -231,11 +234,19 @@
     <string name="pleaseselectmanuf">Please Select Manufacturer.</string>
     <string name="tryafter">No pickup jobs available.</string>
     <string name="norecordFound">No record Found</string>
+    <string name="fetchdata_whenonline">Data will be updated once internet available.</string>
+    <string name="empname">Employee name</string>
+    <string name="cannotsendblankmsg">Can\'t send blank message.</string>
+    <string name="selectreciever">Please Select Receiver first</string>
     <string-array name="laborcode_array">
-        <item>TRAVEL TIME</item>
+        <!--<item>Travel Time</item>
         <item>SERVICE TIME</item>
         <item>LUNCH</item>
-        <item>SHOP WORK TIME</item>
+        <item>SHOP WORK TIME</item>-->
+        <item>Travel Time</item>
+        <item>Service Time</item>
+        <item>Lunch</item>
+        <item>Shop Work Time</item>
     </string-array>
     <string-array name="status_array">
         <item>All</item>

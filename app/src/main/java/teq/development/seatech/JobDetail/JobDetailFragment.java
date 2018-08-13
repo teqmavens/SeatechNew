@@ -44,6 +44,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,6 +52,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -68,6 +70,7 @@ import teq.development.seatech.JobDetail.Adapter.AdapterDashbrdUrgentMsgDetail;
 import teq.development.seatech.JobDetail.Adapter.AdapterJobTime;
 import teq.development.seatech.JobDetail.Adapter.AdapterUploadedImages;
 import teq.development.seatech.JobDetail.Skeleton.JobTimeSkeleton;
+import teq.development.seatech.JobDetail.Skeleton.LCChangeSkeleton;
 import teq.development.seatech.LoginActivity;
 import teq.development.seatech.R;
 import teq.development.seatech.Utils.AppConstants;
@@ -111,13 +114,14 @@ public class JobDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.frgm_jobdetail, container, false);
         binding = DataBindingUtil.bind(rootView);
         binding.setFrgmjobdetail(this);
-        initViews(binding);
+        initViews();
         Log.e("onCreateVIEW", "onCreateVIEW");
         return rootView;
     }
 
-    private void initViews(FrgmJobdetailBinding binding) {
+    private void initViews() {
         arrayListUpdateImage = new ArrayList<>();
+        new databsefetch().execute();
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(reciever, new IntentFilter("load_message"));
 
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(JobUpdatereciever,
@@ -131,7 +135,6 @@ public class JobDetailFragment extends Fragment {
 
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(NeddPartReciever,
                 new IntentFilter("needpartreciever"));
-        new databsefetch().execute();
     }
 
 
@@ -185,6 +188,7 @@ public class JobDetailFragment extends Fragment {
                 adapterUploadedImages = new AdapterUploadedImages(context, arrayListUpdateImage, getFragmentManager());
                 binding.rcylrviewUpldedImages.setAdapter(adapterUploadedImages);
             } else {
+                arrayListUpdateImage.clear();
                 arrayListUpdateImage.addAll(intent.getStringArrayListExtra("updateImageArray"));
                 adapterUploadedImages.notifyDataSetChanged();
             }
@@ -539,52 +543,74 @@ public class JobDetailFragment extends Fragment {
 
     private void TaskLCChange(String teqid, String jobid, final String seleclc, int lclast_posi, String starttime, String endtime, final String hrsworked, String hrsAdjusted) {
 
-        //  HandyObject.showAlert(getActivity(), HandyObject.getLaborcode(lclast_posi));
-        HandyObject.showProgressDialog(getActivity());
-        HandyObject.getApiManagerMain().submitLCdata(teqid, jobid, HandyObject.getLaborcode(lclast_posi), starttime, endtime, hrsworked, hrsAdjusted, teqid, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
-                .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        try {
-                            String jsonResponse = response.body().string();
-                            Log.e("responseLC", jsonResponse);
-                            JSONObject jsonObject = new JSONObject(jsonResponse);
-                            if (jsonObject.getString("status").toLowerCase().equals("success")) {
-                                HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
+        LCChangeSkeleton lcs_ke = new LCChangeSkeleton();
+        lcs_ke.setTech_id(teqid);
+        lcs_ke.setJob_id(jobid);
+        lcs_ke.setLabour_code(HandyObject.getLaborcode(lclast_posi));
+        lcs_ke.setStart_time(starttime);
+        lcs_ke.setEnd_time(endtime);
+        lcs_ke.setHours(hrsworked);
+        lcs_ke.setHours_adjusted(hrsAdjusted);
+        lcs_ke.setCreated_by(teqid);
+        ArrayList<LCChangeSkeleton> arrayList = new ArrayList<>();
+        arrayList.add(lcs_ke);
+        String techlog = gson.toJson(arrayList);
+        final String insertedTime = HandyObject.ParseDateTimeForNotes(new Date());
+        insertIntoDBLC(teqid, jobid, HandyObject.getLaborcode(lclast_posi), starttime, endtime, hrsworked, hrsAdjusted, insertedTime);
+        if (HandyObject.checkInternetConnection(getActivity())) {
+            HandyObject.showProgressDialog(getActivity());
+            HandyObject.getApiManagerMain().submitLCdata(techlog, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
+                    .enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            try {
+                                String jsonResponse = response.body().string();
+                                Log.e("responseLC", jsonResponse);
+                                JSONObject jsonObject = new JSONObject(jsonResponse);
+                                if (jsonObject.getString("status").toLowerCase().equals("success")) {
+                                    HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
+                                    String previous_runninghr = HandyObject.getPrams(getActivity(), AppConstants.JOBRUNNING_TOTALTIME);
+                                    int newttlwrkHr = Integer.parseInt(previous_runninghr) + Integer.parseInt(String.valueOf(hrsworked.split(":")[1]).replaceFirst("^0+(?!$)", ""));
+                                    HandyObject.putPrams(getActivity(), AppConstants.JOBRUNNING_TOTALTIME, String.valueOf(newttlwrkHr));
 
-                                String previous_runninghr = HandyObject.getPrams(getActivity(), AppConstants.JOBRUNNING_TOTALTIME);
+                                    JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jobj = jsonArray.getJSONObject(i);
 
-                                int newttlwrkHr = Integer.parseInt(previous_runninghr) + Integer.parseInt(String.valueOf(hrsworked.split(":")[1]).replaceFirst("^0+(?!$)", ""));
-                                HandyObject.putPrams(getActivity(), AppConstants.JOBRUNNING_TOTALTIME, String.valueOf(newttlwrkHr));
-                                /*if (seleclc.equalsIgnoreCase("DONE FOR THE DAY")) {
-                                    LogoutTask();
-                                }*/
-                            } else {
-                                HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
-                                if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
-                                    HandyObject.clearpref(getActivity());
-                                    App.appInstance.stopTimer();
-                                    Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
-                                    startActivity(intent_reg);
-                                    getActivity().finish();
-                                    getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                        //Delete related row from database
+                                        database.delete(ParseOpenHelper.TABLE_LCCHANGE, ParseOpenHelper.LCCHANGEJOBID + " =? AND " + ParseOpenHelper.LCCHANGECREATEDAT + " = ?",
+                                                new String[]{jobj.getString("job_id"), insertedTime});
+                                    }
+                                } else {
+                                    HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
+                                    if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
+                                        HandyObject.clearpref(getActivity());
+                                        App.appInstance.stopTimer();
+                                        Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
+                                        startActivity(intent_reg);
+                                        getActivity().finish();
+                                        getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                    }
                                 }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } finally {
+                                HandyObject.stopProgressDialog();
                             }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } finally {
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Log.e("responseError", t.getMessage());
                             HandyObject.stopProgressDialog();
                         }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.e("responseError", t.getMessage());
-                        HandyObject.stopProgressDialog();
-                    }
-                });
+                    });
+        } else {
+            HandyObject.showAlert(getActivity(), getString(R.string.fetchdata_whenonline));
+            HandyObject.stopProgressDialog();
+        }
 
     }
 
@@ -594,7 +620,6 @@ public class JobDetailFragment extends Fragment {
         } else {
             showDialog(binding.jobspinner.getSelectedItemPosition(), setDataForLCSumbmit());
         }
-
     }
 
     public void onClickNeedPart() {
@@ -615,10 +640,13 @@ public class JobDetailFragment extends Fragment {
 
     public void OnClickOffTheRecord() {
         if (addTechlistOffTheRecord.size() == 0) {
-            Log.e("sdf", "sa");
+            // dialogViewComment("offrecord", arrayListOffTheRecord);
         } else {
-            arrayListOffTheRecord.add(addTechlistOffTheRecord.get(0));
+            //  arrayListOffTheRecord.add(addTechlistOffTheRecord.get(0));
+            arrayListOffTheRecord.clear();
+            arrayListOffTheRecord.addAll(addTechlistOffTheRecord);
             addTechlistOffTheRecord.clear();
+            // dialogViewComment("offrecord", arrayListOffTheRecord);
         }
         dialogViewComment("offrecord", arrayListOffTheRecord);
     }
@@ -732,12 +760,6 @@ public class JobDetailFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        //  Log.e("onActivityCre", "yes");
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         try {
@@ -764,12 +786,6 @@ public class JobDetailFragment extends Fragment {
 
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        //  Log.e("onStop", "onStop");
-    }
-
     boolean isJobRunning() {
         if (HandyObject.getPrams(context, AppConstants.ISJOB_RUNNING).equalsIgnoreCase("yes")) {
             return true;
@@ -782,7 +798,8 @@ public class JobDetailFragment extends Fragment {
 
         HandyObject.showProgressDialog(getActivity());
         DashboardNotes_Skeleton dashnotes_ske = new DashboardNotes_Skeleton();
-        dashnotes_ske.setCreatedAt("2/2/8");
+        dashnotes_ske.setCreatedAt(HandyObject.ParseDateTimeForNotes(new Date()));
+        final String insertedTime = HandyObject.ParseDateTimeForNotes(new Date());
         dashnotes_ske.setNoteWriter(techid);
         dashnotes_ske.setNotes(notes);
         dashnotes_ske.setTechid(techid);
@@ -791,65 +808,89 @@ public class JobDetailFragment extends Fragment {
         ArrayList<DashboardNotes_Skeleton> addtech = new ArrayList<>();
         addtech.add(dashnotes_ske);
         String OffTheRecord = gson.toJson(addtech);
+        insertIntoDB(HandyObject.ParseDateTimeForNotes(new Date()), OffTheRecord, techid, jobid, notes, type);
+        //  HandyObject.getApiManagerMain().submitTechLaborPerf(techid, jobid, notes, type, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
+        if (HandyObject.checkInternetConnection(getActivity())) {
+            HandyObject.getApiManagerMain().submitTechLaborPerf(OffTheRecord, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
+                    .enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            try {
+                                String jsonResponse = response.body().string();
+                                Log.e("responseMyLaborPerform", jsonResponse);
+                                JSONObject jsonObject = new JSONObject(jsonResponse);
+                                if (jsonObject.getString("status").toLowerCase().equals("success")) {
+                                    JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jobjInside = jsonArray.getJSONObject(i);
+                                        String jobid = jobjInside.getString("job_id");
+                                        arrayListLaborPerf.clear();
+                                        JSONArray jArray_OffTheRecord = jobjInside.getJSONArray("TechLabourPerformed");
+                                        ArrayList<DashboardNotes_Skeleton> arraylistOffTheRecord = new ArrayList<>();
+                                        for (int k = 0; k < jArray_OffTheRecord.length(); k++) {
+                                            JSONObject jobj_dashnotes = jArray_OffTheRecord.getJSONObject(k);
+                                            DashboardNotes_Skeleton dashnotes_ske = new DashboardNotes_Skeleton();
+                                            dashnotes_ske.setCreatedAt(jobj_dashnotes.getString("created_at"));
+                                            dashnotes_ske.setNoteWriter(jobj_dashnotes.getString("written_by"));
+                                            dashnotes_ske.setNotes(jobj_dashnotes.getString("notes"));
+                                            arraylistOffTheRecord.add(dashnotes_ske);
+                                            arrayListLaborPerf.add(dashnotes_ske);
+                                        }
+                                        String OffTheRecord = gson.toJson(arraylistOffTheRecord);
+                                        ContentValues cv = new ContentValues();
+                                        cv.put(ParseOpenHelper.JOBSTECHLABORPERFORMCURRDAY, OffTheRecord);
+                                        database.update(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, cv, ParseOpenHelper.TECHIDCURRDAY + " =? AND " + ParseOpenHelper.JOBIDCURRDAY + " = ?",
+                                                new String[]{HandyObject.getPrams(getContext(), AppConstants.LOGINTEQ_ID), jobid});
+                                    }
 
-      //  HandyObject.getApiManagerMain().submitTechLaborPerf(techid, jobid, notes, type, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
-        HandyObject.getApiManagerMain().submitTechLaborPerf(OffTheRecord, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
-        .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        try {
-                            String jsonResponse = response.body().string();
-                            Log.e("responseMyLaborPerform", jsonResponse);
-                            JSONObject jsonObject = new JSONObject(jsonResponse);
-                            if (jsonObject.getString("status").toLowerCase().equals("success")) {
-                                JSONObject jobjdata = jsonObject.getJSONObject("data");
-
-                                ArrayList<DashboardNotes_Skeleton> arraylistLabrperformed = new ArrayList<>();
-                                DashboardNotes_Skeleton dashnotes_ske = new DashboardNotes_Skeleton();
-                                dashnotes_ske.setCreatedAt(jobjdata.getString("created_at"));
-                                dashnotes_ske.setNoteWriter(jobjdata.getString("written_by"));
-                                dashnotes_ske.setNotes(jobjdata.getString("notes"));
-                                arrayListLaborPerf.add(dashnotes_ske);
-                                arraylistLabrperformed.add(dashnotes_ske);
-
-
-                                String laborPerddsfdsformed = gson.toJson(arrayListLaborPerf);
-                                String laborPerformed = gson.toJson(arraylistLabrperformed);
-                                ContentValues cv = new ContentValues();
-                                cv.put(ParseOpenHelper.JOBSTECHLABORPERFORM, laborPerformed);
-                                database.update(ParseOpenHelper.TABLENAME_ALLJOBS, cv, ParseOpenHelper.TECHID + " =? AND " + ParseOpenHelper.JOBID + " = ?",
-                                        new String[]{HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID), jobid});
-                                binding.etLaborperform.setText("");
-                                HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
-                            } else {
-                                HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
-                                if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
-                                    HandyObject.clearpref(getActivity());
-                                    App.appInstance.stopTimer();
-                                    Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
-                                    startActivity(intent_reg);
-                                    getActivity().finish();
-                                    getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                    //Delete related row from database
+                                    database.delete(ParseOpenHelper.TABLE_SUBMITMYLABOR_NEWOFFRECORD, ParseOpenHelper.SUBMITLABORJOBID + " =? AND " + ParseOpenHelper.SUBMITLABORTIME + " = ?",
+                                            new String[]{jobid, insertedTime});
+                                    binding.etLaborperform.setText("");
+                                    HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
+                                } else {
+                                    HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
+                                    if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
+                                        HandyObject.clearpref(getActivity());
+                                        App.appInstance.stopTimer();
+                                        Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
+                                        startActivity(intent_reg);
+                                        getActivity().finish();
+                                        getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                    }
                                 }
-
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } finally {
+                                HandyObject.stopProgressDialog();
                             }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } finally {
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Log.e("responseError", t.getMessage());
                             HandyObject.stopProgressDialog();
                         }
-                    }
+                    });
 
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.e("responseError", t.getMessage());
-                        HandyObject.stopProgressDialog();
-                    }
-                });
+        } else {
+            HandyObject.showAlert(getActivity(), getString(R.string.fetchdata_whenonline));
+            HandyObject.stopProgressDialog();
+            binding.etLaborperform.setText("");
+        }
+    }
 
-
+    private void insertIntoDB(String time, String offTheRecord, String techid, String jobid, String notes, String type) {
+        ContentValues cv = new ContentValues();
+        cv.put(ParseOpenHelper.SUBMITLABORTECHID, techid);
+        cv.put(ParseOpenHelper.SUBMITLABORJOBID, jobid);
+        cv.put(ParseOpenHelper.SUBMITLABORTYPE, type);
+        cv.put(ParseOpenHelper.SUBMITLABORNOTES, notes);
+        cv.put(ParseOpenHelper.SUBMITLABORTIME, time);
+        cv.put(ParseOpenHelper.SUBMITLABORREST, offTheRecord);
+        long idd = database.insert(ParseOpenHelper.TABLE_SUBMITMYLABOR_NEWOFFRECORD, null, cv);
     }
 
     private String setDataForLCSumbmit() {
@@ -972,6 +1013,20 @@ public class JobDetailFragment extends Fragment {
             binding.jobspinner.setOnItemSelectedListener(new JobItemSelectedListener());
             HandyObject.stopProgressDialog();
         }
+    }
+
+    private void insertIntoDBLC(String teqid, String jobid, String lc, String starttime, String endtime, String hrsworked, String hrsAdjusted, String createdAt) {
+        ContentValues cv = new ContentValues();
+        cv.put(ParseOpenHelper.LCCHANGETECHID, teqid);
+        cv.put(ParseOpenHelper.LCCHANGEJOBID, jobid);
+        cv.put(ParseOpenHelper.LCCHANGELC, lc);
+        cv.put(ParseOpenHelper.LCCHANGESTARTTIME, starttime);
+        cv.put(ParseOpenHelper.LCCHANGEENDTIME, endtime);
+        cv.put(ParseOpenHelper.LCCHANGEHHOURS, hrsworked);
+        cv.put(ParseOpenHelper.LCCHANGEHHOURSADJUSTED, hrsAdjusted);
+        cv.put(ParseOpenHelper.LCCHANGECREATEDBY, teqid);
+        cv.put(ParseOpenHelper.LCCHANGECREATEDAT, createdAt);
+        long idd = database.insert(ParseOpenHelper.TABLE_LCCHANGE, null, cv);
     }
 
 }

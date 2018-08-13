@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ClipData;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,6 +40,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import com.google.gson.Gson;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -65,6 +68,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import teq.development.seatech.App;
+import teq.development.seatech.JobDetail.Skeleton.UploadImageSkeleton;
 import teq.development.seatech.LoginActivity;
 import teq.development.seatech.R;
 import teq.development.seatech.Utils.AppConstants;
@@ -74,6 +78,7 @@ import teq.development.seatech.database.Action;
 import teq.development.seatech.database.CustomGallery;
 import teq.development.seatech.database.GalleryAdapter;
 import teq.development.seatech.database.MainActivity;
+import teq.development.seatech.database.ParseOpenHelper;
 import teq.development.seatech.databinding.PopupNeedchangeorderBinding;
 
 import static android.app.Activity.RESULT_OK;
@@ -95,6 +100,9 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
     GridView gridGallery;
     GalleryAdapter adapter;
     public static String jobid;
+    private SQLiteDatabase database;
+    String insertedTime;
+    Gson gson;
 
     static UploadImageDialog newInstance(String num) {
         UploadImageDialog f = new UploadImageDialog();
@@ -130,6 +138,7 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
     }
 
     private void initViews(View rootView) {
+        database = ParseOpenHelper.getInstance(getActivity()).getWritableDatabase();
         Button submit = (Button) rootView.findViewById(R.id.submit);
         ImageView cross = (ImageView) rootView.findViewById(R.id.cross);
         TextView options_gallery = (TextView) rootView.findViewById(R.id.options_gallery);
@@ -247,24 +256,33 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
 
 
     private MultipartBody createResponseBody() {
-
-        MultipartBody.Builder builder = new MultipartBody.Builder();
-
-        builder.setType(MultipartBody.FORM)
-                .addFormDataPart("created_by", HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID))
-                .addFormDataPart("job_id", jobid)
-                .addFormDataPart("description", et_laborperform.getText().toString())
-                .build();
-
         ArrayList<File> imagesData = getImagesData();
 
-        // co.showLoading();
+        insertedTime = HandyObject.ParseDateTimeForNotes(new Date());
+        UploadImageSkeleton ske = new UploadImageSkeleton();
+        ske.setCreated_by(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID));
+        ske.setJob_id(jobid);
+        ske.setDescription(et_laborperform.getText().toString());
+        ArrayList<UploadImageSkeleton> arrayList = new ArrayList<>();
+        arrayList.add(ske);
+
+        gson = new Gson();
+        String uploaded_data = gson.toJson(arrayList);
+        insertIntoDB(insertedTime, arrayList, imagesData);
+
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        builder.setType(MultipartBody.FORM)
+                .addFormDataPart("uploaded_data", uploaded_data)
+                /*.addFormDataPart("created_by", HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID))
+                .addFormDataPart("job_id", jobid)
+                .addFormDataPart("description", et_laborperform.getText().toString())*/
+                .build();
+
         for (int i = 0; i < imagesData.size(); i++) {
             builder.setType(MultipartBody.FORM)
-                    .addFormDataPart("images[" + i + "]", "image" + i + ".png",
+                    .addFormDataPart("img_" + jobid + "[" + i + "]", "image" + i + ".png",
                             RequestBody.create(MEDIA_TYPE_FORM, imagesData.get(i)))
                     .build();
-
         }
 
         // co.hideLoading();
@@ -374,6 +392,7 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
         }
 
         MultipartBody responseBody = createResponseBody();
+
         if (HandyObject.checkInternetConnection(getActivity())) {
             HandyObject.showProgressDialog(getActivity());
             final Context context = getActivity();
@@ -384,19 +403,37 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
                         String rep = response.body().string();
                         Log.e("Imageresponse ", rep);
                         JSONObject jsonObject = new JSONObject(rep);
-
+                        Gson gson = new Gson();
                         Log.e("null", "null");
                         if (jsonObject.getString("status").toLowerCase().equals("success")) {
                             HandyObject.showAlert(context, jsonObject.getString("message"));
-
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
                             ArrayList<String> arrayList = new ArrayList<>();
+
                             for (int i = 0; i < jsonArray.length(); i++) {
-                                arrayList.add(jsonArray.getString(i));
+                                JSONObject jobjInside = jsonArray.getJSONObject(i);
+                                String jobid = jobjInside.getString("job_id");
+
+                                JSONArray jArray_upldImages = jobjInside.getJSONArray("uploads");
+                                ArrayList<String> arraylistupldImages = new ArrayList<>();
+                                for (int k = 0; k < jArray_upldImages.length(); k++) {
+                                    arraylistupldImages.add(jArray_upldImages.getString(k));
+                                }
+
+                                Intent intent = new Intent("updateImage");
+                                intent.putStringArrayListExtra("updateImageArray", arraylistupldImages);
+                                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+
+                                String images = gson.toJson(arraylistupldImages);
+                                ContentValues cv = new ContentValues();
+                                cv.put(ParseOpenHelper.JOBSTECHUPLOADEDIMAGESCURRDAY, images);
+                                database.update(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, cv, ParseOpenHelper.TECHIDCURRDAY + " =? AND " + ParseOpenHelper.JOBIDCURRDAY + " = ?",
+                                        new String[]{HandyObject.getPrams(getContext(), AppConstants.LOGINTEQ_ID), jobid});
                             }
-                            Intent intent = new Intent("updateImage");
-                            intent.putStringArrayListExtra("updateImageArray", arrayList);
-                            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+
+                            //Delete related row from database
+                            database.delete(ParseOpenHelper.TABLE_UPLOADIMAGES, ParseOpenHelper.UPLOADIMAGESJOBID + " =? AND " + ParseOpenHelper.UPLOADIMAGESCREATEDAT + " = ?",
+                                    new String[]{jobid, insertedTime});
 
                         } else if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
                             HandyObject.clearpref(getActivity());
@@ -426,6 +463,10 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
                     HandyObject.stopProgressDialog();
                 }
             });
+        } else {
+            HandyObject.showAlert(getActivity(), getString(R.string.fetchdata_whenonline));
+            HandyObject.stopProgressDialog();
+            dialog.dismiss();
         }
 
     }
@@ -472,6 +513,16 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
         }
         imageFile = new File(file, imageFileName + ".png");
         return imageFile;
+    }
+
+    private void insertIntoDB(String createdat, ArrayList<UploadImageSkeleton> arrayList, ArrayList<File> file) {
+        ContentValues cv = new ContentValues();
+        cv.put(ParseOpenHelper.UPLOADIMAGESCREATEDBY, arrayList.get(0).getCreated_by());
+        cv.put(ParseOpenHelper.UPLOADIMAGESJOBID, arrayList.get(0).getJob_id());
+        cv.put(ParseOpenHelper.UPLOADIMAGESDESCR, arrayList.get(0).getDescription());
+        cv.put(ParseOpenHelper.UPLOADIMAGESCREATEDAT, createdat);
+        cv.put(ParseOpenHelper.UPLOADIMAGESALLIMAGE, gson.toJson(file));
+        long idd = database.insert(ParseOpenHelper.TABLE_UPLOADIMAGES, null, cv);
     }
 }
 

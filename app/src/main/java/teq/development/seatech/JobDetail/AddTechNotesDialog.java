@@ -24,6 +24,7 @@ import android.widget.ImageView;
 
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,6 +52,7 @@ public class AddTechNotesDialog extends DialogFragment implements View.OnClickLi
     static String comingJobId;
     private SQLiteDatabase database;
     public static ArrayList<DashboardNotes_Skeleton> arraylistOffTheRecord;
+    String insertedTime = "";
     Gson gson;
 
     static AddTechNotesDialog newInstance(String jobid) {
@@ -72,6 +74,7 @@ public class AddTechNotesDialog extends DialogFragment implements View.OnClickLi
 
     private void initViews(View rootView) {
         gson = new Gson();
+        database = ParseOpenHelper.getInstance(getActivity()).getWritableDatabase();
         Button submit = (Button) rootView.findViewById(R.id.submit);
         ImageView cross = (ImageView) rootView.findViewById(R.id.cross);
         et_laborperform = (EditText) rootView.findViewById(R.id.et_laborperform);
@@ -124,11 +127,10 @@ public class AddTechNotesDialog extends DialogFragment implements View.OnClickLi
     private void SubmitMyLaborPerf_Task(String techid, final String jobid, String notes, String type) {
 
         HandyObject.showProgressDialog(getActivity());
-     //   HandyObject.getApiManagerMain().submitTechLaborPerf(techid, jobid, notes, type, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
+        //   HandyObject.getApiManagerMain().submitTechLaborPerf(techid, jobid, notes, type, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
         DashboardNotes_Skeleton dashnotes_ske = new DashboardNotes_Skeleton();
         dashnotes_ske.setCreatedAt(HandyObject.ParseDateTimeForNotes(new Date()));
-       // HandyObject.parseDateToYMD()
-        dashnotes_ske.setNoteWriter(techid);
+        insertedTime = HandyObject.ParseDateTimeForNotes(new Date());
         dashnotes_ske.setNotes(notes);
         dashnotes_ske.setTechid(techid);
         dashnotes_ske.setJobid(jobid);
@@ -136,66 +138,121 @@ public class AddTechNotesDialog extends DialogFragment implements View.OnClickLi
         ArrayList<DashboardNotes_Skeleton> addtech = new ArrayList<>();
         addtech.add(dashnotes_ske);
         String OffTheRecord = gson.toJson(addtech);
+        //String OffTheRecordske = gson.toJson(dashnotes_ske);
+        insertIntoDB(HandyObject.ParseDateTimeForNotes(new Date()), OffTheRecord, techid, jobid, notes, type);
+        if (HandyObject.checkInternetConnection(getActivity())) {
+            HandyObject.getApiManagerMain().submitTechLaborPerf(OffTheRecord, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
+                    .enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            try {
+                                String jsonResponse = response.body().string();
+                                Log.e("responseMyLaborPerform", jsonResponse);
+                                JSONObject jsonObject = new JSONObject(jsonResponse);
+                                if (jsonObject.getString("status").toLowerCase().equals("success")) {
+                                    JSONArray jsonArray = jsonObject.getJSONArray("data");
 
-        HandyObject.getApiManagerMain().submitTechLaborPerf(OffTheRecord, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
-                .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        try {
-                            String jsonResponse = response.body().string();
-                            Log.e("responseMyLaborPerform", jsonResponse);
-                            JSONObject jsonObject = new JSONObject(jsonResponse);
-                            if (jsonObject.getString("status").toLowerCase().equals("success")) {
-                                JSONObject jobjdata = jsonObject.getJSONObject("data");
-                                // arraylistOffTheRecord = new ArrayList<>();
-                                DashboardNotes_Skeleton dashnotes_ske = new DashboardNotes_Skeleton();
-                                dashnotes_ske.setCreatedAt(jobjdata.getString("created_at"));
-                                dashnotes_ske.setNoteWriter(jobjdata.getString("written_by"));
-                                dashnotes_ske.setNotes(jobjdata.getString("notes"));
+                                    /*for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jobjinside = jsonArray.getJSONObject(i);
+                                        DashboardNotes_Skeleton dashnotes_ske = new DashboardNotes_Skeleton();
+                                        dashnotes_ske.setCreatedAt(jobjinside.getString("created_at"));
+                                        dashnotes_ske.setNoteWriter(jobjinside.getString("written_by"));
+                                        dashnotes_ske.setNotes(jobjinside.getString("notes"));
+                                        arraylistOffTheRecord.add(dashnotes_ske);
+                                        JobDetailFragment.addTechlistOffTheRecord.add(dashnotes_ske);
 
-                                JobDetailFragment.addTechlistOffTheRecord.add(dashnotes_ske);
+                                        //Update All jobs database table for addtech notes
+                                        String OffTheRecord = gson.toJson(arraylistOffTheRecord);
+                                        ContentValues cv = new ContentValues();
+                                        cv.put(ParseOpenHelper.JOBSTECHOFFTHERECORD, OffTheRecord);
+                                        database.update(ParseOpenHelper.TABLENAME_ALLJOBS, cv, ParseOpenHelper.TECHID + " =? AND " + ParseOpenHelper.JOBID + " = ?",
+                                                new String[]{HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), jobid});
 
-                                String OffTheRecord = gson.toJson(arraylistOffTheRecord);
-                                database = ParseOpenHelper.getInstance(getActivity()).getWritableDatabase();
-                                ContentValues cv = new ContentValues();
-                                cv.put(ParseOpenHelper.JOBSTECHOFFTHERECORD, OffTheRecord);
 
-                                database.update(ParseOpenHelper.TABLENAME_ALLJOBS, cv, ParseOpenHelper.TECHID + " =? AND " + ParseOpenHelper.JOBID + " = ?",
-                                        new String[]{HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), jobid});
+                                        // Broadcast to update record
+                                        Intent intent = new Intent("pass_addtechlast");
+                                        intent.putExtra("lastofftherecord", jobjinside.getString("notes"));
+                                        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+                                    }*/
 
-                                Intent intent = new Intent("pass_addtechlast");
-                                intent.putExtra("lastofftherecord",jobjdata.getString("notes"));
-                                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jobjInside = jsonArray.getJSONObject(i);
+                                        String jobid = jobjInside.getString("job_id");
 
-                                dialog.dismiss();
-                                HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
-                            } else {
-                                HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
-                                if(jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
-                                    HandyObject.clearpref(getActivity());
-                                    App.appInstance.stopTimer();
-                                    Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
-                                    startActivity(intent_reg);
-                                    getActivity().finish();
-                                    getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                        JSONArray jArray_OffTheRecord = jobjInside.getJSONArray("OffTheRecord");
+                                        ArrayList<DashboardNotes_Skeleton> arraylistOffTheRecord = new ArrayList<>();
+                                        for (int k = 0; k < jArray_OffTheRecord.length(); k++) {
+                                            JSONObject jobj_dashnotes = jArray_OffTheRecord.getJSONObject(k);
+                                            DashboardNotes_Skeleton dashnotes_ske = new DashboardNotes_Skeleton();
+                                            dashnotes_ske.setCreatedAt(jobj_dashnotes.getString("created_at"));
+                                            dashnotes_ske.setNoteWriter(jobj_dashnotes.getString("written_by"));
+                                            dashnotes_ske.setNotes(jobj_dashnotes.getString("notes"));
+                                            arraylistOffTheRecord.add(dashnotes_ske);
+                                            JobDetailFragment.addTechlistOffTheRecord.add(dashnotes_ske);
+
+                                            // Broadcast to update record
+                                            Intent intent = new Intent("pass_addtechlast");
+                                            intent.putExtra("lastofftherecord", jobj_dashnotes.getString("notes"));
+                                            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+                                        }
+                                        String OffTheRecord = gson.toJson(arraylistOffTheRecord);
+                                        ContentValues cv = new ContentValues();
+                                        cv.put(ParseOpenHelper.JOBSTECHOFFTHERECORDCURRDAY, OffTheRecord);
+                                        database.update(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, cv, ParseOpenHelper.TECHIDCURRDAY + " =? AND " + ParseOpenHelper.JOBIDCURRDAY + " = ?",
+                                                new String[]{HandyObject.getPrams(getContext(), AppConstants.LOGINTEQ_ID), jobid});
+
+                                    }
+
+
+                                    //Delete related row from database
+                                    database.delete(ParseOpenHelper.TABLE_SUBMITMYLABOR_NEWOFFRECORD, ParseOpenHelper.SUBMITLABORJOBID + " =? AND " + ParseOpenHelper.SUBMITLABORTIME + " = ?",
+                                            new String[]{jobid, insertedTime});
+
+                                    dialog.dismiss();
+                                    HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
+                                } else {
+                                    HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
+                                    if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
+                                        HandyObject.clearpref(getActivity());
+                                        App.appInstance.stopTimer();
+                                        Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
+                                        startActivity(intent_reg);
+                                        getActivity().finish();
+                                        getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                    }
                                 }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } finally {
+                                HandyObject.stopProgressDialog();
                             }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } finally {
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Log.e("responseError", t.getMessage());
                             HandyObject.stopProgressDialog();
                         }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.e("responseError", t.getMessage());
-                        HandyObject.stopProgressDialog();
-                    }
-                });
-
-
+                    });
+        } else {
+            HandyObject.showAlert(getActivity(), getString(R.string.fetchdata_whenonline));
+            HandyObject.stopProgressDialog();
+            dialog.dismiss();
+        }
     }
+
+    private void insertIntoDB(String time, String offTheRecord, String techid, String jobid, String notes, String type) {
+        ContentValues cv = new ContentValues();
+        cv.put(ParseOpenHelper.SUBMITLABORTECHID, techid);
+        cv.put(ParseOpenHelper.SUBMITLABORJOBID, jobid);
+        cv.put(ParseOpenHelper.SUBMITLABORTYPE, type);
+        cv.put(ParseOpenHelper.SUBMITLABORNOTES, notes);
+        cv.put(ParseOpenHelper.SUBMITLABORTIME, time);
+        cv.put(ParseOpenHelper.SUBMITLABORREST, offTheRecord);
+        long idd = database.insert(ParseOpenHelper.TABLE_SUBMITMYLABOR_NEWOFFRECORD, null, cv);
+    }
+
+
 }

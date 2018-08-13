@@ -1,8 +1,10 @@
 package teq.development.seatech.JobDetail;
 
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -28,20 +30,27 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import teq.development.seatech.App;
+import teq.development.seatech.JobDetail.Skeleton.JobStatusSkeleton;
 import teq.development.seatech.LoginActivity;
 import teq.development.seatech.R;
 import teq.development.seatech.Utils.AppConstants;
 import teq.development.seatech.Utils.HandyObject;
+import teq.development.seatech.database.ParseOpenHelper;
 import teq.development.seatech.databinding.DialogJobstatusBinding;
 
 public class JobStatusDialog extends DialogFragment {
@@ -55,6 +64,7 @@ public class JobStatusDialog extends DialogFragment {
     public static boolean crossclick;
     public static String allValues;
     public String jobstatus;
+    private SQLiteDatabase database;
     public String get_needtoknow, returnimmediate, alreadyScheduled, reason, description = "";
     boolean popupsubmit;
 
@@ -460,7 +470,7 @@ public class JobStatusDialog extends DialogFragment {
                     cbx_exception.setChecked(false);
                     popupnono.dismiss();
                     popup.dismiss();
-                  //  displayPopupWtngCutomer(anchorview, popupnono, popup, jobstatus);
+                    //  displayPopupWtngCutomer(anchorview, popupnono, popup, jobstatus);
                     reason = "Waiting for customer";
                     returnimmediate = "no";
                     description = "";
@@ -475,8 +485,8 @@ public class JobStatusDialog extends DialogFragment {
                     cbx_fcrtyrpr.setChecked(false);
                     cbx_wtngparts.setChecked(false);
                     cbx_exception.setChecked(false);
-                  //  displayPopupWtngCutomer(anchorview, popupnono, popup, jobstatus);
-                    displayPopupWtngcutomerReason(anchorview, getString(R.string.otherreason), popupnono , popup, jobstatus);
+                    //  displayPopupWtngCutomer(anchorview, popupnono, popup, jobstatus);
+                    displayPopupWtngcutomerReason(anchorview, getString(R.string.otherreason), popupnono, popup, jobstatus);
                 }
             }
         });
@@ -718,7 +728,7 @@ public class JobStatusDialog extends DialogFragment {
                     HandyObject.showAlert(getActivity(), getString(R.string.fieldempty));
                 } else {
                     popupnono.dismiss();
-                  //  popwtngcstmr.dismiss();
+                    //  popwtngcstmr.dismiss();
                     poplast.dismiss();
                     popup.dismiss();
                     returnimmediate = "no";
@@ -783,54 +793,120 @@ public class JobStatusDialog extends DialogFragment {
     private void JobStatusApi(String teqid, String jobid, String job_completed, String captainaware, String notes, String supplyAmount, String nbillablehrs,
                               String nbillablehrsDiscription, String returnimmid, String already_scheduled, String reason, String description, String sessionid) {
 
-        HandyObject.showProgressDialog(getActivity());
-        HandyObject.getApiManagerMain().JobStatusData(teqid, jobid, job_completed, captainaware, notes, supplyAmount, nbillablehrs, nbillablehrsDiscription,
-                returnimmid, already_scheduled, reason, description, allValues.split("--")[0], allValues.split("--")[1],
-                allValues.split("--")[2], allValues.split("--")[3], allValues.split("--")[4], sessionid)
-                .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        try {
-                            String jsonResponse = response.body().string();
-                            Log.e("responseLC", jsonResponse);
-                            JSONObject jsonObject = new JSONObject(jsonResponse);
-                            if (jsonObject.getString("status").toLowerCase().equals("success")) {
-                                HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
-                                dialog.dismiss();
-                                //popupWindow.dismiss();
-                                //    App.appInstance.stopTimer();
-                                Intent intent = new Intent("updateJob");
-                                count++;
-                                intent.putExtra("nextjobid", String.valueOf(count));
-                                HandyObject.putPrams(getActivity(), AppConstants.JOBRUNNING_TOTALTIME, "66");
-                                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
-                            } else {
-                                HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
-                                if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
-                                    HandyObject.clearpref(getActivity());
-                                    App.appInstance.stopTimer();
-                                    Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
-                                    startActivity(intent_reg);
-                                    getActivity().finish();
-                                    getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+        String start_T = allValues.split("--")[0];
+        String end_T = allValues.split("--")[1];
+        String hours = allValues.split("--")[2];
+        String hours_adjusted = allValues.split("--")[3];
+        String labour_code = allValues.split("--")[4];
+
+        JobStatusSkeleton ske = new JobStatusSkeleton();
+        ske.setTech_id(teqid);
+        ske.setJob_id(jobid);
+        ske.setJob_completed(job_completed);
+        ske.setCaptain_aware(captainaware);
+        ske.setNotes(notes);
+        ske.setSupply_amount(supplyAmount);
+        ske.setNon_billable_hours(nbillablehrs);
+        ske.setNon_billable_hours_description(nbillablehrsDiscription);
+        ske.setReturn_immediately(returnimmid);
+        ske.setAlready_scheduled(already_scheduled);
+        ske.setReason(reason);
+        ske.setDescription(description);
+        ske.setStart_time(start_T);
+        ske.setEnd_time(end_T);
+        ske.setHours(hours);
+        ske.setHours_adjusted(hours_adjusted);
+        ske.setLabour_code(labour_code);
+        ArrayList<JobStatusSkeleton> arrayList = new ArrayList<>();
+        arrayList.add(ske);
+        Gson gson = new Gson();
+        String alldata = gson.toJson(arrayList);
+        final String insertedTime = HandyObject.ParseDateTimeForNotes(new Date());
+        insertToDB(arrayList, insertedTime);
+        if (HandyObject.checkInternetConnection(getActivity())) {
+            HandyObject.showProgressDialog(getActivity());
+            HandyObject.getApiManagerMain().JobStatusData(alldata, sessionid)
+                    .enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            try {
+                                String jsonResponse = response.body().string();
+                                Log.e("responseJobStatus", jsonResponse);
+                                JSONObject jsonObject = new JSONObject(jsonResponse);
+                                if (jsonObject.getString("status").toLowerCase().equals("success")) {
+                                    HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
+                                    dialog.dismiss();
+                                    //popupWindow.dismiss();
+                                    //    App.appInstance.stopTimer();
+                                    Intent intent = new Intent("updateJob");
+                                    count++;
+                                    intent.putExtra("nextjobid", String.valueOf(count));
+                                    HandyObject.putPrams(getActivity(), AppConstants.JOBRUNNING_TOTALTIME, "66");
+                                    LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+
+                                    JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jobj = jsonArray.getJSONObject(i);
+
+                                        //Delete related row from database
+                                        database.delete(ParseOpenHelper.TABLE_JOBSTATUS, ParseOpenHelper.JOBSTATUSJOBID + " =? AND " + ParseOpenHelper.JOBSTATUSCREATEDAT + " = ?",
+                                                new String[]{jobj.getString("job_id"), insertedTime});
+                                    }
+                                } else {
+                                    HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
+                                    if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
+                                        HandyObject.clearpref(getActivity());
+                                        App.appInstance.stopTimer();
+                                        Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
+                                        startActivity(intent_reg);
+                                        getActivity().finish();
+                                        getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                    }
                                 }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } finally {
+                                HandyObject.stopProgressDialog();
                             }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } finally {
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Log.e("responseError", t.getMessage());
                             HandyObject.stopProgressDialog();
                         }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.e("responseError", t.getMessage());
-                        HandyObject.stopProgressDialog();
-                    }
-                });
+                    });
+        } else {
+            HandyObject.showAlert(getActivity(), getString(R.string.fetchdata_whenonline));
+            HandyObject.stopProgressDialog();
+            dialog.dismiss();
+        }
     }
 
+    private void insertToDB(ArrayList<JobStatusSkeleton> arrayList, String insertedAt) {
+        database = ParseOpenHelper.getInstance(getActivity()).getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(ParseOpenHelper.JOBSTATUSTECHID, arrayList.get(0).getTech_id());
+        cv.put(ParseOpenHelper.JOBSTATUSJOBID, arrayList.get(0).getJob_id());
+        cv.put(ParseOpenHelper.JOBSTATUSCOMPLETED, arrayList.get(0).getJob_completed());
+        cv.put(ParseOpenHelper.JOBSTATUSCAPTAINAWARE, arrayList.get(0).getCaptain_aware());
+        cv.put(ParseOpenHelper.JOBSTATUSNOTES, arrayList.get(0).getNotes());
+        cv.put(ParseOpenHelper.JOBSTATUSSUPPLAYAMT, arrayList.get(0).getSupply_amount());
+        cv.put(ParseOpenHelper.JOBSTATUSNBILLABLEHR, arrayList.get(0).getNon_billable_hours());
+        cv.put(ParseOpenHelper.JOBSTATUSNBILLABLEHRDESC, arrayList.get(0).getNon_billable_hours_description());
+        cv.put(ParseOpenHelper.JOBSTATUSRETURNIMMED, arrayList.get(0).getReturn_immediately());
+        cv.put(ParseOpenHelper.JOBSTATUSALREADYSCHEDULED, arrayList.get(0).getAlready_scheduled());
+        cv.put(ParseOpenHelper.JOBSTATUSREASON, arrayList.get(0).getReason());
+        cv.put(ParseOpenHelper.JOBSTATUSDESCRIPTION, arrayList.get(0).getDescription());
+        cv.put(ParseOpenHelper.JOBSTATUSSTARTTIME, arrayList.get(0).getStart_time());
+        cv.put(ParseOpenHelper.JOBSTATUSENDTTIME, arrayList.get(0).getEnd_time());
+        cv.put(ParseOpenHelper.JOBSTATUSHOURS, arrayList.get(0).getHours());
+        cv.put(ParseOpenHelper.JOBSTATUSHOURSADJUSTED, arrayList.get(0).getHours_adjusted());
+        cv.put(ParseOpenHelper.JOBSTATUSLABOURCODE, arrayList.get(0).getLabour_code());
+        cv.put(ParseOpenHelper.JOBSTATUSCREATEDAT, insertedAt);
+        long idd = database.insert(ParseOpenHelper.TABLE_JOBSTATUS, null, cv);
+    }
 
 }

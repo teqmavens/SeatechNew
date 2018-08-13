@@ -221,7 +221,7 @@ public class DashBoardFragment extends Fragment {
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                     myCalendar.get(Calendar.DAY_OF_MONTH)).show();
         } else {
-            HandyObject.showAlert(getActivity(), getString(R.string.withoutinter_noprenextjob));
+            HandyObject.showAlert(getActivity(), getString(R.string.withoutinter_nopartidatedata));
         }
     }
 
@@ -263,6 +263,7 @@ public class DashBoardFragment extends Fragment {
                                 jobsArrayList.clear();
                                 arraylistmarker.clear();
                                 googleMap.clear();
+                                HandyObject.showAlert(getActivity(), "deletedatabase");
                                 database.delete(ParseOpenHelper.TABLENAME_ALLJOBS, ParseOpenHelper.TECHID + "=?", new String[]{HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)});
                                 database.delete(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, ParseOpenHelper.TECHIDCURRDAY + "=?", new String[]{HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)});
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -334,7 +335,6 @@ public class DashBoardFragment extends Fragment {
                                         arraylistupldImages.add(jArray_upldImages.getString(k));
                                     }
 
-
                                     // skeleton.setArrayList(arraylistDashNotes);
                                     jobsArrayList.add(skeleton);
                                     String jobsSke_databse = gson.toJson(skeleton);
@@ -352,6 +352,7 @@ public class DashBoardFragment extends Fragment {
                                     cv.put(ParseOpenHelper.JOBSTECHOFFTHERECORD, OffTheRecord);
                                     cv.put(ParseOpenHelper.JOBSTECHUPLOADEDIMAGES, UploadedImages);
                                     long idd = database.insert(ParseOpenHelper.TABLENAME_ALLJOBS, null, cv);
+                                    // database.in
                                     Log.e("table", String.valueOf(idd));
                                     setJobMarkers(jobsArrayList.get(i).getJoblatitude(), jobsArrayList.get(i).getJoblongitude());
 
@@ -381,7 +382,7 @@ public class DashBoardFragment extends Fragment {
                                 arraylistmarker.clear();
                                 googleMap.clear();
                                 adapterjobs.notifyDataSetChanged();
-                              /*  database.delete(ParseOpenHelper.TABLENAME_ALLJOBS, ParseOpenHelper.TECHID + "=?", new String[]{HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)});*/
+                                /*  database.delete(ParseOpenHelper.TABLENAME_ALLJOBS, ParseOpenHelper.TECHID + "=?", new String[]{HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)});*/
                                 HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
                                 if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
                                     HandyObject.clearpref(getActivity());

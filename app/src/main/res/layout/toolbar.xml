@@ -40,12 +40,12 @@
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/currenthr_icon"
             android:layout_marginRight="12dp"
-            app:layout_constraintRight_toLeftOf="@+id/inboxicon"
+            app:layout_constraintRight_toLeftOf="@+id/chaticon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/inboxicon"
+            android:id="@+id/chaticon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/messageicon"

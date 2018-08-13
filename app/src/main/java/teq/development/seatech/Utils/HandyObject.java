@@ -483,13 +483,13 @@ public class HandyObject {
     public static String getLaborcode(int posi) {
         String lcname = "";
         if (posi == 0) {
-            lcname = "TRAVEL TIME";
+            lcname = "Travel Time";
         } else if (posi == 1) {
-            lcname = "SERVICE TIME";
+            lcname = "Service Time";
         } else if (posi == 2) {
-            lcname = "LUNCH";
+            lcname = "Lunch";
         } else if (posi == 3) {
-            lcname = "SHOP WORK TIME";
+            lcname = "Shop Work Time";
         } else if (posi == 4) {
             lcname = "DONE FOR THE DAY";
         }
