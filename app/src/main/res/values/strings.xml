@@ -115,7 +115,7 @@
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="gender">Gender -  </string>
-    <string name="search">search</string>
+    <string name="search">Search</string>
     <string name="pickupjobsdr">Pick Up Jobs</string>
     <string name="selectlabrcode">Select Labor Code</string>
     <string name="vacation">Vacation</string>
@@ -238,6 +238,19 @@
     <string name="empname">Employee name</string>
     <string name="cannotsendblankmsg">Can\'t send blank message.</string>
     <string name="selectreciever">Please Select Receiver first</string>
+    <string name="jobticketnoreq">Job ticket no required.</string>
+    <string name="notabletochat">You are not able to chat without internet connection.</string>
+    <string name="notifications">Notifications</string>
+    <string name="alreadyreadnoti">You have already read this notification.</string>
+    <string name="startjob">Stop Job</string>
+    <string name="alreadyacknowledged">Already acknowledged.</string>
+    <string name="tokenText">Please wait while Getting Your Device Information.</string>
+    <string name="nonotifound">No notification found.</string>
+    <string name="jobdetailempty">Job detail filed is empty.</string>
+    <string name="salesorder">Sales Order</string>
+    <string name="nosalesorder">No sales order available.</string>
+    <string name="chat">Chat</string>
+    <string name="jobspecificmsg">Job Specific Message</string>
     <string-array name="laborcode_array">
         <!--<item>Travel Time</item>
         <item>SERVICE TIME</item>
@@ -247,6 +260,12 @@
         <item>Service Time</item>
         <item>Lunch</item>
         <item>Shop Work Time</item>
+    </string-array>
+
+    <string-array name="newlaborcode_array">
+        <item>Office Staff Labor</item>
+        <item>Tech Time Non-Productive</item>
+        <item>Tech Betterment &amp; Training</item>
     </string-array>
     <string-array name="status_array">
         <item>All</item>

@@ -455,6 +455,13 @@ public class TimeSheetFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(fromMonthreciever);
+        Log.e("onDestyViewMain","onDestyViewMain");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("onDestyMain","onDestyMain");
     }
 
     /*public void OnClickBack() {

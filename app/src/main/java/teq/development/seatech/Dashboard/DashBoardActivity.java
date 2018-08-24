@@ -1,11 +1,16 @@
 package teq.development.seatech.Dashboard;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -32,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,7 +74,7 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
     DrawerLayout mDrawerLayout;
     public ActionBarDrawerToggle mDrawerToggle;
     public Boolean mABoolean = false;
-    public ImageView menu_icon, sick_icon, cdhour_icon,chaticon;
+    public ImageView menu_icon, sick_icon, cdhour_icon, chaticon, notificationicon;
     SimpleDraweeView userimage;
     TextView username;
     DatePickerDialog.OnDateSetListener date;
@@ -80,12 +86,28 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
+
+       /* if (getIntent().getExtras().getString("type").equalsIgnoreCase("chat")) {
+            if (HandyObject.checkInternetConnection(this)) {
+                replaceFragmentWithoutBack(new DashBoardFragment());
+                Intent intent_reg = new Intent(DashBoardActivity.this, ChatActivity.class);
+                startActivity(intent_reg);
+                //  finish();
+                overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+            } else {
+                HandyObject.showAlert(this, getString(R.string.notabletochat));
+            }
+        } else {*/
         replaceFragmentWithoutBack(new DashBoardFragment());
+        //   }
+
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         menu_icon = (ImageView) findViewById(R.id.menu_icon);
         sick_icon = (ImageView) findViewById(R.id.sick_icon);
         cdhour_icon = (ImageView) findViewById(R.id.cdhour_icon);
         chaticon = (ImageView) findViewById(R.id.chaticon);
+        notificationicon = (ImageView) findViewById(R.id.notificationicon);
         userimage = (SimpleDraweeView) findViewById(R.id.userimage);
         username = (TextView) findViewById(R.id.username);
         setSupportActionBar(toolbar);
@@ -99,6 +121,7 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         sick_icon.setOnClickListener(this);
         cdhour_icon.setOnClickListener(this);
         chaticon.setOnClickListener(this);
+        notificationicon.setOnClickListener(this);
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -176,6 +199,20 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                 .commit();
     }
 
+    public void replaceFragmentWithtag(Fragment mFragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame, mFragment).addToBackStack("first")
+                .commit();
+    }
+
+    public void removeFragment(Fragment mFragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .remove(mFragment)
+                .commit();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -223,9 +260,31 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                 }
                 break;
             case R.id.chaticon:
-                Intent intent_reg = new Intent(DashBoardActivity.this, ChatActivity.class);
+              /*  Intent intent = new Intent();
+                String packageName = getPackageName();
+                PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (pm != null && pm.isIgnoringBatteryOptimizations(packageName))
+                        intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+                    else {
+                        intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                        intent.setData(Uri.parse("package:" + packageName));
+                    }
+                }
+                startActivity(intent);*/
+                if (HandyObject.checkInternetConnection(this)) {
+                    Intent intent_reg = new Intent(DashBoardActivity.this, ChatActivity.class);
+                    startActivity(intent_reg);
+                    //  finish();
+                    overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                } else {
+                    HandyObject.showAlert(this, getString(R.string.notabletochat));
+                }
+                break;
+            case R.id.notificationicon:
+                Intent intent_reg = new Intent(DashBoardActivity.this, Notifications.class);
                 startActivity(intent_reg);
-              //  finish();
+                //  finish();
                 overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
                 break;
         }
@@ -368,7 +427,10 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                             if (jsonObject.getString("status").toLowerCase().equals("success")) {
                                 HandyObject.showAlert(DashBoardActivity.this, jsonObject.getString("message"));
                                 App.appInstance.stopTimer();
+                                String deviceToken = HandyObject.getPrams(DashBoardActivity.this, AppConstants.DEVICE_TOKEN);
                                 HandyObject.clearpref(DashBoardActivity.this);
+
+                                HandyObject.putPrams(getApplicationContext(), AppConstants.DEVICE_TOKEN, deviceToken);
                                 Intent intent_reg = new Intent(DashBoardActivity.this, LoginActivity.class);
                                 startActivity(intent_reg);
                                 finish();
@@ -442,6 +504,9 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         super.onBackPressed();
         Log.e("Acvity onBackPressed", "Activity onBackPressed");
         onbackppress = true;
+        // getSupportFragmentManager().popBackStack();
+        //  getSupportFragmentManager().popBackStack();
+        overridePendingTransition(R.anim.activity_lefttoright, R.anim.activity_righttoleft);
     }
 
     @Override
@@ -449,14 +514,19 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         super.onResume();
         if (onbackppress == true) {
             if (HandyObject.getPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING).equalsIgnoreCase("yes")) {
-                // onbackppress = true;
                 HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING, "yes");
             } else {
                 HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING, "no");
             }
+            if (HandyObject.getPrams(DashBoardActivity.this, AppConstants.ISJOB_NEWTYPE).equalsIgnoreCase("yes")) {
+                HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_NEWTYPE, "yes");
+            } else {
+                HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_NEWTYPE, "no");
+            }
             onbackppress = false;
         } else {
             HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING, "no");
+            HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_NEWTYPE, "no");
         }
     }
 
@@ -480,5 +550,4 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
             return false;
         }
     }
-
 }

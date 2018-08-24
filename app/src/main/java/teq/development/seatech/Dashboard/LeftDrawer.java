@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import teq.development.seatech.JobDetail.JobDetailFragment;
+import teq.development.seatech.JobDetail.MainJobdetail;
+import teq.development.seatech.JobDetail.NewJobDetailFrgament;
 import teq.development.seatech.PickUpJobs.PickUpJobsFragment;
 import teq.development.seatech.R;
 import teq.development.seatech.Timesheet.TimeSheetFragment;
@@ -46,11 +48,25 @@ public class LeftDrawer extends Fragment {
     }
 
     public void OnClickDetailPage() {
-
+       /* if (isJobRunning() == true) {
+            if (HandyObject.getPrams(context, AppConstants.ISJOB_NEWTYPE).equalsIgnoreCase("yes")) {
+                activity.replaceFragment(new NewJobDetailFrgament());
+            } else {
+                activity.replaceFragment(new JobDetailFragment());
+            }
+        } else {
+            if (HandyObject.getPrams(context, AppConstants.ISJOB_NEWTYPE).equalsIgnoreCase("yes")) {
+                activity.replaceFragment(new NewJobDetailFrgament());
+            }
+        }*/
         if (isJobRunning() == true) {
-            activity.replaceFragment(new JobDetailFragment());
-            activity.mDrawerLayout.closeDrawers();
+            activity.replaceFragment(new MainJobdetail());
+        } else if (HandyObject.getPrams(context, AppConstants.ISJOB_NEWTYPE).equalsIgnoreCase("yes")) {
+            activity.replaceFragment(new MainJobdetail());
         }
+
+        // new JobDetailFragment();
+        activity.mDrawerLayout.closeDrawers();
     }
 
     public void OnClickTimesheet() {

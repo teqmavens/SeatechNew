@@ -11,6 +11,7 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +20,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.content.res.AppCompatResources;
@@ -96,6 +98,7 @@ public class JobDetailFragment extends Fragment {
     boolean jobspinner, updatereciver;
     int timerindex_prev = 0;
     Gson gson;
+    String pdfUrl = "";
     boolean fromjobselection;
     ArrayList<DashboardNotes_Skeleton> arrayListLaborPerf, arrayListOffTheRecord;
     ArrayList<String> arrayListUpdateImage;
@@ -104,7 +107,7 @@ public class JobDetailFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity();
-        activity = (DashBoardActivity) getActivity();
+        //activity = (DashBoardActivity) getActivity();
         Log.e("onCreate", "onCreate");
     }
 
@@ -146,11 +149,29 @@ public class JobDetailFragment extends Fragment {
         }
     };
 
+    public void OnClickViewPdf() {
+        if (pdfUrl.equalsIgnoreCase("-")) {
+            HandyObject.showAlert(getActivity(), getString(R.string.nosalesorder));
+        } else if (pdfUrl != null && !pdfUrl.isEmpty()) {
+            /*Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(pdfUrl));
+            startActivity(browserIntent);*/
+            Intent intent = new Intent();
+            intent.setDataAndType(Uri.parse(pdfUrl), "application/pdf");
+            Intent chooserIntent = Intent.createChooser(intent, "Open Report");
+            startActivity(chooserIntent);
+           /* String url= "https://docs.google.com/gview?embedded=true&url="+pdfUrl;
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);*/
+        } else {
+            HandyObject.showAlert(getActivity(), getString(R.string.nosalesorder));
+        }
+    }
+
     private BroadcastReceiver JobUpdatereciever = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.e("update", "jobbbb");
-            if (Integer.parseInt(intent.getStringExtra("nextjobid")) >= arralistAllJobs.size()) {
+            if (Integer.parseInt(intent.getStringExtra("nextjobid")) >= arralistAllJobs.size() - 1) {
                 updatereciver = true;
                 HandyObject.putPrams(context, AppConstants.ISJOB_RUNNING, "no");
                 Intent intent_reg = new Intent(getActivity(), DashBoardActivity.class);
@@ -278,7 +299,17 @@ public class JobDetailFragment extends Fragment {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
             Log.e("job", "job");
-            if (HandyObject.getPrams(context, AppConstants.ISJOB_RUNNING).equalsIgnoreCase("yes")) {
+            if (arralistAllJobs.get(position).getJobticketNo().equalsIgnoreCase("111111")) {
+                // HandyObject.putPrams(context, AppConstants.ISJOB_RUNNING, "no");
+                // App.appInstance.stopTimer();
+                //   NewJobDetailFrgament newjobdetail = new NewJobDetailFrgament();
+
+                Intent intent = new Intent("fromJobDetail");
+                intent.putExtra("position", String.valueOf(position));
+                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+
+                //  activity.removeFragment(JobDetailFragment.this);
+            } else if (HandyObject.getPrams(context, AppConstants.ISJOB_RUNNING).equalsIgnoreCase("yes")) {
                 Log.e("AlreadyrunningJOB", "AlreadyrunningJOB");
                 runHandlerforLC();
                 String kj = HandyObject.getPrams(getActivity(), AppConstants.JOBRUNNING_TOTALTIME);
@@ -295,7 +326,11 @@ public class JobDetailFragment extends Fragment {
                         if (JobStatusDialog.crossclick == true) {
                             JobStatusDialog.crossclick = false;
                         } else {
-                            showDialog(HandyObject.getIntPrams(getActivity(), AppConstants.JObSPINNER_LASTPOSI), setDataForLCSumbmit());
+                            if (checkedit() == true) {
+                                HandyObject.showAlert(getActivity(), getString(R.string.jobdetailempty));
+                            } else {
+                                showDialog(HandyObject.getIntPrams(getActivity(), AppConstants.JObSPINNER_LASTPOSI), setDataForLCSumbmit(), setDataForEdit());
+                            }
                         }
                     } else {
                         if (JobStatusDialog.crossclick == true) {
@@ -315,7 +350,11 @@ public class JobDetailFragment extends Fragment {
                     if (JobStatusDialog.crossclick == true) {
                         JobStatusDialog.crossclick = false;
                     } else {
-                        showDialog(HandyObject.getIntPrams(getActivity(), AppConstants.JObSPINNER_LASTPOSI), setDataForLCSumbmit());
+                        if (checkedit() == true) {
+                            HandyObject.showAlert(getActivity(), getString(R.string.jobdetailempty));
+                        } else {
+                            showDialog(HandyObject.getIntPrams(getActivity(), AppConstants.JObSPINNER_LASTPOSI), setDataForLCSumbmit(), setDataForEdit());
+                        }
                     }
                 } else {
                     App.appInstance.stopTimer();
@@ -334,11 +373,39 @@ public class JobDetailFragment extends Fragment {
 
     private void setAllSpinnerData(int position) {
         try {
+            pdfUrl = arralistAllJobs.get(position).getSalesorder();
             binding.boatmakeyearValue.setText(arralistAllJobs.get(position).getBoatmakeYear());
             binding.boatmodelValue.setText(arralistAllJobs.get(position).getBoatmodelLength());
-            binding.boatnameValue.setText(arralistAllJobs.get(position).getBoatName());
-            binding.hullidValue.setText(arralistAllJobs.get(position).getHullid());
-            binding.captnameValue.setText(arralistAllJobs.get(position).getCaptainname());
+            if (arralistAllJobs.get(position).getBoatName().equalsIgnoreCase("-")) {
+                binding.boatnameValue.setBackgroundColor(Color.parseColor("#A9A9A9"));
+                binding.boatnameValue.setEnabled(true);
+                binding.boatnameValue.setText("");
+            } else {
+                binding.boatnameValue.setBackgroundColor(Color.TRANSPARENT);
+                binding.boatnameValue.setEnabled(false);
+                binding.boatnameValue.setText(arralistAllJobs.get(position).getBoatName());
+            }
+            if (arralistAllJobs.get(position).getHullid().equalsIgnoreCase("-")) {
+                binding.hullidValue.setBackgroundColor(Color.parseColor("#A9A9A9"));
+                binding.hullidValue.setText("");
+                binding.hullidValue.setEnabled(true);
+            } else {
+                binding.hullidValue.setBackgroundColor(Color.TRANSPARENT);
+                binding.hullidValue.setEnabled(false);
+                binding.hullidValue.setText(arralistAllJobs.get(position).getHullid());
+            }
+            if (arralistAllJobs.get(position).getCaptainname().equalsIgnoreCase("-")) {
+                binding.captnameValue.setBackgroundColor(Color.parseColor("#A9A9A9"));
+                binding.captnameValue.setText("");
+                binding.captnameValue.setEnabled(true);
+            } else {
+                binding.captnameValue.setBackgroundColor(Color.TRANSPARENT);
+                binding.captnameValue.setEnabled(false);
+                binding.captnameValue.setText(arralistAllJobs.get(position).getCaptainname());
+            }
+
+            // binding.hullidValue.setText(arralistAllJobs.get(position).getHullid());
+            //  binding.captnameValue.setText(arralistAllJobs.get(position).getCaptainname());
             binding.promisedateValue.setText(arralistAllJobs.get(position).getPromisedate());
             binding.repValue.setText(arralistAllJobs.get(position).getRep());
             binding.jobselectionValue.setText(arralistAllJobs.get(position).getJobselection());
@@ -618,7 +685,11 @@ public class JobDetailFragment extends Fragment {
         if (binding.spinnerLc.getSelectedItemPosition() == 0) {
             binding.spinnerLc.setSelection(1);
         } else {
-            showDialog(binding.jobspinner.getSelectedItemPosition(), setDataForLCSumbmit());
+            if (checkedit() == true) {
+                HandyObject.showAlert(getActivity(), getString(R.string.jobdetailempty));
+            } else {
+                showDialog(binding.jobspinner.getSelectedItemPosition(), setDataForLCSumbmit(), setDataForEdit());
+            }
         }
     }
 
@@ -673,7 +744,7 @@ public class JobDetailFragment extends Fragment {
         }
     }
 
-    void showDialog(int posi, String allValues) {
+    void showDialog(int posi, String allValues, String editvalues) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("dialog");
         if (prev != null) {
@@ -681,7 +752,7 @@ public class JobDetailFragment extends Fragment {
         }
         ft.addToBackStack(null);
         // Create and show the dialog.
-        DialogFragment newFragment = JobStatusDialog.newInstance(arralistAllJobs.get(binding.jobspinner.getSelectedItemPosition()).getJobticketNo(), posi, allValues);
+        DialogFragment newFragment = JobStatusDialog.newInstance(arralistAllJobs.get(binding.jobspinner.getSelectedItemPosition()).getJobticketNo(), posi, allValues, editvalues);
         newFragment.setCancelable(false);
         newFragment.show(ft, "dialog");
         App.appInstance.pauseTimer();
@@ -760,6 +831,12 @@ public class JobDetailFragment extends Fragment {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("onDestroyJob", "onDestroyJob");
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         try {
@@ -774,13 +851,13 @@ public class JobDetailFragment extends Fragment {
             } else {
                 HandyObject.putPrams(context, AppConstants.ISJOB_RUNNING, "yes");
             }
-
+            HandyObject.putPrams(context, AppConstants.ISJOB_NEWTYPE, "no");
             HandyObject.putPrams(context, AppConstants.JOBRUNNING_ETLABORPERFORM, binding.etLaborperform.getText().toString());
             HandyObject.putPrams(context, AppConstants.JOBRUNNING_CENTERTIME, arralistJobTime.get(1).getHrminutes());
             HandyObject.putIntPrams(context, AppConstants.JOBRUNNING_INDEX, binding.jobspinner.getSelectedItemPosition());
             HandyObject.putIntPrams(context, AppConstants.JOBLABORCODE_INDEX, binding.spinnerLc.getSelectedItemPosition());
             HandyObject.putIntPrams(context, AppConstants.JOBSTARTTIME_INDEX, binding.timespinner.getSelectedItemPosition());
-            //  Log.e("onDestroyView", "onDestroyView");
+            Log.e("onDestroyViewJob", "onDestroyViewJob");
         } catch (Exception e) {
         }
 
@@ -893,6 +970,26 @@ public class JobDetailFragment extends Fragment {
         long idd = database.insert(ParseOpenHelper.TABLE_SUBMITMYLABOR_NEWOFFRECORD, null, cv);
     }
 
+    private boolean checkedit() {
+        boolean abc = false;
+
+        if (binding.boatnameValue.getText().toString().length() == 0) {
+            abc = true;
+        } else if (binding.hullidValue.getText().toString().length() == 0) {
+            abc = true;
+        } else if (binding.captnameValue.getText().toString().length() == 0) {
+            abc = true;
+        } else {
+            abc = false;
+        }
+        return abc;
+    }
+
+    private String setDataForEdit() {
+        String value = binding.boatnameValue.getText().toString() + "-" + binding.hullidValue.getText().toString() + "-" + binding.captnameValue.getText().toString();
+        return value;
+    }
+
     private String setDataForLCSumbmit() {
         String runinngtime = binding.uploadimage.getText().toString();
         Calendar calendar = Calendar.getInstance();
@@ -915,15 +1012,6 @@ public class JobDetailFragment extends Fragment {
         // String starttime = arralistJobTime.get(1).getParsedate() + " " + arralistJobTime.get(1).getHrminutes();
 
         String starttime = arralistJobTime.get(binding.timespinner.getSelectedItemPosition()).getParsedate() + " " + arralistJobTime.get(binding.timespinner.getSelectedItemPosition()).getHrminutes();
-        // arralistJobTime.clear();
-
-       /* if (binding.timespinner.getSelectedItemPosition() == 0) {
-            calendar.add(Calendar.MINUTE, 15);
-            calendar.getTime();
-        } else if (binding.timespinner.getSelectedItemPosition() == 2) {
-            calendar.add(Calendar.MINUTE, -15);
-            calendar.getTime();
-        }*/
 
         ArrayList<JobTimeSkeleton> arralistJobTime_JobStatus = new ArrayList<>();
         calendar.add(Calendar.MINUTE, -15);
@@ -957,7 +1045,7 @@ public class JobDetailFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            HandyObject.showProgressDialog(getActivity());
+          //  HandyObject.showProgressDialog(getActivity());
         }
 
         @Override
@@ -1009,9 +1097,11 @@ public class JobDetailFragment extends Fragment {
             if (isJobRunning() == true) {
                 binding.etLaborperform.setText(HandyObject.getPrams(context, AppConstants.JOBRUNNING_ETLABORPERFORM));
                 binding.jobspinner.setSelection(HandyObject.getIntPrams(context, AppConstants.JOBRUNNING_INDEX));
+            } else if (getArguments() != null) {
+                binding.jobspinner.setSelection(Integer.parseInt(getArguments().getString("posinew")));
             }
             binding.jobspinner.setOnItemSelectedListener(new JobItemSelectedListener());
-            HandyObject.stopProgressDialog();
+           // HandyObject.stopProgressDialog();
         }
     }
 

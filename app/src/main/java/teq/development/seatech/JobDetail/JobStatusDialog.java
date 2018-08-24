@@ -62,19 +62,19 @@ public class JobStatusDialog extends DialogFragment {
     EditText et_description;
     static int count = 0;
     public static boolean crossclick;
-    public static String allValues;
+    public static String allValues, editvalues;
     public String jobstatus;
     private SQLiteDatabase database;
     public String get_needtoknow, returnimmediate, alreadyScheduled, reason, description = "";
     boolean popupsubmit;
 
-    static JobStatusDialog newInstance(String jobid, int selecposition, String values) {
+    static JobStatusDialog newInstance(String jobid, int selecposition, String values, String evalues) {
         JobStatusDialog f = new JobStatusDialog();
         Bundle args = new Bundle();
-        // args.putInt("num", num);
         coming_jobid = jobid;
         count = selecposition;
         allValues = values;
+        editvalues = evalues;
         f.setArguments(args);
         return f;
     }
@@ -799,7 +799,14 @@ public class JobStatusDialog extends DialogFragment {
         String hours_adjusted = allValues.split("--")[3];
         String labour_code = allValues.split("--")[4];
 
+        String edit_boatname = editvalues.split("-")[0];
+        String edit_hullid = editvalues.split("-")[1];
+        String edit_capname = editvalues.split("-")[2];
+
         JobStatusSkeleton ske = new JobStatusSkeleton();
+        ske.setBoat_name(edit_boatname);
+        ske.setHull_id(edit_hullid);
+        ske.setCaptain_name(edit_capname);
         ske.setTech_id(teqid);
         ske.setJob_id(jobid);
         ske.setJob_completed(job_completed);
@@ -817,6 +824,7 @@ public class JobStatusDialog extends DialogFragment {
         ske.setHours(hours);
         ske.setHours_adjusted(hours_adjusted);
         ske.setLabour_code(labour_code);
+
         ArrayList<JobStatusSkeleton> arrayList = new ArrayList<>();
         arrayList.add(ske);
         Gson gson = new Gson();
@@ -906,6 +914,9 @@ public class JobStatusDialog extends DialogFragment {
         cv.put(ParseOpenHelper.JOBSTATUSHOURSADJUSTED, arrayList.get(0).getHours_adjusted());
         cv.put(ParseOpenHelper.JOBSTATUSLABOURCODE, arrayList.get(0).getLabour_code());
         cv.put(ParseOpenHelper.JOBSTATUSCREATEDAT, insertedAt);
+        cv.put(ParseOpenHelper.JOBSTATUSBOATNAME, arrayList.get(0).getBoat_name());
+        cv.put(ParseOpenHelper.JOBSTATUSHULLID, arrayList.get(0).getHull_id());
+        cv.put(ParseOpenHelper.JOBSTATUSCAPTIONNAME, arrayList.get(0).getCaptain_name());
         long idd = database.insert(ParseOpenHelper.TABLE_JOBSTATUS, null, cv);
     }
 

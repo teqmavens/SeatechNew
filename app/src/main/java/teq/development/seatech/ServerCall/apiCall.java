@@ -1,5 +1,6 @@
 package teq.development.seatech.ServerCall;
 
+import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -10,6 +11,8 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import teq.development.seatech.Dashboard.Skeleton.NotificationSkeleton;
+import teq.development.seatech.Dashboard.Skeleton.ReadNotificationSkeleton;
 import teq.development.seatech.Timesheet.DayJobStatus_Skeleton;
 
 /**
@@ -23,7 +26,8 @@ public interface apiCall {
     @Headers("tokenID: 1234567890234dfg456")
     Call<ResponseBody> userLogin(
             @Field("username") String user,
-            @Field("password") String password
+            @Field("password") String password,
+               @Field("device_udid") String device_udid
     );
 
     @FormUrlEncoded
@@ -75,7 +79,7 @@ public interface apiCall {
     );
 
     @FormUrlEncoded
-    @POST("tech-scheduled-jobs.json")
+    @POST("tech-scheduled-jobs-old.json")
     @Headers("tokenID: 1234567890234dfg456")
     Call<ResponseBody> getDashboradData(
             @Field("tech_id") String email,
@@ -243,6 +247,39 @@ public interface apiCall {
     @Headers("tokenID: 1234567890234dfg456")
     Call<ResponseBody> AllEmployeeList(
             @Field("user_id") String userid,
+            @Header("sessionID") String sessionid
+    );
+
+    @FormUrlEncoded
+    @POST("jobs/chatJobMessages.json")
+    @Headers("tokenID: 1234567890234dfg456")
+    Call<ResponseBody> LoadChatMessages(
+            @Field("job_id") String jobid,
+            @Header("sessionID") String sessionid
+    );
+
+    @FormUrlEncoded
+    @POST("jobs/JobList.json")
+    @Headers("tokenID: 1234567890234dfg456")
+    Call<ResponseBody> AllJobsList(
+            @Field("tech_id") String techid,
+            @Header("sessionID") String sessionid
+    );
+
+    @FormUrlEncoded
+    @POST("notifications/notificationList.json")
+    @Headers("tokenID: 1234567890234dfg456")
+    Observable<NotificationSkeleton> NotificationsList(
+            @Field("user_id") String userid,
+            @Header("sessionID") String sessionid
+    );
+
+
+    @FormUrlEncoded
+    @POST("notifications/readNotification.json")
+    @Headers("tokenID: 1234567890234dfg456")
+    Observable<ReadNotificationSkeleton> NotificationsRead(
+            @Field("notifification_id") String notifification_id,
             @Header("sessionID") String sessionid
     );
 }

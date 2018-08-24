@@ -13,34 +13,64 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/MaterialTheme"
-        android:largeHeap="true">
-        <activity android:name=".LoginActivity"
+        android:theme="@style/MaterialTheme">
+        <activity
+            android:name=".LoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Dashboard.DashBoardActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait"></activity>
+
+        <service android:name=".Chat.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".Chat.myFirebaseInstantIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_launcher" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/appbasiccolor" />
+
+        <activity
+            android:name=".Dashboard.DashBoardActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"></activity>
 
         <activity android:name=".database.MainActivity"></activity>
-        <activity android:name=".Chat.ChatActivity"
-            ></activity>
 
+        <activity
+            android:name=".Chat.ChatActivity"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".Utils.PdfActivity" android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Dashboard.Notifications"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".Utils.PdfActivity"
+            android:screenOrientation="portrait"></activity>
+
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="c6544945fa75b7f669746bc4619cc57f8657cc9c"
-            />
+            android:value="c6544945fa75b7f669746bc4619cc57f8657cc9c" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/Apikey_Map" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.android.fileprovider"
@@ -53,8 +83,8 @@
 
         <activity android:name=".database.CustomGalleryActivity">
             <intent-filter>
-                <action android:name="luminous.ACTION_MULTIPLE_PICK"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="luminous.ACTION_MULTIPLE_PICK" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
     </application>

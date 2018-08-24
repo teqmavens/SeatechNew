@@ -55,6 +55,7 @@ import teq.development.seatech.Dashboard.Skeleton.AllJobsSkeleton;
 import teq.development.seatech.Dashboard.Skeleton.DashboardNotes_Skeleton;
 import teq.development.seatech.JobDetail.JobDetailFragment;
 import teq.development.seatech.JobDetail.JobDetailStaticFragment;
+import teq.development.seatech.JobDetail.MainJobdetail;
 import teq.development.seatech.LoginActivity;
 import teq.development.seatech.R;
 import teq.development.seatech.Utils.AppConstants;
@@ -179,14 +180,19 @@ public class DashBoardFragment extends Fragment {
     }
 
     public void OnClickStartTime() {
-        if (isJobRunning() == true) {
+        if (isJobRunning() == true || HandyObject.getPrams(context, AppConstants.ISJOB_NEWTYPE).equalsIgnoreCase("yes")) {
             HandyObject.showAlert(context, getString(R.string.cannotstart_newjob));
         } else {
             if (HandyObject.getCurrentDate().split("\\s+")[1].equalsIgnoreCase(binding.currentdate.getText().toString().split("\\s+")[1])) {
                 if (jobsArrayList.size() == 0) {
                     HandyObject.showAlert(context, getString(R.string.nojobs_tostart));
                 } else {
-                    activity.replaceFragment(new JobDetailFragment());
+                    activity.replaceFragment(new MainJobdetail());
+                    /*if (isJobRunning() == true) {
+                        activity.replaceFragment(new MainJobdetail());
+                    } else if (HandyObject.getPrams(context, AppConstants.ISJOB_NEWTYPE).equalsIgnoreCase("yes")) {
+                        activity.replaceFragment(new MainJobdetail());
+                    }*/
                 }
             } else {
                 HandyObject.showAlert(context, getString(R.string.onlystatrt_currentdayjob));
@@ -263,7 +269,7 @@ public class DashBoardFragment extends Fragment {
                                 jobsArrayList.clear();
                                 arraylistmarker.clear();
                                 googleMap.clear();
-                                HandyObject.showAlert(getActivity(), "deletedatabase");
+                                // HandyObject.showAlert(getActivity(), "deletedatabase");
                                 database.delete(ParseOpenHelper.TABLENAME_ALLJOBS, ParseOpenHelper.TECHID + "=?", new String[]{HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)});
                                 database.delete(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, ParseOpenHelper.TECHIDCURRDAY + "=?", new String[]{HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)});
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -277,10 +283,11 @@ public class DashBoardFragment extends Fragment {
                                     skeleton.setBoatLocation(jobjInside.getString("boat_address"));
                                     skeleton.setSupplyamount(jobjInside.getString("supply_amount"));
                                     skeleton.setJobdescription(jobjInside.getString("job_description"));
-                                    skeleton.setTime("9:00");
+                                    skeleton.setTime(jobjInside.getString("job_start_time"));
+                                    skeleton.setSalesorder(jobjInside.getString("sales_order"));
                                     skeleton.setTechSupervisor(jobjInside.getString("supervisor"));
-                                    skeleton.setOtherMembers("other_member");
-                                    skeleton.setPartLocation("Peermuchllaa");
+                                    skeleton.setOtherMembers(jobjInside.getString("other_member"));
+                                    skeleton.setPartLocation(jobjInside.getString("location"));
                                     skeleton.setBoatmakeYear(jobjInside.getString("boat_make_year"));
                                     skeleton.setBoatmodelLength(jobjInside.getString("boat_model_length"));
                                     skeleton.setBoatName(jobjInside.getString("boat_name"));
@@ -354,7 +361,11 @@ public class DashBoardFragment extends Fragment {
                                     long idd = database.insert(ParseOpenHelper.TABLENAME_ALLJOBS, null, cv);
                                     // database.in
                                     Log.e("table", String.valueOf(idd));
-                                    setJobMarkers(jobsArrayList.get(i).getJoblatitude(), jobsArrayList.get(i).getJoblongitude());
+                                    if (jobjInside.getString("job_id").equalsIgnoreCase("111111")) {
+                                    } else {
+                                        setJobMarkers(jobsArrayList.get(i).getJoblatitude(), jobsArrayList.get(i).getJoblongitude());
+                                    }
+
 
                                     if (date.split("-")[2].equalsIgnoreCase(binding.currentdate.getText().toString().split("\\s+")[1])) {
                                         ContentValues cv_current = new ContentValues();
@@ -501,7 +512,10 @@ public class DashBoardFragment extends Fragment {
                     binding.rcyviewJobs.setAdapter(adapterjobs);
 
                     for (int i = 0; i < jobsArrayList.size(); i++) {
-                        setJobMarkers(jobsArrayList.get(i).getJoblatitude(), jobsArrayList.get(i).getJoblongitude());
+                        if (jobsArrayList.get(i).getJobticketNo().equalsIgnoreCase("111111")) {
+                        } else {
+                            setJobMarkers(jobsArrayList.get(i).getJoblatitude(), jobsArrayList.get(i).getJoblongitude());
+                        }
                     }
                 } else {
                     binding.rcyviewJobs.setAdapter(adapterjobs);

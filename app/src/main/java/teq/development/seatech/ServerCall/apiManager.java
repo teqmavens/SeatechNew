@@ -1,6 +1,9 @@
 package teq.development.seatech.ServerCall;
 
+
+
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -27,6 +30,7 @@ public class apiManager {
         }
         return retrofit;
     }
+
     public static Retrofit getApiManagerAdmin() {
 
       //  if (retrofitadmin == null) {
@@ -54,6 +58,18 @@ public class apiManager {
         if (retrofitmain == null) {
             retrofitmain = new Retrofit.Builder()
                     .baseUrl(MainBaseApiURL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return retrofitmain;
+    }
+
+    public static Retrofit getApiManagerMainRx() {
+
+        if (retrofitmain == null) {
+            retrofitmain = new Retrofit.Builder()
+                    .baseUrl(MainBaseApiURL)
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

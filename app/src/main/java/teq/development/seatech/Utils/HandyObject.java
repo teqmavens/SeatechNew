@@ -61,6 +61,10 @@ public class HandyObject {
         return apiManager.getApiManagerMain().create(apiCall.class);
     }
 
+    public static apiCall getApiManagerMainRx() {
+        return apiManager.getApiManagerMainRx().create(apiCall.class);
+    }
+
     public static boolean checkInternetConnection(Context context) {
         ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = manager.getActiveNetworkInfo();
@@ -492,6 +496,18 @@ public class HandyObject {
             lcname = "Shop Work Time";
         } else if (posi == 4) {
             lcname = "DONE FOR THE DAY";
+        }
+        return lcname;
+    }
+
+    public static String getLaborcodeNew(int posi) {
+        String lcname = "";
+        if (posi == 0) {
+            lcname = "Office Staff Labor";
+        } else if (posi == 1) {
+            lcname = "Tech Time Non-Productive";
+        } else if (posi == 2) {
+            lcname = "Tech Betterment & Training";
         }
         return lcname;
     }

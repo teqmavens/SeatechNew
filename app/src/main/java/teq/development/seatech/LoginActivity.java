@@ -25,6 +25,7 @@ import android.util.Log;
 import android.util.Patterns;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -52,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     private static String[] PERMISSIONS_CAMERA = {Manifest.permission.CAMERA};
     private static String[] PERMISSIONS_STORAGE = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private SQLiteDatabase sqLiteDatabase;
+    String deviceToken = "";
     private Gson gson;
 
     @Override
@@ -71,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         binding.setLoginactivity(this);
         binding.etUsername.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(LoginActivity.this, R.drawable.et_username), null, null, null);
         binding.etPwd.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(LoginActivity.this, R.drawable.etpwd), null, null, null);
+        //deviceToken = HandyObject.getPrams(LoginActivity.this, AppConstants.DEVICE_TOKEN);
     }
 
     public void onClickLogin() {
@@ -81,15 +84,27 @@ public class LoginActivity extends AppCompatActivity {
             binding.etPwd.setError(getString(R.string.fieldempty));
             binding.etPwd.requestFocus();
         } else if (HandyObject.checkInternetConnection(this)) {
-            loginTask(binding.etUsername.getText().toString(), binding.etPwd.getText().toString());
+            loginTask(binding.etUsername.getText().toString(), binding.etPwd.getText().toString(), HandyObject.getPrams(LoginActivity.this, AppConstants.DEVICE_TOKEN));
+            /*if (deviceToken == null) {
+                deviceToken = FirebaseInstanceId.getInstance().getToken();
+                HandyObject.showAlert(LoginActivity.this, getString(R.string.tokenText));
+            } else {
+                if (deviceToken.length() == 0) {
+                    deviceToken = FirebaseInstanceId.getInstance().getToken();
+                    HandyObject.showAlert(LoginActivity.this, getString(R.string.tokenText));
+                } else {
+                    HandyObject.putPrams(getApplicationContext(), AppConstants.DEVICE_TOKEN, deviceToken);
+                    loginTask(binding.etUsername.getText().toString(), binding.etPwd.getText().toString(), deviceToken);
+                }
+            }*/
         } else {
             Toast.makeText(this, R.string.check_internet_connection, Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void loginTask(String username, String pwd) {
+    private void loginTask(String username, String pwd, String token) {
         HandyObject.showProgressDialog(this);
-        HandyObject.getApiManagerType().userLogin(username, pwd)
+        HandyObject.getApiManagerType().userLogin(username, pwd, token)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -168,9 +183,29 @@ public class LoginActivity extends AppCompatActivity {
 
     private void movetoDashboard() {
         Intent intent_reg = new Intent(LoginActivity.this, DashBoardActivity.class);
+        //intent_reg.putExtra("type", "normal");
         startActivity(intent_reg);
         finish();
         overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+       /* if (getIntent().getStringExtra("type") == null) {
+            Intent intent_backarrow = new Intent(LoginActivity.this, DashBoardActivity.class);
+            intent_backarrow.putExtra("type", "normal");
+            startActivity(intent_backarrow);
+            finish();
+        } else if (getIntent().getExtras().getString("type").equalsIgnoreCase("chat")) {
+            Intent intent_reg = new Intent(LoginActivity.this, DashBoardActivity.class);
+            intent_reg.putExtra("type", "chat");
+            startActivity(intent_reg);
+            finish();
+            overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+        } else {
+            Intent intent_reg = new Intent(LoginActivity.this, DashBoardActivity.class);
+            intent_reg.putExtra("type", "normal");
+            startActivity(intent_reg);
+            finish();
+            overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+        }*/
+
     }
 
     void check_RequestPermission() {

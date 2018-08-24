@@ -141,4 +141,16 @@ public class TSWeekChildFragment extends Fragment {
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
         getFragmentManager().popBackStack();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("onDestyWeek", "onDestyWeek");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.e("onDestyViewWeek", "onDestyViewWeek");
+    }
 }
