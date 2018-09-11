@@ -127,6 +127,7 @@ public class SyncUploadImages extends Job {
                         }
                     } else if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
                         HandyObject.clearpref(getContext());
+                        HandyObject.deleteAllDatabase(getContext());
                         App.appInstance.stopTimer();
                     } else {
                         HandyObject.showAlert(getContext(), jsonObject.getString("message"));

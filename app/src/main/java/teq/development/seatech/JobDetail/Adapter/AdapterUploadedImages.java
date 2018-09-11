@@ -72,8 +72,6 @@ public class AdapterUploadedImages extends RecyclerView.Adapter<AdapterUploadedI
 
         public void bind(final int position) {
             mbinding.setRowuploadedimages(AdapterUploadedImages.this);
-
-            // mbinding.imageview.setImageURI(arraylistimages.get(position));
             Glide.with(context).load(arraylistimages.get(position)).placeholder(R.drawable.no_media).dontAnimate().diskCacheStrategy(DiskCacheStrategy.ALL).into(mbinding.imageview);
 
             mbinding.imageview.findViewById(R.id.imageview).setOnClickListener(new View.OnClickListener() {

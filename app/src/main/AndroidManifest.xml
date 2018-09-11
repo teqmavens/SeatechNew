@@ -25,6 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver
+            android:name=".Utils.AlarmReceiver"
+            android:enabled="true" />
 
         <service android:name=".Chat.MyFirebaseMessagingService">
             <intent-filter>
@@ -54,7 +57,8 @@
 
         <activity
             android:name=".Chat.ChatActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"></activity>
 
         <activity
             android:name=".Dashboard.Notifications"

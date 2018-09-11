@@ -104,6 +104,7 @@ public class TSWeekChildFragment extends Fragment {
                                 HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
                                 if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
                                     HandyObject.clearpref(getActivity());
+                                    HandyObject.deleteAllDatabase(getActivity());
                                     App.appInstance.stopTimer();
                                     Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
                                     startActivity(intent_reg);

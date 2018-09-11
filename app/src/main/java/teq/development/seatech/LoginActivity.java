@@ -71,8 +71,8 @@ public class LoginActivity extends AppCompatActivity {
         }
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         binding.setLoginactivity(this);
-        binding.etUsername.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(LoginActivity.this, R.drawable.et_username), null, null, null);
-        binding.etPwd.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(LoginActivity.this, R.drawable.etpwd), null, null, null);
+      /*  binding.etUsername.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(LoginActivity.this, R.drawable.et_username), null, null, null);
+        binding.etPwd.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(LoginActivity.this, R.drawable.etpwd), null, null, null);*/
         //deviceToken = HandyObject.getPrams(LoginActivity.this, AppConstants.DEVICE_TOKEN);
     }
 
@@ -84,7 +84,15 @@ public class LoginActivity extends AppCompatActivity {
             binding.etPwd.setError(getString(R.string.fieldempty));
             binding.etPwd.requestFocus();
         } else if (HandyObject.checkInternetConnection(this)) {
-            loginTask(binding.etUsername.getText().toString(), binding.etPwd.getText().toString(), HandyObject.getPrams(LoginActivity.this, AppConstants.DEVICE_TOKEN));
+            deviceToken = HandyObject.getPrams(LoginActivity.this, AppConstants.DEVICE_TOKEN);
+            if (deviceToken.length() == 0) {
+                deviceToken = FirebaseInstanceId.getInstance().getToken();
+                HandyObject.showAlert(LoginActivity.this, getString(R.string.tokenText));
+            } else {
+                HandyObject.putPrams(getApplicationContext(), AppConstants.DEVICE_TOKEN, deviceToken);
+                loginTask(binding.etUsername.getText().toString(), binding.etPwd.getText().toString(), deviceToken);
+            }
+           /* loginTask(binding.etUsername.getText().toString(), binding.etPwd.getText().toString(), HandyObject.getPrams(LoginActivity.this, AppConstants.DEVICE_TOKEN));*/
             /*if (deviceToken == null) {
                 deviceToken = FirebaseInstanceId.getInstance().getToken();
                 HandyObject.showAlert(LoginActivity.this, getString(R.string.tokenText));
@@ -155,6 +163,7 @@ public class LoginActivity extends AppCompatActivity {
             HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_JOININGDATE, jobj.getString("joining_date"));
             HandyObject.putPrams(LoginActivity.this, AppConstants.JOBRUNNING_TOTALTIME, "0");
             HandyObject.putPrams(LoginActivity.this, AppConstants.ISJOB_RUNNING, "no");
+            HandyObject.putPrams(LoginActivity.this, AppConstants.IS_LOGIN, "login");
             if (binding.checkboxremb.isChecked()) {
                 HandyObject.putPrams(LoginActivity.this, AppConstants.IS_LOGIN, "login");
             } else {

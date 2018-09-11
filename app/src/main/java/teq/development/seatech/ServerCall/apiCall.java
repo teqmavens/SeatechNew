@@ -266,19 +266,35 @@ public interface apiCall {
             @Header("sessionID") String sessionid
     );
 
-    @FormUrlEncoded
+   /* @FormUrlEncoded
     @POST("notifications/notificationList.json")
     @Headers("tokenID: 1234567890234dfg456")
     Observable<NotificationSkeleton> NotificationsList(
             @Field("user_id") String userid,
             @Header("sessionID") String sessionid
+    );*/
+
+    @FormUrlEncoded
+    @POST("notifications/notificationList.json")
+    @Headers("tokenID: 1234567890234dfg456")
+    Call<NotificationSkeleton> NotificationsList(
+            @Field("user_id") String userid,
+            @Header("sessionID") String sessionid
     );
 
+
+    /*@FormUrlEncoded
+    @POST("notifications/readNotification.json")
+    @Headers("tokenID: 1234567890234dfg456")
+    Observable<ReadNotificationSkeleton> NotificationsRead(
+            @Field("notifification_id") String notifification_id,
+            @Header("sessionID") String sessionid
+    );*/
 
     @FormUrlEncoded
     @POST("notifications/readNotification.json")
     @Headers("tokenID: 1234567890234dfg456")
-    Observable<ReadNotificationSkeleton> NotificationsRead(
+    Call<ReadNotificationSkeleton> NotificationsRead(
             @Field("notifification_id") String notifification_id,
             @Header("sessionID") String sessionid
     );

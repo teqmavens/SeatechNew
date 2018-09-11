@@ -125,6 +125,7 @@ public class App extends MultiDexApplication {
             intent.putExtra("secss", String.format("%02d", hrs) + ":" + String.format("%02d", mins) + ":" + String.format("%02d", secs));
             LocalBroadcastManager.getInstance(appInstance).sendBroadcast(intent);
             customHandler.postDelayed(this, 1000);
+            //257211
         }
     };
 
@@ -139,7 +140,7 @@ public class App extends MultiDexApplication {
 
     }
 
-    private Socket mSocket;
+    public Socket mSocket;
     {
         try {
             mSocket = IO.socket(AppConstants.CHAT_SERVER_URL);
@@ -151,4 +152,6 @@ public class App extends MultiDexApplication {
     public Socket getSocket() {
         return mSocket;
     }
+
+
 }

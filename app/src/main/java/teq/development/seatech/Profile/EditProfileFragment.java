@@ -287,14 +287,15 @@ public class EditProfileFragment extends Fragment {
 
                 imageFile = new File(imagepath);
                 //HandyObject.showAlert(getActivity(), imageFile.getAbsolutePath());
-              //  Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-             //   binding.profileimage.setImageBitmap(myBitmap);
-              //  binding.profileimage.setImageURI(selectedImageUri);
+                //  Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+                //   binding.profileimage.setImageBitmap(myBitmap);
+                //  binding.profileimage.setImageURI(selectedImageUri);
                 //   uploadImageToSrver();
-              try {
-                  Bitmap bitmap = new UserPicture(selectedImageUri, context.getContentResolver()).getBitmap();
-                  binding.profileimage.setImageBitmap(bitmap);
-              } catch (Exception e){}
+                try {
+                    Bitmap bitmap = new UserPicture(selectedImageUri, context.getContentResolver()).getBitmap();
+                    binding.profileimage.setImageBitmap(bitmap);
+                } catch (Exception e) {
+                }
 
 
             }
@@ -304,13 +305,14 @@ public class EditProfileFragment extends Fragment {
                 Log.e("imageUri below:", "" + Uri.fromFile(imageFile));
                 //uploadImageToSrver();
                 //HandyObject.showAlert(getActivity(), imageFile.getAbsolutePath());
-               // Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-              //  binding.profileimage.setImageBitmap(myBitmap);
-              //  binding.profileimage.setImageURI(Uri.fromFile(imageFile));
+                // Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+                //  binding.profileimage.setImageBitmap(myBitmap);
+                //  binding.profileimage.setImageURI(Uri.fromFile(imageFile));
                 try {
                     Bitmap bitmap = new UserPicture(Uri.fromFile(imageFile), context.getContentResolver()).getBitmap();
                     binding.profileimage.setImageBitmap(bitmap);
-                } catch (Exception e){}
+                } catch (Exception e) {
+                }
 
             } else {
                 Uri fileUri = FileProvider.getUriForFile(getActivity(),
@@ -478,26 +480,21 @@ public class EditProfileFragment extends Fragment {
 
     public void OnClickSave() {
         if (binding.spinnergender.getSelectedItem().toString().equalsIgnoreCase("Male")) {
-            uploadImageToSrver(binding.etPhone.getText().toString(),"M", HandyObject.getPrams(context, AppConstants.LOGIN_SESSIONID), parseDateToddMMyyyy(binding.etDob.getText().toString()));
+            uploadImageToSrver(binding.etPhone.getText().toString(), "M", HandyObject.getPrams(context, AppConstants.LOGIN_SESSIONID), parseDateToddMMyyyy(binding.etDob.getText().toString()));
         } else {
-            uploadImageToSrver(binding.etPhone.getText().toString(),"F", HandyObject.getPrams(context, AppConstants.LOGIN_SESSIONID), parseDateToddMMyyyy(binding.etDob.getText().toString()));
+            uploadImageToSrver(binding.etPhone.getText().toString(), "F", HandyObject.getPrams(context, AppConstants.LOGIN_SESSIONID), parseDateToddMMyyyy(binding.etDob.getText().toString()));
         }
     }
 
-    private void uploadImageToSrver(String phone,String gender, String sessionid, String dob) {
-
-       /* if (imageFile == null) {
-            imageFile = new File();
-;        }*/
-        //a87ff679a2f3e71d9181a67b7542122c
-//.addFormDataPart("gender", gender)
+    private void uploadImageToSrver(String phone, String gender, String sessionid, String dob) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM)
                 .addFormDataPart("user_id", md5(HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)))
                 .addFormDataPart("description", binding.etDescription.getText().toString())
                 .addFormDataPart("gender", gender)
                 .addFormDataPart("phone", phone)
-                .addFormDataPart("dob", dob);
+                .addFormDataPart("dob", dob)
+                .addFormDataPart("email", HandyObject.getPrams(context, AppConstants.LOGINTEQ_EMAIL));
         if (imageFile == null) {
             Log.e("ds", "sd");
         } else {
@@ -521,8 +518,9 @@ public class EditProfileFragment extends Fragment {
                                 getActivity().getSupportFragmentManager().popBackStack();
                             } else {
                                 HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
-                                if(jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
+                                if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
                                     HandyObject.clearpref(getActivity());
+                                    HandyObject.deleteAllDatabase(getActivity());
                                     App.appInstance.stopTimer();
                                     Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
                                     startActivity(intent_reg);
@@ -581,30 +579,30 @@ public class EditProfileFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.e("onActivityCre","yes");
+        Log.e("onActivityCre", "yes");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.e("onPause","onPause");
+        Log.e("onPause", "onPause");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("onResume","onResume");
+        Log.e("onResume", "onResume");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e("onDestroy","onDestroy");
+        Log.e("onDestroy", "onDestroy");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.e("onDestroyView","onDestroyView");
+        Log.e("onDestroyView", "onDestroyView");
     }
 }

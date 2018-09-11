@@ -300,12 +300,12 @@ public class TimeSheetFragment extends Fragment {
             binding.rlselectedText.setText("Selected Week");
             fromMonth_SelDate = intent.getStringExtra("sel_enddate");
 
-            binding.displaydate.setText("(" + HandyObject.getSelectedWeek_FirstDate(getActivity(), fromMonth_SelDate).split(",")[0] + ") - " + "(" + HandyObject.getSelectedWeek_FirstDate(getActivity(), fromMonth_SelDate).split(",")[1] + ")");
+            binding.displaydate.setText("(" + HandyObject.getSelectedWeek_FirstDateslash(getActivity(), fromMonth_SelDate).split(",")[0] + ") - " + "(" + HandyObject.getSelectedWeek_FirstDateslash(getActivity(), fromMonth_SelDate).split(",")[1] + ")");
 
 
             TSWeekChildFragment fgm = new TSWeekChildFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("weekstartdate", HandyObject.getSelectedWeek_FirstDate(getActivity(), fromMonth_SelDate));
+            bundle.putString("weekstartdate", HandyObject.getSelectedWeek_FirstDateslash(getActivity(), fromMonth_SelDate));
             fgm.setArguments(bundle);
             replaceChildFragment(fgm);
         }

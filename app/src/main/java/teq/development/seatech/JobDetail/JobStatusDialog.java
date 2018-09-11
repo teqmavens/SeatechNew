@@ -864,6 +864,7 @@ public class JobStatusDialog extends DialogFragment {
                                     HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
                                     if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
                                         HandyObject.clearpref(getActivity());
+                                        HandyObject.deleteAllDatabase(getActivity());
                                         App.appInstance.stopTimer();
                                         Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
                                         startActivity(intent_reg);
@@ -887,6 +888,12 @@ public class JobStatusDialog extends DialogFragment {
                         }
                     });
         } else {
+            Intent intent = new Intent("updateJob");
+            count++;
+            intent.putExtra("nextjobid", String.valueOf(count));
+            HandyObject.putPrams(getActivity(), AppConstants.JOBRUNNING_TOTALTIME, "66");
+            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+
             HandyObject.showAlert(getActivity(), getString(R.string.fetchdata_whenonline));
             HandyObject.stopProgressDialog();
             dialog.dismiss();

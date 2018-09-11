@@ -54,6 +54,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -67,9 +68,12 @@ import teq.development.seatech.Dashboard.Adapter.AdapterJobSpinner;
 import teq.development.seatech.Dashboard.DashBoardActivity;
 import teq.development.seatech.Dashboard.Skeleton.AllJobsSkeleton;
 import teq.development.seatech.Dashboard.Skeleton.DashboardNotes_Skeleton;
+import teq.development.seatech.Dashboard.Skeleton.PartsSkeleton;
+import teq.development.seatech.Dashboard.Skeleton.UrgentMsgSkeleton;
 import teq.development.seatech.JobDetail.Adapter.AdapterDashboardNotes;
 import teq.development.seatech.JobDetail.Adapter.AdapterDashbrdUrgentMsgDetail;
 import teq.development.seatech.JobDetail.Adapter.AdapterJobTime;
+import teq.development.seatech.JobDetail.Adapter.AdapterParts;
 import teq.development.seatech.JobDetail.Adapter.AdapterUploadedImages;
 import teq.development.seatech.JobDetail.Skeleton.JobTimeSkeleton;
 import teq.development.seatech.JobDetail.Skeleton.LCChangeSkeleton;
@@ -83,10 +87,10 @@ import teq.development.seatech.databinding.FrgmJobdetailBinding;
 
 public class JobDetailFragment extends Fragment {
 
-    private DashBoardActivity activity;
     private Context context;
     private AdapterDashbrdUrgentMsgDetail adapterurgentmsg;
     private AdapterDashboardNotes adapterdashnotes;
+    private AdapterParts adapterParts;
     private AdapterJobSpinner adapterjobspinner;
     private AdapterJobTime adapterjobTime;
     private AdapterUploadedImages adapterUploadedImages;
@@ -94,6 +98,7 @@ public class JobDetailFragment extends Fragment {
     public static ArrayList<DashboardNotes_Skeleton> addTechlistOffTheRecord;
     ArrayList<AllJobsSkeleton> arralistAllJobs;
     ArrayList<JobTimeSkeleton> arralistJobTime;
+    ArrayList<UrgentMsgSkeleton> arraylistUrgent;
     SQLiteDatabase database;
     boolean jobspinner, updatereciver;
     int timerindex_prev = 0;
@@ -102,13 +107,12 @@ public class JobDetailFragment extends Fragment {
     boolean fromjobselection;
     ArrayList<DashboardNotes_Skeleton> arrayListLaborPerf, arrayListOffTheRecord;
     ArrayList<String> arrayListUpdateImage;
+    String selectedJobId = "";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity();
-        //activity = (DashBoardActivity) getActivity();
-        Log.e("onCreate", "onCreate");
     }
 
     @Nullable
@@ -118,7 +122,6 @@ public class JobDetailFragment extends Fragment {
         binding = DataBindingUtil.bind(rootView);
         binding.setFrgmjobdetail(this);
         initViews();
-        Log.e("onCreateVIEW", "onCreateVIEW");
         return rootView;
     }
 
@@ -126,6 +129,8 @@ public class JobDetailFragment extends Fragment {
         arrayListUpdateImage = new ArrayList<>();
         new databsefetch().execute();
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(reciever, new IntentFilter("load_message"));
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(updateUrgentReceiver, new IntentFilter("update_UrgentReceiver"));
 
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(JobUpdatereciever,
                 new IntentFilter("updateJob"));
@@ -144,8 +149,15 @@ public class JobDetailFragment extends Fragment {
     private BroadcastReceiver reciever = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            // loadChatMessages();
             binding.uploadimage.setText(intent.getStringExtra("secss"));
+        }
+    };
+
+    private BroadcastReceiver updateUrgentReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            new Urgentdatafetch().execute();
         }
     };
 
@@ -184,7 +196,6 @@ public class JobDetailFragment extends Fragment {
                 binding.jobspinner.setSelection(Integer.parseInt(intent.getStringExtra("nextjobid")));
                 binding.jobspinner.setOnItemSelectedListener(new JobItemSelectedListener());
             }
-
         }
     };
 
@@ -242,8 +253,7 @@ public class JobDetailFragment extends Fragment {
     }
 
     public void getplusminus(int n) {
-        List<String> listtime = new ArrayList<String>();
-
+        List<String> listtime = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         if (isJobRunning() == true) {
             Log.e("plusminusrunning", "running");
@@ -253,7 +263,6 @@ public class JobDetailFragment extends Fragment {
             Log.e("notrunning", "notrunning");
             calendar.set(Calendar.MINUTE, n);
         }
-
         calendar.set(Calendar.SECOND, 0);
         calendar.add(Calendar.MINUTE, -15);
         listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
@@ -276,7 +285,6 @@ public class JobDetailFragment extends Fragment {
         jobtimeske3.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
         arralistJobTime.add(jobtimeske3);
         adapterjobTime = new AdapterJobTime(context, arralistJobTime);
-        // binding.timespinner.setAdapter(dataAdaptertime);
         binding.timespinner.setAdapter(adapterjobTime);
 
         binding.timespinner.setOnItemSelectedListener(new TimeItemSelectedListener());
@@ -300,27 +308,19 @@ public class JobDetailFragment extends Fragment {
         public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
             Log.e("job", "job");
             if (arralistAllJobs.get(position).getJobticketNo().equalsIgnoreCase("111111")) {
-                // HandyObject.putPrams(context, AppConstants.ISJOB_RUNNING, "no");
-                // App.appInstance.stopTimer();
-                //   NewJobDetailFrgament newjobdetail = new NewJobDetailFrgament();
-
                 Intent intent = new Intent("fromJobDetail");
                 intent.putExtra("position", String.valueOf(position));
                 LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
-
-                //  activity.removeFragment(JobDetailFragment.this);
             } else if (HandyObject.getPrams(context, AppConstants.ISJOB_RUNNING).equalsIgnoreCase("yes")) {
                 Log.e("AlreadyrunningJOB", "AlreadyrunningJOB");
                 runHandlerforLC();
-                String kj = HandyObject.getPrams(getActivity(), AppConstants.JOBRUNNING_TOTALTIME);
-                //  HandyObject.showAlert(getActivity(), kj);
+                // String kj = HandyObject.getPrams(getActivity(), AppConstants.JOBRUNNING_TOTALTIME);
                 setAllSpinnerData(position);
             } else {
                 Log.e("NOTrunningJOB", "NOTrunningJOB");
                 runHandlerforLC();
                 String kj = HandyObject.getPrams(getActivity(), AppConstants.JOBRUNNING_TOTALTIME);
                 int newttlwrkHr = Integer.parseInt(kj) + Integer.parseInt(String.valueOf(binding.uploadimage.getText().toString().split(":")[1]).replaceFirst("^0+(?!$)", ""));
-
                 if (HandyObject.getPrams(getActivity(), AppConstants.JOBRUNNING_TOTALTIME).equalsIgnoreCase("0")) {
                     if (newttlwrkHr >= 10) {
                         if (JobStatusDialog.crossclick == true) {
@@ -373,6 +373,7 @@ public class JobDetailFragment extends Fragment {
 
     private void setAllSpinnerData(int position) {
         try {
+            selectedJobId = arralistAllJobs.get(position).getJobticketNo();
             pdfUrl = arralistAllJobs.get(position).getSalesorder();
             binding.boatmakeyearValue.setText(arralistAllJobs.get(position).getBoatmakeYear());
             binding.boatmodelValue.setText(arralistAllJobs.get(position).getBoatmodelLength());
@@ -403,9 +404,6 @@ public class JobDetailFragment extends Fragment {
                 binding.captnameValue.setEnabled(false);
                 binding.captnameValue.setText(arralistAllJobs.get(position).getCaptainname());
             }
-
-            // binding.hullidValue.setText(arralistAllJobs.get(position).getHullid());
-            //  binding.captnameValue.setText(arralistAllJobs.get(position).getCaptainname());
             binding.promisedateValue.setText(arralistAllJobs.get(position).getPromisedate());
             binding.repValue.setText(arralistAllJobs.get(position).getRep());
             binding.jobselectionValue.setText(arralistAllJobs.get(position).getJobselection());
@@ -446,7 +444,6 @@ public class JobDetailFragment extends Fragment {
                 lLManagerDashNotes.setOrientation(LinearLayoutManager.VERTICAL);
                 binding.rcyviewDashbrdnotes.setLayoutManager(lLManagerDashNotes);
                 adapterdashnotes = new AdapterDashboardNotes(context, arralistAllJobs.get(position).getArrayList());
-                //binding.rcyviewDashbrdnotes.setNestedScrollingEnabled(false);
                 binding.rcyviewDashbrdnotes.setAdapter(adapterdashnotes);
                 binding.lastoffRecrdnotes.setText(arrayListOffTheRecord.get(arrayListOffTheRecord.size() - 1).getNotes());
             }
@@ -466,7 +463,54 @@ public class JobDetailFragment extends Fragment {
                 binding.rcylrviewUpldedImages.setAdapter(adapterUploadedImages);
             }
 
+            if (arralistAllJobs.get(position).getArrayListParts().size() == 0) {
+                binding.noparts.setVisibility(View.VISIBLE);
+                binding.lltopparts.setVisibility(View.GONE);
+                binding.recyclerparts.setVisibility(View.GONE);
+            } else {
+                binding.noparts.setVisibility(View.GONE);
+                binding.lltopparts.setVisibility(View.VISIBLE);
+                binding.recyclerparts.setVisibility(View.VISIBLE);
+                LinearLayoutManager lLManagerparts = new LinearLayoutManager(getActivity());
+                lLManagerparts.setOrientation(LinearLayoutManager.VERTICAL);
+                // binding.r.setLayoutManager(lLManagerDashNotes);
+                binding.recyclerparts.setLayoutManager(lLManagerparts);
+                adapterParts = new AdapterParts(context, arralistAllJobs.get(position).getArrayListParts());
+                binding.recyclerparts.setAdapter(adapterParts);
+            }
+            new Urgentdatafetch().execute();
+           /* if (arralistAllJobs.get(position).getArrayListUrgent().size() == 0) {
+                binding.llheaderur.setVisibility(View.GONE);
+                binding.nourgentmsg.setVisibility(View.VISIBLE);
+                binding.rcyviewUrgentmsg.setVisibility(View.GONE);
+            } else {
+                binding.llheaderur.setVisibility(View.VISIBLE);
+                binding.nourgentmsg.setVisibility(View.GONE);
+                binding.rcyviewUrgentmsg.setVisibility(View.VISIBLE);
+                LinearLayoutManager lLManagerparts = new LinearLayoutManager(getActivity());
+                lLManagerparts.setOrientation(LinearLayoutManager.VERTICAL);
+                binding.rcyviewUrgentmsg.setLayoutManager(lLManagerparts);
+                AdapterDashbrdUrgentMsg adapterurgentmsg = new AdapterDashbrdUrgentMsg(context, arralistAllJobs.get(position).getArrayListUrgent(), JobDetailFragment.this);
+                binding.rcyviewUrgentmsg.setAdapter(adapterurgentmsg);
+            }*/
+
             binding.rcyviewDashbrdnotes.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    return false;
+                }
+            });
+
+            binding.recyclerparts.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    return false;
+                }
+            });
+
+            binding.rcyviewUrgentmsg.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     v.getParent().requestDisallowInterceptTouchEvent(true);
@@ -609,7 +653,7 @@ public class JobDetailFragment extends Fragment {
     }
 
     private void TaskLCChange(String teqid, String jobid, final String seleclc, int lclast_posi, String starttime, String endtime, final String hrsworked, String hrsAdjusted) {
-
+      //  HandyObject.showAlert(getActivity(), endtime);
         LCChangeSkeleton lcs_ke = new LCChangeSkeleton();
         lcs_ke.setTech_id(teqid);
         lcs_ke.setJob_id(jobid);
@@ -652,6 +696,7 @@ public class JobDetailFragment extends Fragment {
                                     HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
                                     if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
                                         HandyObject.clearpref(getActivity());
+                                        HandyObject.deleteAllDatabase(getActivity());
                                         App.appInstance.stopTimer();
                                         Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
                                         startActivity(intent_reg);
@@ -1040,13 +1085,62 @@ public class JobDetailFragment extends Fragment {
         return finalValue;
     }
 
-    private class databsefetch extends AsyncTask<ArrayList<AllJobsSkeleton>, Void, ArrayList<AllJobsSkeleton>> {
+    private class Urgentdatafetch extends AsyncTask<ArrayList<UrgentMsgSkeleton>, Void, ArrayList<UrgentMsgSkeleton>> {
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-          //  HandyObject.showProgressDialog(getActivity());
+        protected ArrayList<UrgentMsgSkeleton> doInBackground(ArrayList<UrgentMsgSkeleton>... arrayLists) {
+            Cursor cursor = database.query(ParseOpenHelper.TABLE_URGENTMSG, null, ParseOpenHelper.URGENT_JOBID + "=?", new String[]{selectedJobId}, null, null, null);
+            cursor.moveToFirst();
+            arraylistUrgent = new ArrayList<>();
+            while (!cursor.isAfterLast()) {
+                UrgentMsgSkeleton ske = new UrgentMsgSkeleton();
+                ske.setJobticketid(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.URGENT_JOBID)));
+                ske.setCustomername(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.URGENT_CUSTNAME)));
+                ske.setCustomertype(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.URGENT_CUSTTYPE)));
+                ske.setBoatyear(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.URGENT_BOATMKYEAR)));
+                ske.setBoatname(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.URGENT_BOATNAME)));
+                ske.setSender(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.URGENT_SENDER)));
+                ske.setReceiver(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.URGENT_RECEIVER)));
+                ske.setMessage(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.URGENT_MESSAGE)));
+                ske.setTime(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.URGENT_CREATEDAT)));
+                ske.setAcknowledge(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.URGENT_ACKNOWLEDGE)));
+                ske.setMessageid(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.URGENT_MESSAGEID)));
+                ske.setReceiverid(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.URGENT_RECEIVERID)));
+                arraylistUrgent.add(ske);
+                cursor.moveToNext();
+            }
+            cursor.close();
+            return arraylistUrgent;
         }
+
+        @Override
+        protected void onPostExecute(ArrayList<UrgentMsgSkeleton> urgentMsgSkeletons) {
+            super.onPostExecute(urgentMsgSkeletons);
+            if (urgentMsgSkeletons.size() == 0) {
+                binding.llheaderur.setVisibility(View.GONE);
+                binding.nourgentmsg.setVisibility(View.VISIBLE);
+                binding.rcyviewUrgentmsg.setVisibility(View.GONE);
+            } else {
+                binding.llheaderur.setVisibility(View.VISIBLE);
+                binding.nourgentmsg.setVisibility(View.GONE);
+                binding.rcyviewUrgentmsg.setVisibility(View.VISIBLE);
+                LinearLayoutManager lLManagerparts = new LinearLayoutManager(getActivity());
+                lLManagerparts.setOrientation(LinearLayoutManager.VERTICAL);
+                binding.rcyviewUrgentmsg.setLayoutManager(lLManagerparts);
+              /*  if (updateUrgent == true) {
+                    UrgentMsgSkeleton ske = urgentMsgSkeletons.get(urgentMsgSkeletons.size() - 1);
+                    urgentMsgSkeletons.remove(urgentMsgSkeletons.size() - 1);
+                    HandyObject.showAlert(getActivity(), ske.getMessage());
+                    urgentMsgSkeletons.add(0, ske);
+                }*/
+                AdapterDashbrdUrgentMsg adapterurgentmsg = new AdapterDashbrdUrgentMsg(context, urgentMsgSkeletons, JobDetailFragment.this);
+                binding.rcyviewUrgentmsg.setAdapter(adapterurgentmsg);
+
+            }
+        }
+    }
+
+    private class databsefetch extends AsyncTask<ArrayList<AllJobsSkeleton>, Void, ArrayList<AllJobsSkeleton>> {
 
         @Override
         protected ArrayList<AllJobsSkeleton> doInBackground(ArrayList<AllJobsSkeleton>... arrayLists) {
@@ -1063,6 +1157,8 @@ public class JobDetailFragment extends Fragment {
                 }.getType();
                 Type typedashnotes = new TypeToken<ArrayList<DashboardNotes_Skeleton>>() {
                 }.getType();
+                Type typeparts = new TypeToken<ArrayList<PartsSkeleton>>() {
+                }.getType();
                 Type typedstring = new TypeToken<ArrayList<String>>() {
                 }.getType();
                 String getSke = cursor.getString(cursor.getColumnIndex(ParseOpenHelper.JOBSSKELETONCURRDAY));
@@ -1070,17 +1166,23 @@ public class JobDetailFragment extends Fragment {
                 String getLaborPerfList = cursor.getString(cursor.getColumnIndex(ParseOpenHelper.JOBSTECHLABORPERFORMCURRDAY));
                 String getOffTheRecordList = cursor.getString(cursor.getColumnIndex(ParseOpenHelper.JOBSTECHOFFTHERECORDCURRDAY));
                 String getUploadImages = cursor.getString(cursor.getColumnIndex(ParseOpenHelper.JOBSTECHUPLOADEDIMAGESCURRDAY));
+                String getPartsRecord = cursor.getString(cursor.getColumnIndex(ParseOpenHelper.JOBSTECHPARTSRECORDCURRDAY));
+                //  String getUrgentMsg = cursor.getString(cursor.getColumnIndex(ParseOpenHelper.JOBSTECHURGENTMSGCURRDAY));
 
                 AllJobsSkeleton ske = gson.fromJson(getSke, type);
                 ArrayList<DashboardNotes_Skeleton> arrayListDash = gson.fromJson(getSkedashnotes, typedashnotes);
                 ArrayList<DashboardNotes_Skeleton> arrayListLaborPerform = gson.fromJson(getLaborPerfList, typedashnotes);
                 ArrayList<DashboardNotes_Skeleton> arrayListOffTheRecordList = gson.fromJson(getOffTheRecordList, typedashnotes);
+                ArrayList<PartsSkeleton> arrayListParts = gson.fromJson(getPartsRecord, typeparts);
+                //   ArrayList<UrgentMsgSkeleton> arrayListUrgentMsg = gson.fromJson(getUrgentMsg, typeurgent);
                 ArrayList<String> arrayListUploadImages = gson.fromJson(getUploadImages, typedstring);
 
                 ske.setArrayList(arrayListDash);
                 ske.setArrayListLaborPerf(arrayListLaborPerform);
                 ske.setArrayListOffTheRecord(arrayListOffTheRecordList);
                 ske.setArrayListImages(arrayListUploadImages);
+                ske.setArrayListParts(arrayListParts);
+                //  ske.setArrayListUrgent(arrayListUrgentMsg);
                 arralistAllJobs.add(ske);
                 //     arrayListDashNotes.addAll(arrayListDash);
                 cursor.moveToNext();
@@ -1101,7 +1203,7 @@ public class JobDetailFragment extends Fragment {
                 binding.jobspinner.setSelection(Integer.parseInt(getArguments().getString("posinew")));
             }
             binding.jobspinner.setOnItemSelectedListener(new JobItemSelectedListener());
-           // HandyObject.stopProgressDialog();
+            // HandyObject.stopProgressDialog();
         }
     }
 

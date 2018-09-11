@@ -1,16 +1,15 @@
 package teq.development.seatech.Dashboard;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.PowerManager;
-import android.provider.Settings;
+
+import com.github.nkzawa.socketio.client.Socket;
+
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -75,11 +74,13 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
     public ActionBarDrawerToggle mDrawerToggle;
     public Boolean mABoolean = false;
     public ImageView menu_icon, sick_icon, cdhour_icon, chaticon, notificationicon;
-    SimpleDraweeView userimage;
-    TextView username;
+    public static SimpleDraweeView userimage;
+    public static TextView username;
     DatePickerDialog.OnDateSetListener date;
     Calendar myCalendar;
     public static boolean onbackppress;
+    public static Socket mSocket;
+    // public static Socket mSocket;
     // ImageView navigation_icon;
 
     @Override
@@ -87,20 +88,23 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
 
-       /* if (getIntent().getExtras().getString("type").equalsIgnoreCase("chat")) {
-            if (HandyObject.checkInternetConnection(this)) {
-                replaceFragmentWithoutBack(new DashBoardFragment());
-                Intent intent_reg = new Intent(DashBoardActivity.this, ChatActivity.class);
-                startActivity(intent_reg);
-                //  finish();
-                overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
-            } else {
-                HandyObject.showAlert(this, getString(R.string.notabletochat));
-            }
-        } else {*/
-        replaceFragmentWithoutBack(new DashBoardFragment());
-        //   }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    JSONObject jobj = new JSONObject();
+                    // HandyObject.getPrams(ChatActivity.this, AppConstants.LOGINTEQ_ID)
+                    jobj.put("customId", Integer.parseInt(HandyObject.getPrams(DashBoardActivity.this, AppConstants.LOGINTEQ_ID)));
+                    jobj.put("device_id", HandyObject.getPrams(DashBoardActivity.this, AppConstants.DEVICE_TOKEN));
+                    //  mSocket.emit("storeClientInfo", jobj);
+                    App.appInstance.getSocket().emit("storeClientInfo", jobj);
+                } catch (Exception e) {
+                }
 
+            }
+        }, 1000);
+
+        replaceFragmentWithoutBack(new DashBoardFragment());
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         menu_icon = (ImageView) findViewById(R.id.menu_icon);
@@ -429,6 +433,8 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                                 App.appInstance.stopTimer();
                                 String deviceToken = HandyObject.getPrams(DashBoardActivity.this, AppConstants.DEVICE_TOKEN);
                                 HandyObject.clearpref(DashBoardActivity.this);
+                                HandyObject.deleteAllDatabase(DashBoardActivity.this);
+
 
                                 HandyObject.putPrams(getApplicationContext(), AppConstants.DEVICE_TOKEN, deviceToken);
                                 Intent intent_reg = new Intent(DashBoardActivity.this, LoginActivity.class);

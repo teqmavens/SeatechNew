@@ -2,6 +2,7 @@ package teq.development.seatech.Dashboard.Adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +42,7 @@ public class AdapterJosbForYou extends RecyclerView.Adapter<AdapterJosbForYou.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
 
         holder.bind(jobsArrayList.get(position));
+
         binding.getRoot().findViewById(R.id.jobticketno).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,6 +73,17 @@ public class AdapterJosbForYou extends RecyclerView.Adapter<AdapterJosbForYou.Vi
         }
 
         public void bind(AllJobsSkeleton ske) {
+            if (ske.getNeedpart().equalsIgnoreCase("yes")) {
+                binding.needpart.setImageResource(R.drawable.greencircle);
+            } else {
+                binding.needpart.setImageResource(R.drawable.transcircle);
+            }
+
+            if (ske.getHavepart().toLowerCase().equalsIgnoreCase("yes")) {
+                binding.havpart.setImageResource(R.drawable.greencircle);
+            } else {
+                binding.havpart.setImageResource(R.drawable.transcircle);
+            }
             mbinding.setRowjobsforyou(ske);
             mbinding.executePendingBindings();
         }

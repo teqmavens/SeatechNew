@@ -6,59 +6,181 @@
 
         <variable
             name="rowdashurgentmsg"
-            type="teq.development.seatech.Dashboard.Adapter.AdapterDashbrdUrgentMsg"></variable>
+            type="teq.development.seatech.Dashboard.Skeleton.UrgentMsgSkeleton"></variable>
     </data>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/verysmallpadding"
-        app:cardElevation="@dimen/verysmallpadding"
-        app:cardCornerRadius="@dimen/verysmallpadding">
+        app:cardCornerRadius="@dimen/verysmallpadding"
+        app:cardElevation="@dimen/verysmallpadding">
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/smallpadding"
-        android:paddingRight="@dimen/smallpadding"
-        android:paddingTop="@dimen/smallpadding">
-
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/jobskey"
-            android:layout_width="wrap_content"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cltop"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#A9A9A9">
 
-            android:drawablePadding="@dimen/mediumtextsize"
-            android:text="@string/jobh"
-            android:textColor="@color/black"
-            android:textSize="@dimen/verysmalltextsize"
-            android:textStyle="bold" />
+            <LinearLayout
+                android:id="@+id/lltop"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/verysmallpadding"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
 
-        <!-- android:drawableLeft="@drawable/urgentmsg"-->
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".14"
+                    android:gravity="center"
+                    android:text="@{rowdashurgentmsg.jobticketid}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
 
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/ticketno"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/verysmallpadding"
-            android:drawablePadding="@dimen/largetextsize"
-            android:text="1389"
-            android:textColor="@color/appbasiccolor"
-            android:textSize="@dimen/verysmalltextsize"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toRightOf="@+id/jobskey" />
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/jobticketno"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".12"
+                    android:gravity="center"
+                    android:text="@{rowdashurgentmsg.customername}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
 
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/largetextsize"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum est velit, maximus a dictum a, imperdiet id dui"
-            android:textColor="@color/black"
-            android:textSize="@dimen/verysmalltextsize"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/jobskey" />
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".2"
+                    android:gravity="center"
+                    android:text="@{rowdashurgentmsg.customertype}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
 
-    </android.support.constraint.ConstraintLayout>
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".12"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="@{rowdashurgentmsg.boatyear}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".12"
+                    android:gravity="center"
+                    android:text="@{rowdashurgentmsg.boatname}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".14"
+                    android:gravity="center"
+                    android:text="@{rowdashurgentmsg.sender}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".14"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="@{rowdashurgentmsg.receiver}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/verysmallpadding"
+                android:paddingBottom="@dimen/verysmallpadding"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lltop">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/largetextsize"
+                    android:layout_marginRight="@dimen/largetextsize"
+                    android:background="@drawable/newbublelefttt"
+                    android:paddingBottom="@dimen/smallpadding"
+                    android:paddingLeft="@dimen/smalltextsize"
+                    android:paddingRight="@dimen/verysmalltextsize"
+                    android:paddingTop="@dimen/smallpadding"
+                    android:text="@{rowdashurgentmsg.message}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+                <!-- android:background="@drawable/chat_bubble_light"-->
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/message"
+                    android:paddingRight="@dimen/largetextsize"
+                    android:text="@{rowdashurgentmsg.time}"
+                    android:textColor="@color/black"
+                    android:textSize="11dp"
+                    android:textStyle="bold"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/message" />
+
+            </RelativeLayout>
+
+            <!--<android.support.constraint.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/verysmallpadding"
+                android:paddingBottom="@dimen/verysmallpadding"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lltop">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/message"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/largetextsize"
+                    android:background="@drawable/chat_bubble_light"
+                    android:paddingBottom="@dimen/smallpadding"
+                    android:paddingLeft="@dimen/verysmalltextsize"
+                    android:paddingRight="@dimen/verysmalltextsize"
+                    android:paddingTop="@dimen/smallpadding"
+                    android:text="@{rowdashurgentmsg.message}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/verysmallpadding"
+                    android:text="@{rowdashurgentmsg.time}"
+                    android:textColor="@color/black"
+                    android:textSize="11dp"
+                    android:textStyle="bold"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/message" />
+
+            </android.support.constraint.ConstraintLayout>-->
+        </android.support.constraint.ConstraintLayout>
+
+
     </android.support.v7.widget.CardView>
 </layout>

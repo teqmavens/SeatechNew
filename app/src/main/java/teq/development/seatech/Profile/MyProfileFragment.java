@@ -82,6 +82,7 @@ public class MyProfileFragment extends Fragment {
                                 HandyObject.showAlert(context, jsonObject.getString("message"));
                                 if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
                                     HandyObject.clearpref(getActivity());
+                                    HandyObject.deleteAllDatabase(getActivity());
                                     App.appInstance.stopTimer();
                                     Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
                                     startActivity(intent_reg);
@@ -144,6 +145,8 @@ public class MyProfileFragment extends Fragment {
             HandyObject.putPrams(context, AppConstants.LOGINTEQ_DESCRIPTION, jobj.getString("description"));
             HandyObject.putPrams(context, AppConstants.LOGINTEQ_STATUS, jobj.getString("status"));
             HandyObject.putPrams(context, AppConstants.LOGINTEQ_JOININGDATE, jobj.getString("joining_date"));
+            DashBoardActivity.userimage.setImageURI(jobj.getString("image"));
+            DashBoardActivity.username.setText(jobj.getString("username"));
             setLocaldata();
         } catch (Exception e) {
         }

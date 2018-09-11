@@ -7,7 +7,7 @@
     <string name="rememberme">Remember me</string>
     <string name="forgotpwd"><u>Forgot Password?</u></string>
     <string name="forgotpwdd">Forgot Password</string>
-    <string name="login">Login</string>
+    <string name="login">Log in</string>
     <string name="dashboard_text">Dashboard</string>
     <string name="detailpage">Detail Page</string>
     <string name="timesheet">Timesheet</string>
@@ -251,6 +251,23 @@
     <string name="nosalesorder">No sales order available.</string>
     <string name="chat">Chat</string>
     <string name="jobspecificmsg">Job Specific Message</string>
+    <string name="needpartdash">Need Parts</string>
+    <string name="havepartdash">Have Parts</string>
+    <string name="jobticketid">Job Ticket Id</string>
+    <string name="customertypekey">Customer type</string>
+    <string name="boatnamekey">Boat Name</string>
+    <string name="ticketlistempty">Ticket List is Empty.</string>
+    <string name="partsrecord"><u>Parts Record</u></string>
+    <string name="eta">ETA</string>
+    <string name="location">Location</string>
+    <string name="nopartsavailable">No Parts available.</string>
+    <string name="jobid">Job Ticket ID</string>
+    <string name="sender">Sender</string>
+    <string name="receiver">Receiver</string>
+    <string name="boatyear">Boat Make Year</string>
+    <string name="nojobmatching">There are no job regarding this ticket No.</string>
+    <string name="nodataRegthisjob">No data available regarding this job.</string>
+    <string name="selectedweekdate">You can select only selected week date.</string>
     <string-array name="laborcode_array">
         <!--<item>Travel Time</item>
         <item>SERVICE TIME</item>

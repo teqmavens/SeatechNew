@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="rowjobsforyou"
             type="teq.development.seatech.Dashboard.Skeleton.AllJobsSkeleton"></variable>
@@ -12,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/verysmallpadding"
-        app:cardElevation="@dimen/verysmallpadding"
-        app:cardCornerRadius="@dimen/verysmallpadding">
+        app:cardCornerRadius="@dimen/verysmallpadding"
+        app:cardElevation="@dimen/verysmallpadding">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,93 +26,107 @@
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".11"
+                android:layout_weight=".1"
                 android:gravity="center"
                 android:text="@{rowjobsforyou.CustomerName}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/verysmalltextsize" />
 
-           <!-- android:text="@{rowjobsforyou.CustomerName}"-->
-
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/jobticketno"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".11"
+                android:layout_weight=".09"
                 android:gravity="center"
                 android:text="@{rowjobsforyou.JobticketNo}"
                 android:textColor="@color/appbasiccolor"
                 android:textSize="@dimen/verysmalltextsize" />
-           <!-- android:text="@{rowjobsforyou.JobticketNo}"-->
+
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".11"
+                android:layout_weight=".1"
                 android:gravity="center"
                 android:text="@{rowjobsforyou.JobType}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/verysmalltextsize" />
 
-           <!-- android:text="@{rowjobsforyou.JobType}"-->
-
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".11"
+                android:layout_weight=".09"
                 android:gravity="center"
                 android:maxLines="2"
                 android:text="@{rowjobsforyou.BoatLocation}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/verysmalltextsize" />
-           <!-- android:text="@{rowjobsforyou.BoatLocation}"-->
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".11"
+                android:layout_weight=".08"
                 android:gravity="center"
                 android:text="@{rowjobsforyou.time}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/verysmalltextsize" />
-            <!--android:text="@{rowjobsforyou.time}"-->
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".11"
+                android:layout_weight=".1"
                 android:gravity="center"
                 android:text="@{rowjobsforyou.TechSupervisor}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/verysmalltextsize" />
 
-         <!--   android:text="@{rowjobsforyou.TechSupervisor}"-->
-
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".11"
+                android:layout_weight=".1"
                 android:gravity="center"
                 android:maxLines="2"
                 android:text="@{rowjobsforyou.OtherMembers}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/verysmalltextsize" />
 
-           <!-- android:text="@{rowjobsforyou.OtherMembers}"-->
-
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".11"
+                android:layout_weight=".09"
                 android:gravity="center"
                 android:text="@{rowjobsforyou.PartLocation}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/verysmalltextsize" />
-            <!--android:text="@{rowjobsforyou.PartLocation}"-->
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".07"
+                android:gravity="center">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/needpart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".07"
+                android:gravity="center">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/havpart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".11"
+                android:layout_weight=".1"
                 android:gravity="center">
 
                 <android.support.v7.widget.AppCompatImageView

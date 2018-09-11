@@ -93,6 +93,7 @@ public class SyncLCChange extends Job {
                                 HandyObject.showAlert(getContext(), jsonObject.getString("message"));
                                 if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
                                     HandyObject.clearpref(getContext());
+                                    HandyObject.deleteAllDatabase(getContext());
                                     App.appInstance.stopTimer();
                                     /*Intent intent_reg = new Intent(getContext(), LoginActivity.class);
                                     startActivity(intent_reg);

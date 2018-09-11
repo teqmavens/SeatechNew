@@ -40,5 +40,6 @@ public class AppConstants {
 
     //for chat
     public static final String CHAT_SERVER_URL = "http://132.148.241.93:3000";
+    // public static final String CHAT_SERVER_URL = "http://192.168.1.7:3000";
     public static String DEVICE_TOKEN = "deviceToken";
 }

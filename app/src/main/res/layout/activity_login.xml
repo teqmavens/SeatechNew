@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="loginactivity"
             type="teq.development.seatech.LoginActivity"></variable>
@@ -13,103 +12,101 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/lightgray"
         tools:context=".LoginActivity">
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/left"
+        <android.support.v7.widget.AppCompatImageView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/white"
+            android:scaleType="fitXY"
+            android:src="@drawable/image_login"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_weight=".36"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/line"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/loginleftlogo"/>
-
-
-        </android.support.constraint.ConstraintLayout>
-
-        <View
-            android:id="@+id/line"
-            android:layout_width="2dp"
-            android:layout_height="0dp"
-            android:background="#000000"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/left"
-            app:layout_constraintRight_toLeftOf="@+id/right"
-            app:layout_constraintTop_toTopOf="parent"></View>
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/right"
+        <android.support.v7.widget.CardView
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/loginmargin"
+            app:cardElevation="@dimen/verysmallpadding"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_weight=".64"
-            app:layout_constraintLeft_toRightOf="@+id/line"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <android.support.constraint.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/mediumtextsize">
 
 
                 <ImageView
                     android:id="@+id/topimage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:src="@drawable/loginlogo"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:src="@drawable/loginlogo"/>
+                    app:layout_constraintRight_toRightOf="parent" />
 
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/et_username"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/topusername"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/verysmalltextsize"
-                    android:layout_marginLeft="@dimen/loginmargin"
-                    android:layout_marginRight="@dimen/loginmargin"
-                    android:layout_marginTop="68dp"
-                    android:background="@drawable/etloginbg"
-                    android:inputType="textPersonName"
-                    android:drawablePadding="@dimen/drawablepadding"
-                    android:hint="@string/username"
-                    android:textColor="@color/appbasiccolor"
-                    android:textSize="@dimen/smalltextsize"
+                    android:layout_marginLeft="@dimen/extralarge_textsize"
+                    android:layout_marginRight="@dimen/extralarge_textsize"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/topimage" />
-                <!-- android:drawableLeft="@drawable/et_username"-->
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/et_pwd"
+                    app:layout_constraintTop_toBottomOf="@+id/topimage">
+
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/et_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="68dp"
+
+                        android:background="@drawable/etloginbgg"
+                        android:drawablePadding="@dimen/drawablepadding"
+                        android:hint="@string/username"
+                        android:inputType="textPersonName"
+                        android:padding="@dimen/verysmalltextsize"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/topimage" />
+
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/toppwd"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/verysmalltextsize"
-                    android:layout_marginTop="40dp"
-                    android:background="@drawable/etloginbg"
-                    android:drawablePadding="@dimen/drawablepadding"
-                    android:hint="@string/pwd"
-                    android:textColor="@color/appbasiccolor"
-                    android:textSize="@dimen/smalltextsize"
-                    android:inputType="textPassword"
-                    app:layout_constraintLeft_toLeftOf="@+id/et_username"
-                    app:layout_constraintRight_toRightOf="@+id/et_username"
-                    app:layout_constraintTop_toBottomOf="@+id/et_username" />
-               <!-- android:drawableLeft="@drawable/etpwd"-->
+                    app:layout_constraintLeft_toLeftOf="@+id/topusername"
+                    app:layout_constraintRight_toRightOf="@+id/topusername"
+                    app:layout_constraintTop_toBottomOf="@+id/topusername">
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/et_pwd"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="46dp"
+                        android:background="@drawable/etloginbgg"
+                        android:drawablePadding="@dimen/drawablepadding"
+                        android:hint="@string/pwd"
+                        android:inputType="textPassword"
+                        android:padding="@dimen/verysmalltextsize"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintLeft_toLeftOf="@+id/topusername"
+                        app:layout_constraintRight_toRightOf="@+id/topusername"
+                        app:layout_constraintTop_toBottomOf="@+id/topusername" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <!-- android:drawableLeft="@drawable/etpwd"-->
                 <android.support.v7.widget.AppCompatCheckBox
                     android:id="@+id/checkboxremb"
                     android:layout_width="wrap_content"
@@ -118,42 +115,186 @@
                     android:paddingLeft="@dimen/smallpadding"
                     android:text="@string/rememberme"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/smalltextsize"
-                    app:layout_constraintLeft_toLeftOf="@+id/et_username"
-                    app:layout_constraintTop_toBottomOf="@+id/et_pwd" />
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintLeft_toLeftOf="@+id/topusername"
+                    app:layout_constraintTop_toBottomOf="@+id/toppwd" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/forgotpwd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/drawablepadding"
+                    android:onClick="@{()->loginactivity.onClickFrgtPwd()}"
+                    android:paddingTop="@dimen/smallpadding"
                     android:text="@string/forgotpwd"
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/verysmalltextsize"
-                    android:paddingTop="@dimen/smallpadding"
                     android:textStyle="bold"
-                    android:onClick="@{()->loginactivity.onClickFrgtPwd()}"
-                    app:layout_constraintRight_toRightOf="@+id/et_username"
-                    app:layout_constraintTop_toBottomOf="@+id/et_pwd" />
+                    app:layout_constraintRight_toRightOf="@+id/topusername"
+                    app:layout_constraintTop_toBottomOf="@+id/toppwd" />
 
 
                 <android.support.v7.widget.AppCompatButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/verysmalltextsize"
-                    android:layout_marginTop="60dp"
-                    android:background="@drawable/bg_loginbtn"
+                    android:layout_marginTop="56dp"
+                    android:background="@drawable/bgloginbtn_new"
                     android:onClick="@{()->loginactivity.onClickLogin()}"
+                    android:padding="@dimen/verysmalltextsize"
                     android:text="@string/login"
-                    android:textAllCaps="false"
+                    android:textAllCaps="true"
                     android:textColor="#ffffff"
-                    android:textSize="@dimen/mediumtextsize"
-                    app:layout_constraintLeft_toLeftOf="@+id/et_username"
-                    app:layout_constraintRight_toRightOf="@+id/et_username"
+                    android:textSize="@dimen/smalltextsize"
+                    app:layout_constraintLeft_toLeftOf="@+id/topusername"
+                    app:layout_constraintRight_toRightOf="@+id/topusername"
                     app:layout_constraintTop_toBottomOf="@+id/forgotpwd" />
 
             </android.support.constraint.ConstraintLayout>
-        </android.support.constraint.ConstraintLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+        <!-- <android.support.constraint.ConstraintLayout
+             android:id="@+id/left"
+             android:layout_width="0dp"
+             android:layout_height="0dp"
+             android:background="@color/white"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintHorizontal_weight=".36"
+             app:layout_constraintLeft_toLeftOf="parent"
+             app:layout_constraintRight_toLeftOf="@+id/line"
+             app:layout_constraintTop_toTopOf="parent">
+
+
+             <ImageView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 app:layout_constraintBottom_toBottomOf="parent"
+                 app:layout_constraintLeft_toLeftOf="parent"
+                 app:layout_constraintRight_toRightOf="parent"
+                 app:layout_constraintTop_toTopOf="parent"
+                 android:src="@drawable/loginleftlogo"/>
+
+
+         </android.support.constraint.ConstraintLayout>
+
+         <View
+             android:id="@+id/line"
+             android:layout_width="2dp"
+             android:layout_height="0dp"
+             android:background="#000000"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintLeft_toRightOf="@+id/left"
+             app:layout_constraintRight_toLeftOf="@+id/right"
+             app:layout_constraintTop_toTopOf="parent"></View>
+
+         <android.support.constraint.ConstraintLayout
+             android:id="@+id/right"
+             android:layout_width="0dp"
+             android:layout_height="0dp"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintHorizontal_weight=".64"
+             app:layout_constraintLeft_toRightOf="@+id/line"
+             app:layout_constraintRight_toRightOf="parent"
+             app:layout_constraintTop_toTopOf="parent">
+
+             <android.support.constraint.ConstraintLayout
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 app:layout_constraintBottom_toBottomOf="parent"
+                 app:layout_constraintLeft_toLeftOf="parent"
+                 app:layout_constraintRight_toRightOf="parent"
+                 app:layout_constraintTop_toTopOf="parent">
+
+
+                 <ImageView
+                     android:id="@+id/topimage"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     app:layout_constraintLeft_toLeftOf="parent"
+                     app:layout_constraintRight_toRightOf="parent"
+                     android:src="@drawable/loginlogo"/>
+
+                 <android.support.v7.widget.AppCompatEditText
+                     android:id="@+id/et_username"
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     android:padding="@dimen/verysmalltextsize"
+                     android:layout_marginLeft="@dimen/loginmargin"
+                     android:layout_marginRight="@dimen/loginmargin"
+                     android:layout_marginTop="68dp"
+                     android:background="@drawable/etloginbg"
+                     android:inputType="textPersonName"
+                     android:drawablePadding="@dimen/drawablepadding"
+                     android:hint="@string/username"
+                     android:textColor="@color/appbasiccolor"
+                     android:textSize="@dimen/smalltextsize"
+                     app:layout_constraintLeft_toLeftOf="parent"
+                     app:layout_constraintRight_toRightOf="parent"
+                     app:layout_constraintTop_toBottomOf="@+id/topimage" />
+                 &lt;!&ndash; android:drawableLeft="@drawable/et_username"&ndash;&gt;
+                 <android.support.v7.widget.AppCompatEditText
+                     android:id="@+id/et_pwd"
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     android:padding="@dimen/verysmalltextsize"
+                     android:layout_marginTop="40dp"
+                     android:background="@drawable/etloginbg"
+                     android:drawablePadding="@dimen/drawablepadding"
+                     android:hint="@string/pwd"
+                     android:textColor="@color/appbasiccolor"
+                     android:textSize="@dimen/smalltextsize"
+                     android:inputType="textPassword"
+                     app:layout_constraintLeft_toLeftOf="@+id/et_username"
+                     app:layout_constraintRight_toRightOf="@+id/et_username"
+                     app:layout_constraintTop_toBottomOf="@+id/et_username" />
+                &lt;!&ndash; android:drawableLeft="@drawable/etpwd"&ndash;&gt;
+                 <android.support.v7.widget.AppCompatCheckBox
+                     android:id="@+id/checkboxremb"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="@dimen/drawablepadding"
+                     android:paddingLeft="@dimen/smallpadding"
+                     android:text="@string/rememberme"
+                     android:textColor="@color/black"
+                     android:textSize="@dimen/smalltextsize"
+                     app:layout_constraintLeft_toLeftOf="@+id/et_username"
+                     app:layout_constraintTop_toBottomOf="@+id/et_pwd" />
+
+                 <android.support.v7.widget.AppCompatTextView
+                     android:id="@+id/forgotpwd"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="@dimen/drawablepadding"
+                     android:text="@string/forgotpwd"
+                     android:textColor="@color/appbasiccolor"
+                     android:textSize="@dimen/verysmalltextsize"
+                     android:paddingTop="@dimen/smallpadding"
+                     android:textStyle="bold"
+                     android:onClick="@{()->loginactivity.onClickFrgtPwd()}"
+                     app:layout_constraintRight_toRightOf="@+id/et_username"
+                     app:layout_constraintTop_toBottomOf="@+id/et_pwd" />
+
+
+                 <android.support.v7.widget.AppCompatButton
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     android:padding="@dimen/verysmalltextsize"
+                     android:layout_marginTop="60dp"
+                     android:background="@drawable/bg_loginbtn"
+                     android:onClick="@{()->loginactivity.onClickLogin()}"
+                     android:text="@string/login"
+                     android:textAllCaps="false"
+                     android:textColor="#ffffff"
+                     android:textSize="@dimen/mediumtextsize"
+                     app:layout_constraintLeft_toLeftOf="@+id/et_username"
+                     app:layout_constraintRight_toRightOf="@+id/et_username"
+                     app:layout_constraintTop_toBottomOf="@+id/forgotpwd" />
+
+             </android.support.constraint.ConstraintLayout>
+         </android.support.constraint.ConstraintLayout>
+ -->
+
 
     </android.support.constraint.ConstraintLayout>
 </layout>

@@ -1,13 +1,18 @@
 package teq.development.seatech.Utils;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -32,6 +37,7 @@ import java.util.Locale;
 import teq.development.seatech.R;
 import teq.development.seatech.ServerCall.apiCall;
 import teq.development.seatech.ServerCall.apiManager;
+import teq.development.seatech.database.ParseOpenHelper;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -100,9 +106,30 @@ public class HandyObject {
         return editor.commit();
     }
 
+    public static void deleteAllDatabase(Context context) {
+        SQLiteDatabase database = ParseOpenHelper.getInstance(context).getWritableDatabase();
+        database.delete(ParseOpenHelper.TABLENAME_ALLJOBS, null, null);
+        database.delete(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, null, null);
+        database.delete(ParseOpenHelper.TABLENAME_MANUFACTURER, null, null);
+
+        database.delete(ParseOpenHelper.TABLE_PICKUPJOBS, null, null);
+        database.delete(ParseOpenHelper.TABLENAME_NEEDESTIMATE, null, null);
+        database.delete(ParseOpenHelper.TABLE_SUBMITMYLABOR_NEWOFFRECORD, null, null);
+
+        database.delete(ParseOpenHelper.TABLE_LCCHANGE, null, null);
+        database.delete(ParseOpenHelper.TABLE_JOBSTATUS, null, null);
+        database.delete(ParseOpenHelper.TABLE_UPLOADIMAGES, null, null);
+        database.delete(ParseOpenHelper.TABLE_ADDPART, null, null);
+
+        database.delete(ParseOpenHelper.TABLE_UPLOADIMAGES, null, null);
+        database.delete(ParseOpenHelper.TABLE_URGENTMSG, null, null);
+        database.delete(ParseOpenHelper.TABLE_NOTIFICATIONS, null, null);
+        stopAlarm(context);
+    }
+
     private static SharedPreferences getPrefs(Context context) {
         if (sharedPrefs == null) {
-            sharedPrefs = context.getSharedPreferences("com_example_vibrant_beautysalon", MODE_PRIVATE);
+            sharedPrefs = context.getSharedPreferences("com_example_teq_seatech", MODE_PRIVATE);
         }
         return sharedPrefs;
     }
@@ -286,6 +313,21 @@ public class HandyObject {
         return sb.toString();
     }
 
+    public static String getSelectedWeek_FirstDateslash(Context context, String date) {
+        weekcount = 0;
+        StringBuilder sb = new StringBuilder();
+        Calendar calendar = Calendar.getInstance(Locale.UK);
+        // calendar.set(2018, 06, 4);
+        calendar.set(Integer.parseInt(date.split("/")[0]), Integer.parseInt(date.split("/")[1]) - 1, Integer.parseInt(date.split("/")[2]));
+        calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR));
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
+
+        sb.append(HandyObject.ParseDateJobTime(calendar.getTime()));
+        calendar.set(Calendar.DAY_OF_WEEK, 8);
+        sb.append("," + HandyObject.ParseDateJobTime(calendar.getTime()));
+        return sb.toString();
+    }
+
     public static String getPreviousWeek_FirstDate(Context context) {
         weekcount--;
         //  Calendar calendar = Calendar.getInstance(Locale.UK);
@@ -413,7 +455,7 @@ public class HandyObject {
     public static Date CurrentMonthFirstDate(String date) {
         monthcount = 0;
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Integer.parseInt(date.split("-")[0]),Integer.parseInt(date.split("-")[1])-1,Integer.parseInt(date.split("-")[2]));
+        calendar.set(Integer.parseInt(date.split("-")[0]), Integer.parseInt(date.split("-")[1]) - 1, Integer.parseInt(date.split("-")[2]));
         int firstDate = calendar.getActualMinimum(Calendar.DATE);
         calendar.set(Calendar.DATE, firstDate);
         return calendar.getTime();
@@ -422,18 +464,17 @@ public class HandyObject {
     public static Date CurrentMonthLastDate(String date) {
         monthcount = 0;
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Integer.parseInt(date.split("-")[0]),Integer.parseInt(date.split("-")[1])-1,Integer.parseInt(date.split("-")[2]));
+        calendar.set(Integer.parseInt(date.split("-")[0]), Integer.parseInt(date.split("-")[1]) - 1, Integer.parseInt(date.split("-")[2]));
         int lastDate = calendar.getActualMaximum(Calendar.DATE);
         calendar.set(Calendar.DATE, lastDate);
         return calendar.getTime();
     }
 
 
-
     public static Date NextMonthFirstDate(String date) {
         monthcount++;
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Integer.parseInt(date.split("-")[0]),Integer.parseInt(date.split("-")[1])-1,Integer.parseInt(date.split("-")[2]));
+        calendar.set(Integer.parseInt(date.split("-")[0]), Integer.parseInt(date.split("-")[1]) - 1, Integer.parseInt(date.split("-")[2]));
         calendar.add(Calendar.MONTH, monthcount);
         int firstDate = calendar.getActualMinimum(Calendar.DATE);
         calendar.set(Calendar.DATE, firstDate);
@@ -441,9 +482,9 @@ public class HandyObject {
     }
 
     public static Date NextMonthLastDate(String date) {
-      //  monthcount;
+        //  monthcount;
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Integer.parseInt(date.split("-")[0]),Integer.parseInt(date.split("-")[1])-1,Integer.parseInt(date.split("-")[2]));
+        calendar.set(Integer.parseInt(date.split("-")[0]), Integer.parseInt(date.split("-")[1]) - 1, Integer.parseInt(date.split("-")[2]));
         calendar.add(Calendar.MONTH, monthcount);
         int lastDate = calendar.getActualMaximum(Calendar.DATE);
         calendar.set(Calendar.DATE, lastDate);
@@ -453,7 +494,7 @@ public class HandyObject {
     public static Date PreviousMonthFirstDate(String date) {
         monthcount--;
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Integer.parseInt(date.split("-")[0]),Integer.parseInt(date.split("-")[1])-1,Integer.parseInt(date.split("-")[2]));
+        calendar.set(Integer.parseInt(date.split("-")[0]), Integer.parseInt(date.split("-")[1]) - 1, Integer.parseInt(date.split("-")[2]));
         calendar.add(Calendar.MONTH, monthcount);
         int firstDate = calendar.getActualMinimum(Calendar.DATE);
         calendar.set(Calendar.DATE, firstDate);
@@ -463,7 +504,7 @@ public class HandyObject {
     public static Date PreviousMonthLastDate(String date) {
         //  monthcount;
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Integer.parseInt(date.split("-")[0]),Integer.parseInt(date.split("-")[1])-1,Integer.parseInt(date.split("-")[2]));
+        calendar.set(Integer.parseInt(date.split("-")[0]), Integer.parseInt(date.split("-")[1]) - 1, Integer.parseInt(date.split("-")[2]));
         calendar.add(Calendar.MONTH, monthcount);
         int lastDate = calendar.getActualMaximum(Calendar.DATE);
         calendar.set(Calendar.DATE, lastDate);
@@ -512,18 +553,32 @@ public class HandyObject {
         return lcname;
     }
 
-    /*public ImageLoader initImageLoader(Context context) {
-        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-                .cacheOnDisc().imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
-                .bitmapConfig(Bitmap.Config.RGB_565).build();
-        ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(
-                context).defaultDisplayImageOptions(defaultOptions).memoryCache(
-                new WeakMemoryCache());
+    public static void stopAlarm(Context context) {
+        Intent myIntent = new Intent(context, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, myIntent, 0);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
 
-        ImageLoaderConfiguration config = builder.build();
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(config);
-        return imageLoader;
-    }*/
+        if (alarmManager != null) {
+            alarmManager.cancel(pendingIntent);
+        }
+    }
 
+    public static void stopStartAlarm(Context context) {
+        Intent myIntent = new Intent(context, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, myIntent, 0);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+
+        if (alarmManager != null) {
+            alarmManager.cancel(pendingIntent);
+            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    SystemClock.elapsedRealtime(),
+                    5 * 60 * 1000,
+                    pendingIntent);
+        } else {
+            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    SystemClock.elapsedRealtime(),
+                    5 * 60 * 1000,
+                    pendingIntent);
+        }
+    }
 }

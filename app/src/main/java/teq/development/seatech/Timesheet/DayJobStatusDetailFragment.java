@@ -136,6 +136,7 @@ public class DayJobStatusDetailFragment extends Fragment implements View.OnClick
                                 HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
                                 if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
                                     HandyObject.clearpref(getActivity());
+                                    HandyObject.deleteAllDatabase(getActivity());
                                     App.appInstance.stopTimer();
                                     Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
                                     startActivity(intent_reg);
@@ -166,7 +167,7 @@ public class DayJobStatusDetailFragment extends Fragment implements View.OnClick
         switch (v.getId()) {
             case R.id.previousdate:
                 if (count == 1) {
-                    HandyObject.showAlert(getActivity(), getString(R.string.canselectweekdate));
+                    HandyObject.showAlert(getActivity(), getString(R.string.selectedweekdate));
                 } else if (count > 1) {
                     count--;
                     calendar.add(calendar.HOUR_OF_DAY, -24);
@@ -185,7 +186,7 @@ public class DayJobStatusDetailFragment extends Fragment implements View.OnClick
                 if (datePickerDate.after(new Date())) {
                     HandyObject.showAlert(getActivity(), "Can't Select Future date");
                 } else if (count == 7) {
-                    HandyObject.showAlert(getActivity(), getString(R.string.canselectweekdate));
+                    HandyObject.showAlert(getActivity(), getString(R.string.selectedweekdate));
                 } else if (count < 7) {
                     calendar.add(calendar.HOUR_OF_DAY, -24);
                     count++;
