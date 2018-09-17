@@ -172,7 +172,8 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                     } else {
                         DayJobStatusDetailFragment frgm = new DayJobStatusDetailFragment();
                         Bundle bundle = new Bundle();
-                        bundle.putString(AppConstants.SELECTED_JOBDAYSTATUS, HandyObject.getDateFromPickerDayStatus(myCalendar.getTime()));
+                        //     bundle.putString(AppConstants.SELECTED_JOBDAYSTATUS, HandyObject.getDateFromPickerDayStatus(myCalendar.getTime()));
+                        bundle.putString(AppConstants.SELECTED_JOBDAYSTATUS, HandyObject.getDateFromPickerDayStatusNew(myCalendar.getTime()));
                         frgm.setArguments(bundle);
                         replaceFragment(frgm);
                     }
@@ -264,26 +265,18 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                 }
                 break;
             case R.id.chaticon:
-              /*  Intent intent = new Intent();
-                String packageName = getPackageName();
-                PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (pm != null && pm.isIgnoringBatteryOptimizations(packageName))
-                        intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
-                    else {
-                        intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                        intent.setData(Uri.parse("package:" + packageName));
-                    }
-                }
-                startActivity(intent);*/
-                if (HandyObject.checkInternetConnection(this)) {
+                Intent intent_chat = new Intent(DashBoardActivity.this, ChatActivity.class);
+                startActivity(intent_chat);
+                //  finish();
+                overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                /*if (HandyObject.checkInternetConnection(this)) {
                     Intent intent_reg = new Intent(DashBoardActivity.this, ChatActivity.class);
                     startActivity(intent_reg);
                     //  finish();
                     overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
                 } else {
                     HandyObject.showAlert(this, getString(R.string.notabletochat));
-                }
+                }*/
                 break;
             case R.id.notificationicon:
                 Intent intent_reg = new Intent(DashBoardActivity.this, Notifications.class);
@@ -431,12 +424,12 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                             if (jsonObject.getString("status").toLowerCase().equals("success")) {
                                 HandyObject.showAlert(DashBoardActivity.this, jsonObject.getString("message"));
                                 App.appInstance.stopTimer();
-                                String deviceToken = HandyObject.getPrams(DashBoardActivity.this, AppConstants.DEVICE_TOKEN);
+                                // String deviceToken = HandyObject.getPrams(DashBoardActivity.this, AppConstants.DEVICE_TOKEN);
                                 HandyObject.clearpref(DashBoardActivity.this);
                                 HandyObject.deleteAllDatabase(DashBoardActivity.this);
 
 
-                                HandyObject.putPrams(getApplicationContext(), AppConstants.DEVICE_TOKEN, deviceToken);
+                                //  HandyObject.putPrams(getApplicationContext(), AppConstants.DEVICE_TOKEN, deviceToken);
                                 Intent intent_reg = new Intent(DashBoardActivity.this, LoginActivity.class);
                                 startActivity(intent_reg);
                                 finish();

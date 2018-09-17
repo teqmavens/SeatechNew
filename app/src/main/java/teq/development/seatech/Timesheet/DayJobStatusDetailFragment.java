@@ -83,17 +83,23 @@ public class DayJobStatusDetailFragment extends Fragment implements View.OnClick
         lLManagerImages.setOrientation(LinearLayoutManager.VERTICAL);
         binding.statusRecyclerView.setLayoutManager(lLManagerImages);
         if (getArguments() != null) {
-            binding.currentdate.setText(HandyObject.parseDateToDayStatusText(getArguments().getString(AppConstants.SELECTED_JOBDAYSTATUS)));
+         //   binding.currentdate.setText(HandyObject.parseDateToDayStatusText(getArguments().getString(AppConstants.SELECTED_JOBDAYSTATUS)));
+            binding.currentdate.setText(getArguments().getString(AppConstants.SELECTED_JOBDAYSTATUS));
             calendar = Calendar.getInstance();
-            int year = Integer.parseInt(getArguments().getString(AppConstants.SELECTED_JOBDAYSTATUS).split("\\s+")[2]);
+           /* int year = Integer.parseInt(getArguments().getString(AppConstants.SELECTED_JOBDAYSTATUS).split("\\s+")[2]);
             int month = Integer.parseInt(getArguments().getString(AppConstants.SELECTED_JOBDAYSTATUS).split("\\s+")[0]);
-            int date = Integer.parseInt(getArguments().getString(AppConstants.SELECTED_JOBDAYSTATUS).split("\\s+")[1]);
+            int date = Integer.parseInt(getArguments().getString(AppConstants.SELECTED_JOBDAYSTATUS).split("\\s+")[1]);*/
+            int year = Integer.parseInt(getArguments().getString(AppConstants.SELECTED_JOBDAYSTATUS).split("/")[2]);
+            int month = Integer.parseInt(getArguments().getString(AppConstants.SELECTED_JOBDAYSTATUS).split("/")[0]);
+            int date = Integer.parseInt(getArguments().getString(AppConstants.SELECTED_JOBDAYSTATUS).split("/")[1]);
             calendar.set(year, month - 1, date);
-            setCountForDateChange(HandyObject.getDayFromDate(getArguments().getString(AppConstants.SELECTED_JOBDAYSTATUS)));
+            //  setCountForDateChange(HandyObject.getDayFromDate(getArguments().getString(AppConstants.SELECTED_JOBDAYSTATUS)));
+            setCountForDateChange(HandyObject.getDayFromDateNew(getArguments().getString(AppConstants.SELECTED_JOBDAYSTATUS)));
 
             //jobsArrayList = new ArrayList<>();
             database = ParseOpenHelper.getInstance(getActivity()).getWritableDatabase();
-            DayJobStatusApi(HandyObject.parseDateToYMD(binding.currentdate.getText().toString()));
+            //DayJobStatusApi(HandyObject.parseDateToYMD(binding.currentdate.getText().toString()));
+            DayJobStatusApi(HandyObject.parseDateToYMDNew(binding.currentdate.getText().toString()));
         }
     }
 
@@ -171,8 +177,9 @@ public class DayJobStatusDetailFragment extends Fragment implements View.OnClick
                 } else if (count > 1) {
                     count--;
                     calendar.add(calendar.HOUR_OF_DAY, -24);
-                    binding.currentdate.setText(HandyObject.getDateFromPicker(calendar.getTime()));
-                    DayJobStatusApi(HandyObject.parseDateToYMD(binding.currentdate.getText().toString()));
+                    binding.currentdate.setText(HandyObject.getDateFromPickerNew(calendar.getTime()));
+                 //   DayJobStatusApi(HandyObject.parseDateToYMD(binding.currentdate.getText().toString()));
+                    DayJobStatusApi(HandyObject.parseDateToYMDNew(binding.currentdate.getText().toString()));
                 }
                 break;
             case R.id.nextdate:
@@ -191,8 +198,9 @@ public class DayJobStatusDetailFragment extends Fragment implements View.OnClick
                     calendar.add(calendar.HOUR_OF_DAY, -24);
                     count++;
                     calendar.add(calendar.HOUR_OF_DAY, 24);
-                    binding.currentdate.setText(HandyObject.getDateFromPicker(calendar.getTime()));
+                    binding.currentdate.setText(HandyObject.getDateFromPickerNew(calendar.getTime()));
                     // DayJobStatusApi(HandyObject.parseDateToYMD(binding.currentdate.getText().toString()));
+                    DayJobStatusApi(HandyObject.parseDateToYMDNew(binding.currentdate.getText().toString()));
                     calendar.add(calendar.HOUR_OF_DAY, 24);
                 }
                 break;

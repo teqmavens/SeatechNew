@@ -82,10 +82,10 @@ public class SyncUploadImages extends Job {
                 SyncData();
                 cursor.close();
             } else {
-                HandyObject.showAlert(getContext(), "cursor not greater than zero");
+               // HandyObject.showAlert(getContext(), "cursor not greater than zero");
             }
         } else {
-            HandyObject.showAlert(getContext(), "cursor null");
+         //   HandyObject.showAlert(getContext(), "cursor null");
         }
         return Result.SUCCESS;
     }

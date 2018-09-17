@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/etloginbg"
+                android:background="@drawable/etbgchat"
                 android:hint="@string/search"
                 android:maxHeight="30dp"
                 android:paddingBottom="@dimen/verysmallpadding"

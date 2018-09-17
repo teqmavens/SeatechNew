@@ -384,7 +384,6 @@
                 app:cardElevation="@dimen/verysmallpadding">
 
 
-
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -491,7 +490,8 @@
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:enabled="false"
-                            android:singleLine="true"
+                            android:paddingLeft="@dimen/smallpadding"
+                            android:singleLine="false"
                             android:text="xxxxxxxxxxxxxxxxxxxxxx"
                             android:textColor="@color/black"
                             android:textSize="@dimen/verysmalltextsize"
@@ -549,7 +549,8 @@
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:enabled="false"
-                            android:singleLine="true"
+                            android:paddingLeft="@dimen/smallpadding"
+                            android:singleLine="false"
                             android:text="xxxxxxxxxxxxxxxxxxxxxx"
                             android:textColor="@color/black"
                             android:textSize="@dimen/verysmalltextsize"
@@ -579,7 +580,8 @@
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:enabled="false"
-                            android:singleLine="true"
+                            android:paddingLeft="@dimen/smallpadding"
+                            android:singleLine="false"
                             android:text="xxxxxxxxxxxxxxxxxxxxxx"
                             android:textColor="@color/black"
                             android:textSize="@dimen/verysmalltextsize"
@@ -1022,13 +1024,12 @@
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/et_laborperform"
                     android:layout_width="0dp"
-                    android:layout_height="100dp"
+                    android:layout_height="66dp"
                     android:layout_marginTop="@dimen/verysmallpadding"
                     android:background="@drawable/dashboardlinebg"
                     android:gravity="top"
                     android:hint="@string/enterdesription"
                     android:inputType="textMultiLine"
-                    android:maxHeight="200dp"
                     android:paddingLeft="@dimen/smallpadding"
                     android:scrollbars="vertical"
                     android:textColor="@color/black"
@@ -1080,7 +1081,6 @@
                         android:textColorHint="@color/black"
                         android:textSize="@dimen/verysmalltextsize" />
                 </LinearLayout>
-
 
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/submitlabor_performbtn"
@@ -1154,25 +1154,6 @@
                     app:layout_constraintLeft_toRightOf="@+id/addnew_offrecordnote"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/submitlabor_performbtn" />
-
-
-                <!-- <android.support.v7.widget.AppCompatTextView
-                     android:id="@+id/previouslabor_comment"
-                     android:layout_width="0dp"
-                     android:layout_height="36dp"
-                     android:layout_marginLeft="@dimen/largetextsize"
-                     android:background="@drawable/startstopjob_bg"
-                     android:gravity="center"
-                     android:onClick="@{()->frgmjobdetail.OnClickViewComment()}"
-                     android:padding="@dimen/smallpadding"
-                     android:text="@string/previouslaborcmmnt"
-                     android:textColor="@color/white"
-                     android:textSize="@dimen/verysmalltextsize"
-                     app:layout_constraintHorizontal_weight=".36"
-                     app:layout_constraintLeft_toRightOf="@+id/submit_comment"
-                     app:layout_constraintRight_toRightOf="@+id/suppliedamount"
-                     app:layout_constraintTop_toBottomOf="@+id/techLaborperform" />-->
-
 
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/startstopbtn"

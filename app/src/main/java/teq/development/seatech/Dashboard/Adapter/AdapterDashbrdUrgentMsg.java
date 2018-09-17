@@ -18,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.logging.Handler;
 
 import teq.development.seatech.App;
 import teq.development.seatech.Chat.ChatActivity;
@@ -61,43 +62,49 @@ public class AdapterDashbrdUrgentMsg extends RecyclerView.Adapter<AdapterDashbrd
         binding.cltop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    UrgentMsgSkeleton ske = arrayList.get(holder.getAdapterPosition());
-                    if (ske.getAcknowledge().equalsIgnoreCase("1")) {
-                    } else {
-                     /*   if (arrayList.size() == 1) {
-                            HandyObject.stopAlarm(context);
-                        }*/
-                        if (checkTablecount() == 1) {
-                            HandyObject.stopAlarm(context);
+
+                if (HandyObject.checkInternetConnection(context)) {
+                    try {
+                        final UrgentMsgSkeleton ske = arrayList.get(holder.getAdapterPosition());
+                        if (ske.getAcknowledge().equalsIgnoreCase("1")) {
+                        } else {
+                            if (checkTablecount() == 1) {
+                                HandyObject.stopAlarm(context);
+                            }
+                            JSONObject jobj = new JSONObject();
+                            jobj.put("id", ske.getMessageid());
+                            jobj.put("user_id", HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID));
+                            JSONObject jobj_receiver = new JSONObject();
+                            jobj_receiver.put("receiver_id", ske.getReceiverid());
+                            jobj_receiver.put("receiver_name", ske.getReceiver());
+                            JSONArray jarry_receiver = new JSONArray();
+                            jarry_receiver.put(jobj_receiver);
+                            jobj.put("receiver", jarry_receiver);
+                            // DashBoardActivity.mSocket.emit("acknowledge", jobj);
+                            App.appInstance.getSocket().emit("acknowledge", jobj);
+
+                            arrayList.remove(ske);
+                            database.delete(ParseOpenHelper.TABLE_URGENTMSG, ParseOpenHelper.URGENT_JOBID + " =? AND " + ParseOpenHelper.URGENT_MESSAGEID + " = ?",
+                                    new String[]{ske.getJobticketid(), ske.getMessageid()});
+                            notifyDataSetChanged();
+
+
+                            new android.os.Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent resultIntent = new Intent(context, ChatActivity.class);
+                                    resultIntent.putExtra("type", "chat");
+                                    resultIntent.putExtra("jobid", ske.getJobticketid());
+                                    ((Activity) context).startActivity(resultIntent);
+                                }
+                            }, 1000);
                         }
-                        JSONObject jobj = new JSONObject();
-                        jobj.put("id", ske.getMessageid());
-                        jobj.put("user_id", HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID));
-                        JSONObject jobj_receiver = new JSONObject();
-                        jobj_receiver.put("receiver_id", ske.getReceiverid());
-                        jobj_receiver.put("receiver_name", ske.getReceiver());
-                        JSONArray jarry_receiver = new JSONArray();
-                        jarry_receiver.put(jobj_receiver);
-                        jobj.put("receiver", jarry_receiver);
-                        // DashBoardActivity.mSocket.emit("acknowledge", jobj);
-                        App.appInstance.getSocket().emit("acknowledge", jobj);
-
-                        arrayList.remove(ske);
-                        database.delete(ParseOpenHelper.TABLE_URGENTMSG, ParseOpenHelper.URGENT_JOBID + " =? AND " + ParseOpenHelper.URGENT_MESSAGEID + " = ?",
-                                new String[]{ske.getJobticketid(), ske.getMessageid()});
-                        notifyDataSetChanged();
-
-
-                        Intent resultIntent = new Intent(context, ChatActivity.class);
-                        resultIntent.putExtra("type", "chat");
-                        resultIntent.putExtra("jobid", ske.getJobticketid());
-                        ((Activity) context).startActivity(resultIntent);
+                    } catch (Exception e) {
                     }
-                } catch (Exception e) {
+
+                } else {
+                    HandyObject.showAlert(context, context.getString(R.string.check_internet_connection));
                 }
-
-
             }
         });
     }

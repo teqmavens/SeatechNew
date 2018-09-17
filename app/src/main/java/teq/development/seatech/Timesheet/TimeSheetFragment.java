@@ -166,7 +166,12 @@ public class TimeSheetFragment extends Fragment {
                         Bundle bundle = new Bundle();
                         bundle.putString("weekstartdate", HandyObject.getCurrentWeek_FirstDate(getActivity()));
 
-                        binding.displaydate.setText("(" + HandyObject.getCurrentWeek_FirstDate(getActivity()).split(",")[0] + ") - " + "(" + HandyObject.getCurrentWeek_FirstDate(getActivity()).split(",")[1] + ")");
+                       /* binding.displaydate.setText("(" + HandyObject.getCurrentWeek_FirstDate(getActivity()).split(",")[0] + ") - " + "(" + HandyObject.getCurrentWeek_FirstDate(getActivity()).split(",")[1] + ")");
+                        binding.displaydate.setText("(" + HandyObject.getCurrentWeek_Fi0rstDate(getActivity()).split(",")[0] + ") - " + "(" + HandyObject.getCurrentWeek_FirstDate(getActivity()).split(",")[1] + ")");*/
+
+
+                        binding.displaydate.setText("(" + HandyObject.getCurrentWeek_FirstDateNew(getActivity()).split(",")[0] + ") - " + "(" + HandyObject.getCurrentWeek_FirstDateNew(getActivity()).split(",")[1] + ")");
+                        binding.displaydate.setText("(" + HandyObject.getCurrentWeek_FirstDateNew(getActivity()).split(",")[0] + ") - " + "(" + HandyObject.getCurrentWeek_FirstDateNew(getActivity()).split(",")[1] + ")");
                         fgm.setArguments(bundle);
                         replaceChildFragment(fgm);
                         binding.etfrom.setText("");
@@ -217,7 +222,8 @@ public class TimeSheetFragment extends Fragment {
                     if (datePickerDate.after(new Date())) {
                         HandyObject.showAlert(getActivity(), "Can't Select Future date");
                     } else {
-                        binding.etfrom.setText(HandyObject.getDateFromPicker(myCalendarFrom.getTime()));
+                        //   binding.etfrom.setText(HandyObject.getDateFromPicker(myCalendarFrom.getTime()));
+                        binding.etfrom.setText(HandyObject.getDateFromPickerNew(myCalendarFrom.getTime()));
                     }
                 }
             }
@@ -237,7 +243,8 @@ public class TimeSheetFragment extends Fragment {
                     if (datePickerDate.after(new Date())) {
                         HandyObject.showAlert(getActivity(), "Can't Select Future date");
                     } else {
-                        binding.etto.setText(HandyObject.getDateFromPicker(myCalendarTo.getTime()));
+                        /* binding.etto.setText(HandyObject.getDateFromPicker(myCalendarTo.getTime()));*/
+                        binding.etto.setText(HandyObject.getDateFromPickerNew(myCalendarTo.getTime()));
                     }
                 }
             }
@@ -298,14 +305,15 @@ public class TimeSheetFragment extends Fragment {
             binding.spinnerWeekMonth.setVisibility(View.INVISIBLE);
             binding.rlselected.setVisibility(View.VISIBLE);
             binding.rlselectedText.setText("Selected Week");
-            fromMonth_SelDate = intent.getStringExtra("sel_enddate");
+            //   fromMonth_SelDate = intent.getStringExtra("sel_enddate");
+            fromMonth_SelDate = HandyObject.parseDateToYMDNew(intent.getStringExtra("sel_enddate"));
 
-            binding.displaydate.setText("(" + HandyObject.getSelectedWeek_FirstDateslash(getActivity(), fromMonth_SelDate).split(",")[0] + ") - " + "(" + HandyObject.getSelectedWeek_FirstDateslash(getActivity(), fromMonth_SelDate).split(",")[1] + ")");
-
+            /* binding.displaydate.setText("(" + HandyObject.getSelectedWeek_FirstDateslash(getActivity(), fromMonth_SelDate).split(",")[0] + ") - " + "(" + HandyObject.getSelectedWeek_FirstDateslash(getActivity(), fromMonth_SelDate).split(",")[1] + ")");*/
+            /*binding.displaydate.setText("(" + HandyObject.getSelectedWeek_FirstDateslashNew(getActivity(), fromMonth_SelDate).split(",")[0] + ") - " + "(" + HandyObject.getSelectedWeek_FirstDateslashNew(getActivity(), fromMonth_SelDate).split(",")[1] + ")");*/
 
             TSWeekChildFragment fgm = new TSWeekChildFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("weekstartdate", HandyObject.getSelectedWeek_FirstDateslash(getActivity(), fromMonth_SelDate));
+            bundle.putString("weekstartdate", HandyObject.getSelectedWeek_FirstDate(getActivity(), fromMonth_SelDate));
             fgm.setArguments(bundle);
             replaceChildFragment(fgm);
         }
@@ -334,7 +342,8 @@ public class TimeSheetFragment extends Fragment {
                 android.R.layout.simple_spinner_item);
         weekAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerWeekMonth.setAdapter(weekAdapter);
-        binding.displaydate.setText("(" + HandyObject.ParseDateJobTime(calendarweek.getTime()) + ")");
+        // binding.displaydate.setText("(" + HandyObject.ParseDateJobTime(calendarweek.getTime()) + ")");
+        binding.displaydate.setText("(" + HandyObject.ParseDateJobTimeNew(calendarweek.getTime()) + ")");
     }
 
     public void OnClickSearch() {
@@ -353,10 +362,12 @@ public class TimeSheetFragment extends Fragment {
             binding.nextweek.setVisibility(View.GONE);
             binding.previousmonth.setVisibility(View.GONE);
             binding.nextmonth.setVisibility(View.GONE);
-            binding.displaydate.setText("(" + HandyObject.parseDateToYMD(binding.etfrom.getText().toString()) + ") - " + "(" + HandyObject.parseDateToYMD(binding.etto.getText().toString()) + ")");
+            /* binding.displaydate.setText("(" + HandyObject.parseDateToYMD(binding.etfrom.getText().toString()) + ") - " + "(" + HandyObject.parseDateToYMD(binding.etto.getText().toString()) + ")");*/
+            binding.displaydate.setText("(" + binding.etfrom.getText().toString() + ") - " + "(" + binding.etto.getText().toString() + ")");
             TSWeekChildFragment fgm = new TSWeekChildFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("weekstartdate", HandyObject.parseDateToYMD(binding.etfrom.getText().toString()) + "," + HandyObject.parseDateToYMD(binding.etto.getText().toString()));
+            /*   bundle.putString("weekstartdate", HandyObject.parseDateToYMD(binding.etfrom.getText().toString()) + "," + HandyObject.parseDateToYMD(binding.etto.getText().toString()));*/
+            bundle.putString("weekstartdate", HandyObject.parseDateToYMDNew(binding.etfrom.getText().toString()) + "," + HandyObject.parseDateToYMDNew(binding.etto.getText().toString()));
             fgm.setArguments(bundle);
             replaceChildFragment(fgm);
             binding.etfrom.setText("");
@@ -380,6 +391,7 @@ public class TimeSheetFragment extends Fragment {
         TSWeekChildFragment fgm = new TSWeekChildFragment();
         Bundle bundle = new Bundle();
         bundle.putString("weekstartdate", HandyObject.getSelectedPreviousWeek_FirstDate(getActivity(), fromMonth_SelDate));
+        //  bundle.putString("weekstartdate", HandyObject.getSelectedPreviousWeek_FirstDateSlash(getActivity(), fromMonth_SelDate));
         fgm.setArguments(bundle);
         replaceChildFragment(fgm);
     }
@@ -390,6 +402,7 @@ public class TimeSheetFragment extends Fragment {
         } else {
             TSWeekChildFragment fgm = new TSWeekChildFragment();
             Bundle bundle = new Bundle();
+            //  bundle.putString("weekstartdate", HandyObject.getSelectedPreviousWeek_FirstDateSlash(getActivity(), fromMonth_SelDate));
             bundle.putString("weekstartdate", HandyObject.getSelectedNextWeek_FirstDate(getActivity(), fromMonth_SelDate));
             fgm.setArguments(bundle);
             replaceChildFragment(fgm);
@@ -455,13 +468,13 @@ public class TimeSheetFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(fromMonthreciever);
-        Log.e("onDestyViewMain","onDestyViewMain");
+        Log.e("onDestyViewMain", "onDestyViewMain");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e("onDestyMain","onDestyMain");
+        Log.e("onDestyMain", "onDestyMain");
     }
 
     /*public void OnClickBack() {

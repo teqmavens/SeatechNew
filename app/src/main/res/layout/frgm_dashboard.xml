@@ -108,11 +108,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/verysmallpadding"
-                android:paddingLeft="@dimen/verysmallpadding"
+                android:paddingLeft="@dimen/verysmalltextsize"
                 android:paddingTop="@dimen/smallpadding"
                 android:text="@string/urgentmsg"
                 android:textColor="@color/black"
-                android:textSize="@dimen/verysmalltextsize"
+                android:textSize="@dimen/drawablepadding"
                 android:textStyle="italic|bold" />
 
             <LinearLayout
@@ -247,7 +247,7 @@
                 android:paddingTop="@dimen/smallpadding"
                 android:text="@string/jobsforyou"
                 android:textColor="@color/black"
-                android:textSize="@dimen/verysmalltextsize"
+                android:textSize="@dimen/drawablepadding"
                 android:textStyle="italic|bold" />
 
             <android.support.constraint.ConstraintLayout

@@ -125,6 +125,8 @@ public class HandyObject {
         database.delete(ParseOpenHelper.TABLE_URGENTMSG, null, null);
         database.delete(ParseOpenHelper.TABLE_NOTIFICATIONS, null, null);
         stopAlarm(context);
+       /* String deviceToken = HandyObject.getPrams(context, AppConstants.DEVICE_TOKEN);
+        HandyObject.putPrams(context, AppConstants.DEVICE_TOKEN, deviceToken);*/
     }
 
     private static SharedPreferences getPrefs(Context context) {
@@ -247,9 +249,23 @@ public class HandyObject {
         return formattedDate;
     }
 
+    public static String getDateFromPickerNew(Date date) {
+        dateCount = 0;
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        String formattedDate = df.format(date);
+        return formattedDate;
+    }
+
     public static String getDateFromPickerDayStatus(Date date) {
         //   dateCount = 0;
         SimpleDateFormat df = new SimpleDateFormat("MM dd yyyy");
+        String formattedDate = df.format(date);
+        return formattedDate;
+    }
+
+    public static String getDateFromPickerDayStatusNew(Date date) {
+        //   dateCount = 0;
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         String formattedDate = df.format(date);
         return formattedDate;
     }
@@ -266,8 +282,26 @@ public class HandyObject {
         return goal;
     }
 
+    public static String getDayFromDateNew(String input) {
+        String goal = "";
+        try {
+            SimpleDateFormat inFormat = new SimpleDateFormat("MM/dd/yyyy");
+            Date date = inFormat.parse(input);
+            SimpleDateFormat outFormat = new SimpleDateFormat("EEEE");
+            goal = outFormat.format(date);
+        } catch (Exception e) {
+        }
+        return goal;
+    }
+
     public static String ParseDateJobTime(Date date) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = df.format(date);
+        return formattedDate;
+    }
+
+    public static String ParseDateJobTimeNew(Date date) {
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         String formattedDate = df.format(date);
         return formattedDate;
     }
@@ -286,6 +320,14 @@ public class HandyObject {
         return formattedDate;
     }
 
+    public static String getCurrentDateNew() {
+        dateCount = 0;
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        String formattedDate = df.format(c);
+        return formattedDate;
+    }
+
     public static String getCurrentWeek_FirstDate(Context context) {
         weekcount = 0;
         StringBuilder sb = new StringBuilder();
@@ -295,6 +337,17 @@ public class HandyObject {
         sb.append(HandyObject.ParseDateJobTime(calendar.getTime()));
         calendar.set(Calendar.DAY_OF_WEEK, 8);
         sb.append("," + HandyObject.ParseDateJobTime(calendar.getTime()));
+        return sb.toString();
+    }
+    public static String getCurrentWeek_FirstDateNew(Context context) {
+        weekcount = 0;
+        StringBuilder sb = new StringBuilder();
+        Calendar calendar = Calendar.getInstance(Locale.UK);
+        calendar.add(Calendar.WEEK_OF_YEAR, weekcount);
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
+        sb.append(HandyObject.ParseDateJobTimeNew(calendar.getTime()));
+        calendar.set(Calendar.DAY_OF_WEEK, 8);
+        sb.append("," + HandyObject.ParseDateJobTimeNew(calendar.getTime()));
         return sb.toString();
     }
 
@@ -318,13 +371,30 @@ public class HandyObject {
         StringBuilder sb = new StringBuilder();
         Calendar calendar = Calendar.getInstance(Locale.UK);
         // calendar.set(2018, 06, 4);
-        calendar.set(Integer.parseInt(date.split("/")[0]), Integer.parseInt(date.split("/")[1]) - 1, Integer.parseInt(date.split("/")[2]));
+        // calendar.set(Integer.parseInt(date.split("/")[0]), Integer.parseInt(date.split("/")[1]) - 1, Integer.parseInt(date.split("/")[2]));
+        calendar.set(Integer.parseInt(date.split("/")[2]), Integer.parseInt(date.split("/")[0]) - 1, Integer.parseInt(date.split("/")[1]));
         calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR));
         calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
 
         sb.append(HandyObject.ParseDateJobTime(calendar.getTime()));
         calendar.set(Calendar.DAY_OF_WEEK, 8);
         sb.append("," + HandyObject.ParseDateJobTime(calendar.getTime()));
+        return sb.toString();
+    }
+
+    public static String getSelectedWeek_FirstDateslashNew(Context context, String date) {
+        weekcount = 0;
+        StringBuilder sb = new StringBuilder();
+        Calendar calendar = Calendar.getInstance(Locale.UK);
+        // calendar.set(2018, 06, 4);
+        // calendar.set(Integer.parseInt(date.split("/")[0]), Integer.parseInt(date.split("/")[1]) - 1, Integer.parseInt(date.split("/")[2]));
+        calendar.set(Integer.parseInt(date.split("/")[2]), Integer.parseInt(date.split("/")[0]) - 1, Integer.parseInt(date.split("/")[1]));
+        calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR));
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
+
+        sb.append(HandyObject.ParseDateJobTimeNew(calendar.getTime()));
+        calendar.set(Calendar.DAY_OF_WEEK, 8);
+        sb.append("," + HandyObject.ParseDateJobTimeNew(calendar.getTime()));
         return sb.toString();
     }
 
@@ -342,6 +412,23 @@ public class HandyObject {
         StringBuilder sb = new StringBuilder();
         Calendar calendar = Calendar.getInstance(Locale.UK);
         calendar.set(Integer.parseInt(date.split("-")[0]), Integer.parseInt(date.split("-")[1]) - 1, Integer.parseInt(date.split("-")[2]));
+        //  calendar.set(Integer.parseInt(date.split("-")[0]), Integer.parseInt(date.split("-")[1]) + 1, Integer.parseInt(date.split("-")[2]));
+        // HandyObject.showAlert(context, String.valueOf(weekcount));
+        calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR));
+        calendar.add(Calendar.WEEK_OF_YEAR, weekcount);
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
+
+        sb.append(HandyObject.ParseDateJobTime(calendar.getTime()));
+        calendar.set(Calendar.DAY_OF_WEEK, 8);
+        sb.append("," + HandyObject.ParseDateJobTime(calendar.getTime()));
+        return sb.toString();
+    }
+
+    public static String getSelectedPreviousWeek_FirstDateSlash(Context context, String date) {
+        weekcount--;
+        StringBuilder sb = new StringBuilder();
+        Calendar calendar = Calendar.getInstance(Locale.UK);
+        calendar.set(Integer.parseInt(date.split("/")[2]), Integer.parseInt(date.split("/")[0]) - 1, Integer.parseInt(date.split("/")[1]));
         //  calendar.set(Integer.parseInt(date.split("-")[0]), Integer.parseInt(date.split("-")[1]) + 1, Integer.parseInt(date.split("-")[2]));
         // HandyObject.showAlert(context, String.valueOf(weekcount));
         calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR));
@@ -389,10 +476,26 @@ public class HandyObject {
         return tomdate;
     }
 
+    public static String getNextDateNew(Calendar c) {
+        dateCount++;
+        c.add(c.DATE, 1);
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        String tomdate = df.format(c.getTime());
+        return tomdate;
+    }
+
     public static String getPreviousDate(Calendar c) {
         dateCount--;
         c.add(c.DATE, -1);
         SimpleDateFormat df = new SimpleDateFormat("MMM dd yyyy");
+        String prevdate = df.format(c.getTime());
+        return prevdate;
+    }
+
+    public static String getPreviousDateNew(Calendar c) {
+        dateCount--;
+        c.add(c.DATE, -1);
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyy");
         String prevdate = df.format(c.getTime());
         return prevdate;
     }
@@ -415,10 +518,46 @@ public class HandyObject {
         return str;
     }
 
+    public static String parseDateToYMDNew(String time) {
+        String inputPattern = "MM/dd/yyyy";
+        String outputPattern = "yyyy-MM-dd";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
 
     public static String parseDateToMDY(String time) {
         String inputPattern = "yyyy-MM-dd";
         String outputPattern = "MM dd yyyy";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
+    public static String parseDateToMDYNew(String time) {
+        String inputPattern = "yyyy-MM-dd";
+        String outputPattern = "MM/dd/yyyy";
         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
         SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
 

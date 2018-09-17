@@ -73,7 +73,7 @@
                     android:background="@drawable/dashboardlinebg"
                     android:scaleType="centerCrop"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:placeholderImage="@drawable/profile_addimage"
+                    app:placeholderImage="@drawable/no_media"
                     app:placeholderImageScaleType="centerCrop"
                     app:progressBarImage="@drawable/loading_imagerec" />
                 <!-- <ImageView

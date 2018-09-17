@@ -87,12 +87,20 @@ public class LoginActivity extends AppCompatActivity {
             deviceToken = HandyObject.getPrams(LoginActivity.this, AppConstants.DEVICE_TOKEN);
             if (deviceToken.length() == 0) {
                 deviceToken = FirebaseInstanceId.getInstance().getToken();
-                HandyObject.showAlert(LoginActivity.this, getString(R.string.tokenText));
+                HandyObject.putPrams(getApplicationContext(), AppConstants.DEVICE_TOKEN, deviceToken);
+                //  HandyObject.showAlert(LoginActivity.this, getString(R.string.tokenText));
+                if (deviceToken.length() == 0) {
+                    deviceToken = FirebaseInstanceId.getInstance().getToken();
+                    HandyObject.putPrams(getApplicationContext(), AppConstants.DEVICE_TOKEN, deviceToken);
+                    loginTask(binding.etUsername.getText().toString(), binding.etPwd.getText().toString(), deviceToken);
+                } else {
+                    loginTask(binding.etUsername.getText().toString(), binding.etPwd.getText().toString(), deviceToken);
+                }
             } else {
                 HandyObject.putPrams(getApplicationContext(), AppConstants.DEVICE_TOKEN, deviceToken);
                 loginTask(binding.etUsername.getText().toString(), binding.etPwd.getText().toString(), deviceToken);
             }
-           /* loginTask(binding.etUsername.getText().toString(), binding.etPwd.getText().toString(), HandyObject.getPrams(LoginActivity.this, AppConstants.DEVICE_TOKEN));*/
+            /* loginTask(binding.etUsername.getText().toString(), binding.etPwd.getText().toString(), HandyObject.getPrams(LoginActivity.this, AppConstants.DEVICE_TOKEN));*/
             /*if (deviceToken == null) {
                 deviceToken = FirebaseInstanceId.getInstance().getToken();
                 HandyObject.showAlert(LoginActivity.this, getString(R.string.tokenText));
@@ -106,7 +114,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }*/
         } else {
-            Toast.makeText(this, R.string.check_internet_connection, Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, R.string.check_internet_connection, Toast.LENGTH_SHORT).show();
+            HandyObject.showAlert(this, getString(R.string.check_internet_connection));
         }
     }
 

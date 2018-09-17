@@ -155,7 +155,7 @@ public class GalleryAdapter extends BaseAdapter {
 						@Override
 						public void onLoadingStarted(String imageUri, View view) {
 							holder.imgQueue
-									.setImageResource(R.drawable.no_media);
+									.setImageResource(R.drawable.loading_imagerec);
 							super.onLoadingStarted(imageUri, view);
 						}
 					});

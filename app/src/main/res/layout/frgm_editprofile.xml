@@ -77,7 +77,7 @@
                     android:layout_marginTop="@dimen/smalltextsize"
                     android:background="@drawable/dashboardlinebg"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:placeholderImage="@drawable/profile_addimage"
+                    app:placeholderImage="@drawable/no_media"
                     app:placeholderImageScaleType="centerCrop"
                     android:scaleType="centerCrop"
                     app:progressBarImage="@drawable/loading_imagerec"

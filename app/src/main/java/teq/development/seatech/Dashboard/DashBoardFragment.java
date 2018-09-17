@@ -130,7 +130,7 @@ public class DashBoardFragment extends Fragment {
             public void onMapReady(GoogleMap gmap) {
                 googleMap = gmap;
                 new DatabaseFetch().execute();
-                getAllDataTask(HandyObject.parseDateToYMD(HandyObject.getCurrentDate()));
+                getAllDataTask(HandyObject.parseDateToYMDNew(HandyObject.getCurrentDateNew()));
             }
         });
     }
@@ -171,7 +171,6 @@ public class DashBoardFragment extends Fragment {
         binding.rcyviewUrgentmsg.setLayoutManager(lLManagerUrgentJobs);
         adapterurgentmsg = new AdapterDashbrdUrgentMsg(context, arraylistUrgent, DashBoardFragment.this);
         binding.rcyviewUrgentmsg.setAdapter(adapterurgentmsg);
-
         myCalendar = Calendar.getInstance();
         date = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -184,23 +183,22 @@ public class DashBoardFragment extends Fragment {
                 }
             }
         };
-
-        binding.currentdate.setText(HandyObject.getCurrentDate());
+        binding.currentdate.setText(HandyObject.getCurrentDateNew());
         binding.previousdate.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(context, R.drawable.leftarrow), null, null, null);
         binding.nextdate.setCompoundDrawablesWithIntrinsicBounds(null, null, AppCompatResources.getDrawable(context, R.drawable.rightarrow), null);
     }
 
 
     private void updateLabel() {
-        binding.currentdate.setText(HandyObject.getDateFromPicker(myCalendar.getTime()));
-        getAllDataTask(HandyObject.parseDateToYMD(binding.currentdate.getText().toString()));
+        binding.currentdate.setText(HandyObject.getDateFromPickerNew(myCalendar.getTime()));
+        getAllDataTask(HandyObject.parseDateToYMDNew(binding.currentdate.getText().toString()));
     }
 
     public void OnClickStartTime() {
         if (isJobRunning() == true || HandyObject.getPrams(context, AppConstants.ISJOB_NEWTYPE).equalsIgnoreCase("yes")) {
             HandyObject.showAlert(context, getString(R.string.cannotstart_newjob));
         } else {
-            if (HandyObject.getCurrentDate().split("\\s+")[1].equalsIgnoreCase(binding.currentdate.getText().toString().split("\\s+")[1])) {
+            if (HandyObject.getCurrentDateNew().split("/")[1].equalsIgnoreCase(binding.currentdate.getText().toString().split("/")[1])) {
                 if (jobsArrayList.size() == 0) {
                     HandyObject.showAlert(context, getString(R.string.nojobs_tostart));
                 } else {
@@ -220,9 +218,8 @@ public class DashBoardFragment extends Fragment {
     public void OnClickNextDate() {
 
         if (HandyObject.checkInternetConnection(context)) {
-            binding.currentdate.setText(HandyObject.getNextDate(myCalendar));
-            //  HandyObject.showAlert(context, HandyObject.parseDateToYMD(binding.currentdate.getText().toString()));
-            getAllDataTask(HandyObject.parseDateToYMD(binding.currentdate.getText().toString()));
+            binding.currentdate.setText(HandyObject.getNextDateNew(myCalendar));
+            getAllDataTask(HandyObject.parseDateToYMDNew(binding.currentdate.getText().toString()));
         } else {
             HandyObject.showAlert(getActivity(), getString(R.string.withoutinter_noprenextjob));
         }
@@ -230,9 +227,8 @@ public class DashBoardFragment extends Fragment {
 
     public void OnClickPreviousDate() {
         if (HandyObject.checkInternetConnection(context)) {
-            binding.currentdate.setText(HandyObject.getPreviousDate(myCalendar));
-            // HandyObject.showAlert(context, HandyObject.parseDateToYMD(binding.currentdate.getText().toString()));
-            getAllDataTask(HandyObject.parseDateToYMD(binding.currentdate.getText().toString()));
+            binding.currentdate.setText(HandyObject.getPreviousDateNew(myCalendar));
+            getAllDataTask(HandyObject.parseDateToYMDNew(binding.currentdate.getText().toString()));
         } else {
             HandyObject.showAlert(getActivity(), getString(R.string.withoutinter_noprenextjob));
         }
@@ -451,7 +447,8 @@ public class DashBoardFragment extends Fragment {
                                     }
 
 
-                                    if (date.split("-")[2].equalsIgnoreCase(binding.currentdate.getText().toString().split("\\s+")[1])) {
+                                    //  if (date.split("-")[2].equalsIgnoreCase(binding.currentdate.getText().toString().split("\\s+")[1])) {
+                                    if (date.split("-")[2].equalsIgnoreCase(binding.currentdate.getText().toString().split("/")[1])) {
                                         ContentValues cv_current = new ContentValues();
                                         cv_current.put(ParseOpenHelper.TECHIDCURRDAY, HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID));
                                         cv_current.put(ParseOpenHelper.JOBIDCURRDAY, jobjInside.getString("job_id"));
@@ -565,33 +562,14 @@ public class DashBoardFragment extends Fragment {
                     while (!cursor.isAfterLast()) {
                         Type type = new TypeToken<AllJobsSkeleton>() {
                         }.getType();
-                        Type typeurgent = new TypeToken<ArrayList<UrgentMsgSkeleton>>() {
-                        }.getType();
                         String getSke = cursor.getString(cursor.getColumnIndex(ParseOpenHelper.JOBSSKELETONCURRDAY));
-                        // String getUrgentMsg = cursor.getString(cursor.getColumnIndex(ParseOpenHelper.JOBSTECHURGENTMSGCURRDAY));
-
                         AllJobsSkeleton ske = gson.fromJson(getSke, type);
-                        // ArrayList<UrgentMsgSkeleton> arrayListUrgentMsg = gson.fromJson(getUrgentMsg, typeurgent);
-                        //  arraylistUrgent.addAll(arrayListUrgentMsg);
-                                       /* if (arraylistUrgent.size() == 0) {
-                                            //arraylistUrgent.clear();
-                                            binding.llheaderur.setVisibility(View.GONE);
-                                            binding.rcyviewUrgentmsg.setVisibility(View.GONE);
-                                            binding.nourgentmsg.setVisibility(View.VISIBLE);
-                                        } else {
-                                            binding.llheaderur.setVisibility(View.VISIBLE);
-                                            binding.rcyviewUrgentmsg.setVisibility(View.VISIBLE);
-                                            binding.nourgentmsg.setVisibility(View.GONE);
-                                        }*/
                         jobsArrayList.add(ske);
-                        //setJobMarkers(jobsArrayList.get(cursor.getPosition()).getJoblatitude(), jobsArrayList.get(cursor.getPosition()).getJoblongitude());
                         cursor.moveToNext();
                     }
                     cursor.close();
                     localdata = true;
-                    // binding.rcyviewJobs.setAdapter(adapterjobs);
                 } else {
-                    //binding.rcyviewJobs.setAdapter(adapterjobs);
                     //  HandyObject.showAlert(context, "cursor not greater than zero");
                 }
 
@@ -761,7 +739,6 @@ public class DashBoardFragment extends Fragment {
                 binding.llheaderur.setVisibility(View.VISIBLE);
                 binding.rcyviewUrgentmsg.setVisibility(View.VISIBLE);
                 binding.nourgentmsg.setVisibility(View.GONE);
-                // arraylistUrgent.addAll(urgentMsgSkeletons);
                 adapterurgentmsg.notifyDataSetChanged();
             }
         }

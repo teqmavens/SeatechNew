@@ -4,12 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="dialogneedpart"
             type="teq.development.seatech.JobDetail.NeedPartDialog"></variable>
     </data>
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -94,6 +92,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/dashboardlinebg"
+                        android:maxHeight="100dp"
                         android:gravity="top"
                         android:padding="@dimen/smallpadding"
                         android:textColor="@color/black"
@@ -968,10 +967,11 @@
                     <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/et_additnotes"
                         android:layout_width="0dp"
-                        android:layout_height="60dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/smallpadding"
                         android:background="@drawable/dashboardlinebg"
                         android:gravity="top"
+                        android:maxHeight="100dp"
                         android:padding="@dimen/verysmalltextsize"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black"

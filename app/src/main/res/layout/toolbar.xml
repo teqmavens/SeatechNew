@@ -72,7 +72,7 @@
             app:layout_constraintRight_toLeftOf="@+id/username"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:placeholderImage="@drawable/profile_addimage"
+            app:placeholderImage="@drawable/no_media"
             app:progressBarImage="@drawable/loading_imagerec"
             app:progressBarImageScaleType="centerCrop"
             />

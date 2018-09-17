@@ -653,7 +653,7 @@ public class JobDetailFragment extends Fragment {
     }
 
     private void TaskLCChange(String teqid, String jobid, final String seleclc, int lclast_posi, String starttime, String endtime, final String hrsworked, String hrsAdjusted) {
-      //  HandyObject.showAlert(getActivity(), endtime);
+        //  HandyObject.showAlert(getActivity(), endtime);
         LCChangeSkeleton lcs_ke = new LCChangeSkeleton();
         lcs_ke.setTech_id(teqid);
         lcs_ke.setJob_id(jobid);

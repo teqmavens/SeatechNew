@@ -181,7 +181,7 @@ public class EditProfileFragment extends Fragment {
         window.setAttributes(wlp);
         mediaDialog.setContentView(R.layout.dialog_media_picker);
         LinearLayout approx_lay = (LinearLayout) mediaDialog.findViewById(R.id.approx_lay);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(w - 30, (h / 3) - 20);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(w - 30, (h / 3) - 100);
         approx_lay.setLayoutParams(params);
 
         TextView options_camera = (TextView) mediaDialog.findViewById(R.id.options_camera);

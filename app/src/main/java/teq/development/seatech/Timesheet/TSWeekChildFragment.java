@@ -64,7 +64,7 @@ public class TSWeekChildFragment extends Fragment {
         lLManagerImages.setOrientation(LinearLayoutManager.VERTICAL);
         binding.recyclerview.setLayoutManager(lLManagerImages);
         if (getArguments() != null) {
-            TimeSheetFragment.binding.displaydate.setText("(" + getArguments().getString("weekstartdate").split(",")[0] + ") - " + "(" + getArguments().getString("weekstartdate").split(",")[1] + ")");
+            TimeSheetFragment.binding.displaydate.setText("(" + HandyObject.parseDateToMDYNew(getArguments().getString("weekstartdate").split(",")[0]) + ") - " + "(" + HandyObject.parseDateToMDYNew(getArguments().getString("weekstartdate").split(",")[1]) + ")");
             TSMonthApi(getArguments().getString("weekstartdate").split(",")[0], getArguments().getString("weekstartdate").split(",")[1]);
         }
     }
@@ -132,7 +132,8 @@ public class TSWeekChildFragment extends Fragment {
     public void OnClickDate(String date) {
         DayJobStatusDetailFragment frgm = new DayJobStatusDetailFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(AppConstants.SELECTED_JOBDAYSTATUS, HandyObject.parseDateToMDY(date));
+        // bundle.putString(AppConstants.SELECTED_JOBDAYSTATUS, HandyObject.parseDateToMDY(date));
+        bundle.putString(AppConstants.SELECTED_JOBDAYSTATUS, HandyObject.parseDateToMDYNew(date));
         frgm.setArguments(bundle);
         activity.replaceFragment(frgm);
     }

@@ -104,13 +104,11 @@ public class NeedPartDialog extends DialogFragment {
     public static String jobid;
     SQLiteDatabase database;
     Gson gson;
-    int partcount;
+    int partcount = 1;
 
     static NeedPartDialog newInstance(String id) {
         NeedPartDialog f = new NeedPartDialog();
         Bundle args = new Bundle();
-        // args.putInt("num", num);
-
         jobid = id;
         f.setArguments(args);
         return f;
@@ -136,7 +134,6 @@ public class NeedPartDialog extends DialogFragment {
         manufacturerArrayList = new ArrayList<>();
         imagesarray = new ArrayList<>();
         myCalendarStartDate = Calendar.getInstance();
-
         binding.cbxneedNormal.setCompoundDrawablesWithIntrinsicBounds(null, null, AppCompatResources.getDrawable(getActivity(), R.drawable.small_calendar), null);
         LinearLayoutManager lLManagerDashNotes = new LinearLayoutManager(getActivity());
         lLManagerDashNotes.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -315,7 +312,6 @@ public class NeedPartDialog extends DialogFragment {
                 if (isChecked) {
                     binding.cbxpartsoldbyYes.setChecked(false);
                     binding.cbxpartsoldbyNotsure.setChecked(false);
-
                     binding.needloaner.setVisibility(View.GONE);
                     binding.cbxneedloanerYes.setVisibility(View.GONE);
                     binding.cbxneedloanerNo.setVisibility(View.GONE);
@@ -329,7 +325,6 @@ public class NeedPartDialog extends DialogFragment {
                 if (isChecked) {
                     binding.cbxpartsoldbyYes.setChecked(false);
                     binding.cbxpartsoldbyNo.setChecked(false);
-
                     binding.needloaner.setVisibility(View.VISIBLE);
                     binding.cbxneedloanerYes.setVisibility(View.VISIBLE);
                     binding.cbxneedloanerNo.setVisibility(View.VISIBLE);
@@ -364,14 +359,8 @@ public class NeedPartDialog extends DialogFragment {
                     binding.spinnerSelectmanuf.setVisibility(View.VISIBLE);
                     binding.manufspinnerarrow.setVisibility(View.VISIBLE);
                     binding.detailcardview.setVisibility(View.GONE);
-
-
-                    //  if(manufacturerArrayList.get)
-
                     adaptermanuf = new AdapterManufacturerSpinner(getActivity(), manufacturerArrayList);
                     binding.spinnerSelectmanuf.setAdapter(adaptermanuf);
-
-
                     binding.partno.setVisibility(View.VISIBLE);
                     binding.etPartno.setVisibility(View.VISIBLE);
 
@@ -397,9 +386,7 @@ public class NeedPartDialog extends DialogFragment {
         binding.spinnerSelectmanuf.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //  binding.detailcardview.setVisibility(View.VISIBLE);
                 if (manufacturerArrayList != null) {
-
                     if (position == 0) {
                         binding.detailcardview.setVisibility(View.GONE);
                     } else {
@@ -408,7 +395,6 @@ public class NeedPartDialog extends DialogFragment {
                         binding.manufphonevalue.setText(manufacturerArrayList.get(position).getPhone());
                         binding.rmareqvalue.setText(manufacturerArrayList.get(position).getRmaRequired());
                         binding.manufcommentvalue.setText(manufacturerArrayList.get(position).getComment());
-
 
                         if (binding.cbPartsale.isChecked()) {
                             binding.doesmanfdeem.setVisibility(View.GONE);
@@ -434,7 +420,6 @@ public class NeedPartDialog extends DialogFragment {
                             binding.cbxdoesmanfdeemNo.setVisibility(View.GONE);
                             binding.cbxdoesmanfdeemMaybe.setVisibility(View.GONE);
                         } else if (binding.cbPartrepair.isChecked()) {
-
                             binding.cbxdoesmanfdeemYes.setChecked(false);
                             binding.cbxdoesmanfdeemNo.setChecked(false);
                             binding.cbxdoesmanfdeemMaybe.setChecked(false);
@@ -504,13 +489,8 @@ public class NeedPartDialog extends DialogFragment {
                     binding.spinnerSelectmanuf.setVisibility(View.VISIBLE);
                     binding.manufspinnerarrow.setVisibility(View.VISIBLE);
                     binding.detailcardview.setVisibility(View.GONE);
-
-                    //sbi alite card
-
                     adaptermanuf = new AdapterManufacturerSpinner(getActivity(), manufacturerArrayList);
                     binding.spinnerSelectmanuf.setAdapter(adaptermanuf);
-                    //  binding.spinnerSelectmanuf.setSelection(adaptermanuf.getCount());
-                    //   binding.spinnerSelectmanuf.setPrompt("Select Mnufacturer");
                     binding.serialno.setVisibility(View.GONE);
                     binding.etSerialno.setVisibility(View.GONE);
 
