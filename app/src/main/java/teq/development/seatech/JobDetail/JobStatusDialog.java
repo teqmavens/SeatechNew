@@ -17,16 +17,20 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -66,6 +70,7 @@ public class JobStatusDialog extends DialogFragment {
     public String jobstatus;
     private SQLiteDatabase database;
     public String get_needtoknow, returnimmediate, alreadyScheduled, reason, description = "";
+    String hoursNewValue, minNewValue, hoursNewValueDur, minNewValueDur = "";
     boolean popupsubmit;
 
     static JobStatusDialog newInstance(String jobid, int selecposition, String values, String evalues) {
@@ -166,9 +171,9 @@ public class JobStatusDialog extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-
                     binding.checkboxNobillable.setChecked(false);
-                    PopupNotBillable(binding.checkboxYesbillable);
+                    // PopupNotBillable(binding.checkboxYesbillable);
+                    PopupNotBillable(binding.checkboxyes);
                 }
             }
         });
@@ -290,9 +295,15 @@ public class JobStatusDialog extends DialogFragment {
         popup.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         ImageView cross = (ImageView) layout.findViewById(R.id.cross);
         Button submit = (Button) layout.findViewById(R.id.submit);
-
         et_notbilled = (EditText) layout.findViewById(R.id.et_notbilled);
         et_description = (EditText) layout.findViewById(R.id.et_description);
+
+        et_notbilled.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayTimeDialog();
+            }
+        });
 
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -320,6 +331,75 @@ public class JobStatusDialog extends DialogFragment {
         popup.setOutsideTouchable(true);
         popup.setFocusable(true);
         popup.showAsDropDown(anchorview);
+    }
+
+    private void displayTimeDialog() {
+        final Display display = getActivity().getWindowManager().getDefaultDisplay();
+        int w = display.getWidth();
+        int h = display.getHeight();
+        final Dialog mediaDialog = new Dialog(getActivity());
+        mediaDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Window window = mediaDialog.getWindow();
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        wlp.gravity = Gravity.CENTER;
+        wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        window.setAttributes(wlp);
+        mediaDialog.setContentView(R.layout.dialog_timepickernew);
+        LinearLayout approx_lay = (LinearLayout) mediaDialog.findViewById(R.id.approx_lay);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(w - 380, (h / 3) - 40);
+        approx_lay.setLayoutParams(params);
+        final String[] hours = {"00","01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
+        final String[] mins = {"00", "15", "30", "45"};
+        NumberPicker np_hour = (NumberPicker) mediaDialog.findViewById(R.id.np_hours);
+        NumberPicker np_min = (NumberPicker) mediaDialog.findViewById(R.id.np_min);
+        np_hour.setMinValue(0);
+        np_hour.setMaxValue(hours.length - 1);
+        np_hour.setDisplayedValues(hours);
+        np_hour.setWrapSelectorWheel(true);
+
+        np_min.setMinValue(0);
+        np_min.setMaxValue(mins.length - 1);
+        np_min.setDisplayedValues(mins);
+        np_min.setWrapSelectorWheel(true);
+        hoursNewValue = "";
+        minNewValue = "";
+        np_hour.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                hoursNewValue = hours[newVal];
+            }
+        });
+
+        np_min.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                minNewValue = mins[newVal];
+            }
+        });
+        TextView cancel = (TextView) mediaDialog.findViewById(R.id.cancel);
+        TextView ok = (TextView) mediaDialog.findViewById(R.id.ok);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaDialog.dismiss();
+            }
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaDialog.dismiss();
+                if (hoursNewValue.equalsIgnoreCase("")) {
+                    hoursNewValue = "00";
+                }
+                if (minNewValue.equalsIgnoreCase("")) {
+                    minNewValue = "00";
+                }
+                et_notbilled.setText(hoursNewValue + ":" + minNewValue);
+            }
+        });
+        mediaDialog.show();
     }
 
 
@@ -802,6 +882,7 @@ public class JobStatusDialog extends DialogFragment {
         String edit_boatname = editvalues.split("-")[0];
         String edit_hullid = editvalues.split("-")[1];
         String edit_capname = editvalues.split("-")[2];
+        int count_lcjobcomp = HandyObject.getIntPrams(getActivity(), AppConstants.LCJOBCOMPLETION_COUNT);
 
         JobStatusSkeleton ske = new JobStatusSkeleton();
         ske.setBoat_name(edit_boatname);
@@ -824,11 +905,13 @@ public class JobStatusDialog extends DialogFragment {
         ske.setHours(hours);
         ske.setHours_adjusted(hours_adjusted);
         ske.setLabour_code(labour_code);
+        ske.setCount(String.valueOf(count_lcjobcomp));
 
         ArrayList<JobStatusSkeleton> arrayList = new ArrayList<>();
         arrayList.add(ske);
         Gson gson = new Gson();
         String alldata = gson.toJson(arrayList);
+        Log.e("ALLLDATAA",alldata);
         final String insertedTime = HandyObject.ParseDateTimeForNotes(new Date());
         insertToDB(arrayList, insertedTime);
         if (HandyObject.checkInternetConnection(getActivity())) {
@@ -924,6 +1007,7 @@ public class JobStatusDialog extends DialogFragment {
         cv.put(ParseOpenHelper.JOBSTATUSBOATNAME, arrayList.get(0).getBoat_name());
         cv.put(ParseOpenHelper.JOBSTATUSHULLID, arrayList.get(0).getHull_id());
         cv.put(ParseOpenHelper.JOBSTATUSCAPTIONNAME, arrayList.get(0).getCaptain_name());
+        cv.put(ParseOpenHelper.JOBSTATUSCOUNT, arrayList.get(0).getCount());
         long idd = database.insert(ParseOpenHelper.TABLE_JOBSTATUS, null, cv);
     }
 

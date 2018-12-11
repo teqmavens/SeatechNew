@@ -1,6 +1,5 @@
 package teq.development.seatech.Dashboard;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -105,6 +104,7 @@ public class DashBoardFragment extends Fragment {
         binding.setFrgmdashboard(this);
         binding.map.onCreate(savedInstanceState);
         try {
+            // Initialize google Map
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,8 +118,6 @@ public class DashBoardFragment extends Fragment {
     public void onResume() {
         binding.map.onResume();
         super.onResume();
-        Log.e("DashFragresume", "DashFragresume");
-
     }
 
     @Override
@@ -129,7 +127,9 @@ public class DashBoardFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap gmap) {
                 googleMap = gmap;
+                /*Fetch jobs and urgent messages from local databse*/
                 new DatabaseFetch().execute();
+                /*Fetch jobs and urgent messages Server API*/
                 getAllDataTask(HandyObject.parseDateToYMDNew(HandyObject.getCurrentDateNew()));
             }
         });
@@ -139,7 +139,6 @@ public class DashBoardFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         binding.map.onDestroy();
-        Log.e("DashFRagment Destroy", "DashFRagment Destroy");
     }
 
     @Override
@@ -149,28 +148,29 @@ public class DashBoardFragment extends Fragment {
     }
 
     private void initViews(FrgmDashboardBinding binding) {
-       /* DashBoardActivity.mSocket.off("urgent message", onNewUrgentMessage);
-        DashBoardActivity.mSocket.on("urgent message", onNewUrgentMessage);
-        DashBoardActivity.mSocket.connect();*/
+        /*Listen event and connect for realtime Urgent Messages*/
         App.appInstance.getSocket().off("urgent message", onNewUrgentMessage);
         App.appInstance.getSocket().on("urgent message", onNewUrgentMessage);
         App.appInstance.getSocket().connect();
-
         database = ParseOpenHelper.getInstance(context).getWritableDatabase();
         jobsArrayList = new ArrayList<>();
         arraylistUrgent = new ArrayList<>();
-        adapterjobs = new AdapterJosbForYou(context, jobsArrayList, DashBoardFragment.this);
+        /*Adapter for Jobs*/
+        // adapterjobs = new AdapterJosbForYou(context, jobsArrayList, DashBoardFragment.this);
         LinearLayoutManager lLManagerJobs = new LinearLayoutManager(getActivity());
         lLManagerJobs.setOrientation(LinearLayoutManager.VERTICAL);
         binding.rcyviewJobs.setLayoutManager(lLManagerJobs);
         adapterjobs = new AdapterJosbForYou(context, jobsArrayList, DashBoardFragment.this);
         binding.rcyviewJobs.setAdapter(adapterjobs);
 
+        /*Adapter for Urgent Messages*/
         LinearLayoutManager lLManagerUrgentJobs = new LinearLayoutManager(getActivity());
         lLManagerUrgentJobs.setOrientation(LinearLayoutManager.VERTICAL);
         binding.rcyviewUrgentmsg.setLayoutManager(lLManagerUrgentJobs);
         adapterurgentmsg = new AdapterDashbrdUrgentMsg(context, arraylistUrgent, DashBoardFragment.this);
         binding.rcyviewUrgentmsg.setAdapter(adapterurgentmsg);
+
+        /*Calendar instance for date picker dialog*/
         myCalendar = Calendar.getInstance();
         date = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -188,14 +188,15 @@ public class DashBoardFragment extends Fragment {
         binding.nextdate.setCompoundDrawablesWithIntrinsicBounds(null, null, AppCompatResources.getDrawable(context, R.drawable.rightarrow), null);
     }
 
-
+    /*Set date from date picker selection*/
     private void updateLabel() {
         binding.currentdate.setText(HandyObject.getDateFromPickerNew(myCalendar.getTime()));
         getAllDataTask(HandyObject.parseDateToYMDNew(binding.currentdate.getText().toString()));
     }
 
+    /*Starting New Job */
     public void OnClickStartTime() {
-        if (isJobRunning() == true || HandyObject.getPrams(context, AppConstants.ISJOB_NEWTYPE).equalsIgnoreCase("yes")) {
+        if (isJobRunning() == true) {
             HandyObject.showAlert(context, getString(R.string.cannotstart_newjob));
         } else {
             if (HandyObject.getCurrentDateNew().split("/")[1].equalsIgnoreCase(binding.currentdate.getText().toString().split("/")[1])) {
@@ -203,11 +204,7 @@ public class DashBoardFragment extends Fragment {
                     HandyObject.showAlert(context, getString(R.string.nojobs_tostart));
                 } else {
                     activity.replaceFragment(new MainJobdetail());
-                    /*if (isJobRunning() == true) {
-                        activity.replaceFragment(new MainJobdetail());
-                    } else if (HandyObject.getPrams(context, AppConstants.ISJOB_NEWTYPE).equalsIgnoreCase("yes")) {
-                        activity.replaceFragment(new MainJobdetail());
-                    }*/
+                   //activity.replaceFragment(new JobDetailFragment());
                 }
             } else {
                 HandyObject.showAlert(context, getString(R.string.onlystatrt_currentdayjob));
@@ -215,8 +212,8 @@ public class DashBoardFragment extends Fragment {
         }
     }
 
+    /*Get Next date according to shown date and fetch related data*/
     public void OnClickNextDate() {
-
         if (HandyObject.checkInternetConnection(context)) {
             binding.currentdate.setText(HandyObject.getNextDateNew(myCalendar));
             getAllDataTask(HandyObject.parseDateToYMDNew(binding.currentdate.getText().toString()));
@@ -225,6 +222,7 @@ public class DashBoardFragment extends Fragment {
         }
     }
 
+    /*Get Previous date according to shown date and fetch related data*/
     public void OnClickPreviousDate() {
         if (HandyObject.checkInternetConnection(context)) {
             binding.currentdate.setText(HandyObject.getPreviousDateNew(myCalendar));
@@ -234,6 +232,7 @@ public class DashBoardFragment extends Fragment {
         }
     }
 
+    /*Show Date picker Dialog*/
     public void OnClickCalendar() {
         if (HandyObject.checkInternetConnection(context)) {
             new DatePickerDialog(getActivity(), date, myCalendar
@@ -244,6 +243,7 @@ public class DashBoardFragment extends Fragment {
         }
     }
 
+    /*Opening Clicked Job detail page*/
     public void onClickTicketNo(int position) {
         JobDetailStaticFragment jb = new JobDetailStaticFragment();
         Bundle bundle = new Bundle();
@@ -253,6 +253,7 @@ public class DashBoardFragment extends Fragment {
         activity.replaceFragment(jb);
     }
 
+    /*Opening Clicked Job Dashboard Notes*/
     public void onClickNotes(int position) {
         dialogTechViewNotes(position);
     }
@@ -269,6 +270,7 @@ public class DashBoardFragment extends Fragment {
         newFragment.show(ft, "dialogviewnotes");
     }
 
+    //API for get All Jobs and Urgent messages
     private void getAllDataTask(final String date) {
         HandyObject.getApiManagerTypeJobs().getDashboradData(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), date, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
                 .enqueue(new Callback<ResponseBody>() {
@@ -278,22 +280,20 @@ public class DashBoardFragment extends Fragment {
                             String jsonResponse = response.body().string();
                             Log.e("responseDash", jsonResponse);
                             JSONObject jsonObject = new JSONObject(jsonResponse);
-                            database.delete(ParseOpenHelper.TABLE_URGENTMSG, ParseOpenHelper.URGENT_TECHID + "=?", new String[]{HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)});
-                            database.delete(ParseOpenHelper.TABLENAME_ALLJOBS, ParseOpenHelper.TECHID + "=?", new String[]{HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)});
-                            database.delete(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, ParseOpenHelper.TECHIDCURRDAY + "=?", new String[]{HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)});
+                            HandyObject.putPrams(context, AppConstants.ISALLMSG_ACKNOWLEDGE, jsonObject.getString("unack_msg"));
+
+                            /*Delete Database for urgent Messages/All Jobs/All Jobs for current date*/
+                            deleteTables();
+
+                            /*If status is success then parse all data*/
                             if (jsonObject.getString("status").toLowerCase().equals("success")) {
-                                jobsArrayList.clear();
-                                arraylistUrgent.clear();
-                                arraylistmarker.clear();
-                                googleMap.clear();
-                                adapterjobs.notifyDataSetChanged();
+                                clearLists();
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 Gson gson = new Gson();
 
                                 //For Urgent Messages
                                 JSONArray jArray_urgent = jsonObject.getJSONArray("urgent");
                                 if (jArray_urgent.length() == 0) {
-                                    //arraylistUrgent.clear();
                                     binding.llheaderur.setVisibility(View.GONE);
                                     binding.rcyviewUrgentmsg.setVisibility(View.GONE);
                                     binding.nourgentmsg.setVisibility(View.VISIBLE);
@@ -304,7 +304,7 @@ public class DashBoardFragment extends Fragment {
                                     binding.nourgentmsg.setVisibility(View.GONE);
                                     HandyObject.stopStartAlarm(getActivity());
                                 }
-                                // ArrayList<UrgentMsgSkeleton> arraylisturgentDB = new ArrayList<>();
+
                                 for (int k = 0; k < jArray_urgent.length(); k++) {
                                     JSONObject jobj_urgent = jArray_urgent.getJSONObject(k);
                                     UrgentMsgSkeleton ske = new UrgentMsgSkeleton();
@@ -339,10 +339,13 @@ public class DashBoardFragment extends Fragment {
                                     long idd = database.insert(ParseOpenHelper.TABLE_URGENTMSG, null, cv);
                                 }
 
+                                // For All Jobs
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jobjInside = jsonArray.getJSONObject(i);
                                     AllJobsSkeleton skeleton = new AllJobsSkeleton();
                                     skeleton.setCustomerName(jobjInside.getString("customer_name"));
+                                    skeleton.setCustomerType(jobjInside.getString("customer_type_name"));
+                                    skeleton.setJobmsgCount(jobjInside.getString("job_message_count"));
                                     skeleton.setJobticketNo(jobjInside.getString("job_id"));
                                     skeleton.setJobType(jobjInside.getString("job_type"));
                                     skeleton.setBoatLocation(jobjInside.getString("boat_address"));
@@ -427,8 +430,8 @@ public class DashBoardFragment extends Fragment {
                                     String OffTheRecord = gson.toJson(arraylistOffTheRecord);
                                     String UploadedImages = gson.toJson(arraylistupldImages);
                                     String PartsRecords = gson.toJson(arraylistParts);
-                                    //   String UrgentRecords = gson.toJson(arraylisturgentDB);
 
+                                    /*Save all Jobs to Local Database*/
                                     ContentValues cv = new ContentValues();
                                     cv.put(ParseOpenHelper.TECHID, HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID));
                                     cv.put(ParseOpenHelper.JOBID, jobjInside.getString("job_id"));
@@ -438,16 +441,9 @@ public class DashBoardFragment extends Fragment {
                                     cv.put(ParseOpenHelper.JOBSTECHOFFTHERECORD, OffTheRecord);
                                     cv.put(ParseOpenHelper.JOBSTECHUPLOADEDIMAGES, UploadedImages);
                                     cv.put(ParseOpenHelper.JOBSTECHPARTSRECORD, PartsRecords);
-                                    //cv.put(ParseOpenHelper.JOBSTECHURGENTMSG, UrgentRecords);
                                     long idd = database.insert(ParseOpenHelper.TABLENAME_ALLJOBS, null, cv);
-                                    Log.e("table", String.valueOf(idd));
-                                    if (jobjInside.getString("job_id").equalsIgnoreCase("111111")) {
-                                    } else {
-                                        setJobMarkers(jobsArrayList.get(i).getJoblatitude(), jobsArrayList.get(i).getJoblongitude());
-                                    }
 
-
-                                    //  if (date.split("-")[2].equalsIgnoreCase(binding.currentdate.getText().toString().split("\\s+")[1])) {
+                                    /*Save only current day Jobs to Local Database*/
                                     if (date.split("-")[2].equalsIgnoreCase(binding.currentdate.getText().toString().split("/")[1])) {
                                         ContentValues cv_current = new ContentValues();
                                         cv_current.put(ParseOpenHelper.TECHIDCURRDAY, HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID));
@@ -458,9 +454,14 @@ public class DashBoardFragment extends Fragment {
                                         cv_current.put(ParseOpenHelper.JOBSTECHOFFTHERECORDCURRDAY, OffTheRecord);
                                         cv_current.put(ParseOpenHelper.JOBSTECHUPLOADEDIMAGESCURRDAY, UploadedImages);
                                         cv_current.put(ParseOpenHelper.JOBSTECHPARTSRECORDCURRDAY, PartsRecords);
-                                        // cv_current.put(ParseOpenHelper.JOBSTECHURGENTMSGCURRDAY, UrgentRecords);
                                         long iddc = database.insert(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, null, cv_current);
                                         Log.e("tableCurrentDay", String.valueOf(iddc));
+                                    }
+                                    /*Set all job marker to map beware of special seatech job which is 111111*/
+                                    if (jobjInside.getString("job_id").equalsIgnoreCase("111111")) {
+                                    } else {
+                                        /*Set Job markers to map*/
+                                        setJobMarkers(jobsArrayList.get(i).getJoblatitude(), jobsArrayList.get(i).getJoblongitude());
                                     }
                                 }
 
@@ -472,16 +473,13 @@ public class DashBoardFragment extends Fragment {
                                 localdata = false;
                                 adapterjobs.notifyDataSetChanged();
                             } else {
-                                jobsArrayList.clear();
-                                arraylistmarker.clear();
-                                arraylistUrgent.clear();
-                                googleMap.clear();
-                                adapterjobs.notifyDataSetChanged();
+                                clearLists();
                                 adapterurgentmsg.notifyDataSetChanged();
                                 binding.llheaderur.setVisibility(View.GONE);
                                 binding.rcyviewUrgentmsg.setVisibility(View.GONE);
                                 binding.nourgentmsg.setVisibility(View.VISIBLE);
                                 HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
+                                /*Session expired then logout from app*/
                                 if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
                                     HandyObject.clearpref(getActivity());
                                     HandyObject.deleteAllDatabase(getActivity());
@@ -509,13 +507,32 @@ public class DashBoardFragment extends Fragment {
                 });
     }
 
+    /*Set Job markers to map*/
     private void setJobMarkers(String latitude, String longitude) {
-        LatLng latlong = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
-        marker = googleMap.addMarker(new MarkerOptions().position(latlong).title("Marker Title").snippet("Marker Description").
-                icon(BitmapDescriptorFactory.fromResource(R.drawable.mappinpng)));
-        arraylistmarker.add(marker);
+        if (latitude.equalsIgnoreCase("-") || longitude.equalsIgnoreCase("-")) {
+        } else {
+            LatLng latlong = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+            marker = googleMap.addMarker(new MarkerOptions().position(latlong).title("Marker Title").snippet("Marker Description").
+                    icon(BitmapDescriptorFactory.fromResource(R.drawable.mappinpng)));
+            arraylistmarker.add(marker);
+        }
     }
 
+    private void clearLists() {
+        jobsArrayList.clear();
+        arraylistmarker.clear();
+        arraylistUrgent.clear();
+        googleMap.clear();
+        adapterjobs.notifyDataSetChanged();
+    }
+
+    private void deleteTables() {
+        database.delete(ParseOpenHelper.TABLE_URGENTMSG, ParseOpenHelper.URGENT_TECHID + "=?", new String[]{HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)});
+        database.delete(ParseOpenHelper.TABLENAME_ALLJOBS, ParseOpenHelper.TECHID + "=?", new String[]{HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)});
+        database.delete(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, ParseOpenHelper.TECHIDCURRDAY + "=?", new String[]{HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)});
+    }
+
+    /*Check if any job is running currently*/
     boolean isJobRunning() {
         if (HandyObject.getPrams(context, AppConstants.ISJOB_RUNNING).equalsIgnoreCase("yes")) {
             return true;
@@ -524,24 +541,7 @@ public class DashBoardFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.e("DashFragment onPause", "DashFragment onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.e("DashFragment onStop", "DashFragment onStop");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.e("DashFnt onDeoyView", "DashFragment onDestroyView");
-    }
-
+    /*AsyncTask for fething jobs data from local database*/
     public class DatabaseFetch extends AsyncTask<ArrayList<AllJobsSkeleton>, Void, ArrayList<AllJobsSkeleton>> {
 
         @Override
@@ -582,21 +582,24 @@ public class DashBoardFragment extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<AllJobsSkeleton> allJobsSkeletons) {
             super.onPostExecute(allJobsSkeletons);
+            /*If cursor is not null*/
             if (cursor != null) {
+                /*If cursor count is greater than 0*/
                 if (cursor.getCount() > 0) {
                     LatLng latlong1 = new LatLng(Double.parseDouble(allJobsSkeletons.get(0).getJoblatitude()), Double.parseDouble(allJobsSkeletons.get(0).getJoblongitude()));
                     CameraPosition cameraPosition = new CameraPosition.Builder().target(latlong1).zoom(2).build();
                     googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                     binding.rcyviewJobs.setAdapter(adapterjobs);
-                    // binding.rcyviewUrgentmsg.setAdapter(adapterurgentmsg);
                     new Urgentdatafetch().execute();
                     for (int i = 0; i < jobsArrayList.size(); i++) {
                         if (jobsArrayList.get(i).getJobticketNo().equalsIgnoreCase("111111")) {
                         } else {
+                            /*Set Job markers to map*/
                             setJobMarkers(jobsArrayList.get(i).getJoblatitude(), jobsArrayList.get(i).getJoblongitude());
                         }
                     }
                 } else {
+                    /*Set Adapter for All Jobs*/
                     binding.rcyviewJobs.setAdapter(adapterjobs);
                 }
             }
@@ -605,14 +608,13 @@ public class DashBoardFragment extends Fragment {
         }
     }
 
+    /*Listen for new Urgent message(Real time)*/
     private Emitter.Listener onNewUrgentMessage = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
-
             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Log.e("Msg Ugent", "urgntmessage");
                     try {
                         JSONArray data = (JSONArray) args[0];
                         if (arraylistUrgent.size() == 0) {
@@ -638,6 +640,7 @@ public class DashBoardFragment extends Fragment {
                             ske.setReceiverid(jobj_urgent.getString("receiver_id"));
                             arraylistUrgent.add(0, ske);
                             adapterurgentmsg.notifyDataSetChanged();
+                            binding.rcyviewUrgentmsg.scrollToPosition(0);
 
                             database.delete(ParseOpenHelper.TABLE_URGENTMSG, ParseOpenHelper.URGENT_TECHID + "=?", new String[]{HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)});
                             for (int i = 0; i < arraylistUrgent.size(); i++) {
@@ -657,17 +660,9 @@ public class DashBoardFragment extends Fragment {
                                 cv.put(ParseOpenHelper.URGENT_RECEIVERID, arraylistUrgent.get(i).getReceiverid());
                                 long idd = database.insert(ParseOpenHelper.TABLE_URGENTMSG, null, cv);
                             }
-
-                            if (jobj_urgent.getString("job_id").equalsIgnoreCase("111111")) {
-                                Intent intent = new Intent("update_UrgentReceiverNew");
-                                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
-                            } else {
-                                Intent intent = new Intent("update_UrgentReceiver");
-                                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
-                            }
-
+                            Intent intent = new Intent("update_UrgentReceiver");
+                            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
                             sendDeliverStatus(jobj_urgent.getString("id"), jobj_urgent.getString("sender_id"));
-
                         }
                     } catch (Exception e) {
                     }
@@ -677,21 +672,20 @@ public class DashBoardFragment extends Fragment {
         }
     };
 
+    /*Send delivered status to server*/
     private void sendDeliverStatus(String msgid, String senderid) {
         try {
-            Log.e("DELEIVER FROM DASHBRD", "dvdfdsfds");
             JSONObject jobj_delv = new JSONObject();
             jobj_delv.put("id", Integer.parseInt(msgid));
             jobj_delv.put("sender_id", senderid);
             JSONArray jarry_delv = new JSONArray();
             jarry_delv.put(jobj_delv);
-            // DashBoardActivity.mSocket.emit("delivered", jarry_delv);
-            App.appInstance.getSocket().emit("delivered", jarry_delv);
+            App.appInstance.getSocket().emit("delivered1", jarry_delv);
         } catch (Exception e) {
         }
     }
 
-
+    /*AsyncTask for fething Urgent Messages from local database*/
     private class Urgentdatafetch extends AsyncTask<ArrayList<UrgentMsgSkeleton>, Void, ArrayList<UrgentMsgSkeleton>> {
 
         @Override
@@ -730,9 +724,11 @@ public class DashBoardFragment extends Fragment {
         protected void onPostExecute(ArrayList<UrgentMsgSkeleton> urgentMsgSkeletons) {
             super.onPostExecute(urgentMsgSkeletons);
             if (urgentMsgSkeletons.size() == 0) {
+                //If urgent list is empty then hide recyclerview
                 binding.llheaderur.setVisibility(View.GONE);
                 binding.rcyviewUrgentmsg.setVisibility(View.GONE);
                 binding.nourgentmsg.setVisibility(View.VISIBLE);
+                //If urgent msg is empty then stop alarm.
                 HandyObject.stopAlarm(getActivity());
             } else {
                 HandyObject.stopStartAlarm(getActivity());

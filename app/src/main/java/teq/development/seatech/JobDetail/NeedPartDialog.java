@@ -553,7 +553,7 @@ public class NeedPartDialog extends DialogFragment {
                     long selectedMilli = myCalendarStartDate.getTimeInMillis();
                     Date datePickerDate = new Date(selectedMilli);
                     // binding.cbxneedDeadline.setChecked(false);
-                    binding.cbxneedNormal.setText(HandyObject.getDateFromPicker(myCalendarStartDate.getTime()));
+                    binding.cbxneedNormal.setText(HandyObject.getDateFromPickerNew(myCalendarStartDate.getTime()));
                 }
             }
         };
@@ -594,9 +594,9 @@ public class NeedPartDialog extends DialogFragment {
         } else if (binding.spinnerSelectmanuf.getSelectedItemPosition() == 0) {
             HandyObject.showAlert(getActivity(), getString(R.string.pleaseselectmanuf));
         } else if (binding.cbPartrepair.isChecked() == false && binding.cbPartsale.isChecked() == true) {
-            if (binding.etPartno.getText().toString().length() == 0) {
+            /*if (binding.etPartno.getText().toString().length() == 0) {
                 HandyObject.showAlert(getActivity(), getString(R.string.partnoreq));
-            } else if (binding.etQuantityNeeded.getText().toString().length() == 0) {
+            } else */if (binding.etQuantityNeeded.getText().toString().length() == 0) {
                 HandyObject.showAlert(getActivity(), getString(R.string.quantityneededblank));
             } else {
                 if (binding.checkboxYesurgent.isChecked() == true && binding.checkboxNourgent.isChecked() == false) {
@@ -610,7 +610,7 @@ public class NeedPartDialog extends DialogFragment {
                     price_approval_required = "0";
                 }
                 if (binding.checkboxNeedNormal.isChecked() == false && binding.cbxneedDeadline.isChecked() == true && binding.cbxneedNormal.getText().toString().length() > 0) {
-                    howfast_Date = HandyObject.parseDateToYMD(binding.cbxneedNormal.getText().toString());
+                    howfast_Date = HandyObject.parseDateToYMDNew(binding.cbxneedNormal.getText().toString());
                 } else if (binding.checkboxNeedNormal.isChecked() == true && binding.cbxneedDeadline.isChecked() == false) {
                     howfast_Date = "0000-00-00";
                 }
@@ -619,15 +619,7 @@ public class NeedPartDialog extends DialogFragment {
             }
         } else if (binding.cbPartrepair.isChecked() == true && binding.cbPartsale.isChecked() == false) {
 
-            if (binding.etPartno.getText().toString().length() == 0) {
-                HandyObject.showAlert(getActivity(), getString(R.string.partnoreq));
-            } else if (binding.etSerialno.getText().toString().length() == 0) {
-                HandyObject.showAlert(getActivity(), getString(R.string.serialnoblank));
-            } else if (binding.etFailuredesc.getText().toString().length() == 0) {
-                HandyObject.showAlert(getActivity(), getString(R.string.Failuredescblank));
-            }/* else if (binding.etTechsupportname.getText().toString().length() == 0) {
-                HandyObject.showAlert(getActivity(), getString(R.string.Techsupportnameblank));
-            }*/ else if (manufacturerArrayList.get(binding.spinnerSelectmanuf.getSelectedItemPosition()).getNeedProduct().toLowerCase().equalsIgnoreCase("yes")) {
+         if (manufacturerArrayList.get(binding.spinnerSelectmanuf.getSelectedItemPosition()).getNeedProduct().toLowerCase().equalsIgnoreCase("yes")) {
                 if (binding.etTechsupportname.getText().toString().length() == 0) {
                     //  HandyObject.showAlert(getActivity(), getString(R.string.Techsupportnameblank));
                     ProductYesDialog();
@@ -658,7 +650,7 @@ public class NeedPartDialog extends DialogFragment {
                         price_approval_required = "0";
                     }
                     if (binding.checkboxNeedNormal.isChecked() == false && binding.cbxneedDeadline.isChecked() == true && binding.cbxneedNormal.getText().toString().length() > 0) {
-                        howfast_Date = HandyObject.parseDateToYMD(binding.cbxneedNormal.getText().toString());
+                        howfast_Date = HandyObject.parseDateToYMDNew(binding.cbxneedNormal.getText().toString());
                     } else if (binding.checkboxNeedNormal.isChecked() == true && binding.cbxneedDeadline.isChecked() == false) {
                         howfast_Date = "0000-00-00";
                     }
@@ -706,7 +698,7 @@ public class NeedPartDialog extends DialogFragment {
                     price_approval_required = "0";
                 }
                 if (binding.checkboxNeedNormal.isChecked() == false && binding.cbxneedDeadline.isChecked() == true && binding.cbxneedNormal.getText().toString().length() > 0) {
-                    howfast_Date = HandyObject.parseDateToYMD(binding.cbxneedNormal.getText().toString());
+                    howfast_Date = HandyObject.parseDateToYMDNew(binding.cbxneedNormal.getText().toString());
                 } else if (binding.checkboxNeedNormal.isChecked() == true && binding.cbxneedDeadline.isChecked() == false) {
                     howfast_Date = "0000-00-00";
                 }
@@ -897,7 +889,7 @@ public class NeedPartDialog extends DialogFragment {
         window.setAttributes(wlp);
         productyesDialog.setContentView(R.layout.dialog_productyes);
         LinearLayout approx_lay = (LinearLayout) productyesDialog.findViewById(R.id.approx_lay);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(w - 280, (h / 3) - 100);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(w - 280, (h / 3) - 60);
         approx_lay.setLayoutParams(params);
 
         TextView ok = (TextView) productyesDialog.findViewById(R.id.ok);
@@ -950,7 +942,7 @@ public class NeedPartDialog extends DialogFragment {
                     price_approval_required = "0";
                 }
                 if (binding.checkboxNeedNormal.isChecked() == false && binding.cbxneedDeadline.isChecked() == true && binding.cbxneedNormal.getText().toString().length() > 0) {
-                    howfast_Date = HandyObject.parseDateToYMD(binding.cbxneedNormal.getText().toString());
+                    howfast_Date = HandyObject.parseDateToYMDNew(binding.cbxneedNormal.getText().toString());
                 } else if (binding.checkboxNeedNormal.isChecked() == true && binding.cbxneedDeadline.isChecked() == false) {
                     howfast_Date = "0000-00-00";
                 }
@@ -1129,9 +1121,11 @@ public class NeedPartDialog extends DialogFragment {
 
     private void AddPartToSrver(String urgent, String part_description, String how_fast_needed, String price_approval_required, String partforrepair, String manufacturer_id, String part_no, String quantity_needed, String serial_no, String failure_description, String tech_support_name, String rma_or_case_from_mfg_support,
                                 String mfg_deem_this_warranty, String advance_replacement, String part_sold_by_seatech, String need_loner, String notes) {
-        partcount++;
+        int count_needpart = HandyObject.getIntPrams(getActivity(), AppConstants.NEEDPART_COUNT);
+        count_needpart++;
+        HandyObject.putIntPrams(getActivity(), AppConstants.NEEDPART_COUNT, count_needpart);
         AddPartSkeleton ske = new AddPartSkeleton();
-        ske.setCount(String.valueOf(partcount));
+        ske.setCount(String.valueOf(count_needpart));
         ske.setTech_id(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID));
         ske.setJob_id(jobid);
         ske.setUrgent(urgent);
@@ -1189,7 +1183,7 @@ public class NeedPartDialog extends DialogFragment {
             // co.showLoading();
             for (int i = 0; i < imagesData.size(); i++) {
                 builder.setType(MultipartBody.FORM)
-                        .addFormDataPart("img_" + partcount + "[" + i + "]", "image" + i + ".png",
+                        .addFormDataPart("img_" + count_needpart + "[" + i + "]", "image" + i + ".png",
                                 RequestBody.create(MEDIA_TYPE_FORM, imagesData.get(i)))
                         .build();
             }

@@ -36,7 +36,18 @@
                 android:layout_height="2dp"
                 android:layout_marginTop="@dimen/smallpadding"
                 android:background="@color/black"></View>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/norecord"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/previouslaborcmmnt"
+                android:textColor="@color/black"
+                android:textSize="@dimen/smalltextsize"
+                android:visibility="gone" />
+
             <LinearLayout
+                android:id="@+id/lltoprecycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/smallpadding"
@@ -89,7 +100,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/dashboardlinebg"
-                >
+                android:scrollbars="vertical"
+                android:scrollbarSize="6dp"
+                android:scrollbarThumbVertical="@drawable/thumb_scroll">
 
             </android.support.v7.widget.RecyclerView>
 

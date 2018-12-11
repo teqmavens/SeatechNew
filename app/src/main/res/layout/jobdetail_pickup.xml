@@ -425,6 +425,8 @@
                 android:id="@+id/rcyview_urgentmsg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:scrollbarSize="6dp"
+                android:scrollbarThumbVertical="@drawable/thumb_scroll"
                 android:background="@drawable/dashboardlinebg">
 
             </android.support.v7.widget.RecyclerView>

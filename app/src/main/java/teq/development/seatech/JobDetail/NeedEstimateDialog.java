@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -108,7 +109,7 @@ public class NeedEstimateDialog extends DialogFragment {
         return dialog;
     }
 
-    private void NeedEstimateTask(String message, String jobid, String urgent) {
+    private void NeedEstimateTask(final String message, final String jobid, final String urgent) {
         HandyObject.showProgressDialog(getActivity());
         NeedEstimateSkeleton needestimate_ske = new NeedEstimateSkeleton();
         needestimate_ske.setCreatedAt(HandyObject.ParseDateTimeForNotes(new Date()));
@@ -120,7 +121,7 @@ public class NeedEstimateDialog extends DialogFragment {
         ArrayList<NeedEstimateSkeleton> needEstimate = new ArrayList<>();
         needEstimate.add(needestimate_ske);
         String jobrequest = gson.toJson(needEstimate);
-        insertIntoDB(insertedTime, HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), jobid, message, urgent);
+       // insertIntoDB(insertedTime, HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), jobid, message, urgent);
 
         if (HandyObject.checkInternetConnection(getActivity())) {
             HandyObject.getApiManagerMain().NeedEstimate(jobrequest, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
@@ -133,17 +134,31 @@ public class NeedEstimateDialog extends DialogFragment {
                                 Log.e("responsneedestimate", jsonResponse);
                                 JSONObject jsonObject = new JSONObject(jsonResponse);
                                 if (jsonObject.getString("status").toLowerCase().equals("success")) {
-                                    dialog.dismiss();
-                                    HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
-
+                                    JSONArray jarry_compose = new JSONArray();
                                     JSONArray jsonArray = jsonObject.getJSONArray("data");
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject jobj = jsonArray.getJSONObject(i);
+                                        JSONObject jobj_compose = new JSONObject();
+                                        jobj_compose.put("receiver_id", jobj.getString("receiver_id"));
+                                        jobj_compose.put("receiver_name", jobj.getString("receiver_name"));
+                                        jarry_compose.put(jobj_compose);
                                         //Delete related row from database
-                                        database.delete(ParseOpenHelper.TABLENAME_NEEDESTIMATE, ParseOpenHelper.ESTIMATEJOBID + " =? AND " + ParseOpenHelper.ESTIMATECREATEDAT + " = ?",
-                                                new String[]{jobj.getString("job_id"), insertedTime});
+                                      /*  database.delete(ParseOpenHelper.TABLENAME_NEEDESTIMATE, ParseOpenHelper.ESTIMATEJOBID + " =? AND " + ParseOpenHelper.ESTIMATECREATEDAT + " = ?",
+                                                new String[]{jobj.getString("job_id"), insertedTime});*/
                                     }
 
+                                    UUID uniqueKey = UUID.randomUUID();
+                                    JSONObject jobjmain = new JSONObject();
+                                    jobjmain.put("job_id", jobid);
+                                    jobjmain.put("sender_id", Integer.parseInt(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQPARENT_ID)));
+                                    jobjmain.put("sender_name", HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_USERNAME));
+                                    jobjmain.put("receiver", jarry_compose);
+                                    jobjmain.put("urgent", urgent);
+                                    jobjmain.put("token", String.valueOf(uniqueKey));
+                                    jobjmain.put("message", message);
+                                    App.appInstance.getSocket().emit("send chat message", jobjmain);
+                                    dialog.dismiss();
+                                    HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
                                 } else {
                                     dialog.dismiss();
                                     HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
@@ -172,7 +187,8 @@ public class NeedEstimateDialog extends DialogFragment {
                         }
                     });
         } else {
-            HandyObject.showAlert(getActivity(), getString(R.string.fetchdata_whenonline));
+           // HandyObject.showAlert(getActivity(), getString(R.string.fetchdata_whenonline));
+            HandyObject.showAlert(getActivity(), getString(R.string.check_internet_connection));
             HandyObject.stopProgressDialog();
             dialog.dismiss();
         }

@@ -107,7 +107,6 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
     static UploadImageDialog newInstance(String num) {
         UploadImageDialog f = new UploadImageDialog();
         Bundle args = new Bundle();
-        //   args.putInt("num", num);
         jobid = num;
         f.setArguments(args);
         return f;
@@ -117,8 +116,6 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.popup_uploadimage, container, false);
-      /*  PopupNeedchangeorderBinding binding = DataBindingUtil.bind(rootView);
-        binding.setPopupneedchangeorder(this);*/
         initImageLoader();
         initViews(rootView);
         return rootView;
@@ -146,7 +143,8 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
         et_laborperform = (EditText) rootView.findViewById(R.id.et_laborperform);
         viewSwitcher = (ViewSwitcher) rootView.findViewById(R.id.viewSwitcher);
         imgSinglePick = (ImageView) rootView.findViewById(R.id.imgSinglePick);
-        viewSwitcher.setDisplayedChild(1);
+        viewSwitcher.setVisibility(View.GONE);
+       // viewSwitcher.setDisplayedChild(1);
         gridGallery = (GridView) rootView.findViewById(R.id.gridGallery);
         gridGallery.setFastScrollEnabled(true);
         adapter = new GalleryAdapter(getActivity(), imageLoader);
@@ -191,7 +189,6 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
         switch (v.getId()) {
             case R.id.submit:
                 submitImageTask(HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID));
-                //   dialog.dismiss();
                 break;
             case R.id.cross:
                 dialog.dismiss();
@@ -200,12 +197,6 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
                 dispatchTakePictureIntent();
                 break;
             case R.id.options_gallery:
-               /* Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);*/
-            /*    intent.setType("image/*");
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Pictures"), PICK_IMAGE_MULTIPLE);*/
                 Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
                 startActivityForResult(i, 200);
                 break;
@@ -223,21 +214,16 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
                 item.sdcardPath = string;
                 dataT.add(item);
             }
+            viewSwitcher.setVisibility(View.VISIBLE);
             viewSwitcher.setDisplayedChild(0);
+         //   viewSwitcher.setDisplayedChild(1);
             adapter.addAll(dataT);
-
         } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
                 Log.e("imageUri below:", "" + Uri.fromFile(imageFile));
-                //uploadImageToSrver();
-                //HandyObject.showAlert(getActivity(), imageFile.getAbsolutePath());
-                // Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-                //  binding.profileimage.setImageBitmap(myBitmap);
-                //  binding.profileimage.setImageURI(Uri.fromFile(imageFile));
                 try {
-                    //  all_path = imageFile.getAbsolutePath();
-
                     all_path = new String[]{imageFile.getAbsolutePath()};
+                    viewSwitcher.setVisibility(View.VISIBLE);
                     viewSwitcher.setDisplayedChild(1);
                     imageLoader.displayImage("file://" + all_path[0], imgSinglePick);
                 } catch (Exception e) {
@@ -247,6 +233,7 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
                         "com.example.android.fileprovider", imageFile);
                 Log.i("imageUri:", "" + fileUri);
                 all_path = new String[]{imageFile.getAbsolutePath()};
+                viewSwitcher.setVisibility(View.VISIBLE);
                 viewSwitcher.setDisplayedChild(1);
                 imageLoader.displayImage("file://" + all_path[0], imgSinglePick);
             }
@@ -257,7 +244,6 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
 
     private MultipartBody createResponseBody() {
         ArrayList<File> imagesData = getImagesData();
-
         insertedTime = HandyObject.ParseDateTimeForNotes(new Date());
         UploadImageSkeleton ske = new UploadImageSkeleton();
         ske.setCreated_by(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID));
@@ -265,7 +251,6 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
         ske.setDescription(et_laborperform.getText().toString());
         ArrayList<UploadImageSkeleton> arrayList = new ArrayList<>();
         arrayList.add(ske);
-
         gson = new Gson();
         String uploaded_data = gson.toJson(arrayList);
         insertIntoDB(insertedTime, arrayList, imagesData);
@@ -277,16 +262,12 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
                 .addFormDataPart("job_id", jobid)
                 .addFormDataPart("description", et_laborperform.getText().toString())*/
                 .build();
-
         for (int i = 0; i < imagesData.size(); i++) {
             builder.setType(MultipartBody.FORM)
                     .addFormDataPart("img_" + jobid + "[" + i + "]", "image" + i + ".png",
                             RequestBody.create(MEDIA_TYPE_FORM, imagesData.get(i)))
                     .build();
         }
-
-        // co.hideLoading();
-
         return builder.build();
 
     }
@@ -296,9 +277,6 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
         for (String string : all_path) {
             File file = new File(string);
             Long s1 = file.length() / 1024;
-            //  File f = compressImage(file);
-            //   Long s2 = f.length() / 1024;
-
             Log.d("fileSize :- ", "s1 = " + s1.toString() + "\n" +
                     "s2 = " + s1.toString());
             imagesList.add(file);
@@ -311,18 +289,14 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
     public static String getRealPathFromURI_API19(Context context, Uri uri) {
         String filePath = "";
         String wholeID = DocumentsContract.getDocumentId(uri);
-
         // Split at colon, use second item in the array
         String id = wholeID.split(":")[1];
-
         String[] column = {MediaStore.Images.Media.DATA};
 
         // where id is equal to
         String sel = MediaStore.Images.Media._ID + "=?";
-
         Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 column, sel, new String[]{id}, null);
-
         int columnIndex = cursor.getColumnIndex(column[0]);
 
         if (cursor.moveToFirst()) {
@@ -336,7 +310,6 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
         File imageFile;
         try {
             //    final Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri);
-
             Bitmap bitmap = new UserPicture(Uri, getActivity().getContentResolver()).getBitmap();
             //   addphoto_img.setImageBitmap(bitmap);
             File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath().toString() + File.separator + "SeatechImage");
@@ -392,7 +365,6 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
         }
 
         MultipartBody responseBody = createResponseBody();
-
         if (HandyObject.checkInternetConnection(getActivity())) {
             HandyObject.showProgressDialog(getActivity());
             final Context context = getActivity();
@@ -421,6 +393,7 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
                                 }
 
                                 Intent intent = new Intent("updateImage");
+                                intent.putExtra("UpdatedImages_Jobid", jobid);
                                 intent.putStringArrayListExtra("updateImageArray", arraylistupldImages);
                                 LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
 

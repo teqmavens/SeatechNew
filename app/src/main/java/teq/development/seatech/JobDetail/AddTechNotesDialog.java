@@ -188,7 +188,8 @@ public class AddTechNotesDialog extends DialogFragment implements View.OnClickLi
                                             dashnotes_ske.setNoteWriter(jobj_dashnotes.getString("written_by"));
                                             dashnotes_ske.setNotes(jobj_dashnotes.getString("notes"));
                                             arraylistOffTheRecord.add(dashnotes_ske);
-                                            JobDetailFragment.addTechlistOffTheRecord.add(dashnotes_ske);
+                                          //  JobDetailFragment.addTechlistOffTheRecord.add(dashnotes_ske);
+                                            VMJobDetail.addTechlistOffTheRecord.add(dashnotes_ske);
 
                                             // Broadcast to update record
                                             Intent intent = new Intent("pass_addtechlast");

@@ -60,20 +60,19 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         check_RequestPermission();
+
+        /*Check for Automatic login*/
         if (HandyObject.getPrams(LoginActivity.this, AppConstants.IS_LOGIN).equalsIgnoreCase("login")) {
             movetoDashboard();
         } else {
             if (HandyObject.checkInternetConnection(this)) {
                 GetManufacturerData();
             } else {
-                Toast.makeText(this, R.string.check_internet_connection, Toast.LENGTH_SHORT).show();
+                HandyObject.showAlert(this, getString(R.string.check_internet_connection));
             }
         }
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         binding.setLoginactivity(this);
-      /*  binding.etUsername.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(LoginActivity.this, R.drawable.et_username), null, null, null);
-        binding.etPwd.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(LoginActivity.this, R.drawable.etpwd), null, null, null);*/
-        //deviceToken = HandyObject.getPrams(LoginActivity.this, AppConstants.DEVICE_TOKEN);
     }
 
     public void onClickLogin() {
@@ -88,7 +87,6 @@ public class LoginActivity extends AppCompatActivity {
             if (deviceToken.length() == 0) {
                 deviceToken = FirebaseInstanceId.getInstance().getToken();
                 HandyObject.putPrams(getApplicationContext(), AppConstants.DEVICE_TOKEN, deviceToken);
-                //  HandyObject.showAlert(LoginActivity.this, getString(R.string.tokenText));
                 if (deviceToken.length() == 0) {
                     deviceToken = FirebaseInstanceId.getInstance().getToken();
                     HandyObject.putPrams(getApplicationContext(), AppConstants.DEVICE_TOKEN, deviceToken);
@@ -100,21 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                 HandyObject.putPrams(getApplicationContext(), AppConstants.DEVICE_TOKEN, deviceToken);
                 loginTask(binding.etUsername.getText().toString(), binding.etPwd.getText().toString(), deviceToken);
             }
-            /* loginTask(binding.etUsername.getText().toString(), binding.etPwd.getText().toString(), HandyObject.getPrams(LoginActivity.this, AppConstants.DEVICE_TOKEN));*/
-            /*if (deviceToken == null) {
-                deviceToken = FirebaseInstanceId.getInstance().getToken();
-                HandyObject.showAlert(LoginActivity.this, getString(R.string.tokenText));
-            } else {
-                if (deviceToken.length() == 0) {
-                    deviceToken = FirebaseInstanceId.getInstance().getToken();
-                    HandyObject.showAlert(LoginActivity.this, getString(R.string.tokenText));
-                } else {
-                    HandyObject.putPrams(getApplicationContext(), AppConstants.DEVICE_TOKEN, deviceToken);
-                    loginTask(binding.etUsername.getText().toString(), binding.etPwd.getText().toString(), deviceToken);
-                }
-            }*/
         } else {
-            // Toast.makeText(this, R.string.check_internet_connection, Toast.LENGTH_SHORT).show();
             HandyObject.showAlert(this, getString(R.string.check_internet_connection));
         }
     }
@@ -129,12 +113,10 @@ public class LoginActivity extends AppCompatActivity {
                             String jsonResponse = response.body().string();
                             Log.e("response", jsonResponse);
                             JSONObject jsonObject = new JSONObject(jsonResponse);
-                           /* if (jsonObject.getString("status").toLowerCase().equals("error"))
-                                HandyObject.showAlert(LoginActivity.this,jsonObject.getString("message"));*/
                             if (jsonObject.getString("status").toLowerCase().equals("success")) {
-                                HandyObject.showAlert(LoginActivity.this, jsonObject.getString("message"));
                                 JSONObject dataobj = jsonObject.getJSONObject("data");
-                                saveLoginData(dataobj);
+                                /*Save login user detail to local database*/
+                                saveLoginData(dataobj, jsonObject.getString("message"));
                             } else {
                                 HandyObject.showAlert(LoginActivity.this, jsonObject.getString("message"));
                             }
@@ -155,13 +137,14 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    private void saveLoginData(JSONObject jobj) {
+    /*Save login user detail to local database*/
+    private void saveLoginData(JSONObject jobj, String msg) {
         try {
             HandyObject.putPrams(LoginActivity.this, AppConstants.LOGIN_SESSIONID, jobj.getString("session_id"));
             HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_ID, jobj.getString("id"));
+            HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQPARENT_ID, jobj.getString("parent_id"));
             HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_USERNAME, jobj.getString("username"));
             HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_EMAIL, jobj.getString("email"));
-
             HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_GENDER, jobj.getString("gender"));
             HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_IMAGE, jobj.getString("image"));
             HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_DOB, jobj.getString("dob"));
@@ -172,19 +155,23 @@ public class LoginActivity extends AppCompatActivity {
             HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_JOININGDATE, jobj.getString("joining_date"));
             HandyObject.putPrams(LoginActivity.this, AppConstants.JOBRUNNING_TOTALTIME, "0");
             HandyObject.putPrams(LoginActivity.this, AppConstants.ISJOB_RUNNING, "no");
-            HandyObject.putPrams(LoginActivity.this, AppConstants.IS_LOGIN, "login");
+            HandyObject.putbooleanPrams(LoginActivity.this,AppConstants.PICKJOBPERMISSION,jobj.getBoolean("permission"));
+          //  HandyObject.putPrams(LoginActivity.this, AppConstants.IS_LOGIN, "login");
+            HandyObject.putIntPrams(LoginActivity.this,AppConstants.LCJOBCOMPLETION_COUNT,0);
+            HandyObject.putIntPrams(LoginActivity.this,AppConstants.NEEDPART_COUNT,0);
             if (binding.checkboxremb.isChecked()) {
                 HandyObject.putPrams(LoginActivity.this, AppConstants.IS_LOGIN, "login");
             } else {
                 HandyObject.putPrams(LoginActivity.this, AppConstants.IS_LOGIN, "notlogin");
             }
+            HandyObject.showAlert(LoginActivity.this, msg);
             movetoDashboard();
         } catch (Exception e) {
         }
     }
 
     public void onClickFrgtPwd() {
-        DialogFrgtPwd();
+        //  DialogFrgtPwd();
     }
 
     void DialogFrgtPwd() {
@@ -199,33 +186,15 @@ public class LoginActivity extends AppCompatActivity {
         newFragment.show(ft, "dialogfrgtpwd");
     }
 
+    //Navigate to Dashboard screen
     private void movetoDashboard() {
         Intent intent_reg = new Intent(LoginActivity.this, DashBoardActivity.class);
-        //intent_reg.putExtra("type", "normal");
         startActivity(intent_reg);
         finish();
         overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
-       /* if (getIntent().getStringExtra("type") == null) {
-            Intent intent_backarrow = new Intent(LoginActivity.this, DashBoardActivity.class);
-            intent_backarrow.putExtra("type", "normal");
-            startActivity(intent_backarrow);
-            finish();
-        } else if (getIntent().getExtras().getString("type").equalsIgnoreCase("chat")) {
-            Intent intent_reg = new Intent(LoginActivity.this, DashBoardActivity.class);
-            intent_reg.putExtra("type", "chat");
-            startActivity(intent_reg);
-            finish();
-            overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
-        } else {
-            Intent intent_reg = new Intent(LoginActivity.this, DashBoardActivity.class);
-            intent_reg.putExtra("type", "normal");
-            startActivity(intent_reg);
-            finish();
-            overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
-        }*/
-
     }
 
+    /*Check for All permission required for app*/
     void check_RequestPermission() {
         if (ContextCompat.checkSelfPermission(LoginActivity.this,
                 android.Manifest.permission.CAMERA)
@@ -272,10 +241,6 @@ public class LoginActivity extends AppCompatActivity {
                 AlertDialog alert = builder.create();
                 alert.show();
             } else {
-              /*  ActivityCompat.
-                 requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        2);*/
-
                 ActivityCompat.requestPermissions(LoginActivity.this, PERMISSIONS_STORAGE, 2);
             }
         }
@@ -289,13 +254,8 @@ public class LoginActivity extends AppCompatActivity {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                    // displayMediaPickerDialog();
+                    // permission was granted
                     check_RequestPermission();
-                    Log.e("dsd", "asdasd");
-
                 } else {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(LoginActivity.this,
                             android.Manifest.permission.CAMERA)) {
@@ -326,13 +286,9 @@ public class LoginActivity extends AppCompatActivity {
             case 2: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                    //  displayMediaPickerDialog();
+                    // permission was granted
                     check_RequestPermission();
                 } else {
-
                     if (ActivityCompat.shouldShowRequestPermissionRationale(LoginActivity.this,
                             android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
@@ -362,6 +318,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    // Get Manufacturer data for Need Part Dialog(Inside Job Detail Page)
     private void GetManufacturerData() {
         HandyObject.showProgressDialog(this);
         HandyObject.getApiManagerMain().GetManufacturerData()
@@ -372,8 +329,6 @@ public class LoginActivity extends AppCompatActivity {
                             String jsonResponse = response.body().string();
                             Log.e("response", jsonResponse);
                             JSONObject jsonObject = new JSONObject(jsonResponse);
-                           /* if (jsonObject.getString("status").toLowerCase().equals("error"))
-                                HandyObject.showAlert(LoginActivity.this,jsonObject.getString("message"));*/
                             ArrayList<ManufacturerSkeleton> manuArrayList = new ArrayList<>();
                             if (jsonObject.getString("status").toLowerCase().equals("success")) {
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");

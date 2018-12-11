@@ -278,6 +278,7 @@
                     android:background="@drawable/bg_loginbtn"
                     android:paddingLeft="@dimen/smalltextsize"
                     android:paddingRight="@dimen/smalltextsize"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:text="@string/savechanges"
                     android:textAllCaps="false"
                     android:textColor="#ffffff"

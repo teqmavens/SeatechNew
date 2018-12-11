@@ -23,6 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.Random;
 
 import teq.development.seatech.App;
 import teq.development.seatech.Dashboard.DashBoardActivity;
@@ -40,7 +41,7 @@ import teq.development.seatech.Utils.HandyObject;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     public static boolean fromnotii;
-    public static final int notifyID = 9001;
+    //public static final int notifyID = 9001;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -63,9 +64,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // if (!ChatViewFragment.chatting) {
         sendNotification(remoteMessage.getData().get("message"), remoteMessage.getData().get("job_id"), remoteMessage.getData().get("type"),
                 remoteMessage.getData().get("sender_name"), remoteMessage.getData().get("urgent"), remoteMessage.getData().get("id"), remoteMessage.getData().get("sender_id"));
-        // }
-
-        //  }
     }
 
 
@@ -82,15 +80,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
         resultIntent.putExtra("type", type);
         resultIntent.putExtra("jobid", jobid);
+        resultIntent.setAction(Long.toString(System.currentTimeMillis()));
         PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0,
-                resultIntent, PendingIntent.FLAG_ONE_SHOT);
+                resultIntent, 0);
 
         NotificationCompat.Builder mNotifyBuilder;
         NotificationManager mNotificationManager;
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         String messageBodyn = "";
         if (sendername != null && !sendername.isEmpty()) {
-            messageBodyn = "Message From " + sendername;
+            messageBodyn = "Message From " +sendername+" #"+jobid;
         } else {
             messageBodyn = "Seatech";
         }
@@ -127,7 +126,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Set autocancel
         mNotifyBuilder.setAutoCancel(true);
         // Post a notification
-        mNotificationManager.notify(notifyID, mNotifyBuilder.build());
+        // mNotificationManager.notify(notifyID, mNotifyBuilder.build());
+        mNotificationManager.notify(new Random().nextInt(), mNotifyBuilder.build());
+        //https://developer.android.com/training/notify-user/navigation
+        // https://developer.android.com/reference/android/app/PendingIntent
     }
 
     private void setAlarm() {
@@ -156,7 +158,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Socket mSocket = IO.socket("http://132.148.241.93:3000");
             mSocket.connect();
             JSONObject jobj = new JSONObject();
-            jobj.put("customId", Integer.parseInt(HandyObject.getPrams(this, AppConstants.LOGINTEQ_ID)));
+            jobj.put("customId", Integer.parseInt(HandyObject.getPrams(this, AppConstants.LOGINTEQPARENT_ID)));
             jobj.put("device_id", HandyObject.getPrams(this, AppConstants.DEVICE_TOKEN));
             mSocket.emit("storeClientInfo", jobj);
 
@@ -168,7 +170,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             JSONArray jarry_delv = new JSONArray();
             jarry_delv.put(jobj_delv);
             // DashBoardActivity.mSocket.emit("delivered", jarry_delv);
-            mSocket.emit("delivered", jarry_delv);
+            mSocket.emit("delivered1", jarry_delv);
 
 
         } catch (Exception e) {

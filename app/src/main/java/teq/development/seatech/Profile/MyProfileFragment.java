@@ -35,7 +35,6 @@ public class MyProfileFragment extends Fragment {
     DashBoardActivity activity;
     FrgmMyprofileBinding binding;
     Context context;
-    // TextView t
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,9 +51,12 @@ public class MyProfileFragment extends Fragment {
         binding.setMyprofile(this);
 
         if (HandyObject.checkInternetConnection(context)) {
+            /*Set related profile data from local database*/
             setLocaldata();
+            /*Get related profile data from server*/
             getProfileTask();
         } else {
+            /*Set related profile data from local database*/
             setLocaldata();
             Toast.makeText(context, R.string.check_internet_connection, Toast.LENGTH_SHORT).show();
         }
@@ -62,6 +64,7 @@ public class MyProfileFragment extends Fragment {
     }
 
     public void OnClickEdit() {
+        /*Opening edit profile screen*/
         activity.replaceFragment(new EditProfileFragment());
     }
 
@@ -77,12 +80,15 @@ public class MyProfileFragment extends Fragment {
                             JSONObject jsonObject = new JSONObject(jsonResponse);
                             if (jsonObject.getString("status").toLowerCase().equals("success")) {
                                 JSONObject dataobj = jsonObject.getJSONObject("data");
+                                /*Save updated profile data to local database*/
                                 saveProfileData(dataobj);
                             } else {
                                 HandyObject.showAlert(context, jsonObject.getString("message"));
+                                /*Session expired then logout from app*/
                                 if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
                                     HandyObject.clearpref(getActivity());
                                     HandyObject.deleteAllDatabase(getActivity());
+                                    /* Stop Running Job timer*/
                                     App.appInstance.stopTimer();
                                     Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
                                     startActivity(intent_reg);

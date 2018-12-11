@@ -130,6 +130,7 @@
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/verysmalltextsize"
                     android:textStyle="bold"
+                    android:visibility="invisible"
                     app:layout_constraintRight_toRightOf="@+id/topusername"
                     app:layout_constraintTop_toBottomOf="@+id/toppwd" />
 
@@ -139,6 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="56dp"
                     android:background="@drawable/bgloginbtn_new"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:onClick="@{()->loginactivity.onClickLogin()}"
                     android:padding="@dimen/verysmalltextsize"
                     android:text="@string/login"

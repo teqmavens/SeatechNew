@@ -100,6 +100,17 @@ public class HandyObject {
         return (shared.getInt(key, 0));
     }
 
+    public static boolean putbooleanPrams(Context context, String key, boolean value) {
+        SharedPreferences.Editor editor = getPrefs(context).edit();
+        editor.putBoolean(key, value);
+        return editor.commit();
+    }
+
+    public static boolean getbooleanPrams(Context context, String key) {
+        SharedPreferences shared = getPrefs(context);
+        return (shared.getBoolean(key, false));
+    }
+
     public static boolean clearpref(Context context) {
         SharedPreferences.Editor editor = getPrefs(context).edit();
         editor.clear();
@@ -124,6 +135,8 @@ public class HandyObject {
         database.delete(ParseOpenHelper.TABLE_UPLOADIMAGES, null, null);
         database.delete(ParseOpenHelper.TABLE_URGENTMSG, null, null);
         database.delete(ParseOpenHelper.TABLE_NOTIFICATIONS, null, null);
+        database.delete(ParseOpenHelper.TABLE_CHATPARENTLEFT, null, null);
+        database.delete(ParseOpenHelper.TABLE_CHATMSGS, null, null);
         stopAlarm(context);
        /* String deviceToken = HandyObject.getPrams(context, AppConstants.DEVICE_TOKEN);
         HandyObject.putPrams(context, AppConstants.DEVICE_TOKEN, deviceToken);*/
@@ -339,6 +352,7 @@ public class HandyObject {
         sb.append("," + HandyObject.ParseDateJobTime(calendar.getTime()));
         return sb.toString();
     }
+
     public static String getCurrentWeek_FirstDateNew(Context context) {
         weekcount = 0;
         StringBuilder sb = new StringBuilder();
@@ -666,7 +680,7 @@ public class HandyObject {
 
     public static String getLaborcode(int posi) {
         String lcname = "";
-        if (posi == 0) {
+        /*if (posi == 0) {
             lcname = "Travel Time";
         } else if (posi == 1) {
             lcname = "Service Time";
@@ -676,6 +690,21 @@ public class HandyObject {
             lcname = "Shop Work Time";
         } else if (posi == 4) {
             lcname = "DONE FOR THE DAY";
+        }*/
+        if (posi == 0) {
+            lcname = "Travel Time";
+        } else if (posi == 1) {
+            lcname = "Service Time";
+        } else if (posi == 2) {
+            lcname = "Lunch";
+        } else if (posi == 3) {
+            lcname = "Shop Work Time";
+        } else if (posi == 4) {
+            lcname = "Office Staff Labor";
+        } else if (posi == 5) {
+            lcname = "Tech Time Non-Productive";
+        } else if (posi == 6) {
+            lcname = "Tech Betterment" + " & " + "Training";
         }
         return lcname;
     }
@@ -693,13 +722,15 @@ public class HandyObject {
     }
 
     public static void stopAlarm(Context context) {
-        Intent myIntent = new Intent(context, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, myIntent, 0);
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+        try {
+            Intent myIntent = new Intent(context, AlarmReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, myIntent, 0);
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+            if (alarmManager != null) {
+                alarmManager.cancel(pendingIntent);
+            }
+        } catch (Exception e){}
 
-        if (alarmManager != null) {
-            alarmManager.cancel(pendingIntent);
-        }
     }
 
     public static void stopStartAlarm(Context context) {

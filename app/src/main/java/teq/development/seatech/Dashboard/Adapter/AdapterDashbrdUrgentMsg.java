@@ -97,7 +97,7 @@ public class AdapterDashbrdUrgentMsg extends RecyclerView.Adapter<AdapterDashbrd
                                     resultIntent.putExtra("jobid", ske.getJobticketid());
                                     ((Activity) context).startActivity(resultIntent);
                                 }
-                            }, 1000);
+                            }, 800);
                         }
                     } catch (Exception e) {
                     }

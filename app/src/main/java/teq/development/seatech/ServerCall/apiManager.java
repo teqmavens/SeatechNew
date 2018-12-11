@@ -11,14 +11,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class apiManager {
-
-
+//http://tqmstaging.com
+//132.148.241.93/seatech
     private static Retrofit retrofit = null;
     private static Retrofit retrofitadmin,retrofitjobs ,retrofitmain= null;
-    private static String MainBaseApiURL = "http://tqmstaging.com/seatech/";
-    private static String BaseApiAddress = "http://tqmstaging.com/seatech/users/";
-    private static String BaseApiAddressadmin = "http://tqmstaging.com/seatech/admin/users/";
-    private static String BaseApiAddressjobs= "http://tqmstaging.com/seatech/jobs/";
+    private static String MainBaseApiURL = "http://132.148.241.93/seatech/";
+    private static String BaseApiAddress = "http://132.148.241.93/seatech/users/";
+    private static String BaseApiAddressadmin = "http://132.148.241.93/seatech/admin/users/";
+    private static String BaseApiAddressjobs= "http://132.148.241.93/seatech/jobs/";
 
     public static Retrofit getApiManager() {
 

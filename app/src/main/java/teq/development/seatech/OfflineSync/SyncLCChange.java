@@ -56,6 +56,7 @@ public class SyncLCChange extends Job {
                     ske.setHours(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.LCCHANGEHHOURS)));
                     ske.setHours_adjusted(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.LCCHANGEHHOURSADJUSTED)));
                     ske.setCreated_by(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.LCCHANGECREATEDBY)));
+                    ske.setCount(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.LCCHANGECOUNT)));
                     arrayList.add(ske);
                     cursor.moveToNext();
                 }
@@ -72,6 +73,7 @@ public class SyncLCChange extends Job {
 
     private void SyncData() {
         String techlog = gson.toJson(arrayList);
+        Log.e("SYNCLCC",techlog);
         HandyObject.getApiManagerMain().submitLCdata(techlog, HandyObject.getPrams(getContext(), AppConstants.LOGIN_SESSIONID))
                 .enqueue(new Callback<ResponseBody>() {
                     @Override

@@ -3,10 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="popupviewtechnotes"
             type="teq.development.seatech.Dashboard.ViewTechNotesDialog"></variable>
     </data>
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,10 +17,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/smalltextsize"
             android:background="@drawable/dashboardlinebg"
             android:gravity="center"
             android:orientation="vertical"
-            android:layout_margin="@dimen/smalltextsize"
             android:padding="@dimen/smalltextsize">
 
             <android.support.v7.widget.AppCompatTextView
@@ -39,10 +41,23 @@
                 android:layout_marginTop="@dimen/verysmalltextsize"
                 android:background="@color/black"></View>
 
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/norecord"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/previouslaborcmmnt"
+                android:textColor="@color/black"
+                android:paddingTop="@dimen/smallpadding"
+                android:textSize="@dimen/smalltextsize"
+                android:visibility="gone" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rcyview_dashbrdnotes"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:scrollbarSize="6dp"
+                android:scrollbarThumbVertical="@drawable/thumb_scroll">
 
             </android.support.v7.widget.RecyclerView>
 

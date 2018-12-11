@@ -28,6 +28,7 @@ import io.fabric.sdk.android.Fabric;
 import teq.development.seatech.Dashboard.DashBoardActivity;
 import teq.development.seatech.OfflineSync.DemoJobCreator;
 import teq.development.seatech.Utils.AppConstants;
+import teq.development.seatech.Utils.ConnectivityReceiver;
 import teq.development.seatech.Utils.HandyObject;
 
 public class App extends MultiDexApplication {
@@ -39,6 +40,7 @@ public class App extends MultiDexApplication {
     long updatedTime = 0L;
     public static App appInstance;
     public static Calendar calendar;
+    public static boolean timer_running;
 
     @Override
     public void onCreate() {
@@ -96,6 +98,9 @@ public class App extends MultiDexApplication {
         });
     }
 
+    public static synchronized App getInstance() {
+        return appInstance;
+    }
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -104,14 +109,16 @@ public class App extends MultiDexApplication {
     }
 
     public void startTimer() {
-        startTime = SystemClock.uptimeMillis();
+      //  startTime = SystemClock.uptimeMillis();
+        startTime = SystemClock.elapsedRealtime();
         customHandler.postDelayed(updateTimerThread, 0);
+        timer_running = true;
     }
 
     public Runnable updateTimerThread = new Runnable() {
 
         public void run() {
-            timeInMilliseconds = SystemClock.uptimeMillis() - startTime;
+            timeInMilliseconds = SystemClock.elapsedRealtime() - startTime;
             updatedTime = timeSwapBuff + timeInMilliseconds;
             int secs = (int) (updatedTime / 1000);
             int mins = secs / 60;
@@ -130,6 +137,7 @@ public class App extends MultiDexApplication {
     };
 
     public void stopTimer() {
+        timer_running = false;
         timeSwapBuff = 0L;
         customHandler.removeCallbacks(updateTimerThread);
     }
@@ -137,7 +145,6 @@ public class App extends MultiDexApplication {
     public void pauseTimer() {
         timeSwapBuff += timeInMilliseconds;
         customHandler.removeCallbacks(updateTimerThread);
-
     }
 
     public Socket mSocket;
@@ -153,5 +160,7 @@ public class App extends MultiDexApplication {
         return mSocket;
     }
 
-
+    public void setConnectivityListener(ConnectivityReceiver.ConnectivityReceiverListener listener) {
+        ConnectivityReceiver.connectivityReceiverListener = listener;
+    }
 }

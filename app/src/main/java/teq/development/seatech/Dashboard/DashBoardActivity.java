@@ -1,10 +1,15 @@
 package teq.development.seatech.Dashboard;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import com.github.nkzawa.socketio.client.Socket;
@@ -37,11 +42,14 @@ import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -51,6 +59,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import teq.development.seatech.App;
 import teq.development.seatech.Chat.ChatActivity;
+import teq.development.seatech.JobDetail.Skeleton.LCChangeSkeleton;
 import teq.development.seatech.LoginActivity;
 import teq.development.seatech.OfflineSync.DemoSyncJob;
 import teq.development.seatech.OfflineSync.SyncAddPart;
@@ -65,9 +74,11 @@ import teq.development.seatech.Profile.MyProfileFragment;
 import teq.development.seatech.R;
 import teq.development.seatech.Timesheet.DayJobStatusDetailFragment;
 import teq.development.seatech.Utils.AppConstants;
+import teq.development.seatech.Utils.ConnectivityReceiver;
 import teq.development.seatech.Utils.HandyObject;
+import teq.development.seatech.database.ParseOpenHelper;
 
-public class DashBoardActivity extends AppCompatActivity implements View.OnClickListener {
+public class DashBoardActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
 
     Toolbar toolbar;
     DrawerLayout mDrawerLayout;
@@ -79,24 +90,20 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
     DatePickerDialog.OnDateSetListener date;
     Calendar myCalendar;
     public static boolean onbackppress;
-    public static Socket mSocket;
-    // public static Socket mSocket;
-    // ImageView navigation_icon;
+    private ConnectivityReceiver receiver;
+    private SQLiteDatabase database;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 try {
                     JSONObject jobj = new JSONObject();
-                    // HandyObject.getPrams(ChatActivity.this, AppConstants.LOGINTEQ_ID)
-                    jobj.put("customId", Integer.parseInt(HandyObject.getPrams(DashBoardActivity.this, AppConstants.LOGINTEQ_ID)));
+                    jobj.put("customId", Integer.parseInt(HandyObject.getPrams(DashBoardActivity.this, AppConstants.LOGINTEQPARENT_ID)));
                     jobj.put("device_id", HandyObject.getPrams(DashBoardActivity.this, AppConstants.DEVICE_TOKEN));
-                    //  mSocket.emit("storeClientInfo", jobj);
                     App.appInstance.getSocket().emit("storeClientInfo", jobj);
                 } catch (Exception e) {
                 }
@@ -105,18 +112,17 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         }, 1000);
 
         replaceFragmentWithoutBack(new DashBoardFragment());
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        menu_icon = (ImageView) findViewById(R.id.menu_icon);
-        sick_icon = (ImageView) findViewById(R.id.sick_icon);
-        cdhour_icon = (ImageView) findViewById(R.id.cdhour_icon);
-        chaticon = (ImageView) findViewById(R.id.chaticon);
-        notificationicon = (ImageView) findViewById(R.id.notificationicon);
-        userimage = (SimpleDraweeView) findViewById(R.id.userimage);
-        username = (TextView) findViewById(R.id.username);
+        toolbar = findViewById(R.id.toolbar);
+        menu_icon = findViewById(R.id.menu_icon);
+        sick_icon = findViewById(R.id.sick_icon);
+        cdhour_icon = findViewById(R.id.cdhour_icon);
+        chaticon = findViewById(R.id.chaticon);
+        notificationicon = findViewById(R.id.notificationicon);
+        userimage = findViewById(R.id.userimage);
+        username = findViewById(R.id.username);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.navigation_icon);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         userimage.setImageURI(HandyObject.getPrams(this, AppConstants.LOGINTEQ_IMAGE));
         username.setText(HandyObject.getPrams(this, AppConstants.LOGINTEQ_USERNAME));
@@ -180,6 +186,12 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                 }
             }
         };
+
+
+        receiver = new ConnectivityReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(receiver, intentFilter);
     }
 
     // Display Navigation Drawer
@@ -190,6 +202,7 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                 .commit();
     }
 
+    //Replace fragment Without backstack
     public void replaceFragmentWithoutBack(Fragment mFragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -197,27 +210,13 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                 .commit();
     }
 
+    //Replace fragment With backstack
     public void replaceFragment(Fragment mFragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.content_frame, mFragment).addToBackStack(null)
                 .commit();
     }
-
-    public void replaceFragmentWithtag(Fragment mFragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, mFragment).addToBackStack("first")
-                .commit();
-    }
-
-    public void removeFragment(Fragment mFragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .remove(mFragment)
-                .commit();
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -267,16 +266,7 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
             case R.id.chaticon:
                 Intent intent_chat = new Intent(DashBoardActivity.this, ChatActivity.class);
                 startActivity(intent_chat);
-                //  finish();
                 overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
-                /*if (HandyObject.checkInternetConnection(this)) {
-                    Intent intent_reg = new Intent(DashBoardActivity.this, ChatActivity.class);
-                    startActivity(intent_reg);
-                    //  finish();
-                    overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
-                } else {
-                    HandyObject.showAlert(this, getString(R.string.notabletochat));
-                }*/
                 break;
             case R.id.notificationicon:
                 Intent intent_reg = new Intent(DashBoardActivity.this, Notifications.class);
@@ -287,6 +277,7 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    //Display popup for internal job(JOBID:111111) labor code like sick,vacation etc
     private void displaypopupLeave(View anchorview) {
         final PopupWindow popup = new PopupWindow(this);
         View layout = getLayoutInflater().inflate(R.layout.popup_leave, null);
@@ -341,12 +332,26 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
             public void onClick(View v) {
                 if (cbx_sick.isChecked() == false && cbx_vacation.isChecked() == false && cbx_doneforday.isChecked() == false) {
                     HandyObject.showAlert(DashBoardActivity.this, getString(R.string.pleaseselectcode));
-                } else if (cbx_sick.isChecked() == true || cbx_vacation.isChecked() == true) {
+                } else if (cbx_sick.isChecked() == true && cbx_vacation.isChecked() == false) {
+                    if (App.timer_running || isJobRunning() == true) {
+                        HandyObject.showAlert(DashBoardActivity.this, getString(R.string.cannt_logoutjobrunningnew));
+                    } else {
+                        TaskLCChange("Sick");
+                    }
+                    popup.dismiss();
+                } else if (cbx_vacation.isChecked() == true && cbx_sick.isChecked() == false) {
+                    if (App.timer_running || isJobRunning() == true) {
+                        HandyObject.showAlert(DashBoardActivity.this, getString(R.string.cannt_logoutjobrunningnew));
+                    } else {
+                        TaskLCChange("Vacation");
+                    }
                     popup.dismiss();
                 } else if (cbx_doneforday.isChecked() == true) {
                     popup.dismiss();
                     if (isJobRunning() == true) {
                         HandyObject.showAlert(DashBoardActivity.this, getString(R.string.cannt_logoutjobrunning));
+                    } else if (HandyObject.getPrams(DashBoardActivity.this, AppConstants.ISALLMSG_ACKNOWLEDGE).equalsIgnoreCase("1")) {
+                        HandyObject.showAlert(DashBoardActivity.this, getString(R.string.cannt_logoutacknowledge));
                     } else {
                         if (HandyObject.checkInternetConnection(DashBoardActivity.this)) {
                             LogoutTask();
@@ -363,6 +368,7 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         popup.showAsDropDown(anchorview);
     }
 
+    //Display menu poopup for profile and logout
     private void displyPopup(View view) {
         final PopupWindow popup = new PopupWindow(this);
         View layout = getLayoutInflater().inflate(R.layout.popup_menu, null);
@@ -371,7 +377,7 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         popup.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         popup.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         TextView myprofile = (TextView) layout.findViewById(R.id.myprofile);
-        TextView changepwd = (TextView) layout.findViewById(R.id.changepwd);
+        //   TextView changepwd = (TextView) layout.findViewById(R.id.changepwd);
         TextView logout = (TextView) layout.findViewById(R.id.logout);
 
         myprofile.setOnClickListener(new View.OnClickListener() {
@@ -382,13 +388,13 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
-        changepwd.setOnClickListener(new View.OnClickListener() {
+        /*changepwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 popup.dismiss();
                 replaceFragment(new ChangePwdFragment());
             }
-        });
+        });*/
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -396,6 +402,8 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                 popup.dismiss();
                 if (isJobRunning() == true) {
                     HandyObject.showAlert(DashBoardActivity.this, getString(R.string.cannt_logoutjobrunning));
+                } else if (HandyObject.getPrams(DashBoardActivity.this, AppConstants.ISALLMSG_ACKNOWLEDGE).equalsIgnoreCase("1")) {
+                    HandyObject.showAlert(DashBoardActivity.this, getString(R.string.cannt_logoutacknowledge));
                 } else {
                     if (HandyObject.checkInternetConnection(DashBoardActivity.this)) {
                         LogoutTask();
@@ -403,7 +411,6 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                         HandyObject.showAlert(DashBoardActivity.this, getString(R.string.check_internet_connection));
                     }
                 }
-
             }
         });
         popup.setOutsideTouchable(true);
@@ -411,6 +418,7 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         popup.showAsDropDown(view);
     }
 
+    // LogOut Api for logged in technician.
     private void LogoutTask() {
         HandyObject.showProgressDialog(this);
         HandyObject.getApiManagerType().logout(HandyObject.getPrams(this, AppConstants.LOGINTEQ_ID), HandyObject.getPrams(this, AppConstants.LOGIN_SESSIONID))
@@ -436,6 +444,16 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                                 // overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
                             } else {
                                 HandyObject.showAlert(DashBoardActivity.this, jsonObject.getString("message"));
+                                if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
+                                    HandyObject.clearpref(DashBoardActivity.this);
+                                    HandyObject.deleteAllDatabase(DashBoardActivity.this);
+                                    App.appInstance.stopTimer();
+                                    Intent intent_reg = new Intent(DashBoardActivity.this, LoginActivity.class);
+                                    startActivity(intent_reg);
+                                    finish();
+                                    overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                }
+
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -469,20 +487,21 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onPause() {
         super.onPause();
-        Log.e("Activity onPause", "Activity onPause");
+        Log.e("OnPauseDASSHHH", "OnPauseDASSHHH");
         //HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING, "no");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.e("Activity OnDestroy", "Activity OnDestroy");
+        unregisterReceiver(receiver);
+        Log.e("OnDestroyDASSHHH", "OnDestroyDASSHHH");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.e("Activity OnRestart", "Activity OnRestart");
+        Log.e("OnRestartDASSHHH", "OnRestartDASSHHH");
         onbackppress = true;
     }
 
@@ -503,35 +522,57 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         super.onBackPressed();
         Log.e("Acvity onBackPressed", "Activity onBackPressed");
         onbackppress = true;
-        // getSupportFragmentManager().popBackStack();
-        //  getSupportFragmentManager().popBackStack();
         overridePendingTransition(R.anim.activity_lefttoright, R.anim.activity_righttoleft);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        App.getInstance().setConnectivityListener(this);
+        Log.e("onResumeDASHBBB", "onResumeDASHBBB");
         if (onbackppress == true) {
             if (HandyObject.getPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING).equalsIgnoreCase("yes")) {
                 HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING, "yes");
             } else {
                 HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING, "no");
             }
-            if (HandyObject.getPrams(DashBoardActivity.this, AppConstants.ISJOB_NEWTYPE).equalsIgnoreCase("yes")) {
+            /*if (HandyObject.getPrams(DashBoardActivity.this, AppConstants.ISJOB_NEWTYPE).equalsIgnoreCase("yes")) {
                 HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_NEWTYPE, "yes");
             } else {
                 HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_NEWTYPE, "no");
-            }
+            }*/
             onbackppress = false;
         } else {
             HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING, "no");
-            HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_NEWTYPE, "no");
+            // HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_NEWTYPE, "no");
         }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        Log.e("onStartDASHBBB", "onStartDASHBBB");
+       /* DemoSyncJob.scheduleJob();
+        SyncNeeddPart.scheduleJob();
+        SyncSubmitLaborPerf.scheduleJob();
+        SyncNeedEstimate.scheduleJob();
+        SyncLCChange.scheduleJob();
+        SyncJobStatus.scheduleJob();
+        SyncUploadImages.scheduleJob();
+        SyncAddPart.scheduleJob();*/
+    }
+
+    // Is there any job running inside app?
+    boolean isJobRunning() {
+        if (HandyObject.getPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING).equalsIgnoreCase("yes")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // runAllOfflineTask realted to app
+    private void runAllOfflineTask() {
         DemoSyncJob.scheduleJob();
         SyncNeeddPart.scheduleJob();
         SyncSubmitLaborPerf.scheduleJob();
@@ -542,11 +583,118 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         SyncAddPart.scheduleJob();
     }
 
-    boolean isJobRunning() {
-        if (HandyObject.getPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING).equalsIgnoreCase("yes")) {
-            return true;
+    //Check for real time internet connection
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (isConnected) {
+            runAllOfflineTask();
+            Log.e("CONNNECTED", "connected");
         } else {
-            return false;
+            Log.e("DISSSSCONEECTEDDDDD", "DISCONEEeeeeeeDDDDD");
         }
     }
+
+    private String manageMinutes(int min) {
+        if (min == 0) {
+            return "00";
+        } else {
+            return String.valueOf(min);
+        }
+    }
+
+    //API and local storage for sick&vacation Labor code(JOBID:111111 internal job)
+    private void TaskLCChange(String laborcode) {
+        int count = 0;
+        String teqid = HandyObject.getPrams(DashBoardActivity.this, AppConstants.LOGINTEQ_ID);
+        String jobid = "111111";
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MINUTE, HandyObject.getNear15MinuteLB(Integer.parseInt(manageMinutes(calendar.get(Calendar.MINUTE)))));
+        String startTime = HandyObject.ParseDateJobTime(calendar.getTime()) + " " + String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + calendar.get(Calendar.MINUTE);
+        Gson gson = new Gson();
+        database = ParseOpenHelper.getInstance(DashBoardActivity.this).getWritableDatabase();
+        LCChangeSkeleton lcs_ke = new LCChangeSkeleton();
+        lcs_ke.setTech_id(teqid);
+        lcs_ke.setJob_id(jobid);
+        lcs_ke.setLabour_code(laborcode);
+        lcs_ke.setStart_time(startTime);
+        lcs_ke.setEnd_time("0");
+        lcs_ke.setHours("0");
+        lcs_ke.setHours_adjusted("0");
+        lcs_ke.setCreated_by(teqid);
+        lcs_ke.setCount(String.valueOf(count));
+        ArrayList<LCChangeSkeleton> arrayList = new ArrayList<>();
+        arrayList.add(lcs_ke);
+        String techlog = gson.toJson(arrayList);
+        final String insertedTime = HandyObject.ParseDateTimeForNotes(new Date());
+        insertIntoDBLC(teqid, jobid, laborcode, startTime, "0", "0", "0", insertedTime, String.valueOf(count));
+        if (HandyObject.checkInternetConnection(DashBoardActivity.this)) {
+            HandyObject.showProgressDialog(DashBoardActivity.this);
+            HandyObject.getApiManagerMain().submitLCdata(techlog, HandyObject.getPrams(DashBoardActivity.this, AppConstants.LOGIN_SESSIONID))
+                    .enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            try {
+                                String jsonResponse = response.body().string();
+                                Log.e("responseLC", jsonResponse);
+                                JSONObject jsonObject = new JSONObject(jsonResponse);
+                                if (jsonObject.getString("status").toLowerCase().equals("success")) {
+
+                                    JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jobj = jsonArray.getJSONObject(i);
+
+                                        //Delete related row from database
+                                        database.delete(ParseOpenHelper.TABLE_LCCHANGE, ParseOpenHelper.LCCHANGEJOBID + " =? AND " + ParseOpenHelper.LCCHANGECREATEDAT + " = ?",
+                                                new String[]{jobj.getString("job_id"), insertedTime});
+                                    }
+                                    HandyObject.showAlert(DashBoardActivity.this, jsonObject.getString("message"));
+                                } else {
+                                    HandyObject.showAlert(DashBoardActivity.this, jsonObject.getString("message"));
+                                    if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
+                                        HandyObject.clearpref(DashBoardActivity.this);
+                                        HandyObject.deleteAllDatabase(DashBoardActivity.this);
+                                        App.appInstance.stopTimer();
+                                        Intent intent_reg = new Intent(DashBoardActivity.this, LoginActivity.class);
+                                        startActivity(intent_reg);
+                                        finish();
+                                        overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                    }
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } finally {
+                                HandyObject.stopProgressDialog();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Log.e("responseError", t.getMessage());
+                            HandyObject.stopProgressDialog();
+                        }
+                    });
+        } else {
+            HandyObject.showAlert(DashBoardActivity.this, getString(R.string.fetchdata_whenonline));
+            HandyObject.stopProgressDialog();
+        }
+    }
+
+    private void insertIntoDBLC(String teqid, String jobid, String lc, String starttime, String endtime, String hrsworked, String hrsAdjusted,
+                                String createdAt, String count) {
+        ContentValues cv = new ContentValues();
+        cv.put(ParseOpenHelper.LCCHANGETECHID, teqid);
+        cv.put(ParseOpenHelper.LCCHANGEJOBID, jobid);
+        cv.put(ParseOpenHelper.LCCHANGELC, lc);
+        cv.put(ParseOpenHelper.LCCHANGESTARTTIME, starttime);
+        cv.put(ParseOpenHelper.LCCHANGEENDTIME, endtime);
+        cv.put(ParseOpenHelper.LCCHANGEHHOURS, hrsworked);
+        cv.put(ParseOpenHelper.LCCHANGEHHOURSADJUSTED, hrsAdjusted);
+        cv.put(ParseOpenHelper.LCCHANGECREATEDBY, teqid);
+        cv.put(ParseOpenHelper.LCCHANGECREATEDAT, createdAt);
+        cv.put(ParseOpenHelper.LCCHANGECOUNT, count);
+        long idd = database.insert(ParseOpenHelper.TABLE_LCCHANGE, null, cv);
+    }
+
 }

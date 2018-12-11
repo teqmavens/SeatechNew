@@ -98,7 +98,7 @@ public class SyncUploadImages extends Job {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     String rep = response.body().string();
-                    Log.e("RespSyncuploadImage ", rep);
+                    Log.e("RespSyncuploadImageOFF ", rep);
                     JSONObject jsonObject = new JSONObject(rep);
                     Gson gson = new Gson();
                     if (jsonObject.getString("status").toLowerCase().equals("success")) {
@@ -115,15 +115,25 @@ public class SyncUploadImages extends Job {
                                 arraylistupldImages.add(jArray_upldImages.getString(k));
                             }
                             String images = gson.toJson(arraylistupldImages);
-                            ContentValues cv = new ContentValues();
-                            cv.put(ParseOpenHelper.JOBSTECHUPLOADEDIMAGESCURRDAY, images);
+                            if (arraylistupldImages.size() > 0) {
+                                ContentValues cv = new ContentValues();
+                                ContentValues cvnew = new ContentValues();
+                                cv.put(ParseOpenHelper.JOBSTECHUPLOADEDIMAGESCURRDAY, images);
+                                cvnew.put(ParseOpenHelper.JOBSTECHUPLOADEDIMAGES, images);
+                                //update all jobs current day table
+                                database.update(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, cv, ParseOpenHelper.TECHIDCURRDAY + " =? AND " + ParseOpenHelper.JOBIDCURRDAY + " = ?",
+                                        new String[]{HandyObject.getPrams(getContext(), AppConstants.LOGINTEQ_ID), jobid});
+                                //update all jobs table
+                                database.update(ParseOpenHelper.TABLENAME_ALLJOBS, cvnew, ParseOpenHelper.TECHID + " =? AND " + ParseOpenHelper.JOBID + " = ?",
+                                        new String[]{HandyObject.getPrams(getContext(), AppConstants.LOGINTEQ_ID), jobid});
 
-                            database.update(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, cv, ParseOpenHelper.TECHIDCURRDAY + " =? AND " + ParseOpenHelper.JOBIDCURRDAY + " = ?",
-                                    new String[]{HandyObject.getPrams(getContext(), AppConstants.LOGINTEQ_ID), jobid});
+                                //Delete related row from database
+                                database.delete(ParseOpenHelper.TABLE_UPLOADIMAGES, ParseOpenHelper.UPLOADIMAGESJOBID + " =?",
+                                        new String[]{jobid});
+                            }
 
-                            //Delete related row from database
-                            database.delete(ParseOpenHelper.TABLE_UPLOADIMAGES, ParseOpenHelper.UPLOADIMAGESJOBID + " =?",
-                                    new String[]{jobid});
+
+
                         }
                     } else if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
                         HandyObject.clearpref(getContext());

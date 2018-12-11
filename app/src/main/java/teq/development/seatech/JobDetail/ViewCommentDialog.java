@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -53,11 +54,29 @@ public class ViewCommentDialog extends DialogFragment {
         RecyclerView recyclerview = (RecyclerView) rootView.findViewById(R.id.recyclerview);
         ImageView cross = (ImageView) rootView.findViewById(R.id.cross);
         TextView toptext = (TextView) rootView.findViewById(R.id.toptext);
+        TextView norecord = (TextView) rootView.findViewById(R.id.norecord);
+        LinearLayout lltoprecycler = (LinearLayout) rootView.findViewById(R.id.lltoprecycler);
         LinearLayoutManager lLManagerUrgentJobs = new LinearLayoutManager(getActivity());
         lLManagerUrgentJobs.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerview.setLayoutManager(lLManagerUrgentJobs);
-        adapter = new AdapterViewComment(getActivity(),arrayListLaborPerform);
-        recyclerview.setAdapter(adapter);
+
+        if(arrayListLaborPerform.size() == 0) {
+            lltoprecycler.setVisibility(View.GONE);
+            recyclerview.setVisibility(View.GONE);
+            norecord.setVisibility(View.VISIBLE);
+            if(typeDialog.equalsIgnoreCase("viewcommment")) {
+                norecord.setText(getString(R.string.noprevious_lbrentries));
+            } else {
+                norecord.setText(getString(R.string.noprevious_offthereacord));
+            }
+        } else {
+            lltoprecycler.setVisibility(View.VISIBLE);
+            recyclerview.setVisibility(View.VISIBLE);
+            norecord.setVisibility(View.GONE);
+            adapter = new AdapterViewComment(getActivity(),arrayListLaborPerform);
+            recyclerview.setAdapter(adapter);
+        }
+
         if(typeDialog.equalsIgnoreCase("viewcommment")) {
             toptext.setText(getString(R.string.previouslaborcmmnt));
         } else {

@@ -98,15 +98,14 @@ public class EditProfileFragment extends Fragment {
         check_RequestPermission();
         binding = DataBindingUtil.bind(rootView);
         binding.setEditprofile(this);
+        /*Set related profile data from local database*/
         setLocaldata();
-
         return rootView;
     }
 
     private void setLocaldata() {
         binding.etDob.setText(HandyObject.getPrams(context, AppConstants.LOGINTEQ_DOB));
         binding.etPhone.setText(HandyObject.getPrams(context, AppConstants.LOGINTEQ_PHONE));
-
         binding.etDescription.setText(HandyObject.getPrams(context, AppConstants.LOGINTEQ_DESCRIPTION));
         binding.etRole.setText(HandyObject.getPrams(context, AppConstants.LOGINTEQ_ROLE));
         binding.profileimage.setImageURI(HandyObject.getPrams(context, AppConstants.LOGINTEQ_IMAGE));
@@ -141,12 +140,14 @@ public class EditProfileFragment extends Fragment {
     }
 
     public void OnClickDOB() {
+        // Opening Date Picker
         new DatePickerDialog(getActivity(), date, myCalendar
                 .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                 myCalendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
     public void OnClickCancel() {
+        /*Navigate to previous MyProfile screen*/
         getActivity().getSupportFragmentManager().popBackStack();
     }
 
@@ -154,19 +155,17 @@ public class EditProfileFragment extends Fragment {
         //  String myFormat = "yyyy-MM-dd"; //In which you need put here
         // SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
         // binding.etDob.setText(sdf.format(myCalendar.getTime()));
-
-
-        String myFormat = "MMM dd yyyy"; //In which you need put here
+        // String myFormat = "MMM dd yyyy"; //In which you need put here
+        String myFormat = "MM/dd/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
         binding.etDob.setText(sdf.format(myCalendar.getTime()));
-
     }
-
 
     public void OnClickEditImage() {
         displayMediaPickerDialog();
     }
 
+    /*Display Dialog to choose image.*/
     private void displayMediaPickerDialog() {
         final Display display = getActivity().getWindowManager().getDefaultDisplay();
         int w = display.getWidth();
@@ -197,7 +196,7 @@ public class EditProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mediaDialog.dismiss();
-                dispachGallaryPictureIntent();
+                dispatchGallaryPictureIntent();
             }
         });
         TextView options_cancel = (TextView) mediaDialog.findViewById(R.id.options_cancel);
@@ -210,6 +209,7 @@ public class EditProfileFragment extends Fragment {
         mediaDialog.show();
     }
 
+    /*Get stored image Path from Uri*/
     public String getPath(Uri uri) {
         try {
             String[] projection = {MediaStore.Images.Media.DATA};
@@ -229,14 +229,13 @@ public class EditProfileFragment extends Fragment {
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
+        /*Ensure that there's a camera activity to handle the intent*/
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            // Create the File where the photo should go
+            /*Create the File where the photo should go*/
             File photoFile = null;
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                // Error occurred while creating the File
             }
 
             if (photoFile != null) {
@@ -254,14 +253,14 @@ public class EditProfileFragment extends Fragment {
         }
     }
 
-    private void dispachGallaryPictureIntent() {
+    private void dispatchGallaryPictureIntent() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_FROM_GALLARY);
     }
 
     private File createImageFile() throws IOException {
-        // Create an image file name
+        /*Create an image file name for image*/
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "PNG_SEATECH" + timeStamp + "_";
         String dir = "";
@@ -274,7 +273,6 @@ public class EditProfileFragment extends Fragment {
             e.printStackTrace();
         }
         imageFile = new File(file, imageFileName + ".png");
-
         return imageFile;
     }
 
@@ -284,48 +282,36 @@ public class EditProfileFragment extends Fragment {
             if (data != null) {
                 Uri selectedImageUri = data.getData();
                 String imagepath = getPath(selectedImageUri);
-
                 imageFile = new File(imagepath);
-                //HandyObject.showAlert(getActivity(), imageFile.getAbsolutePath());
-                //  Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-                //   binding.profileimage.setImageBitmap(myBitmap);
-                //  binding.profileimage.setImageURI(selectedImageUri);
-                //   uploadImageToSrver();
                 try {
+                    /*Set selected image to ImageView*/
                     Bitmap bitmap = new UserPicture(selectedImageUri, context.getContentResolver()).getBitmap();
                     binding.profileimage.setImageBitmap(bitmap);
                 } catch (Exception e) {
                 }
-
-
             }
         } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
-
+            // Check for android version to show image
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
                 Log.e("imageUri below:", "" + Uri.fromFile(imageFile));
-                //uploadImageToSrver();
-                //HandyObject.showAlert(getActivity(), imageFile.getAbsolutePath());
-                // Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-                //  binding.profileimage.setImageBitmap(myBitmap);
-                //  binding.profileimage.setImageURI(Uri.fromFile(imageFile));
                 try {
+                    /*Set captured image to ImageView*/
                     Bitmap bitmap = new UserPicture(Uri.fromFile(imageFile), context.getContentResolver()).getBitmap();
                     binding.profileimage.setImageBitmap(bitmap);
                 } catch (Exception e) {
                 }
 
             } else {
-                Uri fileUri = FileProvider.getUriForFile(getActivity(),
-                        "com.example.android.fileprovider", imageFile);
+                /*Set captured image to ImageView*/
+                Uri fileUri = FileProvider.getUriForFile(getActivity(), "com.example.android.fileprovider", imageFile);
                 Log.i("imageUri:", "" + fileUri);
-                //HandyObject.showAlert(getActivity(), imageFile.getAbsolutePath());
                 Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
                 binding.profileimage.setImageBitmap(myBitmap);
-                //  uploadImageToSrver();
             }
         }
     }
 
+    /*Check camera and write data permission*/
     void check_RequestPermission() {
         if (ContextCompat.checkSelfPermission(context,
                 android.Manifest.permission.CAMERA)
@@ -348,7 +334,6 @@ public class EditProfileFragment extends Fragment {
                 AlertDialog alert = builder.create();
                 alert.show();
             } else {
-
                 requestPermissions(new String[]{android.Manifest.permission.CAMERA},
                         REQUEST_CAMERA);
             }
@@ -384,15 +369,12 @@ public class EditProfileFragment extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_CAMERA: {
-                // If request is cancelled, the result arrays are empty.
+                /*If request is cancelled, the result arrays are empty.*/
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
+                    /*permission was granted*/
                     // displayMediaPickerDialog();
                     check_RequestPermission();
-                    Log.e("dsd", "asdasd");
 
                 } else {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
@@ -411,7 +393,7 @@ public class EditProfileFragment extends Fragment {
                         AlertDialog alert = builder.create();
                         alert.show();
                     } else {
-                        Toast.makeText(getActivity(), "Manually turn on camera permission", Toast.LENGTH_SHORT).show();
+                        HandyObject.showAlert(getActivity(), "Manually turn on camera permission");
                         Intent intent = new Intent();
                         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                         Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
@@ -424,13 +406,9 @@ public class EditProfileFragment extends Fragment {
             case 2: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                    //  displayMediaPickerDialog();
+                    /*permission was granted*/
                     check_RequestPermission();
                 } else {
-
                     if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                             android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -460,15 +438,15 @@ public class EditProfileFragment extends Fragment {
         }
     }
 
-    public String parseDateToddMMyyyy(String time) {
-        String inputPattern = "MMM dd yyyy";
+    public String parseDateToyyyyMMdd(String time) {
+       /* String inputPattern = "MMM dd yyyy";
+        String outputPattern = "yyyy-MM-dd";*/
+        String inputPattern = "MM/dd/yyyy";
         String outputPattern = "yyyy-MM-dd";
         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
         SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-
         Date date = null;
         String str = null;
-
         try {
             date = inputFormat.parse(time);
             str = outputFormat.format(date);
@@ -480,23 +458,24 @@ public class EditProfileFragment extends Fragment {
 
     public void OnClickSave() {
         if (binding.spinnergender.getSelectedItem().toString().equalsIgnoreCase("Male")) {
-            uploadImageToSrver(binding.etPhone.getText().toString(), "M", HandyObject.getPrams(context, AppConstants.LOGIN_SESSIONID), parseDateToddMMyyyy(binding.etDob.getText().toString()));
+            UpdateProfileTask(binding.etPhone.getText().toString(), "M", HandyObject.getPrams(context, AppConstants.LOGIN_SESSIONID), parseDateToyyyyMMdd(binding.etDob.getText().toString()));
         } else {
-            uploadImageToSrver(binding.etPhone.getText().toString(), "F", HandyObject.getPrams(context, AppConstants.LOGIN_SESSIONID), parseDateToddMMyyyy(binding.etDob.getText().toString()));
+            UpdateProfileTask(binding.etPhone.getText().toString(), "F", HandyObject.getPrams(context, AppConstants.LOGIN_SESSIONID), parseDateToyyyyMMdd(binding.etDob.getText().toString()));
         }
     }
 
-    private void uploadImageToSrver(String phone, String gender, String sessionid, String dob) {
+    /*API fo updating user profile*/
+    private void UpdateProfileTask(String phone, String gender, String sessionid, String dob) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM)
                 .addFormDataPart("user_id", md5(HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)))
+                .addFormDataPart("parent_id", HandyObject.getPrams(context, AppConstants.LOGINTEQPARENT_ID))
                 .addFormDataPart("description", binding.etDescription.getText().toString())
                 .addFormDataPart("gender", gender)
                 .addFormDataPart("phone", phone)
                 .addFormDataPart("dob", dob)
                 .addFormDataPart("email", HandyObject.getPrams(context, AppConstants.LOGINTEQ_EMAIL));
         if (imageFile == null) {
-            Log.e("ds", "sd");
         } else {
             builder.setType(MultipartBody.FORM).addFormDataPart("image", "images.png", RequestBody.create(MEDIA_TYPE_FORM, imageFile)).build();
         }
@@ -534,7 +513,6 @@ public class EditProfileFragment extends Fragment {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } finally {
-                            //  commonObjects.showHideProgressBar(getActivity());
                             HandyObject.stopProgressDialog();
                         }
                     }
@@ -547,10 +525,9 @@ public class EditProfileFragment extends Fragment {
                     }
                 }
         );
-
-
     }
 
+    /*Create MD5 for user login id*/
     public static final String md5(final String s) {
         final String MD5 = "MD5";
         try {
@@ -559,7 +536,6 @@ public class EditProfileFragment extends Fragment {
                     .getInstance(MD5);
             digest.update(s.getBytes());
             byte messageDigest[] = digest.digest();
-
             // Create Hex String
             StringBuilder hexString = new StringBuilder();
             for (byte aMessageDigest : messageDigest) {
@@ -574,35 +550,5 @@ public class EditProfileFragment extends Fragment {
             e.printStackTrace();
         }
         return "";
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Log.e("onActivityCre", "yes");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.e("onPause", "onPause");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.e("onResume", "onResume");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.e("onDestroy", "onDestroy");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.e("onDestroyView", "onDestroyView");
     }
 }

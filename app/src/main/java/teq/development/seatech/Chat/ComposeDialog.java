@@ -170,12 +170,6 @@ public class ComposeDialog extends DialogFragment {
                     urgent = "0";
                 }
                 try {
-                   /* JSONObject jobj = new JSONObject();
-                    jobj.put("job_id", binding.etJobticketno.getText().toString());
-                    jobj.put("sender_id", Integer.parseInt(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID)));
-                    jobj.put("receiver_id", arrayListEmp.get(binding.jobspinner.getSelectedItemPosition()).getEmployeeId());
-                    jobj.put("urgent", urgent);
-                    jobj.put("message", binding.etDescription.getText().toString());*/
                     UUID uniqueKey = UUID.randomUUID();
                     JSONObject jobj = new JSONObject();
                     JSONObject jobj_receiver = new JSONObject();
@@ -184,7 +178,8 @@ public class ComposeDialog extends DialogFragment {
                     JSONArray jarry_receiver = new JSONArray();
                     jarry_receiver.put(jobj_receiver);
                     jobj.put("job_id", binding.etJobticketno.getText().toString().split("-")[0]);
-                    jobj.put("sender_id", Integer.parseInt(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID)));
+                 // jobj.put("sender_id", Integer.parseInt(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID)));
+                    jobj.put("sender_id", Integer.parseInt(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQPARENT_ID)));
                     jobj.put("sender_name", HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_USERNAME));
                     jobj.put("receiver", jarry_receiver);
                     jobj.put("urgent", urgent);
@@ -211,7 +206,7 @@ public class ComposeDialog extends DialogFragment {
 
     private void OpponentEmployeeList() {
         //  HandyObject.showProgressDialog(getActivity());
-        HandyObject.getApiManagerMain().AllEmployeeList(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
+        HandyObject.getApiManagerMain().AllEmployeeList(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQPARENT_ID), HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -255,7 +250,7 @@ public class ComposeDialog extends DialogFragment {
     }
 
     private void AllJobsList() {
-        HandyObject.getApiManagerMain().AllJobsList(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
+        HandyObject.getApiManagerMain().AllJobsList(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQPARENT_ID), HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

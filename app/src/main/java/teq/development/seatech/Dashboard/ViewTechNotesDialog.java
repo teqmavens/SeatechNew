@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -62,6 +63,7 @@ public class ViewTechNotesDialog extends DialogFragment implements View.OnClickL
     private void initViews(View rootView) {
         ImageView cross = (ImageView) rootView.findViewById(R.id.cross);
         RecyclerView rcyview_dashbrdnotes = (RecyclerView) rootView.findViewById(R.id.rcyview_dashbrdnotes);
+        TextView norecord = (TextView) rootView.findViewById(R.id.norecord);
         cross.setOnClickListener(this);
 
         database = ParseOpenHelper.getInstance(getActivity()).getWritableDatabase();
@@ -89,9 +91,17 @@ public class ViewTechNotesDialog extends DialogFragment implements View.OnClickL
         LinearLayoutManager lLManagerDashNotes = new LinearLayoutManager(getActivity());
         lLManagerDashNotes.setOrientation(LinearLayoutManager.VERTICAL);
         rcyview_dashbrdnotes.setLayoutManager(lLManagerDashNotes);
-        AdapterDashboardNotes adapterdashnotes = new AdapterDashboardNotes(getActivity(), arralistAllJobs.get(position).getArrayList());
-        rcyview_dashbrdnotes.setNestedScrollingEnabled(false);
-        rcyview_dashbrdnotes.setAdapter(adapterdashnotes);
+        if(arralistAllJobs.get(position).getArrayList().size() == 0) {
+            norecord.setVisibility(View.VISIBLE);
+            rcyview_dashbrdnotes.setVisibility(View.GONE);
+            norecord.setText(getString(R.string.nonotesavailable));
+        } else {
+            norecord.setVisibility(View.GONE);
+            rcyview_dashbrdnotes.setVisibility(View.VISIBLE);
+            AdapterDashboardNotes adapterdashnotes = new AdapterDashboardNotes(getActivity(), arralistAllJobs.get(position).getArrayList());
+            rcyview_dashbrdnotes.setNestedScrollingEnabled(false);
+            rcyview_dashbrdnotes.setAdapter(adapterdashnotes);
+        }
     }
 
     @Override

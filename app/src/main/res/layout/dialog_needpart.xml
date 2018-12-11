@@ -973,6 +973,7 @@
                         android:gravity="top"
                         android:maxHeight="100dp"
                         android:padding="@dimen/verysmalltextsize"
+                        android:inputType="textPersonName"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black"
                         android:textSize="@dimen/verysmalltextsize"

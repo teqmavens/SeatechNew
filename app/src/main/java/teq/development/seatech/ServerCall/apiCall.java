@@ -79,7 +79,7 @@ public interface apiCall {
     );
 
     @FormUrlEncoded
-    @POST("tech-scheduled-jobs-old.json")
+    @POST("tech-scheduled-jobs.json")
     @Headers("tokenID: 1234567890234dfg456")
     Call<ResponseBody> getDashboradData(
             @Field("tech_id") String email,
@@ -254,7 +254,9 @@ public interface apiCall {
     @POST("jobs/chatJobMessages.json")
     @Headers("tokenID: 1234567890234dfg456")
     Call<ResponseBody> LoadChatMessages(
+            @Field("user_id") String userid,
             @Field("job_id") String jobid,
+            @Field("offset") String offset,
             @Header("sessionID") String sessionid
     );
 

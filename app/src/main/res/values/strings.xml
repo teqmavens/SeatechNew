@@ -136,6 +136,7 @@
     <string name="dashboard_notes"><u>Dashboard Notes</u></string>
     <string name="submitlabor_perform">Submit My Labor Performed for this job</string>
     <string name="addnew_offrecordnote">Add a new Off the record notes for this job</string>
+    <string name="addanewoff">Add a new Off the record</string>
     <string name="viewprev_offrecordnote">View Previous Off the Record Notes</string>
     <string name="valuesupplies">Value of supplies used for this job:</string>
     <string name="date">Date</string>
@@ -158,6 +159,8 @@
     <string name="nouploadedimage">No image available</string>
     <string name="jobdes"><u>Job description</u></string>
     <string name="cannt_logoutjobrunning">Can\'t logout, a job is already running.</string>
+    <string name="cannt_logoutacknowledge">Can\'t logout, you need to acknowledge all chat messages first.</string>
+    <string name="cannt_logoutjobrunningnew">Can\'t submit labor code,  a job is already running.</string>
     <string name="selectjobtype">Please Select Job Type</string>
     <string name="supplyamountreq">Supply amount is required.</string>
     <string name="nodashbrdnotes">No dashborad notes</string>
@@ -185,8 +188,8 @@
     <string name="ttltime">Total Time</string>
     <string name="ttlweekhrs">Total Week Hours</string>
     <string name="jobticket">Job Ticket</string>
-    <string name="laborcode">Labour Code</string>
-    <string name="labourdescription">Labour Description</string>
+    <string name="laborcode">Labor Code</string>
+    <string name="labourdescription">Labor Description</string>
     <string name="hours">Hours</string>
     <string name="canselectweekdate">You can select only current week date.</string>
     <string name="statuskey">Status</string>
@@ -270,6 +273,12 @@
     <string name="selectedweekdate">You can select only selected week date.</string>
     <string name="selecttime">Select Time</string>
     <string name="selectduration">Select Duration</string>
+    <string name="suppliesamount">Supplies Amount</string>
+    <string name="enter">Enter</string>
+    <string name="nonotesavailable">No Notes available.</string>
+    <string name="noprevious_lbrentries">No previous labor entries available.</string>
+    <string name="noprevious_offthereacord">No previous off the record available.</string>
+    <string name="pickupjob_notpermitted">You are not permitted to schedule the pickup jobs.</string>
     <string-array name="laborcode_array">
         <!--<item>Travel Time</item>
         <item>SERVICE TIME</item>
@@ -279,6 +288,9 @@
         <item>Service Time</item>
         <item>Lunch</item>
         <item>Shop Work Time</item>
+        <item>Office Staff Labor</item>
+        <item>Tech Time Non-Productive</item>
+        <item>Tech Betterment &amp; Training</item>
     </string-array>
 
     <string-array name="newlaborcode_array">

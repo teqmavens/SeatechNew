@@ -220,6 +220,9 @@
                     android:id="@+id/rcyview_urgentmsg"
                     android:layout_width="match_parent"
                     android:layout_height="260dp"
+                    android:scrollbars="vertical"
+                    android:scrollbarSize="6dp"
+                    android:scrollbarThumbVertical="@drawable/thumb_scroll"
                     android:visibility="gone">
 
 
@@ -402,6 +405,9 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
+                    android:scrollbars="vertical"
+                    android:scrollbarSize="6dp"
+                    android:scrollbarThumbVertical="@drawable/thumb_scroll"
                     app:layout_constraintTop_toBottomOf="@+id/view2">
 
                 </android.support.v7.widget.RecyclerView>
