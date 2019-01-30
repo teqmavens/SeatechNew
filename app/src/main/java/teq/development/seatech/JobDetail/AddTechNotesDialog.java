@@ -21,6 +21,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 
@@ -49,17 +50,18 @@ public class AddTechNotesDialog extends DialogFragment implements View.OnClickLi
 
     Dialog dialog;
     private EditText et_laborperform;
-    static String comingJobId;
+    static String comingJobId,Addtype;
     private SQLiteDatabase database;
     public static ArrayList<DashboardNotes_Skeleton> arraylistOffTheRecord;
     String insertedTime = "";
     Gson gson;
 
-    static AddTechNotesDialog newInstance(String jobid) {
+    static AddTechNotesDialog newInstance(String jobid,String type) {
         AddTechNotesDialog f = new AddTechNotesDialog();
         Bundle args = new Bundle();
         //  args.putInt("num", num);
         comingJobId = jobid;
+        Addtype = type;
         f.setArguments(args);
         return f;
     }
@@ -78,6 +80,10 @@ public class AddTechNotesDialog extends DialogFragment implements View.OnClickLi
         Button submit = (Button) rootView.findViewById(R.id.submit);
         ImageView cross = (ImageView) rootView.findViewById(R.id.cross);
         et_laborperform = (EditText) rootView.findViewById(R.id.et_laborperform);
+        TextView toptext = (TextView) rootView.findViewById(R.id.toptext);
+        if(Addtype.equalsIgnoreCase("Dashboard")) {
+            toptext.setText(getString(R.string.addtechnotes));
+        }
         submit.setOnClickListener(this);
         cross.setOnClickListener(this);
     }
@@ -115,8 +121,7 @@ public class AddTechNotesDialog extends DialogFragment implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.submit:
-                SubmitMyLaborPerf_Task(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), comingJobId, et_laborperform.getText().toString(), "Off The Record");
-
+                SubmitMyLaborPerf_Task(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), comingJobId, et_laborperform.getText().toString(), Addtype);
                 break;
             case R.id.cross:
                 dialog.dismiss();
@@ -124,13 +129,14 @@ public class AddTechNotesDialog extends DialogFragment implements View.OnClickLi
         }
     }
 
-    private void SubmitMyLaborPerf_Task(String techid, final String jobid, String notes, String type) {
+    private void SubmitMyLaborPerf_Task(String techid, final String jobid, String notes,final String type) {
 
         HandyObject.showProgressDialog(getActivity());
         //   HandyObject.getApiManagerMain().submitTechLaborPerf(techid, jobid, notes, type, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
         DashboardNotes_Skeleton dashnotes_ske = new DashboardNotes_Skeleton();
         dashnotes_ske.setCreatedAt(HandyObject.ParseDateTimeForNotes(new Date()));
         insertedTime = HandyObject.ParseDateTimeForNotes(new Date());
+
         dashnotes_ske.setNotes(notes);
         dashnotes_ske.setTechid(techid);
         dashnotes_ske.setJobid(jobid);
@@ -139,6 +145,7 @@ public class AddTechNotesDialog extends DialogFragment implements View.OnClickLi
         addtech.add(dashnotes_ske);
         String OffTheRecord = gson.toJson(addtech);
         //String OffTheRecordske = gson.toJson(dashnotes_ske);
+      //  HandyObject.showAlert(getActivity(),OffTheRecord);
         insertIntoDB(HandyObject.ParseDateTimeForNotes(new Date()), OffTheRecord, techid, jobid, notes, type);
         if (HandyObject.checkInternetConnection(getActivity())) {
             HandyObject.getApiManagerMain().submitTechLaborPerf(OffTheRecord, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
@@ -179,28 +186,56 @@ public class AddTechNotesDialog extends DialogFragment implements View.OnClickLi
                                         JSONObject jobjInside = jsonArray.getJSONObject(i);
                                         String jobid = jobjInside.getString("job_id");
 
-                                        JSONArray jArray_OffTheRecord = jobjInside.getJSONArray("OffTheRecord");
-                                        ArrayList<DashboardNotes_Skeleton> arraylistOffTheRecord = new ArrayList<>();
-                                        for (int k = 0; k < jArray_OffTheRecord.length(); k++) {
-                                            JSONObject jobj_dashnotes = jArray_OffTheRecord.getJSONObject(k);
-                                            DashboardNotes_Skeleton dashnotes_ske = new DashboardNotes_Skeleton();
-                                            dashnotes_ske.setCreatedAt(jobj_dashnotes.getString("created_at"));
-                                            dashnotes_ske.setNoteWriter(jobj_dashnotes.getString("written_by"));
-                                            dashnotes_ske.setNotes(jobj_dashnotes.getString("notes"));
-                                            arraylistOffTheRecord.add(dashnotes_ske);
-                                          //  JobDetailFragment.addTechlistOffTheRecord.add(dashnotes_ske);
-                                            VMJobDetail.addTechlistOffTheRecord.add(dashnotes_ske);
+                                        //Add Off the record Notes to Job detail page Case
+                                        if(type.equalsIgnoreCase("Off The Record")) {
+                                            JSONArray jArray_OffTheRecord = jobjInside.getJSONArray("OffTheRecord");
+                                            ArrayList<DashboardNotes_Skeleton> arraylistOffTheRecord = new ArrayList<>();
+                                            for (int k = 0; k < jArray_OffTheRecord.length(); k++) {
+                                                JSONObject jobj_dashnotes = jArray_OffTheRecord.getJSONObject(k);
+                                                DashboardNotes_Skeleton dashnotes_ske = new DashboardNotes_Skeleton();
+                                                dashnotes_ske.setCreatedAt(jobj_dashnotes.getString("created_at"));
+                                                dashnotes_ske.setNoteWriter(jobj_dashnotes.getString("written_by"));
+                                                dashnotes_ske.setNotes(jobj_dashnotes.getString("notes"));
+                                                arraylistOffTheRecord.add(dashnotes_ske);
+                                                //  JobDetailFragment.addTechlistOffTheRecord.add(dashnotes_ske);
+                                                VMJobDetail.addTechlistOffTheRecord.add(dashnotes_ske);
 
+
+                                            }
                                             // Broadcast to update record
                                             Intent intent = new Intent("pass_addtechlast");
-                                            intent.putExtra("lastofftherecord", jobj_dashnotes.getString("notes"));
+                                            intent.putExtra("lastofftherecord",  VMJobDetail.addTechlistOffTheRecord.get(0).getNotes());
+                                            intent.putExtra("lastofftherecord_writtenby", VMJobDetail.addTechlistOffTheRecord.get(0).getNoteWriter());
                                             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+
+                                            String OffTheRecord = gson.toJson(arraylistOffTheRecord);
+                                            ContentValues cv = new ContentValues();
+                                            cv.put(ParseOpenHelper.JOBSTECHOFFTHERECORDCURRDAY, OffTheRecord);
+                                            database.update(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, cv, ParseOpenHelper.TECHIDCURRDAY + " =? AND " + ParseOpenHelper.JOBIDCURRDAY + " = ?",
+                                                    new String[]{HandyObject.getPrams(getContext(), AppConstants.LOGINTEQ_ID), jobid});
+                                        } else {
+                                            //Add Dashboard Notes to Job detail page Case
+                                            JSONArray jArray_dashboard = jobjInside.getJSONArray("Dashboard");
+                                            ArrayList<DashboardNotes_Skeleton> arraylistDashboard = new ArrayList<>();
+                                            for (int k = 0; k < jArray_dashboard.length(); k++) {
+                                                JSONObject jobj_dashnotes = jArray_dashboard.getJSONObject(k);
+                                                DashboardNotes_Skeleton dashnotes_ske = new DashboardNotes_Skeleton();
+                                                dashnotes_ske.setCreatedAt(jobj_dashnotes.getString("created_at"));
+                                                dashnotes_ske.setNoteWriter(jobj_dashnotes.getString("written_by"));
+                                                dashnotes_ske.setNotes(jobj_dashnotes.getString("notes"));
+                                                arraylistDashboard.add(dashnotes_ske);
+                                            }
+                                            // Broadcast to update Dashboard record
+                                            Intent intent = new Intent("updateDashboardNotes");
+                                            intent.putParcelableArrayListExtra("updatedDashboardLIST",arraylistDashboard);
+                                            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+
+                                            String DashboardNotes = gson.toJson(arraylistDashboard);
+                                            ContentValues cv = new ContentValues();
+                                            cv.put(ParseOpenHelper.JOBSTECHDASHBOARDNOTESCURRDAY, DashboardNotes);
+                                            database.update(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, cv, ParseOpenHelper.TECHIDCURRDAY + " =? AND " + ParseOpenHelper.JOBIDCURRDAY + " = ?",
+                                                    new String[]{HandyObject.getPrams(getContext(), AppConstants.LOGINTEQ_ID), jobid});
                                         }
-                                        String OffTheRecord = gson.toJson(arraylistOffTheRecord);
-                                        ContentValues cv = new ContentValues();
-                                        cv.put(ParseOpenHelper.JOBSTECHOFFTHERECORDCURRDAY, OffTheRecord);
-                                        database.update(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, cv, ParseOpenHelper.TECHIDCURRDAY + " =? AND " + ParseOpenHelper.JOBIDCURRDAY + " = ?",
-                                                new String[]{HandyObject.getPrams(getContext(), AppConstants.LOGINTEQ_ID), jobid});
 
                                     }
 

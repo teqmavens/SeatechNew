@@ -71,49 +71,53 @@ public class ChangePwdFragment extends Fragment {
     }
 
     private void pwdChangeTask(String currentpwd, String newpwd, String reenterpwd) {
-        HandyObject.showProgressDialog(context);
-        HandyObject.getApiManagerType().changePwd(currentpwd, newpwd, reenterpwd, HandyObject.getPrams(context, AppConstants.LOGIN_SESSIONID))
-                .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        try {
-                            String jsonResponse = response.body().string();
-                            Log.e("response", jsonResponse);
-                            JSONObject jsonObject = new JSONObject(jsonResponse);
-                            if (jsonObject.getString("status").toLowerCase().equals("success")) {
-                                HandyObject.showAlert(context, jsonObject.getString("message"));
-                                getFragmentManager().popBackStack();
+        if (HandyObject.checkInternetConnection(getActivity())) {
+            HandyObject.showProgressDialog(context);
+            HandyObject.getApiManagerType().changePwd(currentpwd, newpwd, reenterpwd, HandyObject.getPrams(context, AppConstants.LOGIN_SESSIONID))
+                    .enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            try {
+                                String jsonResponse = response.body().string();
+                                Log.e("response", jsonResponse);
+                                JSONObject jsonObject = new JSONObject(jsonResponse);
+                                if (jsonObject.getString("status").toLowerCase().equals("success")) {
+                                    HandyObject.showAlert(context, jsonObject.getString("message"));
+                                    getFragmentManager().popBackStack();
                        /*      android.content.Intent intent_reg = new android.content.Intent(getActivity(), teq.development.seatech.LoginActivity.class);
       intent_reg.setFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK | android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK);
       getA
 startActivity(intent_reg);*/
-                            } else {
-                                HandyObject.showAlert(context, jsonObject.getString("message"));
-                                if(jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
-                                    HandyObject.clearpref(getActivity());
-                                    HandyObject.deleteAllDatabase(getActivity());
-                                    App.appInstance.stopTimer();
-                                    Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
-                                    startActivity(intent_reg);
-                                    getActivity().finish();
-                                    getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                } else {
+                                    HandyObject.showAlert(context, jsonObject.getString("message"));
+                                    if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
+                                        HandyObject.clearpref(getActivity());
+                                        HandyObject.deleteAllDatabase(getActivity());
+                                        App.appInstance.stopTimer();
+                                        Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
+                                        startActivity(intent_reg);
+                                        getActivity().finish();
+                                        getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                    }
                                 }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } finally {
+                                HandyObject.stopProgressDialog();
                             }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } finally {
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Log.e("responseError", t.getMessage());
                             HandyObject.stopProgressDialog();
                         }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.e("responseError", t.getMessage());
-                        HandyObject.stopProgressDialog();
-                    }
-                });
+                    });
+        } else {
+            HandyObject.showAlert(getActivity(), getString(R.string.check_internet_connection));
+        }
     }
 
     public void OnClickCancel() {

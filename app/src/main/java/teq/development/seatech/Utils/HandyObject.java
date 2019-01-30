@@ -239,6 +239,31 @@ public class HandyObject {
         }
     }
 
+    public static void showProgressDialogDash(Context context,String text) {
+        hud = KProgressHUD.create(context)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel(text)
+                .setAnimationSpeed(1)
+                .setDimAmount(0.5f);
+        if (hud != null) {
+            try {
+                hud.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void stopProgressDialogDash() {
+        if (hud != null && hud.isShowing()) {
+            try {
+                hud.dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void hideSoftKeyboard(Context ctx) {
         AppCompatActivity appCompatActivity = (AppCompatActivity) ctx;
         if (appCompatActivity.getCurrentFocus() != null) {
@@ -313,6 +338,12 @@ public class HandyObject {
         return formattedDate;
     }
 
+    public static String ParseDateSchedule(Date date) {
+        SimpleDateFormat df = new SimpleDateFormat("MMM dd,yyyy");
+        String formattedDate = df.format(date);
+        return formattedDate;
+    }
+
     public static String ParseDateJobTimeNew(Date date) {
         SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         String formattedDate = df.format(date);
@@ -320,7 +351,7 @@ public class HandyObject {
     }
 
     public static String ParseDateTimeForNotes(Date date) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String formattedDate = df.format(date);
         return formattedDate;
     }
@@ -350,6 +381,18 @@ public class HandyObject {
         sb.append(HandyObject.ParseDateJobTime(calendar.getTime()));
         calendar.set(Calendar.DAY_OF_WEEK, 8);
         sb.append("," + HandyObject.ParseDateJobTime(calendar.getTime()));
+        return sb.toString();
+    }
+
+    public static String getCurrentWeek_FirstDateSchedule(Context context) {
+        weekcount = 0;
+        StringBuilder sb = new StringBuilder();
+        Calendar calendar = Calendar.getInstance(Locale.UK);
+        calendar.add(Calendar.WEEK_OF_YEAR, weekcount);
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
+        sb.append(HandyObject.ParseDateSchedule(calendar.getTime()));
+        calendar.set(Calendar.DAY_OF_WEEK, 8);
+        sb.append("-" + HandyObject.ParseDateSchedule(calendar.getTime()));
         return sb.toString();
     }
 
@@ -455,6 +498,58 @@ public class HandyObject {
         return sb.toString();
     }
 
+    public static String getSelectedPreviousWeek_FirstLastSchedule(Context context, String date) {
+        weekcount--;
+        StringBuilder sb = new StringBuilder();
+        Calendar calendar = Calendar.getInstance(Locale.UK);
+        calendar.set(Integer.parseInt(date.split("/")[2]), Integer.parseInt(date.split("/")[0]) - 1, Integer.parseInt(date.split("/")[1]));
+        //  calendar.set(Integer.parseInt(date.split("-")[0]), Integer.parseInt(date.split("-")[1]) + 1, Integer.parseInt(date.split("-")[2]));
+        // HandyObject.showAlert(context, String.valueOf(weekcount));
+        calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR));
+        calendar.add(Calendar.WEEK_OF_YEAR, weekcount);
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
+
+        sb.append(HandyObject.ParseDateSchedule(calendar.getTime()));
+        calendar.set(Calendar.DAY_OF_WEEK, 8);
+        sb.append("-" + HandyObject.ParseDateSchedule(calendar.getTime()));
+        return sb.toString();
+    }
+
+    public static String getSelectedNextWeek_FirstDateSlash(Context context, String date) {
+        weekcount++;
+        StringBuilder sb = new StringBuilder();
+        Calendar calendar = Calendar.getInstance(Locale.UK);
+        calendar.set(Integer.parseInt(date.split("/")[2]), Integer.parseInt(date.split("/")[0]) - 1, Integer.parseInt(date.split("/")[1]));
+        //  calendar.set(Integer.parseInt(date.split("-")[0]), Integer.parseInt(date.split("-")[1]) + 1, Integer.parseInt(date.split("-")[2]));
+        // HandyObject.showAlert(context, String.valueOf(weekcount));
+        calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR));
+        calendar.add(Calendar.WEEK_OF_YEAR, weekcount);
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
+
+        sb.append(HandyObject.ParseDateJobTime(calendar.getTime()));
+        calendar.set(Calendar.DAY_OF_WEEK, 8);
+        sb.append("," + HandyObject.ParseDateJobTime(calendar.getTime()));
+        return sb.toString();
+    }
+
+    public static String getSelectedNextWeek_FirstLastSchedule(Context context, String date) {
+        weekcount++;
+        StringBuilder sb = new StringBuilder();
+        Calendar calendar = Calendar.getInstance(Locale.UK);
+        calendar.set(Integer.parseInt(date.split("/")[2]), Integer.parseInt(date.split("/")[0]) - 1, Integer.parseInt(date.split("/")[1]));
+        //  calendar.set(Integer.parseInt(date.split("-")[0]), Integer.parseInt(date.split("-")[1]) + 1, Integer.parseInt(date.split("-")[2]));
+        // HandyObject.showAlert(context, String.valueOf(weekcount));
+        calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR));
+        calendar.add(Calendar.WEEK_OF_YEAR, weekcount);
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
+
+        sb.append(HandyObject.ParseDateSchedule(calendar.getTime()));
+        calendar.set(Calendar.DAY_OF_WEEK, 8);
+        sb.append("-" + HandyObject.ParseDateSchedule(calendar.getTime()));
+        return sb.toString();
+    }
+
+
 
     public static String getNextWeek_FirstDate(Context context) {
         weekcount++;
@@ -534,6 +629,24 @@ public class HandyObject {
 
     public static String parseDateToYMDNew(String time) {
         String inputPattern = "MM/dd/yyyy";
+        String outputPattern = "yyyy-MM-dd";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
+    public static String parseDateToYMDSchedule(String time) {
+        String inputPattern = "MMM dd,yyyy";
         String outputPattern = "yyyy-MM-dd";
         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
         SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
@@ -691,21 +804,88 @@ public class HandyObject {
         } else if (posi == 4) {
             lcname = "DONE FOR THE DAY";
         }*/
+//        if (posi == 0) {
+//            lcname = "Travel Time";
+//        } else if (posi == 1) {
+//            lcname = "Service Time";
+//        } else if (posi == 2) {
+//            lcname = "Lunch";
+//        } else if (posi == 3) {
+//            lcname = "Shop Work Time";
+//        } else if (posi == 4) {
+//            lcname = "Office Staff Labor";
+//        } else if (posi == 5) {
+//            lcname = "Tech Time Non-Productive";
+//        } else if (posi == 6) {
+//            lcname = "Tech Betterment" + " & " + "Training";
+//        }
+//        <item>TIME FIELD SERVICE BILLABLE</item>
+//        <item>TIME FIELD SERVICE NON BILLABLE</item>
+//        <item>TIME HOLIDAY PAID</item>
+//        <item>TIME HOLIDAY UNPAID</item>
+//        <item>TIME OFFICE LABOR</item>
+//        <item>TIME SHOP WORK BILLABLE</item>
+//        <item>TIME SHOP WORK NON BILLABLE</item>
+//        <item>TIME SICK PAID</item>
+//        <item>TIME SICK UNPAID</item>
+//        <item>TIME TRAVELBILLABLE</item>
+//        <item>TIME TRAVELNONBILLABLE</item>
+//        <item>TIME VACATION PAID</item>
+//        <item>TIME VACATION UNPAID</item>
+//        if (posi == 0) {
+//            lcname = "TIME FIELD SERVICE BILLABLE";
+//        } else if (posi == 1) {
+//            lcname = "TIME FIELD SERVICE NON BILLABLE";
+//        } else if (posi == 2) {
+//            lcname = "TIME HOLIDAY PAID";
+//        } else if (posi == 3) {
+//            lcname = "TIME HOLIDAY UNPAID";
+//        } else if (posi == 4) {
+//            lcname = "TIME OFFICE LABOR";
+//        } else if (posi == 5) {
+//            lcname = "TIME SHOP WORK BILLABLE";
+//        } else if (posi == 6) {
+//            lcname = "TIME SHOP WORK NON BILLABLE";
+//        } else if (posi == 7) {
+//            lcname = "TIME SICK PAID";
+//        }  else if (posi == 8) {
+//            lcname = "TIME SICK UNPAID";
+//        } else if (posi == 9) {
+//            lcname = "LUNCH";
+//        } else if (posi == 10) {
+//            lcname = "TIME TRAVELBILLABLE";
+//        } else if (posi == 11) {
+//            lcname = "TIME TRAVELNONBILLABLE";
+//        } else if (posi == 12) {
+//            lcname = "TIME VACATION PAID";
+//        } else if (posi == 13) {
+//            lcname = "TIME SHOP WORK NON BILLABLE";
+//        }
+
+
         if (posi == 0) {
-            lcname = "Travel Time";
+            lcname = "TIME TRAVELNONBILLABLE";
         } else if (posi == 1) {
-            lcname = "Service Time";
+            lcname = "TIME TRAVELBILLABLE";
         } else if (posi == 2) {
-            lcname = "Lunch";
+            lcname = "TIME FIELD SERVICE BILLABLE";
         } else if (posi == 3) {
-            lcname = "Shop Work Time";
+            lcname = "TIME FIELD SERVICE NON BILLABLE";
         } else if (posi == 4) {
-            lcname = "Office Staff Labor";
+            lcname = "LUNCH";
         } else if (posi == 5) {
-            lcname = "Tech Time Non-Productive";
-        } else if (posi == 6) {
-            lcname = "Tech Betterment" + " & " + "Training";
+            lcname = "TIME SHOP WORK BILLABLE";
+        }else if (posi == 6) {
+            lcname = "TIME SHOP WORK NON BILLABLE";
+        } else if (posi == 7) {
+            lcname = "TIME OFFICE LABOR";
+        }else if (posi == 8) {
+            lcname = "TIME TECH BETTERMENT AND TRAINING";
         }
+
+
+
+
         return lcname;
     }
 

@@ -105,13 +105,12 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                     jobj.put("customId", Integer.parseInt(HandyObject.getPrams(DashBoardActivity.this, AppConstants.LOGINTEQPARENT_ID)));
                     jobj.put("device_id", HandyObject.getPrams(DashBoardActivity.this, AppConstants.DEVICE_TOKEN));
                     App.appInstance.getSocket().emit("storeClientInfo", jobj);
-                } catch (Exception e) {
-                }
+                } catch (Exception e) {}
 
             }
         }, 1000);
-
         replaceFragmentWithoutBack(new DashBoardFragment());
+       // replaceFragmentWithoutBack(new DashBoardFragment());
         toolbar = findViewById(R.id.toolbar);
         menu_icon = findViewById(R.id.menu_icon);
         sick_icon = findViewById(R.id.sick_icon);
@@ -288,7 +287,9 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         ImageView cross = (ImageView) layout.findViewById(R.id.cross);
         Button submit = (Button) layout.findViewById(R.id.submit);
         final CheckBox cbx_vacation = (CheckBox) layout.findViewById(R.id.cbx_vacation);
+        final CheckBox cbx_vacationunpaid = (CheckBox) layout.findViewById(R.id.cbx_vacationunpaid);
         final CheckBox cbx_sick = (CheckBox) layout.findViewById(R.id.cbx_sick);
+        final CheckBox cbx_sickunpaid = (CheckBox) layout.findViewById(R.id.cbx_sickunpaid);
         final CheckBox cbx_doneforday = (CheckBox) layout.findViewById(R.id.cbx_doneforday);
         cbx_vacation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -296,6 +297,20 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                 if (isChecked) {
                     cbx_sick.setChecked(false);
                     cbx_doneforday.setChecked(false);
+                    cbx_vacationunpaid.setChecked(false);
+                    cbx_sickunpaid.setChecked(false);
+                }
+            }
+        });
+
+        cbx_vacationunpaid.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    cbx_sick.setChecked(false);
+                    cbx_doneforday.setChecked(false);
+                    cbx_sickunpaid.setChecked(false);
+                    cbx_vacation.setChecked(false);
                 }
             }
         });
@@ -304,6 +319,20 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    cbx_vacation.setChecked(false);
+                    cbx_vacationunpaid.setChecked(false);
+                    cbx_doneforday.setChecked(false);
+                    cbx_sickunpaid.setChecked(false);
+                }
+            }
+        });
+
+        cbx_sickunpaid.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    cbx_sick.setChecked(false);
+                    cbx_vacationunpaid.setChecked(false);
                     cbx_vacation.setChecked(false);
                     cbx_doneforday.setChecked(false);
                 }
@@ -315,7 +344,9 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     cbx_vacation.setChecked(false);
+                    cbx_vacationunpaid.setChecked(false);
                     cbx_sick.setChecked(false);
+                    cbx_sickunpaid.setChecked(false);
                 }
             }
         });
@@ -330,25 +361,51 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (cbx_sick.isChecked() == false && cbx_vacation.isChecked() == false && cbx_doneforday.isChecked() == false) {
+                if (cbx_sick.isChecked() == false &&cbx_sickunpaid.isChecked() == false && cbx_vacation.isChecked() == false && cbx_vacationunpaid.isChecked() == false && cbx_doneforday.isChecked() == false) {
                     HandyObject.showAlert(DashBoardActivity.this, getString(R.string.pleaseselectcode));
                 } else if (cbx_sick.isChecked() == true && cbx_vacation.isChecked() == false) {
                     if (App.timer_running || isJobRunning() == true) {
                         HandyObject.showAlert(DashBoardActivity.this, getString(R.string.cannt_logoutjobrunningnew));
                     } else {
-                        TaskLCChange("Sick");
+                        TaskLCChange("TIME SICK PAID");
                     }
                     popup.dismiss();
-                } else if (cbx_vacation.isChecked() == true && cbx_sick.isChecked() == false) {
+                }
+
+
+
+                else if (cbx_sickunpaid.isChecked() == true && cbx_vacation.isChecked() == false) {
                     if (App.timer_running || isJobRunning() == true) {
                         HandyObject.showAlert(DashBoardActivity.this, getString(R.string.cannt_logoutjobrunningnew));
                     } else {
-                        TaskLCChange("Vacation");
+                        TaskLCChange("TIME SICK UNPAID");
                     }
                     popup.dismiss();
-                } else if (cbx_doneforday.isChecked() == true) {
+                }
+
+
+
+                else if (cbx_vacation.isChecked() == true && cbx_sick.isChecked() == false) {
+                    if (App.timer_running || isJobRunning() == true) {
+                        HandyObject.showAlert(DashBoardActivity.this, getString(R.string.cannt_logoutjobrunningnew));
+                    } else {
+                        TaskLCChange("TIME VACATION PAID");
+                    }
                     popup.dismiss();
-                    if (isJobRunning() == true) {
+                }
+
+                else if (cbx_vacationunpaid.isChecked() == true && cbx_sick.isChecked() == false) {
+                    if (App.timer_running || isJobRunning() == true) {
+                        HandyObject.showAlert(DashBoardActivity.this, getString(R.string.cannt_logoutjobrunningnew));
+                    } else {
+                        TaskLCChange("TIME VACATION UNPAID");
+                    }
+                    popup.dismiss();
+                }
+
+                else if (cbx_doneforday.isChecked() == true) {
+                    popup.dismiss();
+                    if (App.timer_running || isJobRunning() == true) {
                         HandyObject.showAlert(DashBoardActivity.this, getString(R.string.cannt_logoutjobrunning));
                     } else if (HandyObject.getPrams(DashBoardActivity.this, AppConstants.ISALLMSG_ACKNOWLEDGE).equalsIgnoreCase("1")) {
                         HandyObject.showAlert(DashBoardActivity.this, getString(R.string.cannt_logoutacknowledge));
@@ -400,7 +457,7 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onClick(View v) {
                 popup.dismiss();
-                if (isJobRunning() == true) {
+                if (App.timer_running || isJobRunning() == true) {
                     HandyObject.showAlert(DashBoardActivity.this, getString(R.string.cannt_logoutjobrunning));
                 } else if (HandyObject.getPrams(DashBoardActivity.this, AppConstants.ISALLMSG_ACKNOWLEDGE).equalsIgnoreCase("1")) {
                     HandyObject.showAlert(DashBoardActivity.this, getString(R.string.cannt_logoutacknowledge));
@@ -480,7 +537,7 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onStop() {
         super.onStop();
-        Log.e("Activity OnStop", "Activity OnStop");
+        Log.e("onStopDASSHHH", "onStopDASSHHH");
         //HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING, "no");
     }
 
@@ -493,8 +550,11 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     protected void onDestroy() {
+        try{
         super.onDestroy();
-        unregisterReceiver(receiver);
+
+            unregisterReceiver(receiver);
+        } catch (Exception e){}
         Log.e("OnDestroyDASSHHH", "OnDestroyDASSHHH");
     }
 
@@ -543,9 +603,19 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
             }*/
             onbackppress = false;
         } else {
-            HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING, "no");
-            // HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_NEWTYPE, "no");
+
+            if (HandyObject.getPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING).equalsIgnoreCase("yes")) {
+                HandyObject.showAlert(DashBoardActivity.this,"Running");
+                HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNINGCLOSE, "yes");
+            } else {
+                HandyObject.showAlert(DashBoardActivity.this,"NotRunning");
+                HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNINGCLOSE, "no");
+            }
+//            HandyObject.showAlert(DashBoardActivity.this,"NObackpressssssssssss");
+//            HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING, "no");
+
         }
+       // replaceFragmentWithoutBack(new DashBoardFragment());
     }
 
     @Override

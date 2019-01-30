@@ -31,7 +31,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/smallpadding"
-            android:text="@string/vacation"
+            android:text="@string/vacationpaid"
+            android:padding="@dimen/smalltextsize"
+            android:button="@drawable/radiocheckbox"
+            android:textColor="@color/black"
+            android:textSize="@dimen/verysmalltextsize" />
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/cbx_vacationunpaid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/smallpadding"
+            android:text="@string/vacationunpaid"
             android:padding="@dimen/smalltextsize"
             android:button="@drawable/radiocheckbox"
             android:textColor="@color/black"
@@ -42,7 +53,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/smallpadding"
-            android:text="@string/sick"
+            android:text="@string/sickpaid"
+            android:padding="@dimen/smalltextsize"
+            android:button="@drawable/radiocheckbox"
+            android:textColor="@color/black"
+            android:textSize="@dimen/verysmalltextsize" />
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/cbx_sickunpaid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/smallpadding"
+            android:text="@string/sickunpaid"
             android:padding="@dimen/smalltextsize"
             android:button="@drawable/radiocheckbox"
             android:textColor="@color/black"

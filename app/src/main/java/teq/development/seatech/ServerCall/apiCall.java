@@ -13,6 +13,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import teq.development.seatech.Dashboard.Skeleton.NotificationSkeleton;
 import teq.development.seatech.Dashboard.Skeleton.ReadNotificationSkeleton;
+import teq.development.seatech.Dashboard.Skeleton.ScheduleFilterSkeleton;
 import teq.development.seatech.Timesheet.DayJobStatus_Skeleton;
 
 /**
@@ -71,7 +72,7 @@ public interface apiCall {
             @Header("sessionID") String sessionid
     );
 
-    @POST("technician/technician/save-job-uploads-old.json")
+    @POST("technician/technician/save-job-uploads.json")
     @Headers("tokenID: 1234567890234dfg456")
     Call<ResponseBody> addJobImages(
             @Body RequestBody imageData,
@@ -79,7 +80,7 @@ public interface apiCall {
     );
 
     @FormUrlEncoded
-    @POST("tech-scheduled-jobs.json")
+    @POST("tech-scheduled-jobs-new.json")
     @Headers("tokenID: 1234567890234dfg456")
     Call<ResponseBody> getDashboradData(
             @Field("tech_id") String email,
@@ -216,7 +217,7 @@ public interface apiCall {
     @POST("jobs/get-estimation-request-old.json")
     @Headers("tokenID: 1234567890234dfg456")
     Call<ResponseBody> NeedEstimate(
-           /* @Field("tech_id") String techid,
+           /*@Field("tech_id") String techid,
             @Field("message") String message,
             @Field("job_id") String jobid,
             @Field("urgent") String urgent,*/
@@ -299,5 +300,15 @@ public interface apiCall {
     Call<ReadNotificationSkeleton> NotificationsRead(
             @Field("notifification_id") String notifification_id,
             @Header("sessionID") String sessionid
+    );
+
+    //For Schedule Section ------------
+    //Get All filter data with current week scheduled data
+    @FormUrlEncoded
+    @POST("schedule/schedule-filter-api.json")
+    @Headers("tokenID: 1234567890234dfg456")
+    Call<ScheduleFilterSkeleton> GetScheduleFilterData(
+            @Field("start_time") String start_time,
+            @Field("end_time") String end_time
     );
 }

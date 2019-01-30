@@ -68,6 +68,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import teq.development.seatech.App;
+import teq.development.seatech.Dashboard.Skeleton.UploadImageNewSkeleton;
 import teq.development.seatech.JobDetail.Skeleton.UploadImageSkeleton;
 import teq.development.seatech.LoginActivity;
 import teq.development.seatech.R;
@@ -198,6 +199,7 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
                 break;
             case R.id.options_gallery:
                 Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
+                i.putExtra("selected_path",all_path);
                 startActivityForResult(i, 200);
                 break;
         }
@@ -217,25 +219,29 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
             viewSwitcher.setVisibility(View.VISIBLE);
             viewSwitcher.setDisplayedChild(0);
          //   viewSwitcher.setDisplayedChild(1);
-            adapter.addAll(dataT);
+            adapter.addAll(dataT,new String[0]);
         } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
                 Log.e("imageUri below:", "" + Uri.fromFile(imageFile));
-                try {
+                if(imageFile.length() > 0) {
+                    try {
+                        all_path = new String[]{imageFile.getAbsolutePath()};
+                        viewSwitcher.setVisibility(View.VISIBLE);
+                        viewSwitcher.setDisplayedChild(1);
+                        imageLoader.displayImage("file://" + all_path[0], imgSinglePick);
+                    } catch (Exception e) {
+                    }
+                }
+            } else {
+                if(imageFile.length() > 0) {
+                    Uri fileUri = FileProvider.getUriForFile(getActivity(),
+                            "com.example.android.fileprovider", imageFile);
+                    Log.i("imageUri:", "" + fileUri);
                     all_path = new String[]{imageFile.getAbsolutePath()};
                     viewSwitcher.setVisibility(View.VISIBLE);
                     viewSwitcher.setDisplayedChild(1);
                     imageLoader.displayImage("file://" + all_path[0], imgSinglePick);
-                } catch (Exception e) {
                 }
-            } else {
-                Uri fileUri = FileProvider.getUriForFile(getActivity(),
-                        "com.example.android.fileprovider", imageFile);
-                Log.i("imageUri:", "" + fileUri);
-                all_path = new String[]{imageFile.getAbsolutePath()};
-                viewSwitcher.setVisibility(View.VISIBLE);
-                viewSwitcher.setDisplayedChild(1);
-                imageLoader.displayImage("file://" + all_path[0], imgSinglePick);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -358,11 +364,11 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
             // dialog.dismiss();
             return;
         }
-        if (et_laborperform.getText().toString().length() == 0) {
-            HandyObject.showAlert(getActivity(), getString(R.string.fieldempty));
-            //dialog.dismiss();
-            return;
-        }
+//        if (et_laborperform.getText().toString().length() == 0) {
+//            HandyObject.showAlert(getActivity(), getString(R.string.fieldempty));
+//            //dialog.dismiss();
+//            return;
+//        }
 
         MultipartBody responseBody = createResponseBody();
         if (HandyObject.checkInternetConnection(getActivity())) {
@@ -387,14 +393,19 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
                                 String jobid = jobjInside.getString("job_id");
 
                                 JSONArray jArray_upldImages = jobjInside.getJSONArray("uploads");
-                                ArrayList<String> arraylistupldImages = new ArrayList<>();
+                                ArrayList<UploadImageNewSkeleton> arraylistupldImages = new ArrayList<>();
                                 for (int k = 0; k < jArray_upldImages.length(); k++) {
-                                    arraylistupldImages.add(jArray_upldImages.getString(k));
+                                   // arraylistupldImages.add(jArray_upldImages.getString(k));
+                                    JSONObject jobj_images = jArray_upldImages.getJSONObject(k);
+                                    UploadImageNewSkeleton uploadimg_ske = new UploadImageNewSkeleton();
+                                    uploadimg_ske.setUrl(jobj_images.getString("img"));
+                                    uploadimg_ske.setDescription(jobj_images.getString("desc"));
+                                    arraylistupldImages.add(uploadimg_ske);
                                 }
 
                                 Intent intent = new Intent("updateImage");
                                 intent.putExtra("UpdatedImages_Jobid", jobid);
-                                intent.putStringArrayListExtra("updateImageArray", arraylistupldImages);
+                                intent.putParcelableArrayListExtra("updateImageArray", arraylistupldImages);
                                 LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
 
                                 String images = gson.toJson(arraylistupldImages);

@@ -70,7 +70,9 @@ public class TSWeekChildFragment extends Fragment {
     }
 
     private void TSMonthApi(String weekstartdate, String weekenddate) {
-        // HandyObject.showProgressDialog(getActivity());
+      //   HandyObject.showProgressDialog(getActivity());
+      //  HandyObject.showAlert(getActivity(),weekstartdate+"MMM"+weekenddate);
+        if (HandyObject.checkInternetConnection(getActivity())) {
         HandyObject.getApiManagerMain().TSWeekData(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), weekstartdate, weekenddate, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
@@ -127,13 +129,16 @@ public class TSWeekChildFragment extends Fragment {
                         //  HandyObject.stopProgressDialog();
                     }
                 });
+        } else {
+            HandyObject.showAlert(getActivity(), getString(R.string.check_internet_connection));
+        }
     }
 
     public void OnClickDate(String date) {
         DayJobStatusDetailFragment frgm = new DayJobStatusDetailFragment();
         Bundle bundle = new Bundle();
         // bundle.putString(AppConstants.SELECTED_JOBDAYSTATUS, HandyObject.parseDateToMDY(date));
-        bundle.putString(AppConstants.SELECTED_JOBDAYSTATUS, HandyObject.parseDateToMDYNew(date));
+        bundle.putString(AppConstants.SELECTED_JOBDAYSTATUS, date);
         frgm.setArguments(bundle);
         activity.replaceFragment(frgm);
     }

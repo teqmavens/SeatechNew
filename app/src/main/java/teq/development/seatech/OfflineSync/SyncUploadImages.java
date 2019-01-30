@@ -32,6 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import teq.development.seatech.App;
+import teq.development.seatech.Dashboard.Skeleton.UploadImageNewSkeleton;
 import teq.development.seatech.JobDetail.Skeleton.NeedEstimateSkeleton;
 import teq.development.seatech.JobDetail.Skeleton.UploadImageSkeleton;
 import teq.development.seatech.LoginActivity;
@@ -69,7 +70,7 @@ public class SyncUploadImages extends Job {
                     UploadImageSkeleton ske = new UploadImageSkeleton();
                     ske.setCreated_by(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.UPLOADIMAGESCREATEDBY)));
                     ske.setJob_id(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.UPLOADIMAGESJOBID)));
-                    ske.setDescription(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.UPLOADIMAGESJOBID)));
+                    ske.setDescription(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.UPLOADIMAGESDESCR)));
                     String allimages = cursor.getString(cursor.getColumnIndex(ParseOpenHelper.UPLOADIMAGESALLIMAGE));
                     ArrayList<File> file = gson.fromJson(allimages, type);
                     for (int i = 0; i < file.size(); i++) {
@@ -110,9 +111,14 @@ public class SyncUploadImages extends Job {
                             String jobid = jobjInside.getString("job_id");
 
                             JSONArray jArray_upldImages = jobjInside.getJSONArray("uploads");
-                            ArrayList<String> arraylistupldImages = new ArrayList<>();
+                            ArrayList<UploadImageNewSkeleton> arraylistupldImages = new ArrayList<>();
                             for (int k = 0; k < jArray_upldImages.length(); k++) {
-                                arraylistupldImages.add(jArray_upldImages.getString(k));
+                               // arraylistupldImages.add(jArray_upldImages.getString(k));
+                                JSONObject jobj_images = jArray_upldImages.getJSONObject(k);
+                                UploadImageNewSkeleton uploadimg_ske = new UploadImageNewSkeleton();
+                                uploadimg_ske.setUrl(jobj_images.getString("img"));
+                                uploadimg_ske.setDescription(jobj_images.getString("desc"));
+                                arraylistupldImages.add(uploadimg_ske);
                             }
                             String images = gson.toJson(arraylistupldImages);
                             if (arraylistupldImages.size() > 0) {

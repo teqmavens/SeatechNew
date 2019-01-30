@@ -76,19 +76,13 @@
                     app:placeholderImage="@drawable/no_media"
                     app:placeholderImageScaleType="centerCrop"
                     app:progressBarImage="@drawable/loading_imagerec" />
-                <!-- <ImageView
-                     android:id="@+id/profileimage"
-                     android:layout_width="120dp"
-                     android:layout_height="110dp"
-                     android:layout_marginTop="@dimen/smalltextsize"
-                     android:background="@color/appbasiccolor"
-                     app:layout_constraintTop_toTopOf="parent" />-->
+
                 <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/usernamekey"
+                    android:id="@+id/firstnamekey"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/smalltextsize"
-                    android:text="@string/usernameprofile"
+                    android:text="@string/firstnameprofile"
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/smalltextsize"
                     android:textStyle="bold"
@@ -96,15 +90,88 @@
                     app:layout_constraintTop_toTopOf="@+id/profileimage" />
 
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/firstname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="First"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/smalltextsize"
+                    app:layout_constraintLeft_toRightOf="@+id/firstnamekey"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/profileimage" />
+
+
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/secondnamekey"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mediumtextsize"
+                    android:text="@string/secondnameprofile"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/smalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/firstnamekey"
+                    app:layout_constraintTop_toBottomOf="@+id/firstname" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/secondname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Second"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/smalltextsize"
+                    app:layout_constraintLeft_toRightOf="@+id/secondnamekey"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/secondnamekey" />
+
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/thirdnamekey"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mediumtextsize"
+                    android:text="@string/thirdnameprofile"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/smalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/secondnamekey"
+                    app:layout_constraintTop_toBottomOf="@+id/secondname" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/thirdname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="third"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/smalltextsize"
+                    app:layout_constraintLeft_toRightOf="@+id/thirdnamekey"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/thirdnamekey" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/usernamekey"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mediumtextsize"
+                    android:text="@string/usernameprofile"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/smalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/thirdnamekey"
+                    app:layout_constraintTop_toBottomOf="@+id/thirdname" />
+
+                <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/username"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="John"
+                    android:text="username"
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/smalltextsize"
                     app:layout_constraintLeft_toRightOf="@+id/usernamekey"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/profileimage" />
+                    app:layout_constraintTop_toTopOf="@+id/usernamekey" />
+
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/genderkey"

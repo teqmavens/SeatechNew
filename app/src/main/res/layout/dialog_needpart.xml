@@ -945,10 +945,10 @@
                         android:layout_height="90dp"
                         android:layout_marginLeft="@dimen/verysmallpadding"
                         android:orientation="horizontal"
+                        android:layout_marginTop="10dp"
                         app:layout_constraintLeft_toRightOf="@+id/uploadimageview"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/needloaner">
-
                     </android.support.v7.widget.RecyclerView>
 
                     <android.support.v7.widget.AppCompatTextView
@@ -962,7 +962,6 @@
                         app:layout_constraintHorizontal_chainStyle="spread_inside"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/relimagesRecyclerView" />
-
 
                     <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/et_additnotes"

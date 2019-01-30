@@ -6,7 +6,7 @@
 
         <variable
             name="popupviewtechnotes"
-            type="teq.development.seatech.Dashboard.ViewTechNotesDialog"></variable>
+            type="teq.development.seatech.Dashboard.ViewAddTechNotesDialog"></variable>
     </data>
 
     <RelativeLayout
@@ -23,8 +23,54 @@
             android:orientation="vertical"
             android:padding="@dimen/smalltextsize">
 
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/toptext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/addtechnotes"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/checkboxyes" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="@dimen/verysmalltextsize"
+                    android:background="@color/black"></View>
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_addtechnotes"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="@dimen/verysmalltextsize"
+                    android:maxHeight="200dp"
+                    android:background="@drawable/dashboardlinebg"
+                    android:gravity="top"
+                    android:padding="@dimen/smallpadding"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/largetextsize"
+                    android:background="@drawable/bg_loginbtn"
+                    android:padding="@dimen/verysmalltextsize"
+                    android:text="@string/submit"
+                    android:textAllCaps="false"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold" />
+
+
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/toptext"
+                android:id="@+id/toptextview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/viewtechnotes"

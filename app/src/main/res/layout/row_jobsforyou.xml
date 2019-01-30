@@ -15,6 +15,7 @@
         app:cardElevation="@dimen/verysmallpadding">
 
         <LinearLayout
+            android:id="@+id/lltop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -34,16 +35,25 @@
                 android:id="@+id/jobticketno"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".09"
+                android:layout_weight=".08"
                 android:gravity="center"
                 android:text="@{rowjobsforyou.JobticketNo}"
                 android:textColor="@color/appbasiccolor"
                 android:textSize="@dimen/verysmalltextsize" />
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/flagtype"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@{rowjobsforyou.flagtype}"
+                android:layout_weight=".03"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"/>
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".1"
+                android:layout_weight=".09"
                 android:gravity="center"
                 android:text="@{rowjobsforyou.JobType}"
                 android:textColor="@color/black"
@@ -52,7 +62,7 @@
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".09"
+                android:layout_weight=".08"
                 android:gravity="center"
                 android:maxLines="2"
                 android:text="@{rowjobsforyou.BoatLocation}"
@@ -62,7 +72,7 @@
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".08"
+                android:layout_weight=".07"
                 android:gravity="center"
                 android:text="@{rowjobsforyou.time}"
                 android:textColor="@color/black"
@@ -80,7 +90,7 @@
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".1"
+                android:layout_weight=".08"
                 android:gravity="center"
                 android:text="@{rowjobsforyou.OtherMembers}"
                 android:textColor="@color/black"
@@ -89,7 +99,7 @@
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".09"
+                android:layout_weight=".08"
                 android:gravity="center"
                 android:text="@{rowjobsforyou.PartLocation}"
                 android:textColor="@color/black"
@@ -98,7 +108,7 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".07"
+                android:layout_weight=".06"
                 android:gravity="center">
 
                 <android.support.v7.widget.AppCompatImageView
@@ -110,7 +120,7 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".07"
+                android:layout_weight=".06"
                 android:gravity="center">
 
                 <android.support.v7.widget.AppCompatImageView
@@ -120,17 +130,52 @@
 
             </RelativeLayout>
 
-            <LinearLayout
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".1"
                 android:gravity="center">
 
+                <!--<android.support.v7.widget.AppCompatImageView-->
+                    <!--android:id="@+id/notesimage"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--app:srcCompat="@drawable/notes" />-->
+                <Spinner
+                    android:id="@+id/selecttype"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:textSize="@dimen/verysmallpadding"
+                    android:background="@drawable/dashboardlinepickup">
+
+                </Spinner>
                 <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/notesimage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/notes" />
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:paddingRight="@dimen/verysmallpadding"
+                    app:layout_constraintBottom_toBottomOf="@+id/selecttype"
+                    app:layout_constraintRight_toRightOf="@+id/selecttype"
+                    app:layout_constraintTop_toTopOf="@+id/selecttype"
+                    app:srcCompat="@drawable/ic_downarrow" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".06"
+                android:gravity="center">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/startimage"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:text="Start"
+                    android:gravity="center"
+                    android:textSize="8dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/appbasiccolor"
+                    android:background="@drawable/greencircle_trans" />
 
             </LinearLayout>
 

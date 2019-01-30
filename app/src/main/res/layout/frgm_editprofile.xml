@@ -100,12 +100,42 @@
                     app:layout_constraintRight_toRightOf="@+id/profileimage"
                     app:layout_constraintBottom_toBottomOf="@+id/profileimage"/>
 
+                <!--<android.support.v7.widget.AppCompatTextView-->
+                    <!--android:id="@+id/dobkey"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="@dimen/smalltextsize"-->
+                    <!--android:text="@string/dob"-->
+                    <!--android:textColor="@color/appbasiccolor"-->
+                    <!--android:layout_marginTop="@dimen/verysmallpadding"-->
+                    <!--android:textSize="@dimen/smalltextsize"-->
+                    <!--app:layout_constraintLeft_toRightOf="@+id/profileimage"-->
+                    <!--app:layout_constraintTop_toTopOf="@+id/profileimage" />-->
+
+                <!--<android.support.v7.widget.AppCompatEditText-->
+                    <!--android:id="@+id/et_dob"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--app:layout_constraintLeft_toRightOf="@+id/dobkey"-->
+                    <!--android:background="@drawable/etloginbg"-->
+                    <!--android:layout_marginLeft="@dimen/smalltextsize"-->
+                    <!--android:text="8th March,1992"-->
+                    <!--android:textSize="@dimen/verysmalltextsize"-->
+                    <!--android:textColor="@color/black"-->
+                    <!--android:focusable="false"-->
+                   <!--android:editable="false"-->
+                    <!--android:onClick="@{()->editprofile.OnClickDOB()}"-->
+                    <!--android:padding="@dimen/smallpadding"-->
+                    <!--app:layout_constraintTop_toTopOf="@+id/profileimage"-->
+                    <!--app:layout_constraintRight_toRightOf="parent"/>-->
+
+
                 <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/dobkey"
+                    android:id="@+id/firstnamekey"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/smalltextsize"
-                    android:text="@string/dob"
+                    android:layout_marginLeft="@dimen/largetextsize"
+                    android:text="@string/firstnameprofile"
                     android:textColor="@color/appbasiccolor"
                     android:layout_marginTop="@dimen/verysmallpadding"
                     android:textSize="@dimen/smalltextsize"
@@ -113,23 +143,100 @@
                     app:layout_constraintTop_toTopOf="@+id/profileimage" />
 
                 <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/et_dob"
+                    android:id="@+id/et_firstname"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintLeft_toRightOf="@+id/dobkey"
                     android:background="@drawable/etloginbg"
                     android:layout_marginLeft="@dimen/smalltextsize"
-                    android:text="8th March,1992"
+                    android:text="firstname"
                     android:textSize="@dimen/verysmalltextsize"
                     android:textColor="@color/black"
-                    android:focusable="false"
-                   android:editable="false"
-                    android:onClick="@{()->editprofile.OnClickDOB()}"
+
                     android:padding="@dimen/smallpadding"
                     app:layout_constraintTop_toTopOf="@+id/profileimage"
                     app:layout_constraintRight_toRightOf="parent"/>
 
 
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/middlenamekey"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/secondnameprofile"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/smalltextsize"
+                    android:layout_marginTop="@dimen/mediumtextsize"
+                    android:paddingTop="@dimen/verysmallpadding"
+                    app:layout_constraintEnd_toEndOf="@+id/firstnamekey"
+                    app:layout_constraintTop_toBottomOf="@+id/et_firstname" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_middlename"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/etloginbg"
+                    android:text="middlename"
+                    android:padding="@dimen/smallpadding"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textColor="@color/black"
+                    app:layout_constraintTop_toTopOf="@+id/middlenamekey"
+                    app:layout_constraintLeft_toLeftOf="@+id/et_firstname"
+                    app:layout_constraintRight_toRightOf="@+id/et_firstname"/>
+
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/lastnamekey"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/thirdnameprofile"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/smalltextsize"
+                    android:layout_marginTop="@dimen/mediumtextsize"
+                    android:paddingTop="@dimen/verysmallpadding"
+                    app:layout_constraintEnd_toEndOf="@+id/firstnamekey"
+                    app:layout_constraintTop_toBottomOf="@+id/et_middlename" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_lastname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/etloginbg"
+                    android:text="lastname"
+                    android:padding="@dimen/smallpadding"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textColor="@color/black"
+                    app:layout_constraintTop_toTopOf="@+id/lastnamekey"
+                    app:layout_constraintLeft_toLeftOf="@+id/et_middlename"
+                    app:layout_constraintRight_toRightOf="@+id/et_middlename"/>
+
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/dobkey"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dob"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/smalltextsize"
+                    android:layout_marginTop="@dimen/mediumtextsize"
+                    android:paddingTop="@dimen/verysmallpadding"
+                    app:layout_constraintEnd_toEndOf="@+id/firstnamekey"
+                    app:layout_constraintTop_toBottomOf="@+id/et_lastname" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_dob"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/etloginbg"
+                    android:text="8th March,1992"
+                    android:padding="@dimen/smallpadding"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textColor="@color/black"
+                    android:focusable="false"
+                    android:editable="false"
+                    android:onClick="@{()->editprofile.OnClickDOB()}"
+                    app:layout_constraintTop_toTopOf="@+id/dobkey"
+                    app:layout_constraintLeft_toLeftOf="@+id/et_lastname"
+                    app:layout_constraintRight_toRightOf="@+id/et_lastname"/>
 
 
                 <android.support.v7.widget.AppCompatTextView
@@ -228,13 +335,23 @@
                     app:layout_constraintEnd_toEndOf="@+id/dobkey"
                     app:layout_constraintTop_toBottomOf="@+id/spinnergender" />
 
-                <android.support.v7.widget.AppCompatCheckBox
+               <!-- <android.support.v7.widget.AppCompatCheckBox
                     android:id="@+id/checkboxstatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
                     android:enabled="false"
                     android:button="@drawable/status_customcheckbox"
+                    app:layout_constraintTop_toBottomOf="@+id/spinnergender"
+                    android:layout_marginTop="@dimen/mediumtextsize"
+                    app:layout_constraintLeft_toLeftOf="@+id/et_dob"/>-->
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/checkboxstatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/smalltextsize"
                     app:layout_constraintTop_toBottomOf="@+id/spinnergender"
                     android:layout_marginTop="@dimen/mediumtextsize"
                     app:layout_constraintLeft_toLeftOf="@+id/et_dob"/>

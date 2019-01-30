@@ -63,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
 
         /*Check for Automatic login*/
         if (HandyObject.getPrams(LoginActivity.this, AppConstants.IS_LOGIN).equalsIgnoreCase("login")) {
+            //  HandyObject.putPrams(LoginActivity.this, AppConstants.ISJOB_RUNNING, "no");
             movetoDashboard();
         } else {
             if (HandyObject.checkInternetConnection(this)) {
@@ -101,10 +102,13 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             HandyObject.showAlert(this, getString(R.string.check_internet_connection));
         }
+        Log.e("DEVICETOKEN", deviceToken);
     }
 
     private void loginTask(String username, String pwd, String token) {
         HandyObject.showProgressDialog(this);
+        //  Log.e("DEVICETOKEN",token);
+        //  HandyObject.showAlert(LoginActivity.this,token);
         HandyObject.getApiManagerType().userLogin(username, pwd, token)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
@@ -144,6 +148,9 @@ public class LoginActivity extends AppCompatActivity {
             HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_ID, jobj.getString("id"));
             HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQPARENT_ID, jobj.getString("parent_id"));
             HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_USERNAME, jobj.getString("username"));
+            HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_FIRSTNAME, jobj.getString("firstname"));
+            HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_MIDDLENAME, jobj.getString("middlename"));
+            HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_LASTNAME, jobj.getString("lastname"));
             HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_EMAIL, jobj.getString("email"));
             HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_GENDER, jobj.getString("gender"));
             HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_IMAGE, jobj.getString("image"));
@@ -155,15 +162,17 @@ public class LoginActivity extends AppCompatActivity {
             HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_JOININGDATE, jobj.getString("joining_date"));
             HandyObject.putPrams(LoginActivity.this, AppConstants.JOBRUNNING_TOTALTIME, "0");
             HandyObject.putPrams(LoginActivity.this, AppConstants.ISJOB_RUNNING, "no");
-            HandyObject.putbooleanPrams(LoginActivity.this,AppConstants.PICKJOBPERMISSION,jobj.getBoolean("permission"));
-          //  HandyObject.putPrams(LoginActivity.this, AppConstants.IS_LOGIN, "login");
-            HandyObject.putIntPrams(LoginActivity.this,AppConstants.LCJOBCOMPLETION_COUNT,0);
-            HandyObject.putIntPrams(LoginActivity.this,AppConstants.NEEDPART_COUNT,0);
-            if (binding.checkboxremb.isChecked()) {
-                HandyObject.putPrams(LoginActivity.this, AppConstants.IS_LOGIN, "login");
-            } else {
-                HandyObject.putPrams(LoginActivity.this, AppConstants.IS_LOGIN, "notlogin");
-            }
+            HandyObject.putbooleanPrams(LoginActivity.this, AppConstants.PICKJOBPERMISSION, jobj.getBoolean("permission"));
+            //  HandyObject.putPrams(LoginActivity.this, AppConstants.IS_LOGIN, "login");
+            HandyObject.putIntPrams(LoginActivity.this, AppConstants.LCJOBCOMPLETION_COUNT, 0);
+            HandyObject.putIntPrams(LoginActivity.this, AppConstants.NEEDPART_COUNT, 0);
+//            if (binding.checkboxremb.isChecked()) {
+//                HandyObject.putPrams(LoginActivity.this, AppConstants.IS_LOGIN, "login");
+//            } else {
+//                HandyObject.putPrams(LoginActivity.this, AppConstants.IS_LOGIN, "notlogin");
+//            }
+
+            HandyObject.putPrams(LoginActivity.this, AppConstants.IS_LOGIN, "login");
             HandyObject.showAlert(LoginActivity.this, msg);
             movetoDashboard();
         } catch (Exception e) {
@@ -331,11 +340,13 @@ public class LoginActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(jsonResponse);
                             ArrayList<ManufacturerSkeleton> manuArrayList = new ArrayList<>();
                             if (jsonObject.getString("status").toLowerCase().equals("success")) {
-                                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                                JSONArray jsonArray_manuf = jsonObject1.getJSONArray("manufacturers");
+                                JSONArray jsonArray_lc = jsonObject1.getJSONArray("labor_codes");
                                 sqLiteDatabase = ParseOpenHelper.getInstance(LoginActivity.this).getWritableDatabase();
                                 gson = new Gson();
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject jobj = jsonArray.getJSONObject(i);
+                                for (int i = 0; i < jsonArray_manuf.length(); i++) {
+                                    JSONObject jobj = jsonArray_manuf.getJSONObject(i);
                                     ManufacturerSkeleton ske = new ManufacturerSkeleton();
                                     ske.setId(jobj.getString("id"));
                                     ske.setName(jobj.getString("name"));
@@ -345,6 +356,15 @@ public class LoginActivity extends AppCompatActivity {
                                     ske.setNeedProduct(jobj.getString("need_product"));
                                     manuArrayList.add(ske);
                                 }
+
+                                StringBuilder sb = new StringBuilder();
+                                for (int i = 0; i < jsonArray_lc.length(); i++) {
+                                    JSONObject jobj = jsonArray_lc.getJSONObject(i);
+                                    sb.append(jobj.getString("code_name") + ",");
+                                }
+
+                                sb.setLength(sb.length() - 1);
+                                HandyObject.putPrams(LoginActivity.this, AppConstants.JOBRUNNING_LC, sb.toString());
                                 String manufactureData = gson.toJson(manuArrayList);
                                 ContentValues cv = new ContentValues();
                                 cv.put(ParseOpenHelper.ALLMANUFACTURER, manufactureData);

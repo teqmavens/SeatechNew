@@ -104,15 +104,20 @@ public class EditProfileFragment extends Fragment {
     }
 
     private void setLocaldata() {
+        binding.etFirstname.setText(HandyObject.getPrams(context, AppConstants.LOGINTEQ_FIRSTNAME));
+        binding.etMiddlename.setText(HandyObject.getPrams(context, AppConstants.LOGINTEQ_MIDDLENAME));
+        binding.etLastname.setText(HandyObject.getPrams(context, AppConstants.LOGINTEQ_LASTNAME));
         binding.etDob.setText(HandyObject.getPrams(context, AppConstants.LOGINTEQ_DOB));
         binding.etPhone.setText(HandyObject.getPrams(context, AppConstants.LOGINTEQ_PHONE));
         binding.etDescription.setText(HandyObject.getPrams(context, AppConstants.LOGINTEQ_DESCRIPTION));
         binding.etRole.setText(HandyObject.getPrams(context, AppConstants.LOGINTEQ_ROLE));
         binding.profileimage.setImageURI(HandyObject.getPrams(context, AppConstants.LOGINTEQ_IMAGE));
         if (HandyObject.getPrams(context, AppConstants.LOGINTEQ_STATUS).equalsIgnoreCase("1")) {
-            binding.checkboxstatus.setChecked(true);
+           // binding.checkboxstatus.setChecked(true);
+            binding.checkboxstatus.setText("ACTIVE");
         } else {
-            binding.checkboxstatus.setChecked(false);
+           // binding.checkboxstatus.setChecked(false);
+            binding.checkboxstatus.setText("INACTIVE");
         }
 
         myCalendar = Calendar.getInstance();
@@ -122,7 +127,26 @@ public class EditProfileFragment extends Fragment {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel();
+
+                if (view.isShown()) {
+                    long selectedMilli = myCalendar.getTimeInMillis();
+                    Date datePickerDate = new Date(selectedMilli);
+
+                    SimpleDateFormat datePickerDate_f = new SimpleDateFormat("MM/dd/yyyy");
+                    String formattedDate = datePickerDate_f.format(datePickerDate);
+                    String formattedDatenew = datePickerDate_f.format(new Date());
+
+                    if (formattedDate.split("/")[1].equalsIgnoreCase(formattedDatenew.split("/")[1])) {
+                        updateLabel();
+                    }
+                    else if (datePickerDate.before(new Date())) {
+                        HandyObject.showAlert(getActivity(), "Can't Select Previous date");
+                    }
+                    else {
+                        updateLabel();
+                    }
+                }
+
             }
         };
         List<String> list = new ArrayList<String>();
@@ -294,19 +318,24 @@ public class EditProfileFragment extends Fragment {
             // Check for android version to show image
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
                 Log.e("imageUri below:", "" + Uri.fromFile(imageFile));
-                try {
-                    /*Set captured image to ImageView*/
-                    Bitmap bitmap = new UserPicture(Uri.fromFile(imageFile), context.getContentResolver()).getBitmap();
-                    binding.profileimage.setImageBitmap(bitmap);
-                } catch (Exception e) {
+                if(imageFile.length() > 0) {
+                    try {
+                        /*Set captured image to ImageView*/
+                        Bitmap bitmap = new UserPicture(Uri.fromFile(imageFile), context.getContentResolver()).getBitmap();
+                        binding.profileimage.setImageBitmap(bitmap);
+                    } catch (Exception e) {
+                    }
                 }
-
             } else {
                 /*Set captured image to ImageView*/
-                Uri fileUri = FileProvider.getUriForFile(getActivity(), "com.example.android.fileprovider", imageFile);
-                Log.i("imageUri:", "" + fileUri);
-                Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-                binding.profileimage.setImageBitmap(myBitmap);
+                if(imageFile.length() > 0) {
+                    try {
+                        Uri fileUri = FileProvider.getUriForFile(getActivity(), "com.example.android.fileprovider", imageFile);
+                        Log.i("imageUri:", "" + fileUri);
+                        Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+                        binding.profileimage.setImageBitmap(myBitmap);
+                    } catch (Exception e){}
+                }
             }
         }
     }
@@ -458,73 +487,89 @@ public class EditProfileFragment extends Fragment {
 
     public void OnClickSave() {
         if (binding.spinnergender.getSelectedItem().toString().equalsIgnoreCase("Male")) {
-            UpdateProfileTask(binding.etPhone.getText().toString(), "M", HandyObject.getPrams(context, AppConstants.LOGIN_SESSIONID), parseDateToyyyyMMdd(binding.etDob.getText().toString()));
+            UpdateProfileTask(binding.etFirstname.getText().toString(),binding.etMiddlename.getText().toString(),binding.etLastname.getText().toString(),binding.etPhone.getText().toString(), "M", HandyObject.getPrams(context, AppConstants.LOGIN_SESSIONID), parseDateToyyyyMMdd(binding.etDob.getText().toString()));
         } else {
-            UpdateProfileTask(binding.etPhone.getText().toString(), "F", HandyObject.getPrams(context, AppConstants.LOGIN_SESSIONID), parseDateToyyyyMMdd(binding.etDob.getText().toString()));
+            UpdateProfileTask(binding.etFirstname.getText().toString(),binding.etMiddlename.getText().toString(),binding.etLastname.getText().toString(),binding.etPhone.getText().toString(), "F", HandyObject.getPrams(context, AppConstants.LOGIN_SESSIONID), parseDateToyyyyMMdd(binding.etDob.getText().toString()));
         }
     }
 
     /*API fo updating user profile*/
-    private void UpdateProfileTask(String phone, String gender, String sessionid, String dob) {
-        MultipartBody.Builder builder = new MultipartBody.Builder();
-        builder.setType(MultipartBody.FORM)
-                .addFormDataPart("user_id", md5(HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)))
-                .addFormDataPart("parent_id", HandyObject.getPrams(context, AppConstants.LOGINTEQPARENT_ID))
-                .addFormDataPart("description", binding.etDescription.getText().toString())
-                .addFormDataPart("gender", gender)
-                .addFormDataPart("phone", phone)
-                .addFormDataPart("dob", dob)
-                .addFormDataPart("email", HandyObject.getPrams(context, AppConstants.LOGINTEQ_EMAIL));
-        if (imageFile == null) {
+    private void UpdateProfileTask(String firstname,String secondname,String thirdname,String phone, String gender, String sessionid, String dob) {
+        if (HandyObject.checkInternetConnection(getActivity())) {
+            MultipartBody.Builder builder = new MultipartBody.Builder();
+            builder.setType(MultipartBody.FORM)
+                    .addFormDataPart("firstname", firstname)
+                    .addFormDataPart("middlename", secondname)
+                    .addFormDataPart("lastname", thirdname)
+                    .addFormDataPart("user_id", md5(HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)))
+                    .addFormDataPart("parent_id", HandyObject.getPrams(context, AppConstants.LOGINTEQPARENT_ID))
+                    .addFormDataPart("description", binding.etDescription.getText().toString())
+                    .addFormDataPart("gender", gender)
+                    .addFormDataPart("phone", phone)
+                    .addFormDataPart("dob", dob)
+                    .addFormDataPart("email", HandyObject.getPrams(context, AppConstants.LOGINTEQ_EMAIL));
+            if (imageFile != null) {
+                if (imageFile.length() > 0) {
+                    builder.setType(MultipartBody.FORM).addFormDataPart("image", "images.png", RequestBody.create(MEDIA_TYPE_FORM, imageFile)).build();
+                }
+            }
+
+
+      /*  if (imageFile == null) {
+            Log.e("FILENULL","FILENULL");
         } else {
+            Log.e("FILENOTTT","FILENOTTT");
             builder.setType(MultipartBody.FORM).addFormDataPart("image", "images.png", RequestBody.create(MEDIA_TYPE_FORM, imageFile)).build();
-        }
-        /* builder.setType(MultipartBody.FORM).addFormDataPart("image", "images.png", RequestBody.create(MEDIA_TYPE_FORM, imageFile)).build();*/
-        MultipartBody requestBody = builder.build();
-        HandyObject.showProgressDialog(getActivity());
+        }*/
+            /* builder.setType(MultipartBody.FORM).addFormDataPart("image", "images.png", RequestBody.create(MEDIA_TYPE_FORM, imageFile)).build();*/
+            MultipartBody requestBody = builder.build();
+            HandyObject.showProgressDialog(getActivity());
 
-        HandyObject.getApiManagerTypeAdmin().updateProfile(requestBody, sessionid).enqueue(
-                new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        try {
-                            String jsonResponse = response.body().string();
-                            JSONObject jsonObject = new JSONObject(jsonResponse);
+            HandyObject.getApiManagerTypeAdmin().updateProfile(requestBody, sessionid).enqueue(
+                    new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            try {
+                                String jsonResponse = response.body().string();
+                                JSONObject jsonObject = new JSONObject(jsonResponse);
 
-                            if (jsonObject.getString("status").equalsIgnoreCase("success")) {
-                                // commonObjects.myToast(getActivity(), getString(R.string.image_load_error));
-                                HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
-                                getActivity().getSupportFragmentManager().popBackStack();
-                            } else {
-                                HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
-                                if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
-                                    HandyObject.clearpref(getActivity());
-                                    HandyObject.deleteAllDatabase(getActivity());
-                                    App.appInstance.stopTimer();
-                                    Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
-                                    startActivity(intent_reg);
-                                    getActivity().finish();
-                                    getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                if (jsonObject.getString("status").equalsIgnoreCase("success")) {
+                                    // commonObjects.myToast(getActivity(), getString(R.string.image_load_error));
+                                    HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
+                                    getActivity().getSupportFragmentManager().popBackStack();
+                                } else {
+                                    HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
+                                    if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
+                                        HandyObject.clearpref(getActivity());
+                                        HandyObject.deleteAllDatabase(getActivity());
+                                        App.appInstance.stopTimer();
+                                        Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
+                                        startActivity(intent_reg);
+                                        getActivity().finish();
+                                        getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                    }
                                 }
-                            }
 
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } finally {
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } finally {
+                                HandyObject.stopProgressDialog();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Log.e("responseError", t.getMessage());
+                            // commonObjects.showHideProgressBar(getActivity());
                             HandyObject.stopProgressDialog();
                         }
                     }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.e("responseError", t.getMessage());
-                        // commonObjects.showHideProgressBar(getActivity());
-                        HandyObject.stopProgressDialog();
-                    }
-                }
-        );
+            );
+        } else {
+            HandyObject.showAlert(getActivity(), getString(R.string.check_internet_connection));
+        }
     }
 
     /*Create MD5 for user login id*/

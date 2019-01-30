@@ -123,7 +123,7 @@ public class JobDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.frgm_jobdetail, container, false);
         binding = DataBindingUtil.bind(rootView);
       //  binding.setFrgmjobdetail(this);
-        vmjobdetail = new VMJobDetail(getActivity(),binding,getFragmentManager(),JobDetailFragment.this);
+        vmjobdetail = new VMJobDetail(getActivity(),binding,getFragmentManager(),JobDetailFragment.this,(DashBoardActivity) getActivity());
         //initViews();
         return rootView;
     }
@@ -221,7 +221,7 @@ public class JobDetailFragment extends Fragment {
                 lLManagerImages.setOrientation(LinearLayoutManager.HORIZONTAL);
                 binding.rcylrviewUpldedImages.setLayoutManager(lLManagerImages);
                 arrayListUpdateImage.addAll(intent.getStringArrayListExtra("updateImageArray"));
-                adapterUploadedImages = new AdapterUploadedImages(context, arrayListUpdateImage, getFragmentManager());
+              //  adapterUploadedImages = new AdapterUploadedImages(context, arrayListUpdateImage, getFragmentManager());
                 binding.rcylrviewUpldedImages.setAdapter(adapterUploadedImages);
             } else {
                 arrayListUpdateImage.clear();
@@ -480,8 +480,8 @@ public class JobDetailFragment extends Fragment {
                 LinearLayoutManager lLManagerImages = new LinearLayoutManager(getActivity());
                 lLManagerImages.setOrientation(LinearLayoutManager.HORIZONTAL);
                 binding.rcylrviewUpldedImages.setLayoutManager(lLManagerImages);
-                arrayListUpdateImage = arralistAllJobs.get(position).getArrayListImages();
-                adapterUploadedImages = new AdapterUploadedImages(context, arrayListUpdateImage, getFragmentManager());
+              //  arrayListUpdateImage = arralistAllJobs.get(position).getArrayListImages();
+             //   adapterUploadedImages = new AdapterUploadedImages(context, arrayListUpdateImage, getFragmentManager());
                 //binding.rc.setNestedScrollingEnabled(false);
                 binding.rcylrviewUpldedImages.setAdapter(adapterUploadedImages);
             }
@@ -575,9 +575,7 @@ public class JobDetailFragment extends Fragment {
                         calendar.add(Calendar.HOUR_OF_DAY, Integer.parseInt(runinngtime.split(":")[0]));
 
                         int running_mins = Integer.parseInt(runinngtime.split(":")[1]);
-
                         calendar.add(Calendar.MINUTE, Integer.parseInt(runinngtime.split(":")[1]));
-
                         calendar.set(Calendar.MINUTE, HandyObject.getNear15MinuteLB(Integer.parseInt(manageMinutes(calendar.get(Calendar.MINUTE)))));
                         if (HandyObject.getNear15MinuteLB(Integer.parseInt(manageMinutes(calendar.get(Calendar.MINUTE)))) == 0) {
                             String withoutzero = String.valueOf(running_mins).replaceFirst("^0+(?!$)", "");
@@ -773,6 +771,10 @@ public class JobDetailFragment extends Fragment {
         dialogNeedChangeOrder();
     }
 
+//    public void onClickAddDashboardNotes() {
+//        HandyObject.showAlert(context,"Still Need to add api");
+//    }
+
     public void OnClickViewComment() {
         dialogViewComment("viewcommment", arrayListLaborPerf);
     }
@@ -791,7 +793,7 @@ public class JobDetailFragment extends Fragment {
     }
 
     public void OnClickAddTech() {
-        dialogAddTechNotes();
+        dialogAddTechNotes("add");
     }
 
     public void OnClickUpload() {
@@ -820,7 +822,7 @@ public class JobDetailFragment extends Fragment {
         }
         ft.addToBackStack(null);
         // Create and show the dialog.
-        DialogFragment newFragment = JobStatusDialog.newInstance(arralistAllJobs.get(binding.jobspinner.getSelectedItemPosition()).getJobticketNo(), posi, allValues, editvalues);
+        DialogFragment newFragment = JobStatusDialog.newInstance(arralistAllJobs.get(binding.jobspinner.getSelectedItemPosition()).getJobticketNo(), "", allValues, editvalues);
         newFragment.setCancelable(false);
         newFragment.show(ft, "dialog");
         App.appInstance.pauseTimer();
@@ -874,7 +876,7 @@ public class JobDetailFragment extends Fragment {
         newFragment.show(ft, "dialogviewcomment");
     }
 
-    private void dialogAddTechNotes() {
+    private void dialogAddTechNotes(String type) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("addtech");
         if (prev != null) {
@@ -882,7 +884,7 @@ public class JobDetailFragment extends Fragment {
         }
         ft.addToBackStack(null);
         // Create and show the dialog.
-        DialogFragment newFragment = AddTechNotesDialog.newInstance(arralistAllJobs.get(binding.jobspinner.getSelectedItemPosition()).getJobticketNo());
+        DialogFragment newFragment = AddTechNotesDialog.newInstance(arralistAllJobs.get(binding.jobspinner.getSelectedItemPosition()).getJobticketNo(),type);
         newFragment.show(ft, "addtech");
     }
 
@@ -901,12 +903,26 @@ public class JobDetailFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e("onDestroyJob", "onDestroyJob");
+        Log.e("onDestroyRUNNNNN", "onDestroyRUNNNNN");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.e("onPauseRUNNNNN", "onPauseRUNNNNN");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.e("onStopRUNNNNN", "onStopRUNNNNN");
+        vmjobdetail.callOnStopView();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Log.e("onDestryViewRUNNNN", "onDestryViewRUNNNN");
         vmjobdetail.callOnDestroyView();
        /* try {
             LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(reciever);
@@ -1199,7 +1215,7 @@ public class JobDetailFragment extends Fragment {
                 ske.setArrayList(arrayListDash);
                 ske.setArrayListLaborPerf(arrayListLaborPerform);
                 ske.setArrayListOffTheRecord(arrayListOffTheRecordList);
-                ske.setArrayListImages(arrayListUploadImages);
+            //    ske.setArrayListImages(arrayListUploadImages);
                 ske.setArrayListParts(arrayListParts);
                 //  ske.setArrayListUrgent(arrayListUrgentMsg);
                 arralistAllJobs.add(ske);
@@ -1220,7 +1236,7 @@ public class JobDetailFragment extends Fragment {
                // binding.etLaborperform.setText(HandyObject.getPrams(context, AppConstants.JOBRUNNING_ETLABORPERFORM));
                 binding.jobspinner.setSelection(HandyObject.getIntPrams(context, AppConstants.JOBRUNNING_INDEX));
             } else if (getArguments() != null) {
-                binding.jobspinner.setSelection(Integer.parseInt(getArguments().getString("posinew")));
+               binding.jobspinner.setSelection(Integer.parseInt(getArguments().getString("posinew")));
             }
             binding.jobspinner.setOnItemSelectedListener(new JobItemSelectedListener());
             // HandyObject.stopProgressDialog();

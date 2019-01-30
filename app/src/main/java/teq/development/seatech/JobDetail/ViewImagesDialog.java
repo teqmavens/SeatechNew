@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -25,16 +26,17 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
+import teq.development.seatech.Dashboard.Skeleton.UploadImageNewSkeleton;
 import teq.development.seatech.R;
 
 public class ViewImagesDialog extends DialogFragment {
 
     public static int position;
-    public static ArrayList<String> arraylistImages;
+    public static ArrayList<UploadImageNewSkeleton> arraylistImages;
     TextView dynamic_number, fix_number;
     Dialog dialog;
 
-    public static ViewImagesDialog newInstance(int num, ArrayList<String> arraylist) {
+    public static ViewImagesDialog newInstance(int num, ArrayList<UploadImageNewSkeleton> arraylist) {
         ViewImagesDialog f = new ViewImagesDialog();
         position = num;
         arraylistImages = arraylist;
@@ -53,6 +55,7 @@ public class ViewImagesDialog extends DialogFragment {
         final ImageView cross = (ImageView) rootView.findViewById(R.id.cross);
         TextView moveto_prev = (TextView) rootView.findViewById(R.id.moveto_prev);
         TextView moveto_next = (TextView) rootView.findViewById(R.id.moveto_next);
+         // description = (TextView) rootView.findViewById(R.id.description);
         moveto_prev.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(getActivity(), R.drawable.leftarrow), null, null, null);
         moveto_next.setCompoundDrawablesWithIntrinsicBounds(null, null, AppCompatResources.getDrawable(getActivity(), R.drawable.rightarrow), null);
         dynamic_number = (TextView) rootView.findViewById(R.id.dynamic_number);
@@ -97,6 +100,7 @@ public class ViewImagesDialog extends DialogFragment {
             @Override
             public void onClick(View view) {
                 dialog_viewpager.setCurrentItem(dialog_viewpager.getCurrentItem() - 1, true);
+
             }
         });
 
@@ -104,6 +108,7 @@ public class ViewImagesDialog extends DialogFragment {
             @Override
             public void onClick(View view) {
                 dialog_viewpager.setCurrentItem(dialog_viewpager.getCurrentItem() + 1, true);
+
             }
         });
 
@@ -165,15 +170,17 @@ public class ViewImagesDialog extends DialogFragment {
         public Object instantiateItem(ViewGroup container, final int position) {
             View itemView = mLayoutInflater.inflate(R.layout.row_dialogfullimage, container, false);
             ImageView imageView = (ImageView) itemView.findViewById(R.id.centerimage);
+            TextView description = (TextView) itemView.findViewById(R.id.description);
             fix_number.setText("/" + String.valueOf(arraylistImages.size()));
-            Glide.with(getActivity()).load(arraylistImages.get(position)).placeholder(R.drawable.no_media).dontAnimate().diskCacheStrategy(DiskCacheStrategy.NONE).into(imageView);
+            description.setText(arraylistImages.get(position).getDescription());
+            Glide.with(getActivity()).load(arraylistImages.get(position).getUrl()).placeholder(R.drawable.no_media).dontAnimate().diskCacheStrategy(DiskCacheStrategy.NONE).into(imageView);
             container.addView(itemView);
             return itemView;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((RelativeLayout) object);
+            container.removeView((LinearLayout) object);
         }
     }
 }

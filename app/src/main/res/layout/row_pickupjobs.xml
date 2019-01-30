@@ -21,13 +21,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="@dimen/smallpadding">
-
+            <!--android:text="@{rowpickupjobs.customerName}"-->
             <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/customername"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".22"
                 android:gravity="center"
-                android:text="@{rowpickupjobs.customerName}"
+
                 android:textColor="@color/black"
                 android:textSize="@dimen/verysmalltextsize" />
 
@@ -36,12 +37,12 @@
                 android:layout_height="match_parent"
                 android:layout_weight=".22"
                 android:gravity="center">
-
+                <!--android:text="@{rowpickupjobs.jobTicketNo}"-->
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/ticketno"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{rowpickupjobs.jobTicketNo}"
+
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/verysmalltextsize" />
             </LinearLayout>
@@ -53,22 +54,25 @@
                 android:text="123456"
                 android:textColor="@color/appbasiccolor"
                 android:textSize="@dimen/verysmalltextsize" />-->
-
+            <!--android:text="@{rowpickupjobs.CustomerType}"-->
             <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/customertype"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".2"
                 android:gravity="center"
-                android:text="@{rowpickupjobs.CustomerType}"
+
                 android:textColor="@color/black"
                 android:textSize="@dimen/verysmalltextsize" />
 
+            <!--android:text="@{rowpickupjobs.RegionName}"-->
             <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/regionname"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".18"
                 android:gravity="center"
-                android:text="@{rowpickupjobs.RegionName}"
+
                 android:textColor="@color/black"
                 android:textSize="@dimen/verysmalltextsize" />
 

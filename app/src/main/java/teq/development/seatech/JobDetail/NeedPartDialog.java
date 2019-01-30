@@ -100,7 +100,7 @@ public class NeedPartDialog extends DialogFragment {
     File imageFile;
     Calendar myCalendarStartDate;
     DatePickerDialog.OnDateSetListener dateStart;
-    String[] all_path = null;
+   static String[] all_path = null;
     public static String jobid;
     SQLiteDatabase database;
     Gson gson;
@@ -549,11 +549,24 @@ public class NeedPartDialog extends DialogFragment {
                 myCalendarStartDate.set(Calendar.YEAR, year);
                 myCalendarStartDate.set(Calendar.MONTH, monthOfYear);
                 myCalendarStartDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+              //  view.setMinDate(System.currentTimeMillis() - 1000);
                 if (view.isShown()) {
                     long selectedMilli = myCalendarStartDate.getTimeInMillis();
                     Date datePickerDate = new Date(selectedMilli);
-                    // binding.cbxneedDeadline.setChecked(false);
-                    binding.cbxneedNormal.setText(HandyObject.getDateFromPickerNew(myCalendarStartDate.getTime()));
+
+                    SimpleDateFormat datePickerDate_f = new SimpleDateFormat("MM/dd/yyyy");
+                    String formattedDate = datePickerDate_f.format(datePickerDate);
+                    String formattedDatenew = datePickerDate_f.format(new Date());
+
+                    if (formattedDate.split("/")[1].equalsIgnoreCase(formattedDatenew.split("/")[1])) {
+                        binding.cbxneedNormal.setText(HandyObject.getDateFromPickerNew(myCalendarStartDate.getTime()));
+                    }
+                    else if (datePickerDate.before(new Date())) {
+                        HandyObject.showAlert(getActivity(), "Can't Select Previous date");
+                    }
+                    else {
+                        binding.cbxneedNormal.setText(HandyObject.getDateFromPickerNew(myCalendarStartDate.getTime()));
+                    }
                 }
             }
         };
@@ -582,6 +595,7 @@ public class NeedPartDialog extends DialogFragment {
         if (binding.checkboxYesurgent.isChecked() == false && binding.checkboxNourgent.isChecked() == false) {
             HandyObject.showAlert(getActivity(), getString(R.string.selectneedurgent));
         } else if (binding.etSupplyamount.getText().toString().length() == 0) {
+            binding.etSupplyamount.requestFocus();
             HandyObject.showAlert(getActivity(), getString(R.string.partdesc_empty));
         } else if (binding.cbxneedDeadline.isChecked() == false && binding.checkboxNeedNormal.isChecked() == false) {
             HandyObject.showAlert(getActivity(), getString(R.string.howfastneedit));
@@ -615,7 +629,7 @@ public class NeedPartDialog extends DialogFragment {
                     howfast_Date = "0000-00-00";
                 }
 
-                AddPartToSrver(NeedUrgent, binding.etSupplyamount.getText().toString(), howfast_Date, price_approval_required, binding.etQuantityNeeded.getText().toString(), manufacturerArrayList.get(binding.spinnerSelectmanuf.getSelectedItemPosition()).getId(), binding.etPartno.getText().toString(), binding.etQuantityNeeded.getText().toString(), "", "", "", "", "", "", "", "", binding.etAdditnotes.getText().toString());
+                AddPartToSrver(NeedUrgent, binding.etSupplyamount.getText().toString(), howfast_Date, price_approval_required,"0", manufacturerArrayList.get(binding.spinnerSelectmanuf.getSelectedItemPosition()).getId(), binding.etPartno.getText().toString(), binding.etQuantityNeeded.getText().toString(), "", "", "", "", "", "", "", "", binding.etAdditnotes.getText().toString());
             }
         } else if (binding.cbPartrepair.isChecked() == true && binding.cbPartsale.isChecked() == false) {
 
@@ -684,7 +698,7 @@ public class NeedPartDialog extends DialogFragment {
                         need_loaner = "0";
                     }
 
-                    AddPartToSrver(NeedUrgent, binding.etSupplyamount.getText().toString(), howfast_Date, price_approval_required, "0", manufacturerArrayList.get(binding.spinnerSelectmanuf.getSelectedItemPosition()).getId(), binding.etPartno.getText().toString(), binding.etQuantityNeeded.getText().toString(), binding.etSerialno.getText().toString(), binding.etFailuredesc.getText().toString(), binding.etTechsupportname.getText().toString(), binding.etRmaorcase.getText().toString(), deemthisWarranty, advance_replacement, partsold_byseatech, need_loaner, binding.etAdditnotes.getText().toString());
+                    AddPartToSrver(NeedUrgent, binding.etSupplyamount.getText().toString(), howfast_Date, price_approval_required, "1", manufacturerArrayList.get(binding.spinnerSelectmanuf.getSelectedItemPosition()).getId(), binding.etPartno.getText().toString(), binding.etQuantityNeeded.getText().toString(), binding.etSerialno.getText().toString(), binding.etFailuredesc.getText().toString(), binding.etTechsupportname.getText().toString(), binding.etRmaorcase.getText().toString(), deemthisWarranty, advance_replacement, partsold_byseatech, need_loaner, binding.etAdditnotes.getText().toString());
                 }
             } else {
                 if (binding.checkboxYesurgent.isChecked() == true && binding.checkboxNourgent.isChecked() == false) {
@@ -732,7 +746,7 @@ public class NeedPartDialog extends DialogFragment {
                     need_loaner = "0";
                 }
 
-                AddPartToSrver(NeedUrgent, binding.etSupplyamount.getText().toString(), howfast_Date, price_approval_required, "0", manufacturerArrayList.get(binding.spinnerSelectmanuf.getSelectedItemPosition()).getId(), binding.etPartno.getText().toString(), binding.etQuantityNeeded.getText().toString(), binding.etSerialno.getText().toString(), binding.etFailuredesc.getText().toString(), binding.etTechsupportname.getText().toString(), binding.etRmaorcase.getText().toString(), deemthisWarranty, advance_replacement, partsold_byseatech, need_loaner, binding.etAdditnotes.getText().toString());
+                AddPartToSrver(NeedUrgent, binding.etSupplyamount.getText().toString(), howfast_Date, price_approval_required, "1", manufacturerArrayList.get(binding.spinnerSelectmanuf.getSelectedItemPosition()).getId(), binding.etPartno.getText().toString(), binding.etQuantityNeeded.getText().toString(), binding.etSerialno.getText().toString(), binding.etFailuredesc.getText().toString(), binding.etTechsupportname.getText().toString(), binding.etRmaorcase.getText().toString(), deemthisWarranty, advance_replacement, partsold_byseatech, need_loaner, binding.etAdditnotes.getText().toString());
             }
 
         }
@@ -821,6 +835,7 @@ public class NeedPartDialog extends DialogFragment {
             public void onClick(View v) {
                 mediaDialog.dismiss();
                 Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
+                i.putExtra("selected_path",all_path);
                 startActivityForResult(i, 200);
             }
         });
@@ -898,8 +913,10 @@ public class NeedPartDialog extends DialogFragment {
             public void onClick(View v) {
                 productyesDialog.dismiss();
                 if (binding.etTechsupportname.getText().toString().length() == 0) {
+                    binding.etTechsupportname.requestFocus();
                     HandyObject.showAlert(getActivity(), getString(R.string.Techsupportnameblank));
                 } else if (binding.etRmaorcase.getText().toString().length() == 0) {
+                    binding.etRmaorcase.requestFocus();
                     HandyObject.showAlert(getActivity(), getString(R.string.rmaorcasereq));
                 } else if (binding.doesmanfdeem.getVisibility() == View.VISIBLE && binding.cbxdoesmanfdeemYes.isChecked() == false &&
                         binding.cbxdoesmanfdeemMaybe.isChecked() == false && binding.cbxdoesmanfdeemNo.isChecked() == false) {
@@ -1027,6 +1044,10 @@ public class NeedPartDialog extends DialogFragment {
         return imageFile;
     }
 
+    public static void OnClickImagecross() {
+        all_path = null;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
@@ -1039,30 +1060,34 @@ public class NeedPartDialog extends DialogFragment {
                 dataT.add(item);
                 imagesarray.add(string);
             }
-            adapterUploadImages = new AdapterPartUpldImages(getActivity(), imagesarray);
+            adapterUploadImages = new AdapterPartUpldImages(getActivity(), imagesarray,"gallery");
             binding.relimagesRecyclerView.setAdapter(adapterUploadImages);
 
         } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
                 Log.e("imageUri below:", "" + Uri.fromFile(imageFile));
-                imagesarray.clear();
-                try {
-                    all_path = new String[]{imageFile.getAbsolutePath()};
-                    imagesarray.add(imageFile.getAbsolutePath());
-                    adapterUploadImages = new AdapterPartUpldImages(getActivity(), imagesarray);
-                    binding.relimagesRecyclerView.setAdapter(adapterUploadImages);
-                } catch (Exception e) {
+                if(imageFile.length() > 0) {
+                    imagesarray.clear();
+                    try {
+                        all_path = new String[]{imageFile.getAbsolutePath()};
+                        imagesarray.add(imageFile.getAbsolutePath());
+                        adapterUploadImages = new AdapterPartUpldImages(getActivity(), imagesarray,"camera");
+                        binding.relimagesRecyclerView.setAdapter(adapterUploadImages);
+                    } catch (Exception e) {
+                    }
                 }
 
             } else {
-                Uri fileUri = FileProvider.getUriForFile(getActivity(),
-                        "com.example.android.fileprovider", imageFile);
-                imagesarray.clear();
-                Log.i("imageUri:", "" + fileUri);
-                all_path = new String[]{imageFile.getAbsolutePath()};
-                imagesarray.add(imageFile.getAbsolutePath());
-                adapterUploadImages = new AdapterPartUpldImages(getActivity(), imagesarray);
-                binding.relimagesRecyclerView.setAdapter(adapterUploadImages);
+                if(imageFile.length() > 0) {
+                    Uri fileUri = FileProvider.getUriForFile(getActivity(),
+                            "com.example.android.fileprovider", imageFile);
+                    imagesarray.clear();
+                    Log.i("imageUri:", "" + fileUri);
+                    all_path = new String[]{imageFile.getAbsolutePath()};
+                    imagesarray.add(imageFile.getAbsolutePath());
+                    adapterUploadImages = new AdapterPartUpldImages(getActivity(), imagesarray,"camera");
+                    binding.relimagesRecyclerView.setAdapter(adapterUploadImages);
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -1179,6 +1204,7 @@ public class NeedPartDialog extends DialogFragment {
 
         if (all_path == null || all_path.length < 1) {
         } else if (all_path.length > 0) {
+
             ArrayList<File> imagesData = getImagesData();
             // co.showLoading();
             for (int i = 0; i < imagesData.size(); i++) {

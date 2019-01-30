@@ -22,7 +22,10 @@ import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
 import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import io.fabric.sdk.android.Fabric;
 import teq.development.seatech.Dashboard.DashBoardActivity;
@@ -40,7 +43,7 @@ public class App extends MultiDexApplication {
     long updatedTime = 0L;
     public static App appInstance;
     public static Calendar calendar;
-    public static boolean timer_running;
+    public static boolean timer_running,timer_pause;
 
     @Override
     public void onCreate() {
@@ -86,7 +89,7 @@ public class App extends MultiDexApplication {
 
             @Override
             public void onActivityDestroyed(Activity activity) {
-                Log.e("OnActivityDestroyed", "onActivityDestroyed");
+                Log.e("OnMAINNDestroyed", "OnMAINNDestroyed");
                /* if (DashBoardActivity.onbackppress == true) {
                     DashBoardActivity.onbackppress = false;
                     HandyObject.putPrams(appInstance, AppConstants.ISJOB_RUNNING, "yes");
@@ -110,6 +113,46 @@ public class App extends MultiDexApplication {
 
     public void startTimer() {
       //  startTime = SystemClock.uptimeMillis();
+        if(timer_pause == true) {
+            timer_pause = false;
+        } else {
+            if (HandyObject.getPrams(this, AppConstants.ISJOB_RUNNINGCLOSE).equalsIgnoreCase("yes")) {
+               // timeSwapBuff = 125877L;1548829253587
+            //    timeSwapBuff = 1548829253587L;
+              //  timeSwapBuff = 15488L;
+             //   Log.e("LASTCLOSEDATE",HandyObject.getPrams(this, AppConstants.JOBRUNNING_CLOSETIMEDATE));
+                long diff = new Date().getTime() - Long.parseLong(HandyObject.getPrams(this, AppConstants.JOBRUNNING_CLOSETIMEDATE));
+                long seconds = diff / 1000;
+                long minutes = seconds / 60;
+                Log.e("LASTCLOSEDATE",String.valueOf(minutes) +"-----"+ String.valueOf(seconds));
+                Log.e("LASTCLOSEDATEDIFFF",String.valueOf(diff));
+               // Log.e("ELAPSEDTIME",String.valueOf(SystemClock.elapsedRealtime()));
+                Log.e("COMPLETED TIME",HandyObject.getPrams(this, AppConstants.JOBRUNNING_CLOSETIME));
+               // try {
+                    String myTime = HandyObject.getPrams(this, AppConstants.JOBRUNNING_CLOSETIME);
+                   // String myTime = "01:02:30";
+//                    SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+//                    Date d = df.parse(myTime);
+//                    Calendar cal = Calendar.getInstance();3,600,000
+//                    cal.setTime(d);
+                    Long hg = Long.parseLong(myTime.split(":")[0]) * 3600000 + Long.parseLong(myTime.split(":")[1]) * 60000 + Long.parseLong(myTime.split(":")[2]) * 1000;
+                    long secondsnew = hg / 1000;
+                    long minutesnew = secondsnew / 60;
+                    long hrsnew = minutesnew / 60;
+                    secondsnew = secondsnew % 60;
+                    minutesnew = minutesnew % 60;
+
+                Log.e("NEW TIMEEEEEEE",String.valueOf(hrsnew) +"-----"+String.valueOf(minutesnew) +"-----"+ String.valueOf(secondsnew));
+
+                  //  Log.e("ALREADY COMPLETED",String.valueOf(cal.getTime()));
+                    Log.e("ALREADY COMPLETED",String.valueOf(hg));
+               // } catch (ParseException e){}
+                timeSwapBuff = diff+hg;
+            } else {
+                timeSwapBuff = 0L;
+            }
+        }
+
         startTime = SystemClock.elapsedRealtime();
         customHandler.postDelayed(updateTimerThread, 0);
         timer_running = true;
@@ -127,6 +170,7 @@ public class App extends MultiDexApplication {
             mins = mins % 60;
 
             // binding.uploadimage.setText(String.format("%02d", hrs) + ":" + String.format("%02d", mins) + ":" + String.format("%02d", secs));
+          //  Log.e("MILLLLLLIITIME", String.valueOf(timeInMilliseconds));
             Log.e("TIME", String.format("%02d", hrs) + ":" + String.format("%02d", mins) + ":" + String.format("%02d", secs));
             Intent intent = new Intent("load_message");
             intent.putExtra("secss", String.format("%02d", hrs) + ":" + String.format("%02d", mins) + ":" + String.format("%02d", secs));
@@ -138,11 +182,17 @@ public class App extends MultiDexApplication {
 
     public void stopTimer() {
         timer_running = false;
-        timeSwapBuff = 0L;
+      //  timeSwapBuff = 0L;
+        if (HandyObject.getPrams(this, AppConstants.ISJOB_RUNNINGCLOSE).equalsIgnoreCase("yes")) {
+            timeSwapBuff = 125877L;
+        } else {
+            timeSwapBuff = 0L;
+        }
         customHandler.removeCallbacks(updateTimerThread);
     }
 
     public void pauseTimer() {
+        timer_pause = true;
         timeSwapBuff += timeInMilliseconds;
         customHandler.removeCallbacks(updateTimerThread);
     }

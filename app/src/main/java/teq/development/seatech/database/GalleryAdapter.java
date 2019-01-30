@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
@@ -96,16 +97,22 @@ public class GalleryAdapter extends BaseAdapter {
 		return dataT;
 	}
 
-	public void addAll(ArrayList<CustomGallery> files) {
-
+	public void addAll(ArrayList<CustomGallery> files,String [] selected_path) {
 		try {
 			this.data.clear();
 			this.data.addAll(files);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		if(selected_path != null) {
+			for(int i=0; i< data.size(); i++) {
+				for (int j = 0; j < selected_path.length; j++) {
+					if(selected_path[j].equalsIgnoreCase(data.get(i).sdcardPath)) {
+						data.get(i).isSeleted = true;
+					}
+				}
+			}
+		}
 		notifyDataSetChanged();
 	}
 
@@ -126,15 +133,12 @@ public class GalleryAdapter extends BaseAdapter {
 
 		final ViewHolder holder;
 		if (convertView == null) {
-
 			convertView = infalter.inflate(R.layout.gallery_item, null);
 			holder = new ViewHolder();
 			holder.imgQueue = (ImageView) convertView
 					.findViewById(R.id.imgQueue);
-
 			holder.imgQueueMultiSelected = (ImageView) convertView
 					.findViewById(R.id.imgQueueMultiSelected);
-
 			if (isActionMultiplePick) {
 				holder.imgQueueMultiSelected.setVisibility(View.VISIBLE);
 			} else {
@@ -149,7 +153,6 @@ public class GalleryAdapter extends BaseAdapter {
 		holder.imgQueue.setTag(position);
 
 		try {
-
 			imageLoader.displayImage("file://" + data.get(position).sdcardPath,
 					holder.imgQueue, new SimpleImageLoadingListener() {
 						@Override
@@ -166,7 +169,6 @@ public class GalleryAdapter extends BaseAdapter {
 						.setSelected(data.get(position).isSeleted);
 
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

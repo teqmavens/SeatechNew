@@ -117,6 +117,10 @@ public class MyProfileFragment extends Fragment {
     }
 
     private void setLocaldata() {
+        binding.firstname.setText(" " + HandyObject.getPrams(context, AppConstants.LOGINTEQ_FIRSTNAME));
+        binding.secondname.setText(" " + HandyObject.getPrams(context, AppConstants.LOGINTEQ_MIDDLENAME));
+        binding.thirdname.setText(" " + HandyObject.getPrams(context, AppConstants.LOGINTEQ_LASTNAME));
+
         binding.username.setText(" " + HandyObject.getPrams(context, AppConstants.LOGINTEQ_USERNAME));
         if (HandyObject.getPrams(context, AppConstants.LOGINTEQ_GENDER).equalsIgnoreCase("F")) {
             binding.gender.setText(" " + getString(R.string.female));
@@ -142,6 +146,10 @@ public class MyProfileFragment extends Fragment {
         try {
             //  HandyObject.putPrams(context, AppConstants.LOGIN_SESSIONID, jobj.getString("session_id"));
             HandyObject.putPrams(context, AppConstants.LOGINTEQ_USERNAME, jobj.getString("username"));
+            HandyObject.putPrams(context, AppConstants.LOGINTEQ_FIRSTNAME, jobj.getString("firstname"));
+            HandyObject.putPrams(context, AppConstants.LOGINTEQ_MIDDLENAME, jobj.getString("middlename"));
+            HandyObject.putPrams(context, AppConstants.LOGINTEQ_LASTNAME, jobj.getString("lastname"));
+
             HandyObject.putPrams(context, AppConstants.LOGINTEQ_EMAIL, jobj.getString("email"));
             HandyObject.putPrams(context, AppConstants.LOGINTEQ_GENDER, jobj.getString("gender"));
             HandyObject.putPrams(context, AppConstants.LOGINTEQ_IMAGE, jobj.getString("image"));

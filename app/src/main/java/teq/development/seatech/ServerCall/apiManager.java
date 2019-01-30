@@ -2,6 +2,9 @@ package teq.development.seatech.ServerCall;
 
 
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -21,7 +24,6 @@ public class apiManager {
     private static String BaseApiAddressjobs= "http://132.148.241.93/seatech/jobs/";
 
     public static Retrofit getApiManager() {
-
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(BaseApiAddress)
@@ -43,22 +45,34 @@ public class apiManager {
     }
 
     public static Retrofit getApiAddressjobs() {
-
+//        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//                .connectTimeout(1, TimeUnit.MINUTES)
+//                .readTimeout(30, TimeUnit.SECONDS)
+//                .writeTimeout(15, TimeUnit.SECONDS)
+//                .build();
         //  if (retrofitadmin == null) {
-        retrofitjobs = new Retrofit.Builder()
-                .baseUrl(BaseApiAddressjobs)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+     //   if (retrofitjobs == null) {
+            retrofitjobs = new Retrofit.Builder()
+                    .baseUrl(BaseApiAddressjobs)
+                    .addConverterFactory(GsonConverterFactory.create())
+                   // .client(okHttpClient)
+                    .build();
+     //   }
         //}
         return retrofitjobs;
     }
 
     public static Retrofit getApiManagerMain() {
-
+//        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//                .connectTimeout(1, TimeUnit.MINUTES)
+//                .readTimeout(30, TimeUnit.SECONDS)
+//                .writeTimeout(15, TimeUnit.SECONDS)
+//                .build();
         if (retrofitmain == null) {
             retrofitmain = new Retrofit.Builder()
                     .baseUrl(MainBaseApiURL)
                     .addConverterFactory(GsonConverterFactory.create())
+                   // .client(okHttpClient)
                     .build();
         }
         return retrofitmain;

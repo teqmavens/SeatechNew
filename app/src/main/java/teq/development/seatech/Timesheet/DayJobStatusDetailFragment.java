@@ -105,66 +105,75 @@ public class DayJobStatusDetailFragment extends Fragment implements View.OnClick
 
     private void DayJobStatusApi(String seldate) {
         //  HandyObject.showProgressDialog(getActivity());
-        HandyObject.getApiManagerMain().DayJobStatusDetail(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), seldate, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
-                .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        try {
-                            String jsonResponse = response.body().string();
-                            Log.e("responseLC", jsonResponse);
-                            JSONObject jsonObject = new JSONObject(jsonResponse);
-                            arrayList = new ArrayList<>();
-                            Gson gson = new Gson();
-                            if (jsonObject.getString("status").toLowerCase().equals("success")) {
-                                //   HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
-                                JSONObject jobjdata = jsonObject.getJSONObject("data");
-                                JSONArray jsonArray = jobjdata.getJSONArray("day_data");
-                                if (jsonArray.length() == 0) {
-                                    binding.nodataCardView.setVisibility(View.VISIBLE);
-                                    binding.dataCardView.setVisibility(View.INVISIBLE);
-                                } else {
-                                    binding.nodataCardView.setVisibility(View.INVISIBLE);
-                                    binding.dataCardView.setVisibility(View.VISIBLE);
-                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                        JSONObject jobjInside = jsonArray.getJSONObject(i);
-                                        DayJobStatus_Skeleton ske = new DayJobStatus_Skeleton();
-                                        ske.setJob_id(jobjInside.getString("job_id"));
-                                        ske.setLabour_code(jobjInside.getString("labour_code"));
-                                        ske.setHours(jobjInside.getString("hours"));
-                                        arrayList.add(ske);
-                                    }
-                                    adapter = new AdapterDayJobStatus(getActivity(), arrayList, DayJobStatusDetailFragment.this);
-                                    binding.statusRecyclerView.setAdapter(adapter);
-                                    binding.totaltimeValue.setText(jobjdata.getString("total"));
-                                    binding.totalWeekHrValue.setText(jobjdata.getString("weekly_hours"));
-                                }
-                            } else {
-                                HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
-                                if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
-                                    HandyObject.clearpref(getActivity());
-                                    HandyObject.deleteAllDatabase(getActivity());
-                                    App.appInstance.stopTimer();
-                                    Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
-                                    startActivity(intent_reg);
-                                    getActivity().finish();
-                                    getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
-                                }
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } finally {
-                            //   HandyObject.stopProgressDialog();
-                        }
-                    }
+        if (HandyObject.checkInternetConnection(getActivity())) {
+            HandyObject.getApiManagerMain().DayJobStatusDetail(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), seldate, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
+                    .enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            try {
+                                String jsonResponse = response.body().string();
+                                Log.e("responseDayStatus", jsonResponse);
+                                JSONObject jsonObject = new JSONObject(jsonResponse);
+                                arrayList = new ArrayList<>();
+                                Gson gson = new Gson();
+                                if (jsonObject.getString("status").toLowerCase().equals("success")) {
+                                    //   HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
+                                    JSONObject jobjdata = jsonObject.getJSONObject("data");
+                                    JSONArray jsonArray = jobjdata.getJSONArray("day_data");
+                                    if (jsonArray.length() == 0) {
+                                        //   HandyObject.showAlert(getActivity(),"null");
+                                        binding.dataCardView.setVisibility(View.INVISIBLE);
+                                        binding.nodataCardView.setVisibility(View.VISIBLE);
+                                    } else {
+                                        //  HandyObject.showAlert(getActivity(),"notnull");
+                                        binding.dataCardView.setVisibility(View.VISIBLE);
+                                        binding.nodataCardView.setVisibility(View.INVISIBLE);
 
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.e("responseError", t.getMessage());
-                        //  HandyObject.stopProgressDialog();
-                    }
-                });
+                                        for (int i = 0; i < jsonArray.length(); i++) {
+                                            JSONObject jobjInside = jsonArray.getJSONObject(i);
+                                            DayJobStatus_Skeleton ske = new DayJobStatus_Skeleton();
+                                            ske.setJob_id(jobjInside.getString("job_id"));
+                                            ske.setLabour_code(jobjInside.getString("labour_code"));
+                                            ske.setStarttime(jobjInside.getString("start_time"));
+                                            ske.setEndtime(jobjInside.getString("end_time"));
+                                            ske.setHours(jobjInside.getString("hours"));
+                                            arrayList.add(ske);
+                                        }
+                                        adapter = new AdapterDayJobStatus(getActivity(), arrayList, DayJobStatusDetailFragment.this);
+                                        binding.statusRecyclerView.setAdapter(adapter);
+                                        binding.totaltimeValue.setText(jobjdata.getString("total"));
+                                        binding.totalWeekHrValue.setText(jobjdata.getString("weekly_hours"));
+                                    }
+                                } else {
+                                    HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
+                                    if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
+                                        HandyObject.clearpref(getActivity());
+                                        HandyObject.deleteAllDatabase(getActivity());
+                                        App.appInstance.stopTimer();
+                                        Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
+                                        startActivity(intent_reg);
+                                        getActivity().finish();
+                                        getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                    }
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } finally {
+                                //   HandyObject.stopProgressDialog();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Log.e("responseError", t.getMessage());
+                            //  HandyObject.stopProgressDialog();
+                        }
+                    });
+        } else {
+            HandyObject.showAlert(getActivity(), getString(R.string.check_internet_connection));
+        }
     }
 
 

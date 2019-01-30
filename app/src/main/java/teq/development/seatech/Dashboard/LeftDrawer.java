@@ -1,6 +1,7 @@
 package teq.development.seatech.Dashboard;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import teq.development.seatech.JobDetail.MainJobdetail;
 import teq.development.seatech.JobDetail.NewJobDetailFrgament;
 import teq.development.seatech.PickUpJobs.PickUpJobsFragment;
 import teq.development.seatech.R;
+import teq.development.seatech.Schedule.ScheduleParent;
 import teq.development.seatech.Timesheet.TimeSheetFragment;
 import teq.development.seatech.Utils.AppConstants;
 import teq.development.seatech.Utils.HandyObject;
@@ -77,6 +79,11 @@ public class LeftDrawer extends Fragment {
     public void OnClickPickupJobs() {
         activity.replaceFragment(new PickUpJobsFragment());
         activity.mDrawerLayout.closeDrawers();
+    }
+
+    public void OnClickSchedule() {
+        activity.mDrawerLayout.closeDrawers();
+        startActivity(new Intent(context, ScheduleParent.class));
     }
 
     boolean isJobRunning() {

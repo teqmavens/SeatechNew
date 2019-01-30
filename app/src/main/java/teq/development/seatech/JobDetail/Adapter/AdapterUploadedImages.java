@@ -26,6 +26,7 @@ import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import java.util.ArrayList;
 
 import teq.development.seatech.Dashboard.Skeleton.DashboardNotes_Skeleton;
+import teq.development.seatech.Dashboard.Skeleton.UploadImageNewSkeleton;
 import teq.development.seatech.JobDetail.ViewCommentDialog;
 import teq.development.seatech.JobDetail.ViewImagesDialog;
 import teq.development.seatech.R;
@@ -33,11 +34,11 @@ import teq.development.seatech.databinding.RowUploadedimagesBinding;
 
 public class AdapterUploadedImages extends RecyclerView.Adapter<AdapterUploadedImages.ViewHolder> {
 
-    ArrayList<String> arraylistimages;
+    ArrayList<UploadImageNewSkeleton> arraylistimages;
     FragmentManager frgmmanager;
     Context context;
 
-    public AdapterUploadedImages(Context context, ArrayList<String> arraylistimages, FragmentManager frgmmanager) {
+    public AdapterUploadedImages(Context context, ArrayList<UploadImageNewSkeleton> arraylistimages, FragmentManager frgmmanager) {
         this.context = context;
         this.arraylistimages = arraylistimages;
         this.frgmmanager = frgmmanager;
@@ -72,7 +73,7 @@ public class AdapterUploadedImages extends RecyclerView.Adapter<AdapterUploadedI
 
         public void bind(final int position) {
             mbinding.setRowuploadedimages(AdapterUploadedImages.this);
-            Glide.with(context).load(arraylistimages.get(position)).placeholder(R.drawable.no_media).dontAnimate().diskCacheStrategy(DiskCacheStrategy.ALL).into(mbinding.imageview);
+            Glide.with(context).load(arraylistimages.get(position).getUrl()).placeholder(R.drawable.no_media).dontAnimate().diskCacheStrategy(DiskCacheStrategy.ALL).into(mbinding.imageview);
 
             mbinding.imageview.findViewById(R.id.imageview).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -84,7 +85,7 @@ public class AdapterUploadedImages extends RecyclerView.Adapter<AdapterUploadedI
         }
     }
 
-    private void dialogViewImages(int posi, ArrayList<String> arraylist) {
+    private void dialogViewImages(int posi, ArrayList<UploadImageNewSkeleton> arraylist) {
         FragmentTransaction ft = frgmmanager.beginTransaction();
         Fragment prev = frgmmanager.findFragmentByTag("dialogviewIMAGES");
         if (prev != null) {

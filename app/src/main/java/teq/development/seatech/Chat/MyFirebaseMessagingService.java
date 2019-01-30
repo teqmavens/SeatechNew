@@ -2,6 +2,7 @@ package teq.development.seatech.Chat;
 
 import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -41,7 +43,8 @@ import teq.development.seatech.Utils.HandyObject;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     public static boolean fromnotii;
-    //public static final int notifyID = 9001;
+    public static final String TAG = "fcmmsg";
+  //  public static final int notifyID = 9001;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -83,7 +86,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         resultIntent.setAction(Long.toString(System.currentTimeMillis()));
         PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0,
                 resultIntent, 0);
-
         NotificationCompat.Builder mNotifyBuilder;
         NotificationManager mNotificationManager;
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -95,6 +97,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
         Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.notiicon);
         mNotifyBuilder = new NotificationCompat.Builder(this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(TAG, "Message", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("Normal Message from Seatech");
+            getSystemService(NotificationManager.class).createNotificationChannel(channel);
+        }
+
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
            /* mNotifyBuilder.setSmallIcon(R.drawable.icon_transperent);
             mNotifyBuilder.setColor(getResources().getColor(R.color.notification_color));*/
@@ -102,6 +111,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     .setLargeIcon(largeIcon)
                     .setColor(getResources().getColor(R.color.appbasiccolor))
                     .setContentText(messageBody)
+                    .setChannelId(TAG)
+                    .setPriority(Notification.PRIORITY_HIGH)
                     .setContentTitle(messageBodyn);
         } else {
             mNotifyBuilder.setSmallIcon(R.drawable.notiicon);
@@ -130,6 +141,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         mNotificationManager.notify(new Random().nextInt(), mNotifyBuilder.build());
         //https://developer.android.com/training/notify-user/navigation
         // https://developer.android.com/reference/android/app/PendingIntent
+        wakeUpdevice();
+    }
+
+    private void wakeUpdevice () {
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        boolean isScreenOn = pm.isScreenOn();
+        //   Log.e("screen on.................................", ""+isScreenOn);
+        if(isScreenOn==false)
+        {
+            PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK |PowerManager.ACQUIRE_CAUSES_WAKEUP |PowerManager.ON_AFTER_RELEASE,"MyLock");
+            wl.acquire(10000);
+            PowerManager.WakeLock wl_cpu = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"MyCpuLock");
+
+            wl_cpu.acquire(10000);
+        }
     }
 
     private void setAlarm() {
@@ -161,7 +187,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             jobj.put("customId", Integer.parseInt(HandyObject.getPrams(this, AppConstants.LOGINTEQPARENT_ID)));
             jobj.put("device_id", HandyObject.getPrams(this, AppConstants.DEVICE_TOKEN));
             mSocket.emit("storeClientInfo", jobj);
-
 
             Log.e("DELEIVER FROM NOTIIII", "notiiiii");
             JSONObject jobj_delv = new JSONObject();

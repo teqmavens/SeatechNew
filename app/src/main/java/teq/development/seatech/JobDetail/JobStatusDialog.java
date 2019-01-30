@@ -64,7 +64,8 @@ public class JobStatusDialog extends DialogFragment {
     DialogJobstatusBinding binding;
     EditText et_notbilled;
     EditText et_description;
-    static int count = 0;
+   // static int count = 0;
+    static String selposi_ticketid;
     public static boolean crossclick;
     public static String allValues, editvalues;
     public String jobstatus;
@@ -73,11 +74,12 @@ public class JobStatusDialog extends DialogFragment {
     String hoursNewValue, minNewValue, hoursNewValueDur, minNewValueDur = "";
     boolean popupsubmit;
 
-    static JobStatusDialog newInstance(String jobid, int selecposition, String values, String evalues) {
+    static JobStatusDialog newInstance(String jobid, String selecposition_ticketid, String values, String evalues) {
         JobStatusDialog f = new JobStatusDialog();
         Bundle args = new Bundle();
         coming_jobid = jobid;
-        count = selecposition;
+       // count = selecposition;
+        selposi_ticketid = selecposition_ticketid;
         allValues = values;
         editvalues = evalues;
         f.setArguments(args);
@@ -598,7 +600,8 @@ public class JobStatusDialog extends DialogFragment {
     public void onClickCross() {
         dialog.dismiss();
         Intent intent = new Intent("updateJob");
-        intent.putExtra("nextjobid", String.valueOf(count));
+     //   intent.putExtra("nextjobid", String.valueOf(count));
+        intent.putExtra("nextjobid", selposi_ticketid);
         crossclick = true;
         // HandyObject.putPrams(getActivity(), AppConstants.JOBRUNNING_TOTALTIME, "66");
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
@@ -612,6 +615,7 @@ public class JobStatusDialog extends DialogFragment {
             HandyObject.showAlert(getActivity(), getString(R.string.selectjobtype));
         } else if (binding.etSupplyamount.getText().toString().length() == 0) {
             binding.etSupplyamount.requestFocus();
+            binding.etSupplyamount.requestFocus();
             HandyObject.showAlert(getActivity(), getString(R.string.supplyamountreq));
         } else if (binding.checkboxyes.isChecked() == true && binding.checkboxno.isChecked() == false && binding.checkboxmaybe.isChecked() == false) {
             String captainAware = "";
@@ -620,8 +624,8 @@ public class JobStatusDialog extends DialogFragment {
             jobstatus = "yes";
             description = get_needtoknow;
             if (binding.etLaborperform.getText().toString().length() == 0) {
-                HandyObject.showAlert(getActivity(), getString(R.string.fieldempty));
-
+                HandyObject.showAlert(getActivity(), getString(R.string.fieldempty_techlabor));
+                binding.etLaborperform.requestFocus();
             } else if (binding.checkboxNoowner.isChecked() == false && binding.checkboxYesowner.isChecked() == false) {
                 HandyObject.showAlert(getActivity(), "Please select Owner Aware");
 
@@ -634,7 +638,7 @@ public class JobStatusDialog extends DialogFragment {
                 } else if (binding.checkboxYesowner.isChecked()) {
                     captainAware = "yes";
                 }
-                JobStatusApi(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), coming_jobid, jobstatus, captainAware, binding.etLaborperform.getText().toString(),
+                JobStatusApi(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), selposi_ticketid, jobstatus, captainAware, binding.etLaborperform.getText().toString(),
                         binding.etSupplyamount.getText().toString(), notbilled, notbilled_desc, returnimmediate, alreadyScheduled, reason, description, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID));
 
             } else if (binding.checkboxYesbillable.isChecked() || binding.checkboxNobillable.isChecked()) {
@@ -645,10 +649,10 @@ public class JobStatusDialog extends DialogFragment {
                     notbilled = "";
                     notbilled_desc = "";
                 }
-                JobStatusApi(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), coming_jobid, jobstatus, captainAware, binding.etLaborperform.getText().toString(),
+                JobStatusApi(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), selposi_ticketid, jobstatus, captainAware, binding.etLaborperform.getText().toString(),
                         binding.etSupplyamount.getText().toString(), notbilled, notbilled_desc, returnimmediate, alreadyScheduled, reason, description, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID));
             } else {
-                JobStatusApi(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), coming_jobid, jobstatus, captainAware, binding.etLaborperform.getText().toString(),
+                JobStatusApi(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), selposi_ticketid, jobstatus, captainAware, binding.etLaborperform.getText().toString(),
                         binding.etSupplyamount.getText().toString(), notbilled, notbilled_desc, returnimmediate, alreadyScheduled, reason, description, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID));
             }
         } else if (binding.checkboxyes.isChecked() == false && binding.checkboxno.isChecked() == false && binding.checkboxmaybe.isChecked() == true) {
@@ -658,7 +662,8 @@ public class JobStatusDialog extends DialogFragment {
             jobstatus = "May be";
             description = get_needtoknow;
             if (binding.etLaborperform.getText().toString().length() == 0) {
-                HandyObject.showAlert(getActivity(), getString(R.string.fieldempty));
+                binding.etLaborperform.requestFocus();
+                HandyObject.showAlert(getActivity(), getString(R.string.fieldempty_techlabor));
 
             } else if (binding.checkboxNoowner.isChecked() == false && binding.checkboxYesowner.isChecked() == false) {
                 HandyObject.showAlert(getActivity(), "Please select Owner Aware");
@@ -672,7 +677,7 @@ public class JobStatusDialog extends DialogFragment {
                 } else if (binding.checkboxYesowner.isChecked()) {
                     captainAware = "yes";
                 }
-                JobStatusApi(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), coming_jobid, jobstatus, captainAware, binding.etLaborperform.getText().toString(),
+                JobStatusApi(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), selposi_ticketid, jobstatus, captainAware, binding.etLaborperform.getText().toString(),
                         binding.etSupplyamount.getText().toString(), notbilled, notbilled_desc, returnimmediate, alreadyScheduled, reason, description, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID));
 
             } else if (binding.checkboxYesbillable.isChecked() || binding.checkboxNobillable.isChecked()) {
@@ -683,10 +688,10 @@ public class JobStatusDialog extends DialogFragment {
                     notbilled = "";
                     notbilled_desc = "";
                 }
-                JobStatusApi(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), coming_jobid, jobstatus, captainAware, binding.etLaborperform.getText().toString(),
+                JobStatusApi(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), selposi_ticketid, jobstatus, captainAware, binding.etLaborperform.getText().toString(),
                         binding.etSupplyamount.getText().toString(), notbilled, notbilled_desc, returnimmediate, alreadyScheduled, reason, description, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID));
             } else {
-                JobStatusApi(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), coming_jobid, jobstatus, captainAware, binding.etLaborperform.getText().toString(),
+                JobStatusApi(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), selposi_ticketid, jobstatus, captainAware, binding.etLaborperform.getText().toString(),
                         binding.etSupplyamount.getText().toString(), notbilled, notbilled_desc, returnimmediate, alreadyScheduled, reason, description, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID));
             }
         } else if (binding.checkboxyes.isChecked() == false && binding.checkboxno.isChecked() == true && binding.checkboxmaybe.isChecked() == false) {
@@ -695,7 +700,8 @@ public class JobStatusDialog extends DialogFragment {
             String notbilled_desc = "";
             jobstatus = "no";
             if (binding.etLaborperform.getText().toString().length() == 0) {
-                HandyObject.showAlert(getActivity(), getString(R.string.fieldempty));
+                binding.etLaborperform.requestFocus();
+                HandyObject.showAlert(getActivity(), getString(R.string.fieldempty_techlabor));
 
             } else if (binding.checkboxNoowner.isChecked() == false && binding.checkboxYesowner.isChecked() == false) {
                 HandyObject.showAlert(getActivity(), "Please select Owner Aware");
@@ -709,7 +715,7 @@ public class JobStatusDialog extends DialogFragment {
                 } else if (binding.checkboxYesowner.isChecked()) {
                     captainAware = "yes";
                 }
-                JobStatusApi(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), coming_jobid, jobstatus, captainAware, binding.etLaborperform.getText().toString(),
+                JobStatusApi(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), selposi_ticketid, jobstatus, captainAware, binding.etLaborperform.getText().toString(),
                         binding.etSupplyamount.getText().toString(), notbilled, notbilled_desc, returnimmediate, alreadyScheduled, reason, description, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID));
 
             } else if (binding.checkboxYesbillable.isChecked() || binding.checkboxNobillable.isChecked()) {
@@ -720,10 +726,10 @@ public class JobStatusDialog extends DialogFragment {
                     notbilled = "";
                     notbilled_desc = "";
                 }
-                JobStatusApi(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), coming_jobid, jobstatus, captainAware, binding.etLaborperform.getText().toString(),
+                JobStatusApi(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), selposi_ticketid, jobstatus, captainAware, binding.etLaborperform.getText().toString(),
                         binding.etSupplyamount.getText().toString(), notbilled, notbilled_desc, returnimmediate, alreadyScheduled, reason, description, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID));
             } else {
-                JobStatusApi(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), coming_jobid, jobstatus, captainAware, binding.etLaborperform.getText().toString(),
+                JobStatusApi(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), selposi_ticketid, jobstatus, captainAware, binding.etLaborperform.getText().toString(),
                         binding.etSupplyamount.getText().toString(), notbilled, notbilled_desc, returnimmediate, alreadyScheduled, reason, description, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID));
             }
         }
@@ -872,7 +878,8 @@ public class JobStatusDialog extends DialogFragment {
 
     private void JobStatusApi(String teqid, String jobid, String job_completed, String captainaware, String notes, String supplyAmount, String nbillablehrs,
                               String nbillablehrsDiscription, String returnimmid, String already_scheduled, String reason, String description, String sessionid) {
-
+        String edit_capname="";
+       // HandyObject.showAlert(getActivity(),allValues);
         String start_T = allValues.split("--")[0];
         String end_T = allValues.split("--")[1];
         String hours = allValues.split("--")[2];
@@ -881,7 +888,12 @@ public class JobStatusDialog extends DialogFragment {
 
         String edit_boatname = editvalues.split("-")[0];
         String edit_hullid = editvalues.split("-")[1];
-        String edit_capname = editvalues.split("-")[2];
+        if(editvalues.split("-")[2] .equalsIgnoreCase("captainblank")) {
+            edit_capname = "";
+        } else {
+            edit_capname = editvalues.split("-")[2];
+        }
+
         int count_lcjobcomp = HandyObject.getIntPrams(getActivity(), AppConstants.LCJOBCOMPLETION_COUNT);
 
         JobStatusSkeleton ske = new JobStatusSkeleton();
@@ -930,8 +942,9 @@ public class JobStatusDialog extends DialogFragment {
                                     //popupWindow.dismiss();
                                     //    App.appInstance.stopTimer();
                                     Intent intent = new Intent("updateJob");
-                                    count++;
-                                    intent.putExtra("nextjobid", String.valueOf(count));
+                                   // count++;
+                                    //intent.putExtra("nextjobid", String.valueOf(count));
+                                    intent.putExtra("nextjobid", coming_jobid);
                                     HandyObject.putPrams(getActivity(), AppConstants.JOBRUNNING_TOTALTIME, "66");
                                     LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
 
@@ -972,8 +985,9 @@ public class JobStatusDialog extends DialogFragment {
                     });
         } else {
             Intent intent = new Intent("updateJob");
-            count++;
-            intent.putExtra("nextjobid", String.valueOf(count));
+            // count++;
+            // intent.putExtra("nextjobid", String.valueOf(count));
+            intent.putExtra("nextjobid", coming_jobid);
             HandyObject.putPrams(getActivity(), AppConstants.JOBRUNNING_TOTALTIME, "66");
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
 

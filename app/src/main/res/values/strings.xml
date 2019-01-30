@@ -2,7 +2,10 @@
     <string name="Apikey_Map">AIzaSyBa9_zqiGyTdJUEpFTZUqhxJU9cgv7oA6c</string>
     <string name="app_name">Seatech</string>
     <string name="username">Username</string>
+    <string name="firstnameprofile">Firstname - </string>
+    <string name="secondnameprofile">Middlename - </string>
     <string name="usernameprofile">Username - </string>
+    <string name="thirdnameprofile">Lastname - </string>
     <string name="pwd">Password</string>
     <string name="rememberme">Remember me</string>
     <string name="forgotpwd"><u>Forgot Password?</u></string>
@@ -10,6 +13,7 @@
     <string name="login">Log in</string>
     <string name="dashboard_text">Dashboard</string>
     <string name="detailpage">Detail Page</string>
+    <string name="runningjob">Running Job</string>
     <string name="timesheet">Timesheet</string>
     <string name="myprofile">My Profile</string>
     <string name="changepwd">Change Password</string>
@@ -32,6 +36,7 @@
     <string name="startstop_time">Start/Stop Time or Job Change</string>
     <string name="customername">Customer Name</string>
     <string name="jobticketno">Job Ticket No.</string>
+    <string name="jobticketno_schedule">Job Ticket No. - </string>
     <string name="jobtype">Job Type:</string>
     <string name="jobtypedash">Job Type</string>
     <string name="boatlocation">Boat Location</string>
@@ -40,8 +45,9 @@
     <string name="othermem">Other Members</string>
     <string name="partlocation">Part Location</string>
     <string name="techdashnotes">Tech Dash Notes</string>
+    <string name="notes">Notes</string>
     <string name="urgentmsg"><u>Urgent Messages</u></string>
-    <string name="urgentmsgcmp">Urgent Messages</string>
+    <string name="urgentmsgcmp">Urgent Message</string>
     <string name="pickupjobs"><u>Pick Up Jobs</u></string>
     <string name="customertype">Customer Type</string>
     <string name="region">Region</string>
@@ -115,11 +121,14 @@
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="gender">Gender -  </string>
+
     <string name="search">Search</string>
     <string name="pickupjobsdr">Pick Up Jobs</string>
     <string name="selectlabrcode">Select Labor Code</string>
-    <string name="vacation">Vacation</string>
-    <string name="sick">Sick</string>
+    <string name="vacationpaid">TIME VACATION PAID</string>
+    <string name="vacationunpaid">TIME VACATION UNPAID</string>
+    <string name="sickpaid">TIME SICK PAID</string>
+    <string name="sickunpaid">TIME SICK UNPAID</string>
     <string name="enterstarttime">Enter Start time</string>
     <string name="joiningdate">Joining Date -</string>
     <string name="waitingfrcus">Waiting for customer</string>
@@ -163,7 +172,7 @@
     <string name="cannt_logoutjobrunningnew">Can\'t submit labor code,  a job is already running.</string>
     <string name="selectjobtype">Please Select Job Type</string>
     <string name="supplyamountreq">Supply amount is required.</string>
-    <string name="nodashbrdnotes">No dashborad notes</string>
+    <string name="nodashbrdnotes">No dashboard notes</string>
     <string name="ispartforrepair">Is this part for repair?</string>
     <string name="orpart_forsale">Or a part for sale?</string>
     <string name="quantityNeeded">Quantity Needed</string>
@@ -246,10 +255,13 @@
     <string name="notifications">Notifications</string>
     <string name="alreadyreadnoti">You have already read this notification.</string>
     <string name="startjob">Stop Job</string>
+    <string name="startjobd">Start Job</string>
     <string name="alreadyacknowledged">Already acknowledged.</string>
     <string name="tokenText">Please wait while Getting Your Device Information.</string>
     <string name="nonotifound">No notification found.</string>
     <string name="jobdetailempty">Job detail filed is empty.</string>
+    <string name="boatnameempty">Boat name is empty.</string>
+    <string name="hullidempty">Hull id is empty.</string>
     <string name="salesorder">Sales Order</string>
     <string name="nosalesorder">No sales order available.</string>
     <string name="chat">Chat</string>
@@ -279,8 +291,22 @@
     <string name="noprevious_lbrentries">No previous labor entries available.</string>
     <string name="noprevious_offthereacord">No previous off the record available.</string>
     <string name="pickupjob_notpermitted">You are not permitted to schedule the pickup jobs.</string>
+    <string name="fieldempty_techlabor">Tech labor field is empty</string>
+    <string name="schedule">Schedule</string>
+    <string name="tech_name">Technician Name</string>
+    <string name="today">Today</string>
+    <string name="timeline">Timeline</string>
+    <string name="calendar">Calendar</string>
+    <string name="customer_schedule">Customer -</string>
+    <string name="startdatetime_schedule">Start Datetime - </string>
+    <string name="duration_schedule">Duration - </string>
+    <string name="technician_schedule">Technicians - </string>
+    <string name="urgentchat">Urgent</string>
+    <string name="endtime">End TIme</string>
+    <string name="nojobsavail">No Jobs Available</string>
+    <string name="add_dashboardnotes">Add Dashboard Notes</string>
     <string-array name="laborcode_array">
-        <!--<item>Travel Time</item>
+       <!-- <item>Travel Time</item>
         <item>SERVICE TIME</item>
         <item>LUNCH</item>
         <item>SHOP WORK TIME</item>-->
@@ -291,6 +317,42 @@
         <item>Office Staff Labor</item>
         <item>Tech Time Non-Productive</item>
         <item>Tech Betterment &amp; Training</item>
+
+        <!--<item>TIME FIELD SERVICE BILLABLE</item>-->
+        <!--<item>TIME FIELD SERVICE NON BILLABLE</item>-->
+        <!--<item>TIME HOLIDAY PAID</item>-->
+        <!--<item>TIME HOLIDAY UNPAID</item>-->
+        <!--<item>TIME OFFICE LABOR</item>-->
+        <!--<item>TIME SHOP WORK BILLABLE</item>-->
+        <!--<item>TIME SHOP WORK NON BILLABLE</item>-->
+        <!--<item>TIME SICK PAID</item>-->
+        <!--<item>TIME SICK UNPAID</item>-->
+        <!--<item>LUNCH</item>-->
+        <!--<item>TIME TRAVELBILLABLE</item>-->
+        <!--<item>TIME TRAVELNONBILLABLE</item>-->
+        <!--<item>TIME VACATION PAID</item>-->
+        <!--<item>TIME VACATION UNPAID</item>-->
+
+
+
+
+
+        <!--<item>TIME TRAVELNONBILLABLE</item>
+        <item>TIME TRAVELBILLABLE</item>
+        <item>TIME FIELD SERVICE BILLABLE</item>
+        <item>TIME FIELD SERVICE NON BILLABLE</item>
+        <item>LUNCH</item>
+        <item>TIME SHOP WORK BILLABLE</item>
+        <item>TIME SHOP WORK NON BILLABLE</item>
+        <item>TIME OFFICE LABOR</item>
+        <item>TIME TECH BETTERMENT AND TRAINING</item>-->
+
+    </string-array>
+
+    <string-array name="DahboardspinnerType">
+        <item>Select</item>
+        <item>Dashboard</item>
+        <item>Off record</item>
     </string-array>
 
     <string-array name="newlaborcode_array">

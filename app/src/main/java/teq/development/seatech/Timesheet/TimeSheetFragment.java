@@ -395,7 +395,7 @@ public class TimeSheetFragment extends Fragment {
         } else {
             TSWeekChildFragment fgm = new TSWeekChildFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("weekstartdate", HandyObject.getSelectedPreviousWeek_FirstDateSlash(getActivity(), fromMonth_SelDate));
+            bundle.putString("weekstartdate", HandyObject.getSelectedNextWeek_FirstDateSlash(getActivity(), fromMonth_SelDate));
             fgm.setArguments(bundle);
             replaceChildFragment(fgm);
         }

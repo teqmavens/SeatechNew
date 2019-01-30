@@ -7,6 +7,10 @@ public class AppConstants {
     public static final String LOGINTEQ_ID = "loginteq_id";
     public static final String LOGINTEQPARENT_ID = "loginteqparent_id";
     public static final String LOGINTEQ_USERNAME = "loginteq_username";
+    public static final String LOGINTEQ_FIRSTNAME = "loginteq_firstname";
+    public static final String LOGINTEQ_MIDDLENAME = "loginteq_middlename";
+    public static final String LOGINTEQ_LASTNAME = "loginteq_lastname";
+
     public static final String LOGINTEQ_EMAIL = "loginteq_email";
     public static final String LOGINTEQ_GENDER = "loginteq_gender";
     public static final String LOGINTEQ_IMAGE = "loginteq_image";
@@ -20,6 +24,7 @@ public class AppConstants {
 
     //Job Detail Page
     public static final String ISJOB_RUNNING = "is jobrunning";
+    public static final String ISJOB_RUNNINGCLOSE = "is jobrunningclose";
     public static final String ISJOB_NEWTYPE = "is jobnewtype";
     public static final String JOBRUNNING_INDEX = "jobrunningtstatus";
     public static final String JOBRUNNINGNEW_INDEX = "jobrunningnewtstatus";
@@ -32,6 +37,16 @@ public class AppConstants {
     public static final String JOBRUNNING_CENTERTIME = "job_centertime";
     public static final String JOBRUNNINGNEW_CENTERTIME = "jobnew_centertime";
     public static final String JOBRUNNING_ID = "job_runningid";
+
+    public static final String JOBRUNNING_BOATNAME = "jobrunn_boatname";
+    public static final String JOBRUNNING_HULLID = "jobrunn_hullid";
+    public static final String JOBRUNNING_CAPTNAME = "jobrunn_captname";
+    public static final String JOBRUNNING_CLOSETIME = "jobrunn_closetime";
+    public static final String JOBRUNNING_CLOSETIMEDATE = "jobrunn_closetimedate";
+    public static final String JOBRUNNING_LC = "jobrunn_lc";
+
+//    JOBRUNNING_BOATNAME, binding.boatnameValue.getText());
+//            HandyObject.putPrams(context, AppConstants.JOBRUNNING_HULLID,
 
     public static final String JOBRUNNING_TOTALTIME = "job_ttltime";
     public static final String JObSPINNER_LASTPOSI = "job_spinnerlastposi";
