@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="dayjobskeleton"
+            type="teq.development.seatech.Timesheet.DayJobStatus_Skeleton"></variable>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/verysmallpadding"
+            app:cardCornerRadius="@dimen/verysmallpadding"
+            app:cardElevation="@dimen/verysmallpadding">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/smallpadding"
+                android:paddingTop="@dimen/smallpadding">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/jobid"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".2"
+                    android:gravity="center"
+                    android:text="@{dayjobskeleton.job_id}"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/drawablepadding" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".2"
+                    android:gravity="center"
+                    android:text="@{dayjobskeleton.labour_code}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/drawablepadding" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".2"
+                    android:gravity="center"
+                    android:text="@{dayjobskeleton.starttime}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/drawablepadding" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".2"
+                    android:gravity="center"
+                    android:text="@{dayjobskeleton.endtime}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/drawablepadding" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".2"
+                    android:gravity="center"
+                    android:text="@{dayjobskeleton.hours}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/drawablepadding" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+
+    </LinearLayout>
+</layout>

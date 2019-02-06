@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="frgmtimesheet"
+            type="teq.development.seatech.Timesheet.TimeSheetFragment"></variable>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/smallpadding">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/topcard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/smallpadding"
+            app:cardBackgroundColor="@color/lightgray"
+            app:cardCornerRadius="@dimen/verysmallpadding"
+            app:cardElevation="@dimen/verysmallpadding"
+            app:layout_constraintBottom_toTopOf="@+id/btmcard"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/verysmalltextsize">
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/clleft"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    app:layout_constraintHorizontal_weight=".63"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/clright">
+
+                    <!--<TextView
+                        android:id="@+id/statuskey"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/statuskey"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        android:textStyle="bold"
+
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/spinner_status" />-->
+
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:id="@+id/spinner_status"
+                        android:layout_width="130dp"
+                        android:layout_height="36dp"
+
+                        android:background="@color/white"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/spinnerWeekMonth"></android.support.v7.widget.AppCompatSpinner>
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="@dimen/smallpadding"
+                        app:layout_constraintBottom_toBottomOf="@+id/spinner_status"
+                        app:layout_constraintRight_toRightOf="@+id/spinner_status"
+                        app:layout_constraintTop_toTopOf="@+id/spinner_status"
+                        app:srcCompat="@drawable/ic_downarrow" />
+
+
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:id="@+id/spinnerWeekMonth"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_marginLeft="@dimen/smallpadding"
+                        android:layout_marginRight="@dimen/mediumtextsize"
+                        android:background="@color/white"
+                        app:layout_constraintLeft_toRightOf="@+id/spinner_status"
+                        app:layout_constraintRight_toLeftOf="@+id/or"></android.support.v7.widget.AppCompatSpinner>
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="@dimen/smallpadding"
+                        app:layout_constraintBottom_toBottomOf="@+id/spinnerWeekMonth"
+                        app:layout_constraintRight_toRightOf="@+id/spinnerWeekMonth"
+                        app:layout_constraintTop_toTopOf="@+id/spinnerWeekMonth"
+                        app:srcCompat="@drawable/ic_downarrow" />
+
+
+                    <RelativeLayout
+                        android:id="@+id/rlselected"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_marginLeft="@dimen/smallpadding"
+                        android:layout_marginRight="@dimen/mediumtextsize"
+                        android:background="@color/white"
+                        android:onClick="@{()->frgmtimesheet.OnClickRlSelected()}"
+                        android:visibility="gone"
+                        app:layout_constraintLeft_toRightOf="@+id/spinner_status"
+                        app:layout_constraintRight_toLeftOf="@+id/or">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/rlselectedText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="@dimen/largetextsize"
+                            android:gravity="center"
+                            android:text="fffsfdsfasdsadsd"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/verysmalltextsize" />
+
+                        <!--<android.support.v7.widget.AppCompatImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:paddingRight="@dimen/smallpadding"
+                            app:srcCompat="@drawable/ic_downarrow" />-->
+                    </RelativeLayout>
+
+
+                    <TextView
+                        android:id="@+id/or"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/or"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/smalltextsize"
+                        android:textStyle="bold"
+                        android:visibility="visible"
+                        app:layout_constraintLeft_toRightOf="@+id/spinnerWeekMonth"
+                        app:layout_constraintRight_toLeftOf="@+id/calendar" />
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/calendar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/smallpadding"
+                        android:onClick="@{()->frgmtimesheet.OnClickCalendar()}"
+                        android:visibility="gone"
+                        app:layout_constraintLeft_toRightOf="@+id/or"
+                        app:layout_constraintRight_toLeftOf="@+id/or2"
+                        app:srcCompat="@drawable/small_calendar" />
+
+                    <TextView
+                        android:id="@+id/or2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/smallpadding"
+                        android:text="@string/or"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/smalltextsize"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        app:layout_constraintLeft_toRightOf="@+id/calendar"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <!--<android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/previousmonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/verysmallpadding"
+                        android:drawablePadding="2dp"
+                        android:onClick="@{()->frgmtimesheet.OnClickPreviousMonth()}"
+                        android:paddingTop="@dimen/verysmalltextsize"
+                        android:text="@string/previousmonth"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/spinnerWeekMonth" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/nextmonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/smalltextsize"
+                        android:drawablePadding="2dp"
+                        android:onClick="@{()->frgmtimesheet.OnClickNextMonth()}"
+                        android:paddingTop="@dimen/verysmalltextsize"
+                        android:text="@string/nextmonth"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintLeft_toRightOf="@+id/previousmonth"
+                        app:layout_constraintTop_toTopOf="@+id/previousmonth" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/previousweek"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/smallpadding"
+                        android:drawablePadding="2dp"
+                        android:onClick="@{()->frgmtimesheet.OnClickPreviousWeek()}"
+                        android:paddingTop="@dimen/verysmalltextsize"
+                        android:text="@string/previousweek"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/spinnerWeekMonth" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/nextweek"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/mediumtextsize"
+                        android:drawablePadding="2dp"
+                        android:onClick="@{()->frgmtimesheet.OnClickNextWeek()}"
+                        android:paddingTop="@dimen/verysmalltextsize"
+                        android:text="@string/nextweek"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintLeft_toRightOf="@+id/previousweek"
+                        app:layout_constraintTop_toTopOf="@+id/previousweek" />-->
+
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/displaydate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/mediumtextsize"
+                        android:drawablePadding="2dp"
+                        android:text="june 08 1990"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        android:textStyle="bold"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/spinnerWeekMonth" />
+
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/previousmonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/smallpadding"
+                        android:drawablePadding="2dp"
+                        android:onClick="@{()->frgmtimesheet.OnClickPreviousMonth()}"
+                        android:text="@string/previousmonth"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintLeft_toRightOf="@+id/displaydate"
+                        app:layout_constraintTop_toTopOf="@+id/displaydate" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/nextmonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/smalltextsize"
+                        android:drawablePadding="2dp"
+                        android:onClick="@{()->frgmtimesheet.OnClickNextMonth()}"
+                        android:text="@string/nextmonth"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintLeft_toRightOf="@+id/previousmonth"
+                        app:layout_constraintTop_toTopOf="@+id/previousmonth" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/previousweek"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/smallpadding"
+                        android:drawablePadding="2dp"
+                        android:onClick="@{()->frgmtimesheet.OnClickPreviousWeek()}"
+                        android:text="@string/previousweek"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintLeft_toRightOf="@+id/displaydate"
+                        app:layout_constraintTop_toTopOf="@+id/displaydate" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/nextweek"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/mediumtextsize"
+                        android:drawablePadding="2dp"
+                        android:onClick="@{()->frgmtimesheet.OnClickNextWeek()}"
+                        android:text="@string/nextweek"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintLeft_toRightOf="@+id/previousweek"
+                        app:layout_constraintTop_toTopOf="@+id/previousweek" />
+
+
+                </android.support.constraint.ConstraintLayout>
+
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/clright"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    app:layout_constraintHorizontal_weight=".37"
+                    app:layout_constraintLeft_toRightOf="@+id/clleft"
+                    app:layout_constraintRight_toRightOf="parent">
+
+                    <!--       <android.support.v7.widget.AppCompatTextView
+                               android:id="@+id/previousweek"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:layout_marginLeft="@dimen/smalltextsize"
+                               android:drawablePadding="2dp"
+                               android:onClick="@{()->frgmtimesheet.OnClickPreviousWeek()}"
+                               android:paddingTop="@dimen/verysmallpadding"
+                               android:text="@string/previousweek"
+                               android:textColor="@color/black"
+                               android:textSize="@dimen/verysmalltextsize"
+                               app:layout_constraintLeft_toLeftOf="parent" />
+
+                           <android.support.v7.widget.AppCompatTextView
+                               android:id="@+id/nextweek"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:layout_marginLeft="@dimen/smalltextsize"
+                               android:drawablePadding="2dp"
+                               android:onClick="@{()->frgmtimesheet.OnClickNextWeek()}"
+                               android:paddingTop="@dimen/verysmallpadding"
+                               android:text="@string/nextweek"
+                               android:textColor="@color/black"
+                               android:textSize="@dimen/verysmalltextsize"
+                               app:layout_constraintLeft_toRightOf="@+id/previousweek"
+                               app:layout_constraintRight_toRightOf="parent" />-->
+
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/etfrom"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_marginLeft="@dimen/mediumtextsize"
+                        android:background="@color/white"
+                        android:focusable="false"
+                        android:hint="@string/from"
+                        android:onClick="@{()->frgmtimesheet.OnClickEtFrom()}"
+                        android:paddingLeft="@dimen/smallpadding"
+                        android:paddingRight="@dimen/verysmallpadding"
+                        android:textColorHint="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        android:visibility="visible"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/etto" />
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/etto"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_marginLeft="@dimen/verysmalltextsize"
+                        android:background="@color/white"
+                        android:focusable="false"
+                        android:hint="@string/to"
+                        android:onClick="@{()->frgmtimesheet.OnClickEtTo()}"
+                        android:paddingLeft="@dimen/smallpadding"
+                        android:paddingRight="@dimen/verysmallpadding"
+                        android:textColorHint="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        android:visibility="visible"
+                        app:layout_constraintLeft_toRightOf="@+id/etfrom"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/btnclear"
+                        android:layout_width="@dimen/loginmargin"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="@dimen/verysmalltextsize"
+                        android:layout_marginTop="@dimen/smalltextsize"
+                        android:background="@drawable/startstopjob_bg"
+                        android:onClick="@{()->frgmtimesheet.OnClickClear()}"
+                        android:text="@string/clear"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:visibility="visible"
+                        app:layout_constraintRight_toLeftOf="@+id/btnsearch"
+                        app:layout_constraintTop_toBottomOf="@+id/etfrom" />
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/btnsearch"
+                        android:layout_width="@dimen/loginmargin"
+                        android:layout_height="40dp"
+                        android:background="@drawable/startstopjob_bg"
+                        android:onClick="@{()->frgmtimesheet.OnClickSearch()}"
+                        android:text="@string/search"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:visibility="visible"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/etfrom"
+                        app:layout_constraintTop_toTopOf="@+id/btnclear" />
+
+                </android.support.constraint.ConstraintLayout>
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v7.widget.CardView>
+
+       <!-- <android.support.v7.widget.AppCompatButton
+            android:id="@+id/backbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/verysmalltextsize"
+            android:background="@drawable/bg_loginbtn"
+            android:onClick="@{()->frgmtimesheet.OnClickBack()}"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/backtolist"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/verysmalltextsize"
+            android:layout_marginTop="@dimen/smallpadding"
+            android:layout_marginBottom="@dimen/smallpadding"
+            app:layout_constraintTop_toBottomOf="@+id/topcard"
+            app:layout_constraintRight_toRightOf="parent" />-->
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/btmcard"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/smallpadding"
+            app:cardBackgroundColor="@color/lightgray"
+            app:cardCornerRadius="@dimen/verysmallpadding"
+            app:cardElevation="@dimen/verysmallpadding"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topcard">
+
+            <FrameLayout
+                android:id="@+id/childcontainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></FrameLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="rowdetaildashnotes"
+            type="teq.development.seatech.Dashboard.Skeleton.DashboardNotes_Skeleton"></variable>
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/verysmallpadding"
+        app:cardElevation="@dimen/verysmallpadding"
+        app:cardCornerRadius="@dimen/verysmallpadding">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/smallpadding">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/schedulerrole_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/mediumtextsize"
+                android:text="@{rowdetaildashnotes.noteWriter}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="bold" />
+           <!-- android:text="Schedule Manager"-->
+            <!-- android:drawableLeft="@drawable/urgentmsg"-->
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/Sched_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/verysmallpadding"
+                android:drawablePadding="@dimen/largetextsize"
+                android:text="@{rowdetaildashnotes.createdAt}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toRightOf="@+id/schedulerrole_name" />
+
+          <!--  android:text="19-2-1999"-->
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/largetextsize"
+                android:text="@{rowdetaildashnotes.notes}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/schedulerrole_name" />
+          <!--  android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum est velit, maximus a dictum a, imperdiet id dui"
+            -->
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+</layout>

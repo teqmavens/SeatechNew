@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/lightgray"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/verysmalltextsize">
+
+        <TextView
+            android:id="@+id/day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SUNDAYYYY" />
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="JAN 131990" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/smallpadding"
+        android:background="@color/white"
+        android:layout_marginBottom="@dimen/verysmallpadding"
+        android:orientation="horizontal">
+        <TextView
+           android:layout_weight=".1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Ticket No." />
+        <TextView
+            android:layout_weight=".1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Start Time" />
+        <TextView
+            android:layout_weight=".1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Duration" />
+        <TextView
+            android:layout_weight=".14"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Customer Name" />
+        <TextView
+            android:layout_weight=".18"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Technician Name" />
+        <TextView
+            android:layout_weight=".1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Need Part" />
+        <TextView
+            android:layout_weight=".12"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Region" />
+        <TextView
+            android:layout_weight=".1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Action" />
+
+    </LinearLayout>
+
+</LinearLayout>

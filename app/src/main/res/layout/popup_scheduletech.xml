@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="popupscheduletech"
+            type="teq.development.seatech.PickUpJobs.ScheduleTechDialog"></variable>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/smalltextsize"
+            android:background="@drawable/dashboardlinebg"
+            android:padding="@dimen/smalltextsize"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/toptext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/scheduletech"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/verysmalltextsize"
+                android:background="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/toptext"></View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/verysmalltextsize"
+                app:layout_constraintTop_toBottomOf="@+id/view1">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/estimatedhrKey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/estimatedhrKey"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_estimatedhr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/smallpadding"
+                    android:background="@drawable/dashboardlinebg"
+                    android:enabled="false"
+                    android:hint="@string/estimatedhrKey"
+                    android:padding="@dimen/smallpadding"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintTop_toBottomOf="@+id/toptext" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/selecttechKey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/smalltextsize"
+                    android:text="@string/selecttech"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_selecttech"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/smallpadding"
+                    android:background="@drawable/dashboardlinebg"
+                    android:focusable="false"
+                    android:hint="@string/choosetech"
+                    android:onClick="@{()->popupscheduletech.OnClickSelectTech()}"
+                    android:padding="@dimen/smallpadding"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintTop_toBottomOf="@+id/toptext" />
+
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/appttypeKey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/smalltextsize"
+                    android:text="@string/appttypeKey"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/smallpadding">
+
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:id="@+id/apptspinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:background="@drawable/dashboardlinebg"
+                        android:paddingLeft="@dimen/smalltextsize"
+                        app:layout_constraintHorizontal_weight=".28"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/spinner_lc">
+
+                    </android.support.v7.widget.AppCompatSpinner>
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingRight="@dimen/smalltextsize"
+                        app:srcCompat="@drawable/ic_downarrow" />
+                </RelativeLayout>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/startdateKey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/smalltextsize"
+                    android:text="@string/startdateKey"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_startdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/smallpadding"
+                    android:background="@drawable/dashboardlinebg"
+                    android:focusable="false"
+                    android:hint="@string/startdateKey"
+                    android:onClick="@{()->popupscheduletech.OnClickStartDate()}"
+                    android:padding="@dimen/smallpadding"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintTop_toBottomOf="@+id/toptext" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/starttimeKey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/smalltextsize"
+                    android:text="@string/starttimeKey"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/et_starttime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/smallpadding"
+                        android:layout_toLeftOf="@+id/imagestarttime"
+                        android:background="@drawable/dashboardlinebg"
+                        android:hint="@string/starttimeKey"
+                        android:padding="@dimen/smallpadding"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize" />
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/imagestarttime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingTop="6dp"
+                        android:paddingLeft="6dp"
+                        android:onClick="@{()->popupscheduletech.OnClickStartTime()}"
+                        android:layout_marginLeft="@dimen/verysmallpadding"
+                        app:srcCompat="@drawable/small_clock" />
+
+                </RelativeLayout>
+
+                <!--<android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_starttime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/smallpadding"
+                    android:background="@drawable/dashboardlinebg"
+                    android:hint="@string/starttimeKey"
+                    android:padding="@dimen/smallpadding"
+                    android:focusable="false"
+                    android:textColor="@color/black"
+                    android:onClick="@{()->popupscheduletech.OnClickStartTime()}"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintTop_toBottomOf="@+id/toptext" />-->
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/durationKey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/smalltextsize"
+                    android:text="@string/durationKey"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/et_duration"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/smallpadding"
+                        android:background="@drawable/dashboardlinebg"
+                        android:hint="@string/durationKey"
+                        android:padding="@dimen/smallpadding"
+                        android:textColor="@color/black"
+                        android:layout_toLeftOf="@+id/imagedurationtime"
+                        android:textSize="@dimen/verysmalltextsize" />
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/imagedurationtime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:onClick="@{()->popupscheduletech.OnClickDuration()}"
+                        android:layout_marginLeft="@dimen/verysmallpadding"
+                        android:paddingTop="6dp"
+                        android:paddingLeft="6dp"
+                        app:srcCompat="@drawable/small_clock" />
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/smalltextsize"
+                    android:paddingLeft="@dimen/smallpadding"
+                    android:text="@string/apptmtconfirm" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/techdashmemoKey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/smalltextsize"
+                    android:text="@string/techdashmemoKey"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_techdashmemo"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="@dimen/smallpadding"
+                    android:background="@drawable/dashboardlinebg"
+                    android:hint="@string/techdashmemoKey"
+                    android:padding="@dimen/smallpadding"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    app:layout_constraintTop_toBottomOf="@+id/toptext" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="@dimen/smalltextsize"
+                    android:background="@drawable/bg_loginbtn"
+                    android:onClick="@{()->popupscheduletech.OnClickSubmit()}"
+                    android:paddingLeft="@dimen/smallpadding"
+                    android:paddingRight="@dimen/smallpadding"
+                    android:text="@string/submit"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/verysmalltextsize" />
+
+            </LinearLayout>
+
+            <!--<android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_time"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/smalltextsize"
+                app:layout_constraintTop_toBottomOf="@+id/toptext"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/cbx_otherreason"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                android:layout_marginRight="@dimen/smalltextsize"
+                android:background="@drawable/dashboardlinebg"
+                android:padding="@dimen/smallpadding"
+                android:enabled="false"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize" />
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/timerimage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/et_time"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginLeft="@dimen/verysmallpadding"
+                app:layout_constraintLeft_toRightOf="@+id/et_time"
+                app:srcCompat="@drawable/timerimage"/>
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/smalltextsize"
+                android:background="@drawable/bg_loginbtn"
+                android:paddingLeft="@dimen/smallpadding"
+                android:paddingRight="@dimen/smallpadding"
+                android:text="@string/submit"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/verysmalltextsize"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_time" />-->
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/cross"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->popupscheduletech.onClickCross()}"
+            app:srcCompat="@drawable/crosspopup" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

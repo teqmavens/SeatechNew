@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="frgmtsweekchild"
+            type="teq.development.seatech.Timesheet.TSWeekChildFragment"></variable>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/backbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/verysmalltextsize"
+            android:background="@drawable/bg_loginbtn"
+            android:onClick="@{()->frgmtsweekchild.OnClickBack()}"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_gravity="right"
+            android:text="@string/backtolist"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/verysmalltextsize"
+            android:layout_marginTop="@dimen/smallpadding"
+            android:layout_marginBottom="@dimen/smallpadding" />
+
+        <LinearLayout
+            android:id="@+id/lltop"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".07"
+            android:background="@color/appbasiccolor"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:gravity="center"
+                android:text="@string/week"
+                android:textColor="@color/white"
+                android:textSize="@dimen/drawablepadding"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:gravity="center"
+                android:text="@string/date"
+                android:textColor="@color/white"
+                android:textSize="@dimen/drawablepadding"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:gravity="center"
+                android:text="@string/billabe"
+                android:textColor="@color/white"
+                android:textSize="@dimen/drawablepadding"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:gravity="center"
+                android:text="@string/nonbillabe"
+                android:textColor="@color/white"
+                android:textSize="@dimen/drawablepadding"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:gravity="center"
+                android:text="@string/total"
+                android:textColor="@color/white"
+                android:textSize="@dimen/drawablepadding"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"></View>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scrollbars="vertical"
+            android:scrollbarSize="8dp"
+            android:scrollbarThumbVertical="@drawable/thumb_scroll"
+            android:layout_weight=".89">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"></View>
+
+        <LinearLayout
+            android:id="@+id/llbtm"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".06"
+            android:background="@color/appbasiccolor"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:gravity="center"
+                android:text="@string/weektotal"
+                android:textColor="@color/white"
+                android:textSize="@dimen/smalltextsize"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"></View>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/billableWeekttl"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:gravity="center"
+                android:text="00"
+                android:textColor="@color/white"
+                android:textSize="@dimen/smalltextsize"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/nonbillableWeekttl"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:gravity="center"
+                android:text="00"
+                android:textColor="@color/white"
+                android:textSize="@dimen/smalltextsize"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/weekttl_ttl"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:gravity="center"
+                android:text="00"
+                android:textColor="@color/white"
+                android:textSize="@dimen/smalltextsize"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

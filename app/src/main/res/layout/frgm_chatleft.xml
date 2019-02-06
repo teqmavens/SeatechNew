@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="frgmchatleft"
+            type="teq.development.seatech.Chat.ChatLeftFragment"></variable>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/top"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingTop="@dimen/mediumtextsize"
+            app:layout_constraintBottom_toTopOf="@+id/recyclerview"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_weight=".1">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/jobspecificmsg"
+                android:textColor="@color/appbasiccolor"
+                android:textSize="@dimen/smalltextsize"
+                android:visibility="gone" />
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/chaticon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="@dimen/verysmalltextsize"
+                android:onClick="@{()->frgmchatleft.OnClickCompose()}"
+                android:visibility="gone"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text"
+                app:srcCompat="@drawable/add_chat" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/etbgchat"
+                android:hint="@string/search"
+                android:maxHeight="40dp"
+                android:paddingBottom="@dimen/verysmallpadding"
+                android:paddingLeft="@dimen/verysmalltextsize"
+                android:paddingRight="@dimen/verysmallpadding"
+                android:paddingTop="@dimen/verysmallpadding"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize" />
+
+        </android.support.constraint.ConstraintLayout>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/top"
+            android:scrollbars="vertical"
+            android:scrollbarSize="6dp"
+            android:scrollbarThumbVertical="@drawable/thumb_scroll"
+            app:layout_constraintVertical_weight=".9">
+
+
+        </android.support.v7.widget.RecyclerView>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/nodatafound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/nodatafound"
+            android:textColor="@color/appbasiccolor"
+            android:textSize="@dimen/mediumtextsize"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/top" />
+
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

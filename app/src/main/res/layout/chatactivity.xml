@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="chatactivity"
+            type="teq.development.seatech.Chat.ChatActivity"></variable>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/tootlbar"
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+            android:background="@color/appbasiccolor"
+            android:elevation="@dimen/smallpadding"
+            app:layout_constraintBottom_toTopOf="@+id/constmain"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/smallpadding"
+                    android:layout_marginTop="@dimen/verysmallpadding"
+                    android:onClick="@{()->chatactivity.OnClickBack()}"
+                    android:padding="@dimen/verysmallpadding"
+                    app:srcCompat="@drawable/ic_left_arrow_key" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/verysmallpadding"
+                    android:paddingRight="@dimen/mediumtextsize"
+                    android:text="@string/chat"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/mediumtextsize" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:onClick="@{()->chatactivity.OnClickAddchat()}"
+                    android:padding="@dimen/smallpadding"
+                    app:srcCompat="@drawable/ic_plus" />
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.Toolbar>
+
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constmain"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/verysmallpadding"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tootlbar">
+
+            <FrameLayout
+                android:id="@+id/containerLeft"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:layout_constraintHorizontal_weight=".3"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/view">
+
+            </FrameLayout>
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/lightgray"
+                app:layout_constraintLeft_toRightOf="@+id/containerLeft"
+                app:layout_constraintRight_toLeftOf="@+id/containerRight"></View>
+
+            <FrameLayout
+                android:id="@+id/containerRight"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:layout_constraintHorizontal_weight=".7"
+                app:layout_constraintLeft_toRightOf="@+id/view"
+                app:layout_constraintRight_toRightOf="parent">
+
+            </FrameLayout>
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

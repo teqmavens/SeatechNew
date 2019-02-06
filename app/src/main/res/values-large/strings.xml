@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="submitlabor_perform">Submit My Labor Performed for this job</string>
+    <string name="addnew_offrecordnote">Add a new Off the record notes for this job</string>
+    <string name="valuesupplies">Value of supplies used for this job:</string>
+</resources>

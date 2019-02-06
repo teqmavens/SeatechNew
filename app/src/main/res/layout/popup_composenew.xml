@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="popupcomposenew"
+            type="teq.development.seatech.Chat.ComposeDialogNew"></variable>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/smalltextsize"
+            android:background="@drawable/dashboardlinebg"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/mediumtextsize">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/urgentmsg"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/urgentmsgcmp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="bold"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/checkboxyes" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/cburgentmsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@+id/urgentmsg"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/empname"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mediumtextsize"
+                android:text="@string/empname"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="bold"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/urgentmsg" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/jobspinner"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:background="@drawable/dashboardlinebg"
+                app:layout_constraintRight_toRightOf="parent"
+                android:paddingLeft="@dimen/smallpadding"
+                app:layout_constraintLeft_toLeftOf="@+id/cburgentmsg"
+                app:layout_constraintTop_toTopOf="@+id/empname">
+
+            </android.support.v7.widget.AppCompatSpinner>
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/smallpadding"
+                app:layout_constraintBottom_toBottomOf="@+id/jobspinner"
+                app:layout_constraintRight_toRightOf="@+id/jobspinner"
+                app:layout_constraintTop_toTopOf="@+id/jobspinner"
+                app:srcCompat="@drawable/ic_downarrow" />
+
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/jobticketno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/largetextsize"
+                android:text="@string/jobticketno"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/empname" />
+
+            <android.support.v7.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/et_jobticketno"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/dashboardlinebg"
+                android:gravity="center_vertical"
+                android:inputType="textPersonName"
+                android:maxHeight="60dp"
+                android:padding="@dimen/smallpadding"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:enabled="false"
+                app:layout_constraintLeft_toLeftOf="@+id/cburgentmsg"
+                app:layout_constraintRight_toRightOf="@+id/jobspinner"
+                app:layout_constraintTop_toTopOf="@+id/jobticketno" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/custname_key"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/largetextsize"
+                android:text="@string/customername"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/jobticketno" />
+
+            <android.support.v7.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/et_custname"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/dashboardlinebg"
+                android:gravity="center_vertical"
+                android:inputType="textPersonName"
+                android:maxHeight="60dp"
+                android:padding="@dimen/smallpadding"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:visibility="gone"
+                android:enabled="false"
+                app:layout_constraintLeft_toLeftOf="@+id/cburgentmsg"
+                app:layout_constraintRight_toRightOf="@+id/jobspinner"
+                app:layout_constraintTop_toTopOf="@+id/custname_key" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/custtype_key"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/largetextsize"
+                android:text="@string/customertype"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="bold"
+                android:visibility="visible"
+                android:enabled="false"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/custname_key" />
+
+            <android.support.v7.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/et_custtype"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/dashboardlinebg"
+                android:gravity="center_vertical"
+                android:inputType="textPersonName"
+                android:maxHeight="60dp"
+                android:padding="@dimen/smallpadding"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:visibility="visible"
+                android:enabled="false"
+                app:layout_constraintLeft_toLeftOf="@+id/cburgentmsg"
+                app:layout_constraintRight_toRightOf="@+id/jobspinner"
+                app:layout_constraintTop_toTopOf="@+id/custtype_key" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/boatname_key"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/largetextsize"
+                android:text="@string/boatname"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/custtype_key" />
+
+            <android.support.v7.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/et_boatname"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/dashboardlinebg"
+                android:gravity="center_vertical"
+                android:inputType="textPersonName"
+                android:maxHeight="60dp"
+                android:padding="@dimen/smallpadding"
+                android:enabled="false"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:visibility="visible"
+                app:layout_constraintLeft_toLeftOf="@+id/cburgentmsg"
+                app:layout_constraintRight_toRightOf="@+id/jobspinner"
+                app:layout_constraintTop_toTopOf="@+id/boatname_key" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/boatmakeyear_key"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/largetextsize"
+                android:text="@string/boatmakeyear"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/boatname_key" />
+
+
+            <android.support.v7.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/et_boatmakeyear"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/dashboardlinebg"
+                android:gravity="center_vertical"
+                android:inputType="textPersonName"
+                android:maxHeight="60dp"
+                android:padding="@dimen/smallpadding"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:visibility="visible"
+                android:enabled="false"
+                app:layout_constraintLeft_toLeftOf="@+id/cburgentmsg"
+                app:layout_constraintRight_toRightOf="@+id/jobspinner"
+                app:layout_constraintTop_toTopOf="@+id/boatmakeyear_key" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/largetextsize"
+                android:text="@string/enterdesription"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/boatmakeyear_key" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_description"
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                android:layout_marginTop="@dimen/verysmalltextsize"
+                android:background="@drawable/dashboardlinebg"
+                android:gravity="top"
+                android:hint="@string/enterdesriptioncompose"
+                android:inputType="textPersonName"
+                android:maxHeight="180dp"
+                android:padding="@dimen/verysmalltextsize"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/description" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/smalltextsize"
+                android:background="@drawable/bg_loginbtn"
+                android:paddingLeft="@dimen/smallpadding"
+                android:paddingRight="@dimen/smallpadding"
+                android:text="@string/submit"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/verysmalltextsize"
+                android:onClick="@{()->popupcomposenew.OnClickSubmit()}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_description" />
+        </android.support.constraint.ConstraintLayout>
+
+      <!--  android:onClick="@{()->popupcomposenew.OnClickSubmit()}"-->
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/cross"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->popupcomposenew.OnClickCross()}"
+            app:srcCompat="@drawable/crosspopup" />
+
+      <!--  android:onClick="@{()->popupcomposenew.OnClickCross()}"-->
+
+    </RelativeLayout>
+</layout>

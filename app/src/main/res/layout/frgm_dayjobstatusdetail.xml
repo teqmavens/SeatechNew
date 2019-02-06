@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="frgmdayjobstatus"
+            type="teq.development.seatech.Timesheet.DayJobStatusDetailFragment"></variable>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/verysmalltextsize">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/currentdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/verysmallpadding"
+            android:drawablePadding="2dp"
+            android:text="Jul 17 2018"
+            android:textColor="@color/black"
+            android:textSize="@dimen/verysmalltextsize"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/previousdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/smalltextsize"
+            android:layout_toRightOf="@+id/currentdate"
+            android:drawablePadding="2dp"
+            android:text="@string/previousdate"
+            android:textColor="@color/black"
+            android:textSize="@dimen/verysmalltextsize"
+            app:layout_constraintLeft_toRightOf="@+id/currentdate" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/nextdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/smalltextsize"
+            android:layout_toRightOf="@+id/previousdate"
+            android:drawablePadding="2dp"
+            android:text="@string/nextdate"
+            android:textColor="@color/black"
+            android:textSize="@dimen/verysmalltextsize"
+            app:layout_constraintLeft_toRightOf="@+id/previousdate" />
+
+
+        <android.support.v7.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/verysmalltextsize"
+            android:background="@drawable/bg_loginbtn"
+            android:onClick="@{()->frgmdayjobstatus.OnClickBack()}"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/backtolist"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/verysmalltextsize"
+            app:layout_constraintRight_toRightOf="parent" />
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/dataCardView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/drawablepadding"
+            android:layout_marginTop="@dimen/drawablepadding"
+            app:cardBackgroundColor="@color/lightgray"
+            app:cardCornerRadius="@dimen/verysmallpadding"
+            app:cardElevation="@dimen/verysmallpadding"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/previousdate">
+
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/lltop"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@color/appbasiccolor"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toTopOf="@+id/view1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_weight=".07">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".2"
+                        android:gravity="center"
+                        android:text="@string/jobticket"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/drawablepadding"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".2"
+                        android:gravity="center"
+                        android:text="@string/laborcode"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/drawablepadding"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".2"
+                        android:gravity="center"
+                        android:text="@string/starttimeKey"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/drawablepadding"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".2"
+                        android:gravity="center"
+                        android:text="@string/endtime"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/drawablepadding"
+                        android:textStyle="bold" />
+
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".2"
+                        android:gravity="center"
+                        android:text="@string/hours"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/drawablepadding"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/view1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/black"
+                    app:layout_constraintBottom_toTopOf="@+id/statusRecyclerView"
+                    app:layout_constraintTop_toBottomOf="@+id/lltop"></View>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/statusRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toTopOf="@+id/totaltimeKey"
+                    app:layout_constraintTop_toBottomOf="@+id/view1"
+                    app:layout_constraintVertical_weight=".81">
+
+
+                </android.support.v7.widget.RecyclerView>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/totaltimeKey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/largetextsize"
+                    android:text="@string/ttltime"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/smalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/totalWeekHrKey"
+                    app:layout_constraintTop_toBottomOf="@+id/statusRecyclerView"
+                    app:layout_constraintVertical_weight=".07" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/totaltimeValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingRight="@dimen/largetextsize"
+                    android:text="00hrs 00min"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/smalltextsize"
+                    app:layout_constraintBottom_toBottomOf="@+id/totaltimeKey"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/totaltimeKey" />
+
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/totalWeekHrKey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/largetextsize"
+                    android:text="@string/ttlweekhrs"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/smalltextsize"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/totaltimeKey"
+                    app:layout_constraintVertical_weight=".07" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/totalWeekHrValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingRight="@dimen/largetextsize"
+                    android:text="00hrs 00min"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/smalltextsize"
+                    app:layout_constraintBottom_toBottomOf="@+id/totalWeekHrKey"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/totalWeekHrKey" />
+
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/nodataCardView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/verysmalltextsize"
+            android:layout_marginTop="@dimen/smalltextsize"
+            android:visibility="invisible"
+            app:cardBackgroundColor="@color/lightgray"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="@dimen/smallpadding"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/previousdate">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/nodatafound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingRight="@dimen/largetextsize"
+                    android:text="@string/nodatafound"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/largetextsize"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/trywth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingRight="@dimen/largetextsize"
+                    android:text="@string/trywthdiff"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/smalltextsize"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+    </android.support.constraint.ConstraintLayout>
+</layout>

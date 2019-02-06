@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/smalltextsize"
+        android:background="@drawable/dashboardlinebg"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/smalltextsize">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/notbilled"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".6"
+                android:text="@string/notbilled"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="bold" />
+
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_notbilled"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".4"
+                android:background="@drawable/dashboardlinebg"
+                android:gravity="center_vertical"
+                android:hint="@string/enter"
+                android:inputType="number"
+                android:padding="@dimen/verysmalltextsize"
+                android:focusable="false"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/verysmalltextsize" />
+        </LinearLayout>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/whynotbilled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/verysmalltextsize"
+            android:text="@string/whynotbilled"
+            android:textColor="@color/black"
+            android:textSize="@dimen/verysmalltextsize"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/et_description"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_marginTop="@dimen/verysmalltextsize"
+            android:background="@drawable/dashboardlinebg"
+            android:gravity="top"
+            android:hint="@string/enterdesription"
+            android:padding="@dimen/smalltextsize"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="@dimen/verysmalltextsize" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/largetextsize"
+            android:background="@drawable/bg_loginbtn"
+            android:padding="@dimen/verysmalltextsize"
+            android:text="@string/submit"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/verysmalltextsize"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/cross"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/crosspopupblack" />
+
+</RelativeLayout>

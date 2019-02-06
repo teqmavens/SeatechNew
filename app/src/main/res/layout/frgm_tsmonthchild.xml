@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/lltop"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".07"
+            android:background="@color/appbasiccolor"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:gravity="center"
+                android:text="@string/weekdate"
+                android:textColor="@color/white"
+                android:textSize="@dimen/drawablepadding"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:gravity="center"
+                android:text="@string/statusmonth"
+                android:textColor="@color/white"
+                android:textSize="@dimen/drawablepadding"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:gravity="center"
+                android:text="@string/viewDetail"
+                android:textColor="@color/white"
+                android:textSize="@dimen/drawablepadding"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"></View>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scrollbars="vertical"
+            android:scrollbarSize="8dp"
+            android:scrollbarThumbVertical="@drawable/thumb_scroll"
+            android:layout_weight=".93">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+</layout>

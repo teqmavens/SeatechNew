@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "571071046805",
+    "firebase_url": "https://seatech1-fa71c.firebaseio.com",
+    "project_id": "seatech1-fa71c",
+    "storage_bucket": "seatech1-fa71c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:571071046805:android:1ca8f7dab13dc053",
+        "android_client_info": {
+          "package_name": "teq.development.seatech"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "571071046805-dmng6t8eksss2fabu1qp3tqusdhlj54u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIwC-_sQW7HE885JNhDgtXqUS2xefbxLg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

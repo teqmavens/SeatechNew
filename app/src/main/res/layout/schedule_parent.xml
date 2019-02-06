@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="scheduleparent"
+            type="teq.development.seatech.Schedule.ScheduleParent"></variable>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/lightgray"
+        android:padding="@dimen/verysmalltextsize">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/topcard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="@dimen/verysmallpadding">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/verysmalltextsize">
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/cl_custname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/cl_technician">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/custmr_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/customername" />
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/smallpadding"
+                        android:background="@drawable/dashboardlinebg"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/custmr_name" />
+
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/cl_technician"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mediumtextsize"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintLeft_toRightOf="@+id/cl_custname"
+                    app:layout_constraintRight_toLeftOf="@+id/cl_region">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/technician_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tech_name" />
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/smallpadding"
+                        android:background="@drawable/dashboardlinebg"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/technician_name" />
+
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/cl_region"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mediumtextsize"
+                    app:layout_constraintLeft_toRightOf="@+id/cl_technician"
+                    app:layout_constraintRight_toLeftOf="@+id/cl_jobticket">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/region"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/region" />
+
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:id="@+id/regionspinner"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/dashboardlinepickup"
+                        android:paddingLeft="@dimen/smallpadding"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/region"></android.support.v7.widget.AppCompatSpinner>
+
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/cl_jobticket"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mediumtextsize"
+                    app:layout_constraintLeft_toRightOf="@+id/cl_region"
+                    app:layout_constraintRight_toRightOf="parent">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/jobticket_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/jobticketno" />
+
+                    <android.support.v7.widget.AppCompatAutoCompleteTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/smallpadding"
+                        android:background="@drawable/dashboardlinebg"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/jobticket_no" />
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btnsearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="@dimen/verysmalltextsize"
+                    android:background="@drawable/bg_schedulesearch"
+                    android:text="@string/search"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_jobticket" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_marginRight="@dimen/smallpadding"
+                    android:layout_marginTop="@dimen/verysmalltextsize"
+                    android:background="@drawable/bg_scheduleclear"
+                    android:text="@string/clear"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    app:layout_constraintRight_toLeftOf="@+id/btnsearch"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_jobticket" />
+
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/smallpadding"
+            app:cardElevation="@dimen/verysmallpadding"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topcard">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="@dimen/verysmalltextsize"
+                >
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/today"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_marginLeft="@dimen/verysmalltextsize"
+                    android:background="@drawable/bg_scheduleclear"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:onClick="@{()->scheduleparent.OnClickToday()}"
+                    android:text="@string/today"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/previous"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_marginLeft="@dimen/mediumtextsize"
+                    android:background="@drawable/dashboardlinebg"
+                    android:drawableLeft="@drawable/leftarrow"
+                    android:onClick="@{()->scheduleparent.OnClickPrevious()}"
+                    android:paddingLeft="@dimen/smallpadding"
+                    android:paddingRight="@dimen/smallpadding"
+                    app:layout_constraintLeft_toRightOf="@+id/today" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:background="@drawable/dashboardlinebg"
+                    android:drawableLeft="@drawable/rightarrow"
+                    android:onClick="@{()->scheduleparent.OnClickNext()}"
+                    android:paddingLeft="@dimen/smallpadding"
+                    android:paddingRight="@dimen/smallpadding"
+                    app:layout_constraintLeft_toRightOf="@+id/previous" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/firstlast_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/smallpadding"
+                    android:text="2Dec-9Dec"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@+id/next"
+                    app:layout_constraintRight_toLeftOf="@+id/ll_tabs" />
+
+                <LinearLayout
+                    android:id="@+id/ll_tabs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:orientation="horizontal"
+                    android:layout_marginRight="@dimen/verysmalltextsize"
+                    app:layout_constraintRight_toRightOf="parent">
+
+                    <TextView
+                        android:id="@+id/timelinetext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/dashboardlinebg"
+                        android:gravity="center"
+                        android:onClick="@{()->scheduleparent.OnClickTimeLine()}"
+                        android:paddingLeft="@dimen/smallpadding"
+                        android:paddingRight="@dimen/smallpadding"
+                        android:text="@string/timeline"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize" />
+
+                    <TextView
+                        android:id="@+id/calendartext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/dashboardlinebg"
+                        android:gravity="center"
+                        android:onClick="@{()->scheduleparent.OnClickCalendar()}"
+                        android:paddingLeft="@dimen/smallpadding"
+                        android:paddingRight="@dimen/smallpadding"
+                        android:text="@string/calendar"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize" />
+
+                    <TextView
+                        android:id="@+id/weektext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/dashboardlinebg"
+                        android:gravity="center"
+                        android:onClick="@{()->scheduleparent.OnClickWeekView()}"
+                        android:paddingLeft="@dimen/smallpadding"
+                        android:paddingRight="@dimen/smallpadding"
+                        android:text="@string/week"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize" />
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/tabswitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/mediumtextsize"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/today">
+
+                </FrameLayout>
+
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v7.widget.CardView>
+    </android.support.constraint.ConstraintLayout>
+</layout>

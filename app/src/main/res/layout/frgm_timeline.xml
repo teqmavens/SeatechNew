@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="frgmtimeline"
+            type="teq.development.seatech.Schedule.TimeLineFragment"></variable>
+    </data>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/appbasiccolor"
+        android:paddingTop="@dimen/verysmalltextsize"
+        android:paddingBottom="@dimen/verysmalltextsize"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/techname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="TECH NAME"
+            android:textStyle="bold"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/mon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="MON"
+            android:textStyle="bold"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/tue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="TUE"
+            android:textStyle="bold"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/wed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="WED"
+            android:textStyle="bold"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/thu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="THU"
+            android:textStyle="bold"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/fri"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="FRI"
+            android:textStyle="bold"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/sat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="SAT"
+            android:textStyle="bold"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/sun"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="SUN"
+            android:textStyle="bold"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <teq.development.seatech.CustomCalendar.AutoGridView
+        android:id="@+id/gridView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="@integer/grid_columns"
+        android:horizontalSpacing="1dp"
+        android:verticalSpacing="1dp"
+        android:background="#e5e5e5"
+        android:stretchMode="columnWidth"
+        tools:listitem="@layout/gridtest_item">
+
+    </teq.development.seatech.CustomCalendar.AutoGridView>
+</LinearLayout>
+</layout>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/smalltextsize"
+            android:background="@drawable/dashboardlinebg"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/smallpadding">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/dialog_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/verysmallpadding"
+                android:layout_marginBottom="@dimen/toolbarheight">
+
+            </android.support.v4.view.ViewPager>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/moveto_prev"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/verysmallpadding"
+                    android:padding="@dimen/smalltextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/dynamic_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mediumtextsize"
+                    android:paddingBottom="@dimen/smalltextsize"
+                    android:text="1"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/mediumtextsize" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/fix_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/mediumtextsize" />
+
+                <TextView
+                    android:id="@+id/moveto_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/mediumtextsize"
+                    android:padding="@dimen/smalltextsize" />
+
+               <!-- <TextView
+                    android:id="@+id/description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="abc"
+                    android:textSize="@dimen/smalltextsize"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="@dimen/smallpadding"
+                    android:layout_marginLeft="@dimen/smalltextsize"
+                     />-->
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/cross"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/crosspopup" />
+
+    </RelativeLayout>
+</layout>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/cross"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-6dp"
+        android:layout_toRightOf="@+id/card"
+        app:srcCompat="@drawable/crosspopupblack"/>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@android:color/transparent"
+        android:layout_marginTop="18dp"
+        app:cardElevation="@dimen/verysmallpadding">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/smallpadding"
+            android:background="@drawable/jobdetailbtnbg"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/jobticketkey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/jobticketno_schedule"
+                android:textColor="@color/white"
+                android:textSize="@dimen/verysmalltextsize" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/jobticketvalue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="jvalue"
+                app:layout_constraintLeft_toRightOf="@+id/jobticketkey"
+                android:textColor="@color/white"
+                android:textSize="@dimen/verysmalltextsize" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/customerkey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/customer_schedule"
+                android:layout_marginTop="@dimen/smallpadding"
+                app:layout_constraintTop_toBottomOf="@+id/jobticketkey"
+                android:textColor="@color/white"
+                android:textSize="@dimen/verysmalltextsize" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/customervalue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="cvalue"
+                app:layout_constraintTop_toTopOf="@+id/customerkey"
+                app:layout_constraintLeft_toLeftOf="@+id/jobticketvalue"
+                android:textColor="@color/white"
+                android:textSize="@dimen/verysmalltextsize" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/startdatetimekey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/startdatetime_schedule"
+                android:layout_marginTop="@dimen/smallpadding"
+                app:layout_constraintTop_toBottomOf="@+id/customerkey"
+                android:textColor="@color/white"
+                android:textSize="@dimen/verysmalltextsize" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/startdatetimevalue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="datevalue"
+                app:layout_constraintTop_toTopOf="@+id/startdatetimekey"
+                app:layout_constraintLeft_toLeftOf="@+id/customervalue"
+                android:textColor="@color/white"
+                android:textSize="@dimen/verysmalltextsize" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/durationkey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/duration_schedule"
+                android:layout_marginTop="@dimen/smallpadding"
+                app:layout_constraintTop_toBottomOf="@+id/startdatetimekey"
+                android:textColor="@color/white"
+                android:textSize="@dimen/verysmalltextsize" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/durationvalue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="durationvalue"
+                app:layout_constraintTop_toTopOf="@+id/durationkey"
+                app:layout_constraintLeft_toLeftOf="@+id/startdatetimevalue"
+                android:textColor="@color/white"
+                android:textSize="@dimen/verysmalltextsize" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/techniciankey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/technician_schedule"
+                android:layout_marginTop="@dimen/smallpadding"
+                app:layout_constraintTop_toBottomOf="@+id/durationkey"
+                android:textColor="@color/white"
+                android:textSize="@dimen/verysmalltextsize" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/techniciansvalue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/technician_schedule"
+                app:layout_constraintTop_toTopOf="@+id/techniciankey"
+                app:layout_constraintLeft_toLeftOf="@+id/durationvalue"
+                android:textColor="@color/white"
+                android:textSize="@dimen/verysmalltextsize" />
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffff">
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="abc"
+        android:textSize="@dimen/smalltextsize"
+        android:textColor="@color/black"
+        android:paddingBottom="@dimen/verysmalltextsize"
+        android:layout_marginTop="@dimen/smallpadding"
+        android:layout_marginLeft="@dimen/smalltextsize"
+        />
+
+    <teq.development.seatech.Utils.TouchImageView
+        android:id="@+id/centerimage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:scaleType="fitCenter" />
+
+</LinearLayout>

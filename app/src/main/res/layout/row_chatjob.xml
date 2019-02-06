@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="rowchatjob"
+            type="teq.development.seatech.Chat.Skeleton.ChatJobListSkeleton"></variable>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/llwhole"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- android:text="@{rowchatjob.jobid}"-->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/jobid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="@dimen/largetextsize"
+                    android:paddingTop="@dimen/verysmalltextsize"
+                    android:text="@{rowchatjob.jobid}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/verysmalltextsize"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/newmsg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="@dimen/verysmallpadding"
+                    android:background="@drawable/unreadmsgbg"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/verysmallpadding"
+                    android:paddingLeft="@dimen/smallpadding"
+                    android:paddingRight="@dimen/smallpadding"
+                    android:paddingTop="@dimen/verysmallpadding"
+                    android:text="1"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
+            </RelativeLayout>
+
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/cutomername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:paddingBottom="@dimen/verysmalltextsize"
+                android:paddingLeft="@dimen/largetextsize"
+                android:text="@{rowchatjob.customer_name}"
+                android:textColor="@color/lightgray"
+                android:textSize="@dimen/verysmalltextsize" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightgray"></View>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

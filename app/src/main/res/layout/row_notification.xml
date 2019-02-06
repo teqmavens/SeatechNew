@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="rowNotifictaion"
+            type="teq.development.seatech.Dashboard.Skeleton.NotificationSkeleton.NotificationData"></variable>
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/verysmallpadding"
+        app:cardCornerRadius="@dimen/verysmallpadding"
+        app:cardElevation="@dimen/verysmallpadding">
+
+        <LinearLayout
+            android:id="@+id/lltop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/verysmalltextsize">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{rowNotifictaion.message}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/drawablepadding" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{rowNotifictaion.created}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/drawablepadding"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</layout>
