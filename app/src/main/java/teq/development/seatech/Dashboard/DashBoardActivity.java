@@ -596,24 +596,26 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
             } else {
                 HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING, "no");
             }
-            /*if (HandyObject.getPrams(DashBoardActivity.this, AppConstants.ISJOB_NEWTYPE).equalsIgnoreCase("yes")) {
-                HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_NEWTYPE, "yes");
-            } else {
-                HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_NEWTYPE, "no");
-            }*/
             onbackppress = false;
         } else {
-
             if (HandyObject.getPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING).equalsIgnoreCase("yes")) {
-                HandyObject.showAlert(DashBoardActivity.this,"Running");
+                // HandyObject.showAlert(DashBoardActivity.this,HandyObject.getPrams(this, AppConstants.JOBRUNNING_CLOSETIMEDATE));
+
+                Calendar running_cal = Calendar.getInstance();
+                running_cal.setTimeInMillis(Long.parseLong(HandyObject.getPrams(this, AppConstants.JOBRUNNING_CLOSETIMEDATE)));
+                Calendar now = Calendar.getInstance();
+
+                if(now.get(Calendar.DATE) == running_cal.get(Calendar.DATE)) {
+                    HandyObject.showAlert(DashBoardActivity.this,"same day");
+                } else {
+                    HandyObject.showAlert(DashBoardActivity.this,"differnet day");
+                }
+
                 HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNINGCLOSE, "yes");
             } else {
-                HandyObject.showAlert(DashBoardActivity.this,"NotRunning");
+               // HandyObject.showAlert(DashBoardActivity.this,"NotRunning");
                 HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNINGCLOSE, "no");
             }
-//            HandyObject.showAlert(DashBoardActivity.this,"NObackpressssssssssss");
-//            HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNING, "no");
-
         }
        // replaceFragmentWithoutBack(new DashBoardFragment());
     }

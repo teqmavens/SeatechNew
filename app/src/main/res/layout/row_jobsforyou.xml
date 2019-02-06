@@ -96,14 +96,14 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/verysmalltextsize" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <!--<android.support.v7.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".08"
                 android:gravity="center"
                 android:text="@{rowjobsforyou.PartLocation}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/verysmalltextsize" />
+                android:textSize="@dimen/verysmalltextsize" />-->
 
             <RelativeLayout
                 android:layout_width="0dp"
@@ -129,6 +129,29 @@
                     android:layout_height="wrap_content" />
 
             </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".08"
+                android:gravity="center">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/uploadimage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/uploadimageicon"/>
+
+            </RelativeLayout>
+
+            <!--<android.support.v7.widget.AppCompatTextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight=".08"-->
+                <!--android:gravity="center"-->
+                <!--android:text="@{rowjobsforyou.PartLocation}"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:textSize="@dimen/verysmalltextsize" />-->
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="0dp"

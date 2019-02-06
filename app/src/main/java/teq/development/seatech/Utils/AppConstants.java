@@ -20,6 +20,7 @@ public class AppConstants {
     public static final String LOGINTEQ_DESCRIPTION = "loginteq_descr";
     public static final String LOGINTEQ_STATUS = "loginteq_status";
     public static final String LOGINTEQ_JOININGDATE = "loginteq_joiningdate";
+    public static final String LOGINTEQ_WIGGLEROOM = "loginteq_wiggleroom";
     public static final String PICKJOBPERMISSION = "pickupjob_permission";
 
     //Job Detail Page

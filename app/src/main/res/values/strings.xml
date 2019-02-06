@@ -305,6 +305,8 @@
     <string name="endtime">End TIme</string>
     <string name="nojobsavail">No Jobs Available</string>
     <string name="add_dashboardnotes">Add Dashboard Notes</string>
+    <string name="timespent"><u>Time Spent</u></string>
+    <string name="remainhrs">Remaining Hours -</string>
     <string-array name="laborcode_array">
        <!-- <item>Travel Time</item>
         <item>SERVICE TIME</item>

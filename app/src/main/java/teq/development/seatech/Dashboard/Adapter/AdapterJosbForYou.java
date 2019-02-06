@@ -88,6 +88,13 @@ public class AdapterJosbForYou extends RecyclerView.Adapter<AdapterJosbForYou.Vi
             }
         });
 
+        binding.getRoot().findViewById(R.id.uploadimage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((DashBoardFragment) fragment).onClickUploadImage(position);
+            }
+        });
+
         binding.getRoot().findViewById(R.id.jobticketno).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

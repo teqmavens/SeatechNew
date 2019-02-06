@@ -63,10 +63,12 @@ import teq.development.seatech.Dashboard.Skeleton.AllJobsSkeleton;
 import teq.development.seatech.Dashboard.Skeleton.DashboardNotes_Skeleton;
 import teq.development.seatech.Dashboard.Skeleton.PartsSkeleton;
 import teq.development.seatech.Dashboard.Skeleton.ScheduleFilterSkeleton;
+import teq.development.seatech.Dashboard.Skeleton.TimeSpentSkeleton;
 import teq.development.seatech.Dashboard.Skeleton.UploadImageNewSkeleton;
 import teq.development.seatech.Dashboard.Skeleton.UrgentMsgSkeleton;
 import teq.development.seatech.JobDetail.JobDetailFragment;
 import teq.development.seatech.JobDetail.JobDetailStaticFragment;
+import teq.development.seatech.JobDetail.UploadImageDialog;
 import teq.development.seatech.LoginActivity;
 import teq.development.seatech.R;
 import teq.development.seatech.Utils.AppConstants;
@@ -330,6 +332,20 @@ public class DashBoardFragment extends Fragment implements SwipeRefreshLayout.On
         }
     }
 
+    //Upload related job image from dashboard
+
+    public void onClickUploadImage(int position) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("addtech");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+        // Create and show the dialog.
+        DialogFragment newFragment = UploadImageDialog.newInstance(jobsArrayList.get(position).getJobticketNo(),"Dashboard");
+        newFragment.show(ft, "addtech");
+    }
+
    // Opening Clicked Job Dashboard Notes
     public void onClickNotes(int position,int spinnerposi) {
       //  HandyObject.showAlert(context,String.valueOf(spinnerposi));
@@ -485,6 +501,7 @@ public class DashBoardFragment extends Fragment implements SwipeRefreshLayout.On
                                     skeleton.setJoblongitude(jobjInside.getString("job_longitude"));
                                     skeleton.setHavepart(jobjInside.getString("have_parts"));
                                     skeleton.setNeedpart(jobjInside.getString("need_parts"));
+                                    skeleton.setRemainhr(jobjInside.getString("remain_hours"));
 
                                     JSONArray jArray_DashNotes = jobjInside.getJSONArray("TechDashboard");
                                     ArrayList<DashboardNotes_Skeleton> arraylistDashNotes = new ArrayList<>();
@@ -542,6 +559,17 @@ public class DashBoardFragment extends Fragment implements SwipeRefreshLayout.On
                                         arraylistupldImages.add(uploadimg_ske);
                                     }
 
+                                    JSONArray jArray_LC = jobjInside.getJSONArray("laborCodes");
+                                    ArrayList<TimeSpentSkeleton> arraylistLC = new ArrayList<>();
+                                    for (int m = 0; m < jArray_LC.length(); m++) {
+                                        JSONObject jobjlc = jArray_LC.getJSONObject(m);
+                                        TimeSpentSkeleton ske = new TimeSpentSkeleton();
+                                        ske.setLcname(jobjlc.getString("lb_code_name"));
+                                        ske.setStarttime(jobjlc.getString("lb_start_time"));
+                                        ske.setEndtime(jobjlc.getString("lb_end_time"));
+                                        arraylistLC.add(ske);
+                                    }
+
                                     jobsArrayList.add(skeleton);
                                     String jobsSke_databse = gson.toJson(skeleton);
                                     String dashnotes = gson.toJson(arraylistDashNotes);
@@ -549,6 +577,7 @@ public class DashBoardFragment extends Fragment implements SwipeRefreshLayout.On
                                     String OffTheRecord = gson.toJson(arraylistOffTheRecord);
                                     String UploadedImages = gson.toJson(arraylistupldImages);
                                     String PartsRecords = gson.toJson(arraylistParts);
+                                    String LCRecords = gson.toJson(arraylistLC);
 
                                     /*Save all Jobs to Local Database*/
                                     ContentValues cv = new ContentValues();
@@ -560,6 +589,7 @@ public class DashBoardFragment extends Fragment implements SwipeRefreshLayout.On
                                     cv.put(ParseOpenHelper.JOBSTECHOFFTHERECORD, OffTheRecord);
                                     cv.put(ParseOpenHelper.JOBSTECHUPLOADEDIMAGES, UploadedImages);
                                     cv.put(ParseOpenHelper.JOBSTECHPARTSRECORD, PartsRecords);
+                                    cv.put(ParseOpenHelper.JOBSTECHLCRECORD, LCRecords);
                                     long idd = database.insert(ParseOpenHelper.TABLENAME_ALLJOBS, null, cv);
 
                                     /*Save only current day Jobs to Local Database*/
@@ -577,6 +607,8 @@ public class DashBoardFragment extends Fragment implements SwipeRefreshLayout.On
                                         cv_current.put(ParseOpenHelper.JOBSTECHOFFTHERECORDCURRDAY, OffTheRecord);
                                         cv_current.put(ParseOpenHelper.JOBSTECHUPLOADEDIMAGESCURRDAY, UploadedImages);
                                         cv_current.put(ParseOpenHelper.JOBSTECHPARTSRECORDCURRDAY, PartsRecords);
+                                        cv_current.put(ParseOpenHelper.JOBSTECHLCRECORDCURRDAY, LCRecords);
+
                                         long iddc = database.insert(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, null, cv_current);
                                         Log.e("tableCurrentDay", String.valueOf(iddc));
                                     }

@@ -117,36 +117,21 @@ public class App extends MultiDexApplication {
             timer_pause = false;
         } else {
             if (HandyObject.getPrams(this, AppConstants.ISJOB_RUNNINGCLOSE).equalsIgnoreCase("yes")) {
-               // timeSwapBuff = 125877L;1548829253587
-            //    timeSwapBuff = 1548829253587L;
-              //  timeSwapBuff = 15488L;
-             //   Log.e("LASTCLOSEDATE",HandyObject.getPrams(this, AppConstants.JOBRUNNING_CLOSETIMEDATE));
+
                 long diff = new Date().getTime() - Long.parseLong(HandyObject.getPrams(this, AppConstants.JOBRUNNING_CLOSETIMEDATE));
                 long seconds = diff / 1000;
                 long minutes = seconds / 60;
                 Log.e("LASTCLOSEDATE",String.valueOf(minutes) +"-----"+ String.valueOf(seconds));
                 Log.e("LASTCLOSEDATEDIFFF",String.valueOf(diff));
-               // Log.e("ELAPSEDTIME",String.valueOf(SystemClock.elapsedRealtime()));
                 Log.e("COMPLETED TIME",HandyObject.getPrams(this, AppConstants.JOBRUNNING_CLOSETIME));
-               // try {
                     String myTime = HandyObject.getPrams(this, AppConstants.JOBRUNNING_CLOSETIME);
-                   // String myTime = "01:02:30";
-//                    SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
-//                    Date d = df.parse(myTime);
-//                    Calendar cal = Calendar.getInstance();3,600,000
-//                    cal.setTime(d);
                     Long hg = Long.parseLong(myTime.split(":")[0]) * 3600000 + Long.parseLong(myTime.split(":")[1]) * 60000 + Long.parseLong(myTime.split(":")[2]) * 1000;
                     long secondsnew = hg / 1000;
                     long minutesnew = secondsnew / 60;
                     long hrsnew = minutesnew / 60;
                     secondsnew = secondsnew % 60;
                     minutesnew = minutesnew % 60;
-
                 Log.e("NEW TIMEEEEEEE",String.valueOf(hrsnew) +"-----"+String.valueOf(minutesnew) +"-----"+ String.valueOf(secondsnew));
-
-                  //  Log.e("ALREADY COMPLETED",String.valueOf(cal.getTime()));
-                    Log.e("ALREADY COMPLETED",String.valueOf(hg));
-               // } catch (ParseException e){}
                 timeSwapBuff = diff+hg;
             } else {
                 timeSwapBuff = 0L;
@@ -184,7 +169,17 @@ public class App extends MultiDexApplication {
         timer_running = false;
       //  timeSwapBuff = 0L;
         if (HandyObject.getPrams(this, AppConstants.ISJOB_RUNNINGCLOSE).equalsIgnoreCase("yes")) {
-            timeSwapBuff = 125877L;
+          //  timeSwapBuff = 125877L;
+            long diff = new Date().getTime() - Long.parseLong(HandyObject.getPrams(this, AppConstants.JOBRUNNING_CLOSETIMEDATE));
+            String myTime = HandyObject.getPrams(this, AppConstants.JOBRUNNING_CLOSETIME);
+            Long hg = Long.parseLong(myTime.split(":")[0]) * 3600000 + Long.parseLong(myTime.split(":")[1]) * 60000 + Long.parseLong(myTime.split(":")[2]) * 1000;
+            long secondsnew = hg / 1000;
+            long minutesnew = secondsnew / 60;
+            long hrsnew = minutesnew / 60;
+            secondsnew = secondsnew % 60;
+            minutesnew = minutesnew % 60;
+            Log.e("NEW TIMEEEEEEE",String.valueOf(hrsnew) +"-----"+String.valueOf(minutesnew) +"-----"+ String.valueOf(secondsnew));
+            timeSwapBuff = diff+hg;
         } else {
             timeSwapBuff = 0L;
         }

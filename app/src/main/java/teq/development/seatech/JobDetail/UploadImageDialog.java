@@ -100,15 +100,16 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
     String[] all_path = null;
     GridView gridGallery;
     GalleryAdapter adapter;
-    public static String jobid;
+    public static String jobid,fromthis;
     private SQLiteDatabase database;
     String insertedTime;
     Gson gson;
 
-    static UploadImageDialog newInstance(String num) {
+   public static UploadImageDialog newInstance(String num,String from) {
         UploadImageDialog f = new UploadImageDialog();
         Bundle args = new Bundle();
         jobid = num;
+        fromthis = from;
         f.setArguments(args);
         return f;
     }
@@ -392,28 +393,48 @@ public class UploadImageDialog extends DialogFragment implements View.OnClickLis
                                 JSONObject jobjInside = jsonArray.getJSONObject(i);
                                 String jobid = jobjInside.getString("job_id");
 
-                                JSONArray jArray_upldImages = jobjInside.getJSONArray("uploads");
-                                ArrayList<UploadImageNewSkeleton> arraylistupldImages = new ArrayList<>();
-                                for (int k = 0; k < jArray_upldImages.length(); k++) {
-                                   // arraylistupldImages.add(jArray_upldImages.getString(k));
-                                    JSONObject jobj_images = jArray_upldImages.getJSONObject(k);
-                                    UploadImageNewSkeleton uploadimg_ske = new UploadImageNewSkeleton();
-                                    uploadimg_ske.setUrl(jobj_images.getString("img"));
-                                    uploadimg_ske.setDescription(jobj_images.getString("desc"));
-                                    arraylistupldImages.add(uploadimg_ske);
+
+
+                                    JSONArray jArray_upldImages = jobjInside.getJSONArray("uploads");
+                                    ArrayList<UploadImageNewSkeleton> arraylistupldImages = new ArrayList<>();
+                                    for (int k = 0; k < jArray_upldImages.length(); k++) {
+                                        // arraylistupldImages.add(jArray_upldImages.getString(k));
+                                        JSONObject jobj_images = jArray_upldImages.getJSONObject(k);
+                                        UploadImageNewSkeleton uploadimg_ske = new UploadImageNewSkeleton();
+                                        uploadimg_ske.setUrl(jobj_images.getString("img"));
+                                        uploadimg_ske.setDescription(jobj_images.getString("desc"));
+                                        arraylistupldImages.add(uploadimg_ske);
+                                    }
+
+                                    if(fromthis.equalsIgnoreCase("Dashboard")) {
+                                        String images = gson.toJson(arraylistupldImages);
+                                        ContentValues cv = new ContentValues();
+                                        cv.put(ParseOpenHelper.JOBSTECHUPLOADEDIMAGES, images);
+
+                                        ContentValues cvcurrent = new ContentValues();
+                                        cvcurrent.put(ParseOpenHelper.JOBSTECHUPLOADEDIMAGESCURRDAY, images);
+
+                                        database.update(ParseOpenHelper.TABLENAME_ALLJOBS, cv, ParseOpenHelper.TECHID + " =? AND " + ParseOpenHelper.JOBID + " = ?",
+                                                new String[]{HandyObject.getPrams(getContext(), AppConstants.LOGINTEQ_ID), jobid});
+
+                                        database.update(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, cvcurrent, ParseOpenHelper.TECHIDCURRDAY + " =? AND " + ParseOpenHelper.JOBIDCURRDAY + " = ?",
+                                                new String[]{HandyObject.getPrams(getContext(), AppConstants.LOGINTEQ_ID), jobid});
+                                    } else {
+                                        Intent intent = new Intent("updateImage");
+                                        intent.putExtra("UpdatedImages_Jobid", jobid);
+                                        intent.putParcelableArrayListExtra("updateImageArray", arraylistupldImages);
+                                        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+
+                                        String images = gson.toJson(arraylistupldImages);
+                                        ContentValues cv = new ContentValues();
+                                        cv.put(ParseOpenHelper.JOBSTECHUPLOADEDIMAGESCURRDAY, images);
+                                        database.update(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, cv, ParseOpenHelper.TECHIDCURRDAY + " =? AND " + ParseOpenHelper.JOBIDCURRDAY + " = ?",
+                                                new String[]{HandyObject.getPrams(getContext(), AppConstants.LOGINTEQ_ID), jobid});
+                                    }
+
                                 }
 
-                                Intent intent = new Intent("updateImage");
-                                intent.putExtra("UpdatedImages_Jobid", jobid);
-                                intent.putParcelableArrayListExtra("updateImageArray", arraylistupldImages);
-                                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
 
-                                String images = gson.toJson(arraylistupldImages);
-                                ContentValues cv = new ContentValues();
-                                cv.put(ParseOpenHelper.JOBSTECHUPLOADEDIMAGESCURRDAY, images);
-                                database.update(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, cv, ParseOpenHelper.TECHIDCURRDAY + " =? AND " + ParseOpenHelper.JOBIDCURRDAY + " = ?",
-                                        new String[]{HandyObject.getPrams(getContext(), AppConstants.LOGINTEQ_ID), jobid});
-                            }
 
                             //Delete related row from database
                             database.delete(ParseOpenHelper.TABLE_UPLOADIMAGES, ParseOpenHelper.UPLOADIMAGESJOBID + " =? AND " + ParseOpenHelper.UPLOADIMAGESCREATEDAT + " = ?",

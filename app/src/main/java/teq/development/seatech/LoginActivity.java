@@ -160,6 +160,7 @@ public class LoginActivity extends AppCompatActivity {
             HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_DESCRIPTION, jobj.getString("description"));
             HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_STATUS, jobj.getString("status"));
             HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_JOININGDATE, jobj.getString("joining_date"));
+            HandyObject.putPrams(LoginActivity.this, AppConstants.LOGINTEQ_WIGGLEROOM, jobj.getString("wiggle_room"));
             HandyObject.putPrams(LoginActivity.this, AppConstants.JOBRUNNING_TOTALTIME, "0");
             HandyObject.putPrams(LoginActivity.this, AppConstants.ISJOB_RUNNING, "no");
             HandyObject.putbooleanPrams(LoginActivity.this, AppConstants.PICKJOBPERMISSION, jobj.getBoolean("permission"));

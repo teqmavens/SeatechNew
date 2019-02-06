@@ -896,7 +896,7 @@ public class JobDetailFragment extends Fragment {
         }
         ft.addToBackStack(null);
         // Create and show the dialog.
-        DialogFragment newFragment = UploadImageDialog.newInstance(arralistAllJobs.get(binding.jobspinner.getSelectedItemPosition()).getJobticketNo());
+        DialogFragment newFragment = UploadImageDialog.newInstance(arralistAllJobs.get(binding.jobspinner.getSelectedItemPosition()).getJobticketNo(),"");
         newFragment.show(ft, "addtech");
     }
 

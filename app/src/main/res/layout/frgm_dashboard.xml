@@ -362,7 +362,7 @@
                         android:textSize="@dimen/verysmalltextsize"
                         android:textStyle="bold" />
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <!--<android.support.v7.widget.AppCompatTextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight=".08"
@@ -370,7 +370,7 @@
                         android:text="@string/partlocation"
                         android:textColor="@color/white"
                         android:textSize="@dimen/verysmalltextsize"
-                        android:textStyle="bold" />
+                        android:textStyle="bold" />-->
 
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="0dp"
@@ -388,6 +388,16 @@
                         android:layout_weight=".06"
                         android:gravity="center"
                         android:text="@string/havepartdash"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/verysmalltextsize"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".08"
+                        android:gravity="center"
+                        android:text="@string/uploadimage"
                         android:textColor="@color/white"
                         android:textSize="@dimen/verysmalltextsize"
                         android:textStyle="bold" />

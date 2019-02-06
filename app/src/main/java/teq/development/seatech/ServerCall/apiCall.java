@@ -230,6 +230,7 @@ public interface apiCall {
     @POST("jobs/job-details.json")
     @Headers("tokenID: 1234567890234dfg456")
     Call<ResponseBody> getTicketData(
+            @Field("tech_id") String techid,
             @Field("job_id") String jobid,
             @Header("sessionID") String sessionid
     );

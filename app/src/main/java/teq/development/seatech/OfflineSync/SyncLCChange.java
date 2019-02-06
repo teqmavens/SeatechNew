@@ -23,6 +23,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import teq.development.seatech.App;
 import teq.development.seatech.Dashboard.Skeleton.DashboardNotes_Skeleton;
+import teq.development.seatech.Dashboard.Skeleton.TimeSpentSkeleton;
 import teq.development.seatech.JobDetail.Skeleton.LCChangeSkeleton;
 import teq.development.seatech.Utils.AppConstants;
 import teq.development.seatech.Utils.HandyObject;
@@ -88,6 +89,35 @@ public class SyncLCChange extends Job {
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jobj = jsonArray.getJSONObject(i);
                                     //Delete related row from database
+                                    String jobid = jobj.getString("job_id");
+
+                                    JSONArray jArray_code = jobj.getJSONArray("labor_codes");
+                                    ArrayList<TimeSpentSkeleton> arrayList1 = new ArrayList<>();
+                                    for(int k = 0;k<jArray_code.length();k++) {
+                                        JSONObject jobjlc = jArray_code.getJSONObject(k);
+                                        TimeSpentSkeleton ske = new TimeSpentSkeleton();
+                                        ske.setLcname(jobjlc.getString("lb_code_name"));
+                                        ske.setStarttime(jobjlc.getString("lb_start_time"));
+                                        ske.setEndtime(jobjlc.getString("lb_end_time"));
+                                        arrayList1.add(ske);
+                                    }
+
+                                    String OffTheRecord = gson.toJson(arrayList1);
+                                    ContentValues cv = new ContentValues();
+                                    ContentValues cvnew = new ContentValues();
+                                    if (arrayList1.size() > 0) {
+                                        cv.put(ParseOpenHelper.JOBSTECHLCRECORDCURRDAY, OffTheRecord);
+                                        cvnew.put(ParseOpenHelper.JOBSTECHLCRECORD, OffTheRecord);
+                                    }
+
+
+                                    //update all jobs current days table
+                                    database.update(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, cv, ParseOpenHelper.TECHIDCURRDAY + " =? AND " + ParseOpenHelper.JOBIDCURRDAY + " = ?",
+                                            new String[]{HandyObject.getPrams(getContext(), AppConstants.LOGINTEQ_ID), jobid});
+                                    //update all jobs table
+                                    database.update(ParseOpenHelper.TABLENAME_ALLJOBS, cvnew, ParseOpenHelper.TECHID + " =? AND " + ParseOpenHelper.JOBID + " = ?",
+                                            new String[]{HandyObject.getPrams(getContext(), AppConstants.LOGINTEQ_ID), jobid});
+
                                     database.delete(ParseOpenHelper.TABLE_LCCHANGE, ParseOpenHelper.LCCHANGEJOBID + " =?",
                                             new String[]{jobj.getString("job_id")});
                                 }
