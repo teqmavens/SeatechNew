@@ -13,6 +13,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -73,6 +74,7 @@ import teq.development.seatech.JobDetail.Adapter.AdapterTimeSpent;
 import teq.development.seatech.JobDetail.Adapter.AdapterUploadedImages;
 import teq.development.seatech.JobDetail.Skeleton.JobTimeSkeleton;
 import teq.development.seatech.JobDetail.Skeleton.LCChangeSkeleton;
+import teq.development.seatech.JobDetail.Skeleton.StartJobSkeleton;
 import teq.development.seatech.LoginActivity;
 import teq.development.seatech.R;
 import teq.development.seatech.Utils.AppConstants;
@@ -124,6 +126,11 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
 
     private void initViews() {
         arrayListUpdateImage = new ArrayList<>();
+        arralistAllJobs = new ArrayList<>();
+        arrayListsJobIds = new ArrayList<>();
+        arrayListLaborPerf = new ArrayList<>();
+        arrayListOffTheRecord = new ArrayList<>();
+        addTechlistOffTheRecord = new ArrayList<>();
         valuesLC = HandyObject.getPrams(context, AppConstants.JOBRUNNING_LC).split(",");
         binding.swipeview.setOnRefreshListener(this);
         new databsefetch().execute();
@@ -151,7 +158,8 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
     private BroadcastReceiver reciever = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            binding.uploadimage.setText(intent.getStringExtra("secss"));
+           binding.uploadimage.setText(intent.getStringExtra("secss"));
+            //binding.uploadimage.setText("02:39:22");
         }
     };
 
@@ -338,35 +346,114 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
 //            }
 //        }
 
+        if(is15WIggle().equalsIgnoreCase("yes")) {
+            calendar.add(Calendar.MINUTE, -15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske = new JobTimeSkeleton();
+            jobtimeske.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske);
 
-        calendar.add(Calendar.MINUTE, -15);
-        listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
-        JobTimeSkeleton jobtimeske = new JobTimeSkeleton();
-        jobtimeske.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
-        jobtimeske.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
-        arralistJobTime.add(jobtimeske);
+            calendar.add(Calendar.MINUTE, 15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske2 = new JobTimeSkeleton();
+            jobtimeske2.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske2.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske2);
 
-        calendar.add(Calendar.MINUTE, 15);
-        listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
-        JobTimeSkeleton jobtimeske2 = new JobTimeSkeleton();
-        jobtimeske2.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
-        jobtimeske2.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
-        arralistJobTime.add(jobtimeske2);
+            calendar.add(Calendar.MINUTE, 15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske3 = new JobTimeSkeleton();
+            jobtimeske3.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske3.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske3);
+            adapterjobTime = new AdapterJobTime(context, arralistJobTime);
+            binding.timespinner.setAdapter(adapterjobTime);
 
-        calendar.add(Calendar.MINUTE, 15);
-        listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
-        JobTimeSkeleton jobtimeske3 = new JobTimeSkeleton();
-        jobtimeske3.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
-        jobtimeske3.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
-        arralistJobTime.add(jobtimeske3);
-        adapterjobTime = new AdapterJobTime(context, arralistJobTime);
-        binding.timespinner.setAdapter(adapterjobTime);
-
-        binding.timespinner.setOnItemSelectedListener(new TimeItemSelectedListener());
-        if (isJobRunning() == true) {
-            binding.timespinner.setSelection(HandyObject.getIntPrams(context, AppConstants.JOBSTARTTIME_INDEX));
+            binding.timespinner.setOnItemSelectedListener(new TimeItemSelectedListener());
+            if (isJobRunning() == true) {
+                binding.timespinner.setSelection(HandyObject.getIntPrams(context, AppConstants.JOBSTARTTIME_INDEX));
+            } else {
+                binding.timespinner.setSelection(1);
+            }
         } else {
-            binding.timespinner.setSelection(1);
+            calendar.add(Calendar.MINUTE, -60);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske = new JobTimeSkeleton();
+            jobtimeske.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske);
+
+            calendar.add(Calendar.MINUTE, 15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske1 = new JobTimeSkeleton();
+            jobtimeske1.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske1.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske1);
+
+            calendar.add(Calendar.MINUTE, 15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske2 = new JobTimeSkeleton();
+            jobtimeske2.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske2.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske2);
+
+            calendar.add(Calendar.MINUTE, 15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske3 = new JobTimeSkeleton();
+            jobtimeske3.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske3.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske3);
+
+            calendar.add(Calendar.MINUTE, 15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske_e = new JobTimeSkeleton();
+            jobtimeske_e.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske_e.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske_e);
+
+
+
+
+            calendar.add(Calendar.MINUTE, 15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske4 = new JobTimeSkeleton();
+            jobtimeske4.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske4.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske4);
+
+            calendar.add(Calendar.MINUTE, 15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske5 = new JobTimeSkeleton();
+            jobtimeske5.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske5.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske5);
+
+            calendar.add(Calendar.MINUTE, 15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske6 = new JobTimeSkeleton();
+            jobtimeske6.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske6.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske6);
+
+            calendar.add(Calendar.MINUTE, 15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske7 = new JobTimeSkeleton();
+            jobtimeske7.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske7.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske7);
+
+
+
+            adapterjobTime = new AdapterJobTime(context, arralistJobTime);
+            binding.timespinner.setAdapter(adapterjobTime);
+
+            binding.timespinner.setOnItemSelectedListener(new TimeItemSelectedListener());
+            if (isJobRunning() == true) {
+                binding.timespinner.setSelection(HandyObject.getIntPrams(context, AppConstants.JOBSTARTTIME_INDEX));
+            } else {
+                binding.timespinner.setSelection(4);
+            }
         }
     }
 
@@ -385,7 +472,9 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
             public void run() {
                 //HandyObject.showAlert(context, "refreshing");
                 if (HandyObject.checkInternetConnection(context)) {
-                    getRelatedTask(arralistAllJobs.get(binding.jobspinner.getSelectedItemPosition()).getJobticketNo(),binding.jobspinner.getSelectedItemPosition());
+                    try {
+                        getRelatedTask(arralistAllJobs.get(binding.jobspinner.getSelectedItemPosition()).getJobticketNo(),binding.jobspinner.getSelectedItemPosition());
+                    } catch (Exception e){}
                 } else {
                     binding.swipeview.setRefreshing(false);
                     HandyObject.showAlert(context, context.getString(R.string.check_internet_connection));
@@ -398,8 +487,8 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
     public class JobItemSelectedListener implements AdapterView.OnItemSelectedListener {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
-            String kjj = HandyObject.getPrams(context, AppConstants.JOBRUNNING_TOTALTIME);
-            int newttlwrkHrNew = Integer.parseInt(kjj) + Integer.parseInt(String.valueOf(binding.uploadimage.getText().toString().split(":")[1]).replaceFirst("^0+(?!$)", ""));
+            /*String kjj = HandyObject.getPrams(context, AppConstants.JOBRUNNING_TOTALTIME);
+            int newttlwrkHrNew = Integer.parseInt(kjj) + Integer.parseInt(String.valueOf(binding.uploadimage.getText().toString().split(":")[1]).replaceFirst("^0+(?!$)", ""));*/
             if (arralistAllJobs.get(position).getJobticketNo().equalsIgnoreCase("111111")) {
                 runHandlerforLC();
                 String kj = HandyObject.getPrams(context, AppConstants.JOBRUNNING_TOTALTIME);
@@ -466,7 +555,9 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
                 Log.e("AlreadyrunningJOB", "AlreadyrunningJOB");
                 runHandlerforLC();
                 setAllSpinnerData(position);
-            } else if (arralistAllJobs.get(HandyObject.getIntPrams(context, AppConstants.JObSPINNER_LASTPOSI)).getJobticketNo().equalsIgnoreCase("111111")) {
+            } else if (HandyObject.getIntPrams(context, AppConstants.JObSPINNER_LASTPOSI)<= arralistAllJobs.size()&& arralistAllJobs.get(HandyObject.getIntPrams(context, AppConstants.JObSPINNER_LASTPOSI)).getJobticketNo().equalsIgnoreCase("111111")) {
+                String kjj = HandyObject.getPrams(context, AppConstants.JOBRUNNING_TOTALTIME);
+                int newttlwrkHrNew = Integer.parseInt(kjj) + Integer.parseInt(String.valueOf(binding.uploadimage.getText().toString().split(":")[1]).replaceFirst("^0+(?!$)", ""));
                 if (newttlwrkHrNew >= 10) {
                     if (binding.stopbtnInternal.getVisibility() == View.VISIBLE) {
                         onClickStop();
@@ -845,7 +936,6 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
             });
         } catch (Exception e) {
         }
-
     }
 
 
@@ -868,30 +958,39 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
                        App.appInstance.startTimer();
                        HandyObject.putPrams(context, AppConstants.ISJOB_RUNNINGCLOSE, "no");
                   }
-
+               // StartJobTask(arralistAllJobs.get(binding.jobspinner.getSelectedItemPosition()).getJobticketNo());
                 Log.e("AlreadyrunningLC", "AlreadyrunningLC");
             } else {
-                  HandyObject.putPrams(context, AppConstants.ISJOB_RUNNINGCLOSE, "no");
+                StartJobTask(arralistAllJobs.get(binding.jobspinner.getSelectedItemPosition()).getJobticketNo());
+                HandyObject.putPrams(context, AppConstants.ISJOB_RUNNINGCLOSE, "no");
                 Log.e("NOTrunningLC", "NOTrunningLC");
              //   if (jobspinner == true) {
                     App.appInstance.stopTimer();
                     App.appInstance.startTimer();
 
-                    if (fromjobselection == true) {
-                    } else {
+                    if (fromjobselection == true) {} else {
                         String runinngtime = binding.uploadimage.getText().toString();
                         Calendar calendar = Calendar.getInstance();
-                        calendar.set(Calendar.MINUTE, Integer.parseInt(arralistJobTime.get(1).getHrminutes().split(":")[1]));
+                        if(is15WIggle().equalsIgnoreCase("yes")) {
+                            calendar.set(Calendar.MINUTE, Integer.parseInt(arralistJobTime.get(1).getHrminutes().split(":")[1]));
+                            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(arralistJobTime.get(1).getHrminutes().split(":")[0]));
+                        } else {
+                            calendar.set(Calendar.MINUTE, Integer.parseInt(arralistJobTime.get(4).getHrminutes().split(":")[1]));
+                            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(arralistJobTime.get(4).getHrminutes().split(":")[0]));
+                        }
+                      //  calendar.set(Calendar.MINUTE, Integer.parseInt(arralistJobTime.get(1).getHrminutes().split(":")[1]));
                         calendar.set(Calendar.SECOND, 0);
-                        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(arralistJobTime.get(1).getHrminutes().split(":")[0]));
+                     //   calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(arralistJobTime.get(1).getHrminutes().split(":")[0]));
                         calendar.add(Calendar.HOUR_OF_DAY, Integer.parseInt(runinngtime.split(":")[0]));
                         int running_mins = Integer.parseInt(runinngtime.split(":")[1]);
 
                         calendar.add(Calendar.MINUTE, Integer.parseInt(runinngtime.split(":")[1]));
+                        Log.e("beforeStart",String.valueOf(calendar.get(Calendar.MINUTE)));
                         calendar.set(Calendar.MINUTE, HandyObject.getNear15MinuteLB(Integer.parseInt(manageMinutes(calendar.get(Calendar.MINUTE)))));
                         if (HandyObject.getNear15MinuteLB(Integer.parseInt(manageMinutes(calendar.get(Calendar.MINUTE)))) == 0) {
                             String withoutzero = String.valueOf(running_mins).replaceFirst("^0+(?!$)", "");
-                            if (Integer.parseInt(withoutzero) > 7 && Integer.parseInt(runinngtime.split(":")[0]) == 0) {
+                          //  HandyObject.showAlert(context,withoutzero);
+                            if (Integer.parseInt(withoutzero) > 7 && Integer.parseInt(withoutzero) < 16&& Integer.parseInt(runinngtime.split(":")[0]) == 0) {
                                 calendar.add(Calendar.HOUR_OF_DAY, 1);
                             }
                         }
@@ -900,44 +999,117 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
                         Log.e("STARTTIMEE", starttime);
                         arralistJobTime.clear();
 
-//                        if(HandyObject.getPrams(context, AppConstants.LOGINTEQ_WIGGLEROOM).equalsIgnoreCase("15")) {
-//
-//                        } else {
-//
-//                        }
 
-                        calendar.add(Calendar.MINUTE, -15);
-                        JobTimeSkeleton jobtimeske = new JobTimeSkeleton();
-                        jobtimeske.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
-                        jobtimeske.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
-                        arralistJobTime.add(jobtimeske);
-
-                        calendar.add(Calendar.MINUTE, 15);
-                        JobTimeSkeleton jobtimeske2 = new JobTimeSkeleton();
-                        jobtimeske2.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
-                        jobtimeske2.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
-                        arralistJobTime.add(jobtimeske2);
-
-                        calendar.add(Calendar.MINUTE, 15);
-                        JobTimeSkeleton jobtimeske3 = new JobTimeSkeleton();
-                        jobtimeske3.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
-                        jobtimeske3.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
-                        arralistJobTime.add(jobtimeske3);
-                        adapterjobTime = new AdapterJobTime(context, arralistJobTime);
-                        binding.timespinner.setAdapter(adapterjobTime);
-
-
-                        //   HandyObject.showAlert(context,String.valueOf(binding.timespinner.getSelectedItemPosition()));
-                        if (isJobRunning() == true) {
-                            binding.timespinner.setSelection(HandyObject.getIntPrams(context, AppConstants.JOBSTARTTIME_INDEX));
-                        } else {
-                            binding.timespinner.setSelection(1);
-                        }
                         String endtime="";
-                        if(timerindex_prev == 2) {
-                             endtime = arralistJobTime.get(2).getParsedate() + " " + arralistJobTime.get(2).getHrminutes();
+                        if(is15WIggle().equalsIgnoreCase("yes")) {
+                            calendar.add(Calendar.MINUTE, -15);
+                            JobTimeSkeleton jobtimeske = new JobTimeSkeleton();
+                            jobtimeske.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                            jobtimeske.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                            arralistJobTime.add(jobtimeske);
+
+                            calendar.add(Calendar.MINUTE, 15);
+                            JobTimeSkeleton jobtimeske2 = new JobTimeSkeleton();
+                            jobtimeske2.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                            jobtimeske2.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                            arralistJobTime.add(jobtimeske2);
+
+                            calendar.add(Calendar.MINUTE, 15);
+                            JobTimeSkeleton jobtimeske3 = new JobTimeSkeleton();
+                            jobtimeske3.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                            jobtimeske3.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                            arralistJobTime.add(jobtimeske3);
+                            adapterjobTime = new AdapterJobTime(context, arralistJobTime);
+                            binding.timespinner.setAdapter(adapterjobTime);
+
+
+                            //   HandyObject.showAlert(context,String.valueOf(binding.timespinner.getSelectedItemPosition()));
+                            if (isJobRunning() == true) {
+                                binding.timespinner.setSelection(HandyObject.getIntPrams(context, AppConstants.JOBSTARTTIME_INDEX));
+                            } else {
+                                binding.timespinner.setSelection(1);
+                            }
+                           // String endtime="";
+                            if(timerindex_prev == 2) {
+                                endtime = arralistJobTime.get(2).getParsedate() + " " + arralistJobTime.get(2).getHrminutes();
+                            } else {
+                                endtime = arralistJobTime.get(1).getParsedate() + " " + arralistJobTime.get(1).getHrminutes();
+                            }
                         } else {
-                             endtime = arralistJobTime.get(1).getParsedate() + " " + arralistJobTime.get(1).getHrminutes();
+                            calendar.add(Calendar.MINUTE, -60);
+                            JobTimeSkeleton jobtimeske = new JobTimeSkeleton();
+                            jobtimeske.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                            jobtimeske.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                            arralistJobTime.add(jobtimeske);
+
+                            calendar.add(Calendar.MINUTE, 15);
+                            JobTimeSkeleton jobtimeske1 = new JobTimeSkeleton();
+                            jobtimeske1.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                            jobtimeske1.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                            arralistJobTime.add(jobtimeske1);
+
+                            calendar.add(Calendar.MINUTE, 15);
+                            JobTimeSkeleton jobtimeske2 = new JobTimeSkeleton();
+                            jobtimeske2.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                            jobtimeske2.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                            arralistJobTime.add(jobtimeske2);
+
+                            calendar.add(Calendar.MINUTE, 15);
+                            JobTimeSkeleton jobtimeske3 = new JobTimeSkeleton();
+                            jobtimeske3.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                            jobtimeske3.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                            arralistJobTime.add(jobtimeske3);
+
+                            calendar.add(Calendar.MINUTE, 15);
+                            JobTimeSkeleton jobtimeske_e = new JobTimeSkeleton();
+                            jobtimeske_e.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                            jobtimeske_e.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                            arralistJobTime.add(jobtimeske_e);
+
+
+
+
+                            calendar.add(Calendar.MINUTE, 15);
+                            JobTimeSkeleton jobtimeske4 = new JobTimeSkeleton();
+                            jobtimeske4.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                            jobtimeske4.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                            arralistJobTime.add(jobtimeske4);
+
+                            calendar.add(Calendar.MINUTE, 15);
+
+                            JobTimeSkeleton jobtimeske5 = new JobTimeSkeleton();
+                            jobtimeske5.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                            jobtimeske5.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                            arralistJobTime.add(jobtimeske5);
+
+                            calendar.add(Calendar.MINUTE, 15);
+                            JobTimeSkeleton jobtimeske6 = new JobTimeSkeleton();
+                            jobtimeske6.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                            jobtimeske6.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                            arralistJobTime.add(jobtimeske6);
+
+                            calendar.add(Calendar.MINUTE, 15);
+                            JobTimeSkeleton jobtimeske7 = new JobTimeSkeleton();
+                            jobtimeske7.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                            jobtimeske7.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                            arralistJobTime.add(jobtimeske7);
+
+                            adapterjobTime = new AdapterJobTime(context, arralistJobTime);
+                            binding.timespinner.setAdapter(adapterjobTime);
+
+
+                            //   HandyObject.showAlert(context,String.valueOf(binding.timespinner.getSelectedItemPosition()));
+                            if (isJobRunning() == true) {
+                                binding.timespinner.setSelection(HandyObject.getIntPrams(context, AppConstants.JOBSTARTTIME_INDEX));
+                            } else {
+                                binding.timespinner.setSelection(4);
+                            }
+                            // String endtime="";
+                            if(timerindex_prev > 4) {
+                                endtime = arralistJobTime.get(timerindex_prev).getParsedate() + " " + arralistJobTime.get(timerindex_prev).getHrminutes();
+                            } else {
+                                endtime = arralistJobTime.get(4).getParsedate() + " " + arralistJobTime.get(4).getHrminutes();
+                            }
                         }
 
                         Log.e("ENDDDTIMEE", endtime);
@@ -982,12 +1154,90 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
     //Adjust Hours to -15min & +15min
     public int HoursAdjusted(int n) {
         int res = 0;
-        if (n == 0) {
-            res = -15;
-        } else if (n == 2) {
-            res = 15;
+        if(is15WIggle().equalsIgnoreCase("yes")) {
+            if (n == 0) {
+                res = -15;
+            } else if (n == 2) {
+                res = 15;
+            }
+        } else {
+            if (n == 0) {
+                res = -60;
+            } else if (n == 1) {
+                res = -45;
+            } else if (n == 2) {
+                res = -30;
+            } else if (n == 3) {
+                res = -15;
+            } else if (n == 5) {
+                res = 15;
+            } else if (n == 6) {
+                res = 30;
+            } else if (n == 7) {
+                res = 45;
+            } else if (n == 8) {
+                res = 60;
+            }
         }
         return res;
+    }
+
+    private void StartJobTask(String jobid) {
+       // final String insertedTime = HandyObject.ParseDateTimeForNotes(new Date());
+
+   //     StartJobSkeleton ske = new StartJobSkeleton();
+   //     ske.setJobid(jobid);
+   //     ArrayList<StartJobSkeleton> arrayList = new ArrayList<>();
+   //     arrayList.add(lcs_ke);
+   //     String techlog = gson.toJson(arrayList);
+
+        insertIntoDB_STARTJOB(jobid);
+        if (HandyObject.checkInternetConnection(context)) {
+            // HandyObject.showProgressDialog(context);
+            HandyObject.getApiManagerMain().startJob(jobid, HandyObject.getPrams(context, AppConstants.LOGIN_SESSIONID))
+                    .enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            try {
+                                String jsonResponse = response.body().string();
+                                Log.e("respnsSTARTJOB", jsonResponse);
+                                JSONObject jsonObject = new JSONObject(jsonResponse);
+                                if (jsonObject.getString("status").toLowerCase().equals("success")) {
+                                   // HandyObject.showAlert(context,"STARTED");
+                                    //Delete related row from database
+                                    database.delete(ParseOpenHelper.TABLE_STARTJOB, null,
+                                            null);
+                                } else {
+                                    HandyObject.showAlert(context, jsonObject.getString("message"));
+                                    if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
+                                        HandyObject.clearpref(context);
+                                        HandyObject.deleteAllDatabase(context);
+                                        App.appInstance.stopTimer();
+                                        Intent intent_reg = new Intent(context, LoginActivity.class);
+                                        context.startActivity(intent_reg);
+                                        ((Activity) context).finish();
+                                        ((Activity) context).overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+                                    }
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } finally {
+                                HandyObject.stopProgressDialog();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Log.e("responseError", t.getMessage());
+                            HandyObject.stopProgressDialog();
+                        }
+                    });
+        } else {
+            HandyObject.showAlert(context, context.getString(R.string.notiarrive_whenonline));
+          //  HandyObject.stopProgressDialog();
+        }
     }
 
     // Implement Labor code change API for submit all related data to server
@@ -1062,7 +1312,7 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
 
                                         //Delete related row from database
                                         database.delete(ParseOpenHelper.TABLE_LCCHANGE, ParseOpenHelper.LCCHANGEJOBID + " =? AND " + ParseOpenHelper.LCCHANGECREATEDAT + " = ?",
-                                                new String[]{jobj.getString("job_id"), insertedTime});
+                                                new String[]{jobid, insertedTime});
                                     }
                                     if (type.equalsIgnoreCase("stop")) {
                                         updatereciver = true;
@@ -1110,11 +1360,23 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
                         @Override
                         public void onFailure(Call<ResponseBody> call, Throwable t) {
                             Log.e("responseError", t.getMessage());
+                            if(type.equalsIgnoreCase("stop")) {
+                                //Delete related row from database
+                                database.delete(ParseOpenHelper.TABLE_LCCHANGE, ParseOpenHelper.LCCHANGEJOBID + " =? AND " + ParseOpenHelper.LCCHANGECREATEDAT + " = ?",
+                                        new String[]{jobid, insertedTime});
+                            }
                             HandyObject.stopProgressDialog();
                         }
                     });
         } else {
             HandyObject.showAlert(context, context.getString(R.string.fetchdata_whenonline));
+            if (type.equalsIgnoreCase("stop")) {
+                updatereciver = true;
+                HandyObject.putPrams(context, AppConstants.ISJOB_RUNNING, "no");
+                HandyObject.putPrams(context, AppConstants.JOBRUNNING_TOTALTIME, "0");
+                App.appInstance.stopTimer();
+                activity.replaceFragmentWithoutBack(new DashBoardFragment());
+            }
             HandyObject.stopProgressDialog();
         }
 
@@ -1293,28 +1555,32 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
     public void callOnStopView() {
         //  HandyObject.showAlert(context,"ONDestroyView");
         try {
-            HandyObject.putPrams(context, AppConstants.ISJOB_RUNNING, "yes");
-//            if (updatereciver == true) {
-//                updatereciver = false;
-//                HandyObject.putPrams(context, AppConstants.ISJOB_RUNNING, "no");
-//            } else {
-//                HandyObject.putPrams(context, AppConstants.ISJOB_RUNNING, "yes");
-//            }
-            //  HandyObject.putPrams(context, AppConstants.ISJOB_NEWTYPE, "no");
-            //   HandyObject.putPrams(context, AppConstants.JOBRUNNING_ETLABORPERFORM, binding.etLaborperform.getText().toString());
-            HandyObject.putPrams(context, AppConstants.JOBRUNNING_ETLABORPERFORM, "");
-            HandyObject.putPrams(context, AppConstants.JOBRUNNING_CENTERTIME, arralistJobTime.get(1).getHrminutes());
-            HandyObject.putIntPrams(context, AppConstants.JOBRUNNING_INDEX, binding.jobspinner.getSelectedItemPosition());
-            HandyObject.putPrams(context, AppConstants.JOBRUNNING_ID, arrayListsJobIds.get(binding.jobspinner.getSelectedItemPosition()));
-            HandyObject.putIntPrams(context, AppConstants.JOBLABORCODE_INDEX, binding.spinnerLc.getSelectedItemPosition());
-            HandyObject.putIntPrams(context, AppConstants.JOBSTARTTIME_INDEX, binding.timespinner.getSelectedItemPosition());
+            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            boolean isScreenOn = pm.isScreenOn();
+            if(isScreenOn == true) {
+                HandyObject.putPrams(context, AppConstants.ISJOB_RUNNING, "yes");
+                HandyObject.putPrams(context, AppConstants.JOBRUNNING_ETLABORPERFORM, "");
+                if(HandyObject.getPrams(context, AppConstants.LOGINTEQ_WIGGLEROOM).equalsIgnoreCase("15")) {
+                    HandyObject.putPrams(context, AppConstants.JOBRUNNING_CENTERTIME, arralistJobTime.get(1).getHrminutes());
+                } else {
+                    HandyObject.putPrams(context, AppConstants.JOBRUNNING_CENTERTIME, arralistJobTime.get(4).getHrminutes());
+                }
 
-            HandyObject.putPrams(context, AppConstants.JOBRUNNING_BOATNAME, binding.boatnameValue.getText().toString());
-            HandyObject.putPrams(context, AppConstants.JOBRUNNING_HULLID, binding.hullidValue.getText().toString());
-            HandyObject.putPrams(context, AppConstants.JOBRUNNING_CAPTNAME, binding.captnameValue.getText().toString());
-            // binding.uploadimage.getText().toString()
-            HandyObject.putPrams(context, AppConstants.JOBRUNNING_CLOSETIME, binding.uploadimage.getText().toString());
-            HandyObject.putPrams(context, AppConstants.JOBRUNNING_CLOSETIMEDATE, String.valueOf(new Date().getTime()));
+                HandyObject.putIntPrams(context, AppConstants.JOBRUNNING_INDEX, binding.jobspinner.getSelectedItemPosition());
+                HandyObject.putPrams(context, AppConstants.JOBRUNNING_ID, arrayListsJobIds.get(binding.jobspinner.getSelectedItemPosition()));
+                HandyObject.putIntPrams(context, AppConstants.JOBLABORCODE_INDEX, binding.spinnerLc.getSelectedItemPosition());
+                HandyObject.putIntPrams(context, AppConstants.JOBSTARTTIME_INDEX, binding.timespinner.getSelectedItemPosition());
+
+                HandyObject.putPrams(context, AppConstants.JOBRUNNING_BOATNAME, binding.boatnameValue.getText().toString());
+                HandyObject.putPrams(context, AppConstants.JOBRUNNING_HULLID, binding.hullidValue.getText().toString());
+                HandyObject.putPrams(context, AppConstants.JOBRUNNING_CAPTNAME, binding.captnameValue.getText().toString());
+                // binding.uploadimage.getText().toString()
+                HandyObject.putPrams(context, AppConstants.JOBRUNNING_CLOSETIME, binding.uploadimage.getText().toString());
+                HandyObject.putPrams(context, AppConstants.JOBRUNNING_CLOSETIMEDATE, String.valueOf(new Date().getTime()));
+            } else {
+                Log.e("SCREEENOFFFFF", "SCREEENOFFFFF");
+            }
+
         } catch (Exception e) {
         }
     }
@@ -1337,7 +1603,11 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
             //  HandyObject.putPrams(context, AppConstants.ISJOB_NEWTYPE, "no");
             //   HandyObject.putPrams(context, AppConstants.JOBRUNNING_ETLABORPERFORM, binding.etLaborperform.getText().toString());
             HandyObject.putPrams(context, AppConstants.JOBRUNNING_ETLABORPERFORM, "");
-            HandyObject.putPrams(context, AppConstants.JOBRUNNING_CENTERTIME, arralistJobTime.get(1).getHrminutes());
+            if(HandyObject.getPrams(context, AppConstants.LOGINTEQ_WIGGLEROOM).equalsIgnoreCase("15")) {
+                HandyObject.putPrams(context, AppConstants.JOBRUNNING_CENTERTIME, arralistJobTime.get(1).getHrminutes());
+            } else {
+                HandyObject.putPrams(context, AppConstants.JOBRUNNING_CENTERTIME, arralistJobTime.get(4).getHrminutes());
+            }
             HandyObject.putIntPrams(context, AppConstants.JOBRUNNING_INDEX, binding.jobspinner.getSelectedItemPosition());
             HandyObject.putPrams(context, AppConstants.JOBRUNNING_ID, arrayListsJobIds.get(binding.jobspinner.getSelectedItemPosition()));
             HandyObject.putIntPrams(context, AppConstants.JOBLABORCODE_INDEX, binding.spinnerLc.getSelectedItemPosition());
@@ -1397,9 +1667,16 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
         if (arralistJobTime != null && !arralistJobTime.isEmpty()) {
             String runinngtime = binding.uploadimage.getText().toString();
             Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.MINUTE, Integer.parseInt(arralistJobTime.get(1).getHrminutes().split(":")[1]));
+            if(is15WIggle().equalsIgnoreCase("yes")) {
+                calendar.set(Calendar.MINUTE, Integer.parseInt(arralistJobTime.get(1).getHrminutes().split(":")[1]));
+                calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(arralistJobTime.get(1).getHrminutes().split(":")[0]));
+            } else {
+                calendar.set(Calendar.MINUTE, Integer.parseInt(arralistJobTime.get(4).getHrminutes().split(":")[1]));
+                calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(arralistJobTime.get(4).getHrminutes().split(":")[0]));
+            }
+           // calendar.set(Calendar.MINUTE, Integer.parseInt(arralistJobTime.get(1).getHrminutes().split(":")[1]));
             calendar.set(Calendar.SECOND, 0);
-            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(arralistJobTime.get(1).getHrminutes().split(":")[0]));
+         //   calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(arralistJobTime.get(1).getHrminutes().split(":")[0]));
             calendar.add(Calendar.HOUR_OF_DAY, Integer.parseInt(runinngtime.split(":")[0]));
             int running_mins = Integer.parseInt(runinngtime.split(":")[1]);
             calendar.add(Calendar.MINUTE, Integer.parseInt(runinngtime.split(":")[1]));
@@ -1413,29 +1690,122 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
 
             String starttime = arralistJobTime.get(binding.timespinner.getSelectedItemPosition()).getParsedate() + " " + arralistJobTime.get(binding.timespinner.getSelectedItemPosition()).getHrminutes();
             ArrayList<JobTimeSkeleton> arralistJobTime_JobStatus = new ArrayList<>();
-            calendar.add(Calendar.MINUTE, -15);
-            JobTimeSkeleton jobtimeske = new JobTimeSkeleton();
-            jobtimeske.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
-            jobtimeske.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
-            arralistJobTime_JobStatus.add(jobtimeske);
+//            calendar.add(Calendar.MINUTE, -15);
+//            JobTimeSkeleton jobtimeske = new JobTimeSkeleton();
+//            jobtimeske.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+//            jobtimeske.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+//            arralistJobTime_JobStatus.add(jobtimeske);
+//
+//            calendar.add(Calendar.MINUTE, 15);
+//            JobTimeSkeleton jobtimeske2 = new JobTimeSkeleton();
+//            jobtimeske2.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+//            jobtimeske2.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+//            arralistJobTime_JobStatus.add(jobtimeske2);
+//
+//            calendar.add(Calendar.MINUTE, 15);
+//            JobTimeSkeleton jobtimeske3 = new JobTimeSkeleton();
+//            jobtimeske3.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+//            jobtimeske3.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+//            arralistJobTime_JobStatus.add(jobtimeske3);
+//            String endtime="";
+//            if(timerindex_prev == 2) {
+//                 endtime = arralistJobTime_JobStatus.get(2).getParsedate() + " " + arralistJobTime_JobStatus.get(2).getHrminutes();
+//            } else {
+//                 endtime = arralistJobTime_JobStatus.get(1).getParsedate() + " " + arralistJobTime_JobStatus.get(1).getHrminutes();
+//            }
 
-            calendar.add(Calendar.MINUTE, 15);
-            JobTimeSkeleton jobtimeske2 = new JobTimeSkeleton();
-            jobtimeske2.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
-            jobtimeske2.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
-            arralistJobTime_JobStatus.add(jobtimeske2);
-
-            calendar.add(Calendar.MINUTE, 15);
-            JobTimeSkeleton jobtimeske3 = new JobTimeSkeleton();
-            jobtimeske3.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
-            jobtimeske3.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
-            arralistJobTime_JobStatus.add(jobtimeske3);
             String endtime="";
-            if(timerindex_prev == 2) {
-                 endtime = arralistJobTime_JobStatus.get(2).getParsedate() + " " + arralistJobTime_JobStatus.get(2).getHrminutes();
+            if(is15WIggle().equalsIgnoreCase("yes")) {
+                calendar.add(Calendar.MINUTE, -15);
+                JobTimeSkeleton jobtimeske = new JobTimeSkeleton();
+                jobtimeske.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                jobtimeske.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                arralistJobTime_JobStatus.add(jobtimeske);
+
+                calendar.add(Calendar.MINUTE, 15);
+                JobTimeSkeleton jobtimeske2 = new JobTimeSkeleton();
+                jobtimeske2.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                jobtimeske2.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                arralistJobTime_JobStatus.add(jobtimeske2);
+
+                calendar.add(Calendar.MINUTE, 15);
+                JobTimeSkeleton jobtimeske3 = new JobTimeSkeleton();
+                jobtimeske3.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                jobtimeske3.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                arralistJobTime_JobStatus.add(jobtimeske3);
+
+                // String endtime="";
+                if(timerindex_prev == 2) {
+                    endtime = arralistJobTime_JobStatus.get(2).getParsedate() + " " + arralistJobTime_JobStatus.get(2).getHrminutes();
+                } else {
+                    endtime = arralistJobTime_JobStatus.get(1).getParsedate() + " " + arralistJobTime_JobStatus.get(1).getHrminutes();
+                }
             } else {
-                 endtime = arralistJobTime_JobStatus.get(1).getParsedate() + " " + arralistJobTime_JobStatus.get(1).getHrminutes();
+                calendar.add(Calendar.MINUTE, -60);
+                JobTimeSkeleton jobtimeske = new JobTimeSkeleton();
+                jobtimeske.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                jobtimeske.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                arralistJobTime_JobStatus.add(jobtimeske);
+
+                calendar.add(Calendar.MINUTE, 15);
+                JobTimeSkeleton jobtimeske1 = new JobTimeSkeleton();
+                jobtimeske1.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                jobtimeske1.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                arralistJobTime_JobStatus.add(jobtimeske1);
+
+                calendar.add(Calendar.MINUTE, 15);
+                JobTimeSkeleton jobtimeske2 = new JobTimeSkeleton();
+                jobtimeske2.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                jobtimeske2.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                arralistJobTime_JobStatus.add(jobtimeske2);
+
+                calendar.add(Calendar.MINUTE, 15);
+                JobTimeSkeleton jobtimeske3 = new JobTimeSkeleton();
+                jobtimeske3.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                jobtimeske3.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                arralistJobTime_JobStatus.add(jobtimeske3);
+
+                calendar.add(Calendar.MINUTE, 15);
+                JobTimeSkeleton jobtimeske_e = new JobTimeSkeleton();
+                jobtimeske_e.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                jobtimeske_e.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                arralistJobTime_JobStatus.add(jobtimeske_e);
+
+
+
+
+                calendar.add(Calendar.MINUTE, 15);
+                JobTimeSkeleton jobtimeske4 = new JobTimeSkeleton();
+                jobtimeske4.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                jobtimeske4.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                arralistJobTime_JobStatus.add(jobtimeske4);
+
+                calendar.add(Calendar.MINUTE, 15);
+
+                JobTimeSkeleton jobtimeske5 = new JobTimeSkeleton();
+                jobtimeske5.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                jobtimeske5.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                arralistJobTime_JobStatus.add(jobtimeske5);
+
+                calendar.add(Calendar.MINUTE, 15);
+                JobTimeSkeleton jobtimeske6 = new JobTimeSkeleton();
+                jobtimeske6.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                jobtimeske6.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                arralistJobTime_JobStatus.add(jobtimeske6);
+
+                calendar.add(Calendar.MINUTE, 15);
+                JobTimeSkeleton jobtimeske7 = new JobTimeSkeleton();
+                jobtimeske7.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+                jobtimeske7.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+                arralistJobTime_JobStatus.add(jobtimeske7);
+
+                if(timerindex_prev > 4) {
+                    endtime = arralistJobTime_JobStatus.get(timerindex_prev).getParsedate() + " " + arralistJobTime_JobStatus.get(timerindex_prev).getHrminutes();
+                } else {
+                    endtime = arralistJobTime_JobStatus.get(4).getParsedate() + " " + arralistJobTime_JobStatus.get(4).getHrminutes();
+                }
             }
+
            // String endtime = arralistJobTime_JobStatus.get(1).getParsedate() + " " + arralistJobTime_JobStatus.get(1).getHrminutes();
             String hrsworked = String.valueOf(binding.uploadimage.getText()).split(":")[0] + ":" + String.valueOf(binding.uploadimage.getText().toString()).split(":")[1];
             String hrsAdjusted = String.valueOf(HoursAdjusted(binding.timespinner.getSelectedItemPosition()));
@@ -1503,11 +1873,11 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
             gson = new Gson();
             Cursor cursor = database.query(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, null, ParseOpenHelper.TECHIDCURRDAY + "=?", new String[]{HandyObject.getPrams(context, AppConstants.LOGINTEQ_ID)}, null, null, null);
             cursor.moveToFirst();
-            arralistAllJobs = new ArrayList<>();
-            arrayListsJobIds = new ArrayList<>();
-            arrayListLaborPerf = new ArrayList<>();
-            arrayListOffTheRecord = new ArrayList<>();
-            addTechlistOffTheRecord = new ArrayList<>();
+//            arralistAllJobs = new ArrayList<>();
+//            arrayListsJobIds = new ArrayList<>();
+//            arrayListLaborPerf = new ArrayList<>();
+//            arrayListOffTheRecord = new ArrayList<>();
+//            addTechlistOffTheRecord = new ArrayList<>();
             while (!cursor.isAfterLast()) {
                 Type type = new TypeToken<AllJobsSkeleton>() {
                 }.getType();
@@ -1589,6 +1959,14 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
         long idd = database.insert(ParseOpenHelper.TABLE_LCCHANGE, null, cv);
     }
 
+    private void insertIntoDB_STARTJOB(String jobid) {
+        Log.e("SAVEDJOBID",jobid);
+        ContentValues cv = new ContentValues();
+        cv.put(ParseOpenHelper.JOBSTARTED_JOBID,jobid);
+        cv.put(ParseOpenHelper.ISJOBSTARTED,"yes");
+        long id = database.insert(ParseOpenHelper.TABLE_STARTJOB,null,cv);
+    }
+
     //For related chat page
     public void OnClickChat() {
         // If chat is not initiated yet then chat dialog will open either direct chat window related to selected job
@@ -1611,14 +1989,22 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
         }
     }
 
-    //If Seatech specific job is selected then this clicked button will show , this button will stop the seatech specific job and switch to dashboard screen
+    //If Seatech specific job is selected thends this clicked button will show , this button will stop the seatech specific job and switch to dashboard screen
     public void onClickStop() {
         String runinngtime = binding.uploadimage.getText().toString();
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.MINUTE, Integer.parseInt(arralistJobTime.get(1).getHrminutes().split(":")[1]));
+      //  calendar.set(Calendar.MINUTE, Integer.parseInt(arralistJobTime.get(1).getHrminutes().split(":")[1]));
+        if(is15WIggle().equalsIgnoreCase("yes")) {
+            calendar.set(Calendar.MINUTE, Integer.parseInt(arralistJobTime.get(1).getHrminutes().split(":")[1]));
+            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(arralistJobTime.get(1).getHrminutes().split(":")[0]));
+        } else {
+            calendar.set(Calendar.MINUTE, Integer.parseInt(arralistJobTime.get(4).getHrminutes().split(":")[1]));
+            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(arralistJobTime.get(4).getHrminutes().split(":")[0]));
+        }
         calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(arralistJobTime.get(1).getHrminutes().split(":")[0]));
+      //  calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(arralistJobTime.get(1).getHrminutes().split(":")[0]));
         calendar.add(Calendar.HOUR_OF_DAY, Integer.parseInt(runinngtime.split(":")[0]));
+
         int running_mins = Integer.parseInt(runinngtime.split(":")[1]);
         calendar.add(Calendar.MINUTE, Integer.parseInt(runinngtime.split(":")[1]));
         calendar.set(Calendar.MINUTE, HandyObject.getNear15MinuteLB(Integer.parseInt(manageMinutes(calendar.get(Calendar.MINUTE)))));
@@ -1631,29 +2017,132 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
 
         String starttime = arralistJobTime.get(binding.timespinner.getSelectedItemPosition()).getParsedate() + " " + arralistJobTime.get(binding.timespinner.getSelectedItemPosition()).getHrminutes();
         ArrayList<JobTimeSkeleton> arralistJobTime_JobStatus = new ArrayList<>();
-        calendar.add(Calendar.MINUTE, -15);
-        JobTimeSkeleton jobtimeske = new JobTimeSkeleton();
-        jobtimeske.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
-        jobtimeske.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
-        arralistJobTime_JobStatus.add(jobtimeske);
+//        calendar.add(Calendar.MINUTE, -15);
+//        JobTimeSkeleton jobtimeske = new JobTimeSkeleton();
+//        jobtimeske.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+//        jobtimeske.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+//        arralistJobTime_JobStatus.add(jobtimeske);
+//
+//        calendar.add(Calendar.MINUTE, 15);
+//        JobTimeSkeleton jobtimeske2 = new JobTimeSkeleton();
+//        jobtimeske2.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+//        jobtimeske2.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+//        arralistJobTime_JobStatus.add(jobtimeske2);
+//
+//        calendar.add(Calendar.MINUTE, 15);
+//        JobTimeSkeleton jobtimeske3 = new JobTimeSkeleton();
+//        jobtimeske3.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+//        jobtimeske3.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+//        arralistJobTime_JobStatus.add(jobtimeske3);
+//        String endtime = "";
+//        if(timerindex_prev == 2) {
+//            endtime = arralistJobTime_JobStatus.get(2).getParsedate() + " " + arralistJobTime_JobStatus.get(2).getHrminutes();
+//        } else {
+//            endtime = arralistJobTime_JobStatus.get(1).getParsedate() + " " + arralistJobTime_JobStatus.get(1).getHrminutes();
+//        }
 
-        calendar.add(Calendar.MINUTE, 15);
-        JobTimeSkeleton jobtimeske2 = new JobTimeSkeleton();
-        jobtimeske2.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
-        jobtimeske2.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
-        arralistJobTime_JobStatus.add(jobtimeske2);
 
-        calendar.add(Calendar.MINUTE, 15);
-        JobTimeSkeleton jobtimeske3 = new JobTimeSkeleton();
-        jobtimeske3.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
-        jobtimeske3.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
-        arralistJobTime_JobStatus.add(jobtimeske3);
-        String endtime = "";
-        if(timerindex_prev == 2) {
-            endtime = arralistJobTime_JobStatus.get(2).getParsedate() + " " + arralistJobTime_JobStatus.get(2).getHrminutes();
+
+
+
+
+
+
+
+        String endtime="";
+        if(is15WIggle().equalsIgnoreCase("yes")) {
+            calendar.add(Calendar.MINUTE, -15);
+            JobTimeSkeleton jobtimeske = new JobTimeSkeleton();
+            jobtimeske.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime_JobStatus.add(jobtimeske);
+
+            calendar.add(Calendar.MINUTE, 15);
+            JobTimeSkeleton jobtimeske2 = new JobTimeSkeleton();
+            jobtimeske2.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske2.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime_JobStatus.add(jobtimeske2);
+
+            calendar.add(Calendar.MINUTE, 15);
+            JobTimeSkeleton jobtimeske3 = new JobTimeSkeleton();
+            jobtimeske3.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske3.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime_JobStatus.add(jobtimeske3);
+
+            // String endtime="";
+            if(timerindex_prev == 2) {
+                endtime = arralistJobTime_JobStatus.get(2).getParsedate() + " " + arralistJobTime_JobStatus.get(2).getHrminutes();
+            } else {
+                endtime = arralistJobTime_JobStatus.get(1).getParsedate() + " " + arralistJobTime_JobStatus.get(1).getHrminutes();
+            }
         } else {
-            endtime = arralistJobTime_JobStatus.get(1).getParsedate() + " " + arralistJobTime_JobStatus.get(1).getHrminutes();
+            calendar.add(Calendar.MINUTE, -60);
+            JobTimeSkeleton jobtimeske = new JobTimeSkeleton();
+            jobtimeske.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime_JobStatus.add(jobtimeske);
+
+            calendar.add(Calendar.MINUTE, 15);
+            JobTimeSkeleton jobtimeske1 = new JobTimeSkeleton();
+            jobtimeske1.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske1.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime_JobStatus.add(jobtimeske1);
+
+            calendar.add(Calendar.MINUTE, 15);
+            JobTimeSkeleton jobtimeske2 = new JobTimeSkeleton();
+            jobtimeske2.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske2.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime_JobStatus.add(jobtimeske2);
+
+            calendar.add(Calendar.MINUTE, 15);
+            JobTimeSkeleton jobtimeske3 = new JobTimeSkeleton();
+            jobtimeske3.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske3.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime_JobStatus.add(jobtimeske3);
+
+            calendar.add(Calendar.MINUTE, 15);
+            JobTimeSkeleton jobtimeske_e = new JobTimeSkeleton();
+            jobtimeske_e.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske_e.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime_JobStatus.add(jobtimeske_e);
+
+
+
+
+            calendar.add(Calendar.MINUTE, 15);
+            JobTimeSkeleton jobtimeske4 = new JobTimeSkeleton();
+            jobtimeske4.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske4.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime_JobStatus.add(jobtimeske4);
+
+            calendar.add(Calendar.MINUTE, 15);
+
+            JobTimeSkeleton jobtimeske5 = new JobTimeSkeleton();
+            jobtimeske5.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske5.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime_JobStatus.add(jobtimeske5);
+
+            calendar.add(Calendar.MINUTE, 15);
+            JobTimeSkeleton jobtimeske6 = new JobTimeSkeleton();
+            jobtimeske6.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske6.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime_JobStatus.add(jobtimeske6);
+
+            calendar.add(Calendar.MINUTE, 15);
+            JobTimeSkeleton jobtimeske7 = new JobTimeSkeleton();
+            jobtimeske7.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske7.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime_JobStatus.add(jobtimeske7);
+
+            if(timerindex_prev > 4) {
+                endtime = arralistJobTime_JobStatus.get(timerindex_prev).getParsedate() + " " + arralistJobTime_JobStatus.get(timerindex_prev).getHrminutes();
+            } else {
+                endtime = arralistJobTime_JobStatus.get(4).getParsedate() + " " + arralistJobTime_JobStatus.get(4).getHrminutes();
+            }
         }
+
+
+
 
         // String endtime = arralistJobTime_JobStatus.get(1).getParsedate() + " " + arralistJobTime_JobStatus.get(1).getHrminutes();
         String hrsworked = String.valueOf(binding.uploadimage.getText()).split(":")[0] + ":" + String.valueOf(binding.uploadimage.getText().toString()).split(":")[1];
@@ -1883,5 +2372,16 @@ public class VMJobDetail extends Observable implements SwipeRefreshLayout.OnRefr
                         binding.swipeview.setRefreshing(false);
                     }
                 });
+    }
+
+    private String is15WIggle() {
+        String check="";
+        if(HandyObject.getPrams(context, AppConstants.LOGINTEQ_WIGGLEROOM).equalsIgnoreCase("15")) {
+            check = "yes";
+        } else {
+            check = "no";
+        }
+
+        return check;
     }
 }

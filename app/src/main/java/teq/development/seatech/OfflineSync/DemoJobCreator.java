@@ -29,6 +29,8 @@ public class DemoJobCreator implements JobCreator {
                 return new SyncUploadImages();
             case SyncAddPart.TAG:
                 return new SyncAddPart();
+            case SyncJobStart.TAG:
+                return new SyncJobStart();
             default:
                 return null;
         }

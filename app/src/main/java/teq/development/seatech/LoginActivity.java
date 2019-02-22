@@ -386,6 +386,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         Log.e("responseError", t.getMessage());
                         HandyObject.stopProgressDialog();
+                        GetManufacturerData();
                     }
                 });
     }

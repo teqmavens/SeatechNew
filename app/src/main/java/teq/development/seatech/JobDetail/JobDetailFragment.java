@@ -913,6 +913,14 @@ public class JobDetailFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+       // vmjobdetail.callOnResumeView();
+       // Log.e("onResumRUNNNNNN", "onResumeRUNNNNN");
+    }
+
+
+    @Override
     public void onStop() {
         super.onStop();
         Log.e("onStopRUNNNNN", "onStopRUNNNNN");

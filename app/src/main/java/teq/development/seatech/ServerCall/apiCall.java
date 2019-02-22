@@ -14,6 +14,8 @@ import retrofit2.http.POST;
 import teq.development.seatech.Dashboard.Skeleton.NotificationSkeleton;
 import teq.development.seatech.Dashboard.Skeleton.ReadNotificationSkeleton;
 import teq.development.seatech.Dashboard.Skeleton.ScheduleFilterSkeleton;
+import teq.development.seatech.Schedule.Skeleton.ScheduleCalendarViewSkeleton;
+import teq.development.seatech.Schedule.Skeleton.ScheduleWeekViewSkeleton;
 import teq.development.seatech.Timesheet.DayJobStatus_Skeleton;
 
 /**
@@ -138,6 +140,14 @@ public interface apiCall {
             @Field("hours_adjusted") String hours_adjusted,
             @Field("labour_code") String labour_code,*/
             @Field("jobactivitylog") String jobactivitylog,
+            @Header("sessionID") String sessionid
+    );
+
+    @FormUrlEncoded
+    @POST("jobs/tech-start-job.json")
+    @Headers("tokenID: 1234567890234dfg456")
+    Call<ResponseBody> startJob(
+            @Field("job_id") String jobid,
             @Header("sessionID") String sessionid
     );
 
@@ -311,5 +321,23 @@ public interface apiCall {
     Call<ScheduleFilterSkeleton> GetScheduleFilterData(
             @Field("start_time") String start_time,
             @Field("end_time") String end_time
+    );
+
+    //Get Week Data for schedule section
+    @FormUrlEncoded
+    @POST("schedule/week-view-api.json")
+    @Headers("tokenID: 1234567890234dfg456")
+    Call<ScheduleWeekViewSkeleton> GetScheduleWeekViewData(
+            @Field("start_date") String start_date,
+            @Field("end_date") String end_date
+    );
+
+    //Get Calendar Data for schedule section
+    @FormUrlEncoded
+    @POST("schedule/month-view-api.json")
+    @Headers("tokenID: 1234567890234dfg456")
+    Call<ScheduleCalendarViewSkeleton> GetScheduleCalendarViewData(
+            @Field("start_date") String start_date,
+            @Field("end_date") String end_date
     );
 }

@@ -31,6 +31,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -63,6 +64,7 @@ import teq.development.seatech.JobDetail.Skeleton.LCChangeSkeleton;
 import teq.development.seatech.LoginActivity;
 import teq.development.seatech.OfflineSync.DemoSyncJob;
 import teq.development.seatech.OfflineSync.SyncAddPart;
+import teq.development.seatech.OfflineSync.SyncJobStart;
 import teq.development.seatech.OfflineSync.SyncJobStatus;
 import teq.development.seatech.OfflineSync.SyncLCChange;
 import teq.development.seatech.OfflineSync.SyncNeedEstimate;
@@ -97,6 +99,7 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -105,12 +108,13 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                     jobj.put("customId", Integer.parseInt(HandyObject.getPrams(DashBoardActivity.this, AppConstants.LOGINTEQPARENT_ID)));
                     jobj.put("device_id", HandyObject.getPrams(DashBoardActivity.this, AppConstants.DEVICE_TOKEN));
                     App.appInstance.getSocket().emit("storeClientInfo", jobj);
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
 
             }
         }, 1000);
         replaceFragmentWithoutBack(new DashBoardFragment());
-       // replaceFragmentWithoutBack(new DashBoardFragment());
+        // replaceFragmentWithoutBack(new DashBoardFragment());
         toolbar = findViewById(R.id.toolbar);
         menu_icon = findViewById(R.id.menu_icon);
         sick_icon = findViewById(R.id.sick_icon);
@@ -361,7 +365,7 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (cbx_sick.isChecked() == false &&cbx_sickunpaid.isChecked() == false && cbx_vacation.isChecked() == false && cbx_vacationunpaid.isChecked() == false && cbx_doneforday.isChecked() == false) {
+                if (cbx_sick.isChecked() == false && cbx_sickunpaid.isChecked() == false && cbx_vacation.isChecked() == false && cbx_vacationunpaid.isChecked() == false && cbx_doneforday.isChecked() == false) {
                     HandyObject.showAlert(DashBoardActivity.this, getString(R.string.pleaseselectcode));
                 } else if (cbx_sick.isChecked() == true && cbx_vacation.isChecked() == false) {
                     if (App.timer_running || isJobRunning() == true) {
@@ -370,40 +374,28 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                         TaskLCChange("TIME SICK PAID");
                     }
                     popup.dismiss();
-                }
-
-
-
-                else if (cbx_sickunpaid.isChecked() == true && cbx_vacation.isChecked() == false) {
+                } else if (cbx_sickunpaid.isChecked() == true && cbx_vacation.isChecked() == false) {
                     if (App.timer_running || isJobRunning() == true) {
                         HandyObject.showAlert(DashBoardActivity.this, getString(R.string.cannt_logoutjobrunningnew));
                     } else {
                         TaskLCChange("TIME SICK UNPAID");
                     }
                     popup.dismiss();
-                }
-
-
-
-                else if (cbx_vacation.isChecked() == true && cbx_sick.isChecked() == false) {
+                } else if (cbx_vacation.isChecked() == true && cbx_sick.isChecked() == false) {
                     if (App.timer_running || isJobRunning() == true) {
                         HandyObject.showAlert(DashBoardActivity.this, getString(R.string.cannt_logoutjobrunningnew));
                     } else {
                         TaskLCChange("TIME VACATION PAID");
                     }
                     popup.dismiss();
-                }
-
-                else if (cbx_vacationunpaid.isChecked() == true && cbx_sick.isChecked() == false) {
+                } else if (cbx_vacationunpaid.isChecked() == true && cbx_sick.isChecked() == false) {
                     if (App.timer_running || isJobRunning() == true) {
                         HandyObject.showAlert(DashBoardActivity.this, getString(R.string.cannt_logoutjobrunningnew));
                     } else {
                         TaskLCChange("TIME VACATION UNPAID");
                     }
                     popup.dismiss();
-                }
-
-                else if (cbx_doneforday.isChecked() == true) {
+                } else if (cbx_doneforday.isChecked() == true) {
                     popup.dismiss();
                     if (App.timer_running || isJobRunning() == true) {
                         HandyObject.showAlert(DashBoardActivity.this, getString(R.string.cannt_logoutjobrunning));
@@ -550,11 +542,12 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     protected void onDestroy() {
-        try{
-        super.onDestroy();
+        try {
+            super.onDestroy();
 
             unregisterReceiver(receiver);
-        } catch (Exception e){}
+        } catch (Exception e) {
+        }
         Log.e("OnDestroyDASSHHH", "OnDestroyDASSHHH");
     }
 
@@ -605,19 +598,19 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
                 running_cal.setTimeInMillis(Long.parseLong(HandyObject.getPrams(this, AppConstants.JOBRUNNING_CLOSETIMEDATE)));
                 Calendar now = Calendar.getInstance();
 
-                if(now.get(Calendar.DATE) == running_cal.get(Calendar.DATE)) {
-                    HandyObject.showAlert(DashBoardActivity.this,"same day");
+                if (now.get(Calendar.DATE) == running_cal.get(Calendar.DATE)) {
+                    //HandyObject.showAlert(DashBoardActivity.this,"same day");
                 } else {
-                    HandyObject.showAlert(DashBoardActivity.this,"differnet day");
+                    //  HandyObject.showAlert(DashBoardActivity.this,"differnet day");
                 }
 
                 HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNINGCLOSE, "yes");
             } else {
-               // HandyObject.showAlert(DashBoardActivity.this,"NotRunning");
+                // HandyObject.showAlert(DashBoardActivity.this,"NotRunning");
                 HandyObject.putPrams(DashBoardActivity.this, AppConstants.ISJOB_RUNNINGCLOSE, "no");
             }
         }
-       // replaceFragmentWithoutBack(new DashBoardFragment());
+        // replaceFragmentWithoutBack(new DashBoardFragment());
     }
 
     @Override
@@ -653,6 +646,7 @@ public class DashBoardActivity extends AppCompatActivity implements View.OnClick
         SyncJobStatus.scheduleJob();
         SyncUploadImages.scheduleJob();
         SyncAddPart.scheduleJob();
+        SyncJobStart.scheduleJob();
     }
 
     //Check for real time internet connection

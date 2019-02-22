@@ -58,7 +58,6 @@ public class AdapterDashbrdUrgentMsg extends RecyclerView.Adapter<AdapterDashbrd
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         holder.bind(arrayList.get(position));
-
         binding.cltop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

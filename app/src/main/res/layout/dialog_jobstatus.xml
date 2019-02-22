@@ -103,6 +103,62 @@
                 app:layout_constraintTop_toBottomOf="@+id/techLaborperform" />
 
 
+
+
+
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/endtimekey"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/smalltextsize"
+                android:text="@string/selectendtime"
+                android:textColor="@color/black"
+                android:textSize="@dimen/verysmalltextsize"
+                android:textStyle="bold"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:paddingTop="@dimen/smallpadding"
+                app:layout_constraintRight_toLeftOf="@+id/checkbox_yesowner"
+                app:layout_constraintTop_toBottomOf="@+id/et_laborperform" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/timespinner"
+                android:layout_width="100dp"
+                android:layout_height="36dp"
+                android:background="@drawable/dashboardlinepickup"
+                app:layout_constraintHorizontal_weight=".12"
+                app:layout_constraintLeft_toRightOf="@+id/endtimekey"
+                app:layout_constraintTop_toTopOf="@+id/endtimekey">
+
+            </android.support.v7.widget.AppCompatSpinner>
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/verysmallpadding"
+                app:layout_constraintBottom_toBottomOf="@+id/timespinner"
+                app:layout_constraintRight_toRightOf="@+id/timespinner"
+                app:layout_constraintTop_toTopOf="@+id/timespinner"
+                app:srcCompat="@drawable/ic_downarrow" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/supplyamount"
                 android:layout_width="0dp"
@@ -116,7 +172,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:paddingTop="@dimen/smallpadding"
                 app:layout_constraintRight_toLeftOf="@+id/checkbox_yesowner"
-                app:layout_constraintTop_toBottomOf="@+id/et_laborperform" />
+                app:layout_constraintTop_toBottomOf="@+id/endtimekey" />
 
 
             <android.support.v7.widget.AppCompatEditText

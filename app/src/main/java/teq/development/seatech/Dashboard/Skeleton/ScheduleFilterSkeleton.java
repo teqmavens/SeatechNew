@@ -17,6 +17,9 @@ public class ScheduleFilterSkeleton {
     @SerializedName("technicians")
     public ArrayList<TechnicianData> techniciansData = null;
 
+    @SerializedName("jobs")
+    public ArrayList<JobsData> jobsData = null;
+
     @SerializedName("schedules")
     public ArrayList<SchedulesData> schedulesData = null;
 
@@ -36,6 +39,14 @@ public class ScheduleFilterSkeleton {
         public String name;
     }
 
+    public class JobsData {
+        @SerializedName("job_id")
+        public String jobid;
+
+        @SerializedName("customer_name")
+        public String customer_name;
+    }
+
     public static class SchedulesData {
 
         public SchedulesData(){}
@@ -52,7 +63,10 @@ public class ScheduleFilterSkeleton {
         public ArrayList<EventData> eventData = null;
     }
 
-    public class EventData {
+    public static class EventData {
+
+        public EventData(){}
+
         @SerializedName("job_id")
         public String jobid;
 

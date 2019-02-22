@@ -41,6 +41,7 @@
     <string name="jobtypedash">Job Type</string>
     <string name="boatlocation">Boat Location</string>
     <string name="time">Time</string>
+    <string name="estimatehr">Estimated Hours</string>
     <string name="techsupervisor">Tech Supervisor</string>
     <string name="othermem">Other Members</string>
     <string name="partlocation">Part Location</string>
@@ -247,6 +248,7 @@
     <string name="tryafter">No pickup jobs available.</string>
     <string name="norecordFound">No record Found</string>
     <string name="fetchdata_whenonline">Data will be updated once internet available.</string>
+    <string name="notiarrive_whenonline">Supervisor get notified once internet available.</string>
     <string name="empname">Employee name</string>
     <string name="cannotsendblankmsg">Can\'t send blank message.</string>
     <string name="selectreciever">Please Select Receiver first</string>
@@ -306,7 +308,9 @@
     <string name="nojobsavail">No Jobs Available</string>
     <string name="add_dashboardnotes">Add Dashboard Notes</string>
     <string name="timespent"><u>Time Spent</u></string>
-    <string name="remainhrs">Remaining Hours -</string>
+    <string name="remainhrs">Remaining Hours :</string>
+    <string name="selectendtime">Choose end time</string>
+    <string name="noevent">No event to display</string>
     <string-array name="laborcode_array">
        <!-- <item>Travel Time</item>
         <item>SERVICE TIME</item>
@@ -371,6 +375,7 @@
         <item>Current Month</item>
         <item>Current Week</item>
         <item>Select Month</item>
+        <item>Current Day</item>
     </string-array>
     <string-array name="apptmnttype_array">
         <item><u>Select Appointment Type:</u></item>
@@ -397,4 +402,22 @@
         <item>Current Week</item>
         <item>Selected Date</item>
     </string-array>-->
+
+
+
+
+
+
+
+    <string name="current_date">June, 2016</string>
+    <string name="add_event">ADD CALENDAR EVENT</string>
+    <string name="sun">SUN</string>
+    <string name="mon">MON</string>
+    <string name="tue">TUE</string>
+    <string name="wed">WED</string>
+    <string name="thu">THU</string>
+    <string name="fri">FRI</string>
+    <string name="sat">SAT</string>
+    <string name="last_date">30</string>
+
 </resources>

@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -42,14 +43,18 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import teq.development.seatech.App;
+import teq.development.seatech.JobDetail.Adapter.AdapterJobTime;
 import teq.development.seatech.JobDetail.Skeleton.JobStatusSkeleton;
+import teq.development.seatech.JobDetail.Skeleton.JobTimeSkeleton;
 import teq.development.seatech.LoginActivity;
 import teq.development.seatech.R;
 import teq.development.seatech.Utils.AppConstants;
@@ -64,11 +69,15 @@ public class JobStatusDialog extends DialogFragment {
     DialogJobstatusBinding binding;
     EditText et_notbilled;
     EditText et_description;
+    ArrayList<JobTimeSkeleton> arralistJobTime;
+    private AdapterJobTime adapterjobTime;
    // static int count = 0;
     static String selposi_ticketid;
     public static boolean crossclick;
     public static String allValues, editvalues;
     public String jobstatus;
+    Context context;
+    int timerindex_prev = 0;
     private SQLiteDatabase database;
     public String get_needtoknow, returnimmediate, alreadyScheduled, reason, description = "";
     String hoursNewValue, minNewValue, hoursNewValueDur, minNewValueDur = "";
@@ -82,6 +91,7 @@ public class JobStatusDialog extends DialogFragment {
         selposi_ticketid = selecposition_ticketid;
         allValues = values;
         editvalues = evalues;
+
         f.setArguments(args);
         return f;
     }
@@ -90,6 +100,7 @@ public class JobStatusDialog extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         int mNum = getArguments().getInt("num");
+
     }
 
     @Nullable
@@ -103,6 +114,7 @@ public class JobStatusDialog extends DialogFragment {
     }
 
     private void initViews(final DialogJobstatusBinding binding) {
+        context = getActivity();
         binding.checkboxyes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -188,6 +200,228 @@ public class JobStatusDialog extends DialogFragment {
                 }
             }
         });
+
+        updateTimeSpinner();
+    }
+
+    private void updateTimeSpinner() {
+        arralistJobTime = new ArrayList<>();
+        getplusminus(getNear15Minute());
+    }
+
+    private String manageMinutes(int min) {
+        if (min == 0) {
+            return "00";
+        } else {
+            return String.valueOf(min);
+        }
+    }
+
+    public void getplusminus(int n) {
+        List<String> listtime = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+//        if (isJobRunning() == true) {
+//            Log.e("plusminusrunning", "running");
+//            calendar.set(Calendar.MINUTE, Integer.parseInt(HandyObject.getPrams(context, AppConstants.JOBRUNNING_CENTERTIME).split(":")[1]));
+//            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(HandyObject.getPrams(context, AppConstants.JOBRUNNING_CENTERTIME).split(":")[0]));
+//        } else {
+            Log.e("notrunning", "notrunning");
+            if (n == 0) {
+                String withoutzero = String.valueOf(calendar.get(Calendar.MINUTE)).replaceFirst("^0+(?!$)", "");
+                if (Integer.parseInt(withoutzero) > 7) {
+                    calendar.add(Calendar.HOUR_OF_DAY, 1);
+                }
+            }
+            calendar.set(Calendar.MINUTE, n);
+        //}
+        calendar.set(Calendar.SECOND, 0);
+
+
+//        if (HandyObject.getNear15MinuteLB(Integer.parseInt(manageMinutes(calendar.get(Calendar.MINUTE)))) == 0) {
+//            String withoutzero = String.valueOf(running_mins).replaceFirst("^0+(?!$)", "");calendar.get(Calendar.MINUTE)
+//            if (Integer.parseInt(withoutzero) > 7 && Integer.parseInt(runinngtime.split(":")[0]) == 0) {
+//                calendar.add(Calendar.HOUR_OF_DAY, 1);
+//            }
+//        }
+
+        if(is15WIggle().equalsIgnoreCase("yes")) {
+            calendar.add(Calendar.MINUTE, -15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske = new JobTimeSkeleton();
+            jobtimeske.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske);
+
+            calendar.add(Calendar.MINUTE, 15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske2 = new JobTimeSkeleton();
+            jobtimeske2.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske2.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske2);
+
+            calendar.add(Calendar.MINUTE, 15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske3 = new JobTimeSkeleton();
+            jobtimeske3.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske3.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske3);
+            adapterjobTime = new AdapterJobTime(context, arralistJobTime);
+            binding.timespinner.setAdapter(adapterjobTime);
+
+            binding.timespinner.setOnItemSelectedListener(new TimeItemSelectedListener());
+            binding.timespinner.setSelection(1);
+
+        } else {
+            calendar.add(Calendar.MINUTE, -60);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske = new JobTimeSkeleton();
+            jobtimeske.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske);
+
+            calendar.add(Calendar.MINUTE, 15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske1 = new JobTimeSkeleton();
+            jobtimeske1.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske1.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske1);
+
+            calendar.add(Calendar.MINUTE, 15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske2 = new JobTimeSkeleton();
+            jobtimeske2.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske2.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske2);
+
+            calendar.add(Calendar.MINUTE, 15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske3 = new JobTimeSkeleton();
+            jobtimeske3.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske3.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske3);
+
+            calendar.add(Calendar.MINUTE, 15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske_e = new JobTimeSkeleton();
+            jobtimeske_e.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske_e.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske_e);
+
+
+
+
+            calendar.add(Calendar.MINUTE, 15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske4 = new JobTimeSkeleton();
+            jobtimeske4.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske4.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske4);
+
+            calendar.add(Calendar.MINUTE, 15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske5 = new JobTimeSkeleton();
+            jobtimeske5.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske5.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske5);
+
+            calendar.add(Calendar.MINUTE, 15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske6 = new JobTimeSkeleton();
+            jobtimeske6.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske6.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske6);
+
+            calendar.add(Calendar.MINUTE, 15);
+            listtime.add(calendar.get(Calendar.HOUR_OF_DAY) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            JobTimeSkeleton jobtimeske7 = new JobTimeSkeleton();
+            jobtimeske7.setHrminutes(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + manageMinutes(calendar.get(Calendar.MINUTE)));
+            jobtimeske7.setParsedate(HandyObject.ParseDateJobTime(calendar.getTime()));
+            arralistJobTime.add(jobtimeske7);
+
+            adapterjobTime = new AdapterJobTime(context, arralistJobTime);
+            binding.timespinner.setAdapter(adapterjobTime);
+
+            binding.timespinner.setOnItemSelectedListener(new TimeItemSelectedListener());
+            binding.timespinner.setSelection(4);
+
+        }
+    }
+
+    //Adjust Hours to -15min & +15min
+    public int HoursAdjusted(int n) {
+        int res = 0;
+        if(is15WIggle().equalsIgnoreCase("yes")) {
+            if (n == 0) {
+                res = -15;
+            } else if (n == 2) {
+                res = 15;
+            }
+        } else {
+            if (n == 0) {
+                res = -60;
+            } else if (n == 1) {
+                res = -45;
+            } else if (n == 2) {
+                res = -30;
+            } else if (n == 3) {
+                res = -15;
+            } else if (n == 5) {
+                res = 15;
+            } else if (n == 6) {
+                res = 30;
+            } else if (n == 7) {
+                res = 45;
+            } else if (n == 8) {
+                res = 60;
+            }
+        }
+
+        return res;
+    }
+
+    private String is15WIggle() {
+        String check="";
+        if(HandyObject.getPrams(context, AppConstants.LOGINTEQ_WIGGLEROOM).equalsIgnoreCase("15")) {
+            check = "yes";
+        } else {
+            check = "no";
+        }
+
+        return check;
+    }
+
+    //Will trigger on the creation of fragment & when select any time from time spinner
+    public class TimeItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
+            // HandyObject.showAlert(context, String.valueOf(position));
+              timerindex_prev = position;
+        //    String runinngtime = binding.uploadimage.getText().toString();
+        //    int running_mins = Integer.parseInt(runinngtime.split(":")[1]);
+//            if (position == 2) {
+//                if (running_mins < 15) {
+//                    HandyObject.showAlert(context, context.getString(R.string.cantselect_futtime));
+//                    binding.timespinner.setSelection(1);
+//                }
+//            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
+    }
+
+    public static int getNear15Minute() {
+        Calendar calendar = Calendar.getInstance();
+        int minutes = calendar.get(Calendar.MINUTE);
+        int mod = minutes % 15;
+        int res = 0;
+        if ((mod) >= 8) {
+            res = minutes + (15 - mod);
+        } else {
+            res = minutes - mod;
+        }
+        return (res % 60);
     }
 
     @NonNull
@@ -613,11 +847,14 @@ public class JobStatusDialog extends DialogFragment {
 
         if (binding.checkboxyes.isChecked() == false && binding.checkboxno.isChecked() == false && binding.checkboxmaybe.isChecked() == false) {
             HandyObject.showAlert(getActivity(), getString(R.string.selectjobtype));
-        } else if (binding.etSupplyamount.getText().toString().length() == 0) {
-            binding.etSupplyamount.requestFocus();
-            binding.etSupplyamount.requestFocus();
-            HandyObject.showAlert(getActivity(), getString(R.string.supplyamountreq));
-        } else if (binding.checkboxyes.isChecked() == true && binding.checkboxno.isChecked() == false && binding.checkboxmaybe.isChecked() == false) {
+        }
+
+//        else if (binding.etSupplyamount.getText().toString().length() == 0) {
+//            binding.etSupplyamount.requestFocus();
+//            binding.etSupplyamount.requestFocus();
+//            HandyObject.showAlert(getActivity(), getString(R.string.supplyamountreq));
+//        }
+        else if (binding.checkboxyes.isChecked() == true && binding.checkboxno.isChecked() == false && binding.checkboxmaybe.isChecked() == false) {
             String captainAware = "";
             String notbilled = "";
             String notbilled_desc = "";
@@ -878,7 +1115,17 @@ public class JobStatusDialog extends DialogFragment {
 
     private void JobStatusApi(String teqid, String jobid, String job_completed, String captainaware, String notes, String supplyAmount, String nbillablehrs,
                               String nbillablehrsDiscription, String returnimmid, String already_scheduled, String reason, String description, String sessionid) {
+
+
+        String endtimeNew = arralistJobTime.get(timerindex_prev).getParsedate() + " " + arralistJobTime.get(timerindex_prev).getHrminutes();
+        String hrsAdjustedNew = String.valueOf(HoursAdjusted(timerindex_prev));
+
+
+      //  HandyObject.showAlert(context,endtimeNew+"---"+hrsAdjustedNew);
+
+
         String edit_capname="";
+
        // HandyObject.showAlert(getActivity(),allValues);
         String start_T = allValues.split("--")[0];
         String end_T = allValues.split("--")[1];
@@ -905,7 +1152,12 @@ public class JobStatusDialog extends DialogFragment {
         ske.setJob_completed(job_completed);
         ske.setCaptain_aware(captainaware);
         ske.setNotes(notes);
-        ske.setSupply_amount(supplyAmount);
+        if(supplyAmount.equalsIgnoreCase("")) {
+            Log.e("Zeerooo","Zeerooo");
+            ske.setSupply_amount("0");
+        } else {
+            ske.setSupply_amount(supplyAmount);
+        }
         ske.setNon_billable_hours(nbillablehrs);
         ske.setNon_billable_hours_description(nbillablehrsDiscription);
         ske.setReturn_immediately(returnimmid);
@@ -913,9 +1165,13 @@ public class JobStatusDialog extends DialogFragment {
         ske.setReason(reason);
         ske.setDescription(description);
         ske.setStart_time(start_T);
-        ske.setEnd_time(end_T);
+      //  ske.setEnd_time(end_T);
+        ske.setEnd_time(endtimeNew);
         ske.setHours(hours);
         ske.setHours_adjusted(hours_adjusted);
+
+        ske.setHours_adjusted_end(hrsAdjustedNew);
+
         ske.setLabour_code(labour_code);
         ske.setCount(String.valueOf(count_lcjobcomp));
 
@@ -1015,7 +1271,10 @@ public class JobStatusDialog extends DialogFragment {
         cv.put(ParseOpenHelper.JOBSTATUSSTARTTIME, arrayList.get(0).getStart_time());
         cv.put(ParseOpenHelper.JOBSTATUSENDTTIME, arrayList.get(0).getEnd_time());
         cv.put(ParseOpenHelper.JOBSTATUSHOURS, arrayList.get(0).getHours());
+
         cv.put(ParseOpenHelper.JOBSTATUSHOURSADJUSTED, arrayList.get(0).getHours_adjusted());
+        cv.put(ParseOpenHelper.JOBSTATUSHOURSADJUSTEDEND, arrayList.get(0).getHours_adjusted_end());
+
         cv.put(ParseOpenHelper.JOBSTATUSLABOURCODE, arrayList.get(0).getLabour_code());
         cv.put(ParseOpenHelper.JOBSTATUSCREATEDAT, insertedAt);
         cv.put(ParseOpenHelper.JOBSTATUSBOATNAME, arrayList.get(0).getBoat_name());

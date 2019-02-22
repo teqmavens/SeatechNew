@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class ParseOpenHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "SEATECH";
-    public static final int VERSION = 5;
+    public static final int VERSION = 6;
     private static ParseOpenHelper mInstance = null;
     public static final String TABLENAME_ALLJOBS = "alljobs";
     public static final String TABLENAME_ALLJOBSCURRENTDAY = "alljobscurrentDay";
@@ -28,6 +28,7 @@ public class ParseOpenHelper extends SQLiteOpenHelper {
     public static final String TABLE_CHATMSGS = "tablechatmsgs";
     public static final String TABLE_SCHEDULEFILTER = "tableschedulefilter";
     public static final String TABLE_SCHEDULEDATA = "tablescheduledata";
+    public static final String TABLE_STARTJOB = "tablestartjob";
 
 
     //All jobs table keys
@@ -110,6 +111,7 @@ public class ParseOpenHelper extends SQLiteOpenHelper {
     public static final String JOBSTATUSENDTTIME = "JOBSTATUSend_T";
     public static final String JOBSTATUSHOURS = "JOBSTATUShours";
     public static final String JOBSTATUSHOURSADJUSTED = "JOBSTATUShours_adjusted";
+    public static final String JOBSTATUSHOURSADJUSTEDEND = "JOBSTATUShours_adjustedend";
     public static final String JOBSTATUSLABOURCODE = "JOBSTATUlabour_code";
     public static final String JOBSTATUSCREATEDAT = "JOBSTATUCreatedAt";
     public static final String JOBSTATUSBOATNAME = "JOBSTATUBoatname";
@@ -186,10 +188,14 @@ public class ParseOpenHelper extends SQLiteOpenHelper {
     //schedule fileter table keys
     public static final String SCHEDULEFILTER_REGIONDATA = "regionData";
     public static final String SCHEDULEFILTER_TECHDATA = "technicianData";
+    public static final String SCHEDULEFILTER_JOBSDATA = "jobsData";
 
     //schedule data table keys
     public static final String SCHEDULEDDATA = "scheduledData";
 
+    //Start job table keys
+    public static final String ISJOBSTARTED = "isjobstarted";
+    public static final String JOBSTARTED_JOBID = "jobstartedjobid";
 
     public synchronized static ParseOpenHelper getInstance(Context ctx) {
         /**
@@ -218,7 +224,7 @@ public class ParseOpenHelper extends SQLiteOpenHelper {
         db.execSQL("create table tableneedestimate(estimatecreatedat TEXT,estimatetechid TEXT,estimatejobid TEXT,estimatedescription TEXT,estimateurgent TEXT);");
         db.execSQL("create table tablesubmitmylabornewoffrecord(SUBMITLABORtechid TEXT,SUBMITLABORjobid TEXT,SUBMITLABORtype TEXT,SUBMITLABORtime TEXT,SUBMITLABORnotes,SUBMITLABORrest TEXT);");
         db.execSQL("create table tablelcchange(LCCHANGEtechid TEXT,LCCHANGEjobid TEXT,LCCHANGElc TEXT,LCCHANGEstarttime TEXT,LCCHANGEendtime TEXT,LCCHANGEhours TEXT,LCCHANGEhoursAdjusted TEXT,LCCHANGEcreatedby TEXT,LCCHANGEcreatedAt TEXT,LCCHANGEcount TEXT);");
-        db.execSQL("create table tablejobstatus(JOBSTATUStechid TEXT,JOBSTATUSjobid TEXT,JOBSTATUScompleted TEXT,JOBSTATUScaptionaware TEXT,JOBSTATUSnotes TEXT,JOBSTATUSsupplyAmount TEXT,JOBSTATUSnbillablehrs TEXT,JOBSTATUSnbillablehrsDesc TEXT,JOBSTATUSreturnimmid TEXT,JOBSTATUSalreadyScheduled TEXT,JOBSTATUSreason TEXT,JOBSTATUSdescription TEXT,JOBSTATUSstart_T TEXT,JOBSTATUSend_T TEXT,JOBSTATUShours TEXT,JOBSTATUShours_adjusted TEXT,JOBSTATUlabour_code TEXT,JOBSTATUCreatedAt TEXT,JOBSTATUBoatname TEXT,JOBSTATUHullid TEXT,JOBSTATUCaptionname TEXT,JOBSTATUScount TEXT);");
+        db.execSQL("create table tablejobstatus(JOBSTATUStechid TEXT,JOBSTATUSjobid TEXT,JOBSTATUScompleted TEXT,JOBSTATUScaptionaware TEXT,JOBSTATUSnotes TEXT,JOBSTATUSsupplyAmount TEXT,JOBSTATUSnbillablehrs TEXT,JOBSTATUSnbillablehrsDesc TEXT,JOBSTATUSreturnimmid TEXT,JOBSTATUSalreadyScheduled TEXT,JOBSTATUSreason TEXT,JOBSTATUSdescription TEXT,JOBSTATUSstart_T TEXT,JOBSTATUSend_T TEXT,JOBSTATUShours TEXT,JOBSTATUShours_adjusted TEXT,JOBSTATUShours_adjustedend TEXT,JOBSTATUlabour_code TEXT,JOBSTATUCreatedAt TEXT,JOBSTATUBoatname TEXT,JOBSTATUHullid TEXT,JOBSTATUCaptionname TEXT,JOBSTATUScount TEXT);");
         db.execSQL("create table tableuploadimages(UPLOADIMAGEScreatedBy TEXT,UPLOADIMAGESjobid TEXT,UPLOADIMAGESDescr TEXT,UPLOADIMAGESCreatedAt TEXT,UPLOADIMAGESallimages TEXT);");
 
         db.execSQL("create table tableaddpart(ADDPARTcount TEXT,ADDPARTtechid TEXT,ADDPARTjobid TEXT,ADDPARTurgent TEXT,ADDPARTdescription TEXT,ADDPARThowFastNeeded TEXT,ADDPARTpriceapprovalRequired TEXT,ADDPARTforRepair TEXT,ADDPARTmanufacid TEXT,ADDPARTno TEXT,ADDPARTquantityneeded TEXT,ADDPARTserialNo TEXT,ADDPARTfailuredesc TEXT,ADDPARTtechSupportName TEXT,ADDPARTsetRmaorCase TEXT,ADDPARTmfgDeemThisWarranty TEXT,ADDPARTadvanceReplacement TEXT,ADDPARTSoldBySeatech TEXT,ADDPARTNeedLoaner TEXT,ADDPARTNotes TEXT,ADDPARTCreatedAt TEXT,ADDPARTUploadedIMages TEXT);");
@@ -229,8 +235,9 @@ public class ParseOpenHelper extends SQLiteOpenHelper {
         db.execSQL("create table tablechatparentleft(CHATparent_teqid TEXT,CHATparent_jobid TEXT,CHATparent_cusname TEXT,CHATparent_custype TEXT," +
                 "CHATparent_bmy TEXT,CHATparent_bname TEXT,CHATparent_newmsg TEXT);");
         db.execSQL("create table tablechatmsgs(CHAT_teqid TEXT,CHAT_jobid TEXT,CHAT_rest TEXT);");
-        db.execSQL("create table tableschedulefilter(regionData TEXT,technicianData TEXT);");
+        db.execSQL("create table tableschedulefilter(regionData TEXT,technicianData TEXT,jobsData TEXT);");
         db.execSQL("create table tablescheduledata(scheduledData TEXT);");
+        db.execSQL("create table tablestartjob(isjobstarted TEXT,jobstartedjobid TEXT);");
     }
 
     @Override
@@ -251,6 +258,7 @@ public class ParseOpenHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHATMSGS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SCHEDULEFILTER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SCHEDULEDATA);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_STARTJOB);
         onCreate(db);
     }
 }

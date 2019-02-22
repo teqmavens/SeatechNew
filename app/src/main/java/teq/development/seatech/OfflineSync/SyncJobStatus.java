@@ -62,6 +62,9 @@ public class SyncJobStatus extends Job {
                     ske.setEnd_time(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.JOBSTATUSENDTTIME)));
                     ske.setHours(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.JOBSTATUSHOURS)));
                     ske.setHours_adjusted(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.JOBSTATUSHOURSADJUSTED)));
+
+                    ske.setHours_adjusted_end(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.JOBSTATUSHOURSADJUSTEDEND)));
+
                     ske.setLabour_code(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.JOBSTATUSLABOURCODE)));
                     ske.setBoat_name(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.JOBSTATUSBOATNAME)));
                     ske.setHull_id(cursor.getString(cursor.getColumnIndex(ParseOpenHelper.JOBSTATUSHULLID)));

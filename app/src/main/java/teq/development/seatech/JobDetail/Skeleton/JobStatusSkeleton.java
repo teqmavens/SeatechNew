@@ -192,5 +192,15 @@ public class JobStatusSkeleton {
     String end_time;
     String hours;
     String hours_adjusted;
+
+    public String getHours_adjusted_end() {
+        return hours_adjusted_end;
+    }
+
+    public void setHours_adjusted_end(String hours_adjusted_end) {
+        this.hours_adjusted_end = hours_adjusted_end;
+    }
+
+    String hours_adjusted_end;
     String labour_code;
 }

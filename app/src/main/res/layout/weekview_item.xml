@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,70 +11,148 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/verysmalltextsize">
+        android:padding="@dimen/smallpadding">
 
         <TextView
             android:id="@+id/day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="@dimen/verysmalltextsize"
             android:text="SUNDAYYYY" />
         <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:textColor="#000000"
+            android:textSize="@dimen/verysmalltextsize"
             android:text="JAN 131990" />
 
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/smallpadding"
-        android:background="@color/white"
+        android:layout_height="40dp"
+        android:background="@drawable/dashboardlinebg"
         android:layout_marginBottom="@dimen/verysmallpadding"
         android:orientation="horizontal">
         <TextView
-           android:layout_weight=".1"
+            android:layout_weight=".11"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:layout_height="match_parent"
             android:text="Ticket No." />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/black">
+
+        </View>
         <TextView
-            android:layout_weight=".1"
+            android:layout_weight=".11"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:layout_marginLeft="2dp"
+            android:layout_height="match_parent"
             android:text="Start Time" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/black">
+
+        </View>
         <TextView
-            android:layout_weight=".1"
+            android:layout_weight=".11"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:layout_marginLeft="2dp"
+            android:layout_height="match_parent"
             android:text="Duration" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/black">
+        </View>
         <TextView
-            android:layout_weight=".14"
+            android:layout_weight=".16"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:layout_marginLeft="2dp"
+            android:layout_height="match_parent"
             android:text="Customer Name" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/black">
+
+        </View>
         <TextView
             android:layout_weight=".18"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:layout_marginLeft="2dp"
+            android:layout_height="match_parent"
             android:text="Technician Name" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/black">
+
+        </View>
         <TextView
-            android:layout_weight=".1"
+            android:layout_weight=".09"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:layout_marginLeft="2dp"
+            android:layout_height="match_parent"
             android:text="Need Part" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/black">
+        </View>
+
         <TextView
-            android:layout_weight=".12"
+            android:layout_weight=".14"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:layout_marginLeft="2dp"
+            android:layout_height="match_parent"
             android:text="Region" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/black">
+        </View>
+
         <TextView
             android:layout_weight=".1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:layout_marginLeft="2dp"
+            android:layout_height="match_parent"
             android:text="Action" />
 
     </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/insiderecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+    </android.support.v7.widget.RecyclerView>
+
+
 
 </LinearLayout>

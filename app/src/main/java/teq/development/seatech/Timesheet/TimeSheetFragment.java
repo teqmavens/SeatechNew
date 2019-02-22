@@ -25,11 +25,13 @@ import android.widget.DatePicker;
 
 import com.whiteelephant.monthpicker.MonthPickerDialog;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 import teq.development.seatech.R;
+import teq.development.seatech.Utils.AppConstants;
 import teq.development.seatech.Utils.HandyObject;
 import teq.development.seatech.databinding.FrgmTimesheetBinding;
 
@@ -38,13 +40,13 @@ public class TimeSheetFragment extends Fragment {
     public static FrgmTimesheetBinding binding;
     boolean statusactive;
     DatePickerDialog.OnDateSetListener dateFrom, dateTo;
-    Calendar myCalendarFrom, myCalendarTo, calendarweek;
+    Calendar myCalendarFrom, myCalendarTo, calendarweek,calendarDay;
     String fromMonth_SelDate, SelectedMonth_Date;
     public static String FromMonthdate_forStatus, ToMonthdate_forStatus;
     MonthPickerDialog.Builder builder;
     int previousindex;
     boolean optionavailable, clickonsearch;
-    int count = 0;
+    int count = 0,countDay = 0;
     Context context;
 
     @Nullable
@@ -75,6 +77,8 @@ public class TimeSheetFragment extends Fragment {
         binding.nextweek.setCompoundDrawablesWithIntrinsicBounds(null, null, AppCompatResources.getDrawable(getActivity(), R.drawable.rightarrow), null);
         binding.previousmonth.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(getActivity(), R.drawable.leftarrow), null, null, null);
         binding.nextmonth.setCompoundDrawablesWithIntrinsicBounds(null, null, AppCompatResources.getDrawable(getActivity(), R.drawable.rightarrow), null);
+        binding.previousdate.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(getActivity(), R.drawable.leftarrow), null, null, null);
+        binding.nextdate.setCompoundDrawablesWithIntrinsicBounds(null, null, AppCompatResources.getDrawable(getActivity(), R.drawable.rightarrow), null);
 
         ArrayAdapter<CharSequence> statusAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.status_array,
                 android.R.layout.simple_spinner_item);
@@ -85,6 +89,7 @@ public class TimeSheetFragment extends Fragment {
                 android.R.layout.simple_spinner_item);
         weekAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerWeekMonth.setAdapter(weekAdapter);
+        binding.spinnerWeekMonth.setSelection(3);
 
 
         binding.spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -130,6 +135,8 @@ public class TimeSheetFragment extends Fragment {
                         binding.nextweek.setVisibility(View.GONE);
                         binding.previousmonth.setVisibility(View.VISIBLE);
                         binding.nextmonth.setVisibility(View.VISIBLE);
+                        binding.previousdate.setVisibility(View.GONE);
+                        binding.nextdate.setVisibility(View.GONE);
 
                         statusactive = true;
                         TSMonthChildFragment fgm = new TSMonthChildFragment();
@@ -161,6 +168,8 @@ public class TimeSheetFragment extends Fragment {
                         binding.nextweek.setVisibility(View.VISIBLE);
                         binding.previousmonth.setVisibility(View.GONE);
                         binding.nextmonth.setVisibility(View.GONE);
+                        binding.previousdate.setVisibility(View.GONE);
+                        binding.nextdate.setVisibility(View.GONE);
 
                         TSWeekChildFragment fgm = new TSWeekChildFragment();
                         Bundle bundle = new Bundle();
@@ -174,7 +183,59 @@ public class TimeSheetFragment extends Fragment {
                         //fromMonth_SelDate = HandyObject.ParseDateJobTime(calendarweek.getTime());
                         fromMonth_SelDate = HandyObject.ParseDateJobTimeNew(calendarweek.getTime());
                     }
-                } else if (sel.equalsIgnoreCase("Select Month")) {
+                }
+
+
+
+
+                else if (sel.equalsIgnoreCase("Current Day")) {
+                    //  binding.statuskey.setVisibility(View.GONE);
+
+                    if (optionavailable == false) {
+                        optionavailable = false;
+                        binding.spinnerStatus.setVisibility(View.GONE);
+                        binding.etfrom.setVisibility(View.VISIBLE);
+                        binding.etto.setVisibility(View.VISIBLE);
+                        binding.btnclear.setVisibility(View.VISIBLE);
+                        binding.btnsearch.setVisibility(View.VISIBLE);
+                        // binding.calendar.setVisibility(View.GONE);
+                        //    binding.or2.setVisibility(View.GONE);
+
+                        binding.previousweek.setVisibility(View.GONE);
+                        binding.nextweek.setVisibility(View.GONE);
+                        binding.previousmonth.setVisibility(View.GONE);
+                        binding.nextmonth.setVisibility(View.GONE);
+                        binding.previousdate.setVisibility(View.VISIBLE);
+                        binding.nextdate.setVisibility(View.VISIBLE);
+
+
+                        DayTimesheetDetailFragment frgm = new DayTimesheetDetailFragment();
+                        Bundle bundle = new Bundle();
+                        // bundle.putString(AppConstants.SELECTED_JOBDAYSTATUS, HandyObject.parseDateToMDY(date));
+                        bundle.putString(AppConstants.SELECTED_JOBDAYSTATUS, HandyObject.getCurrentDateNew());
+                        frgm.setArguments(bundle);
+                        //activity.replaceFragment(frgm);
+                        replaceChildFragment(frgm);
+                        binding.etfrom.setText("");
+                        binding.etto.setText("");
+
+
+                        calendarDay = Calendar.getInstance();
+                        int year = Integer.parseInt(HandyObject.getCurrentDateNew().split("/")[2]);
+                        int month = Integer.parseInt(HandyObject.getCurrentDateNew().split("/")[0]);
+                        int date = Integer.parseInt(HandyObject.getCurrentDateNew().split("/")[1]);
+                        calendarDay.set(year, month - 1, date);
+                        //  setCountForDateChange(HandyObject.getDayFromDate(getArguments().getString(AppConstants.SELECTED_JOBDAYSTATUS)));
+                        setCountForDateChange(HandyObject.getDayFromDateNew(HandyObject.getCurrentDateNew()));
+                        //fromMonth_SelDate = HandyObject.ParseDateJobTime(calendarweek.getTime());
+                      //  fromMonth_SelDate = HandyObject.ParseDateJobTimeNew(calendarweek.getTime());
+                    }
+                }
+
+
+
+
+                else if (sel.equalsIgnoreCase("Select Month")) {
                     binding.spinnerWeekMonth.setSelection(previousindex);
                     builder.setActivatedMonth(Calendar.JULY)
                             .setMinYear(1990)
@@ -254,6 +315,17 @@ public class TimeSheetFragment extends Fragment {
                 binding.spinnerWeekMonth.setVisibility(View.INVISIBLE);
                 binding.rlselected.setVisibility(View.VISIBLE);
                 binding.rlselectedText.setText("Selected Month");
+
+
+
+                binding.previousweek.setVisibility(View.GONE);
+                binding.nextweek.setVisibility(View.GONE);
+                binding.previousmonth.setVisibility(View.VISIBLE);
+                binding.nextmonth.setVisibility(View.VISIBLE);
+                binding.previousdate.setVisibility(View.GONE);
+                binding.nextdate.setVisibility(View.GONE);
+
+
                 //      HandyObject.showAlert(getActivity(), String.valueOf(selectedYear) + "-" + String.valueOf(selectedMonth) + "-" + "01");
 
                 TSMonthChildFragment fgm = new TSMonthChildFragment();
@@ -297,6 +369,9 @@ public class TimeSheetFragment extends Fragment {
             binding.nextweek.setVisibility(View.VISIBLE);
             binding.previousmonth.setVisibility(View.GONE);
             binding.nextmonth.setVisibility(View.GONE);
+            binding.previousdate.setVisibility(View.GONE);
+            binding.nextdate.setVisibility(View.GONE);
+
 
             binding.spinnerWeekMonth.setVisibility(View.INVISIBLE);
             binding.rlselected.setVisibility(View.VISIBLE);
@@ -337,14 +412,23 @@ public class TimeSheetFragment extends Fragment {
                 android.R.layout.simple_spinner_item);
         weekAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerWeekMonth.setAdapter(weekAdapter);
+        binding.spinnerWeekMonth.setSelection(3);
        // binding.displaydate.setText("(" + HandyObject.ParseDateJobTime(calendarweek.getTime()) + ")");
         binding.displaydate.setText("(" + HandyObject.ParseDateJobTimeNew(calendarweek.getTime()) + ")");
     }
 
     public void OnClickSearch() {
         clickonsearch = true;
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+            Date date1 = sdf.parse(binding.etfrom.getText().toString());
+            Date date2 = sdf.parse(binding.etto.getText().toString());
+
         if (binding.etfrom.getText().length() == 0 || binding.etto.getText().length() == 0) {
             HandyObject.showAlert(getActivity(), getString(R.string.selectbothdates));
+        } else if(date1.after(date2)) {
+            HandyObject.showAlert(getActivity(), "From date are bigger than to. Please choose different");
         } else {
             binding.spinnerWeekMonth.setVisibility(View.INVISIBLE);
             binding.rlselected.setVisibility(View.VISIBLE);
@@ -357,6 +441,9 @@ public class TimeSheetFragment extends Fragment {
             binding.nextweek.setVisibility(View.GONE);
             binding.previousmonth.setVisibility(View.GONE);
             binding.nextmonth.setVisibility(View.GONE);
+            binding.previousdate.setVisibility(View.GONE);
+            binding.nextdate.setVisibility(View.GONE);
+
            /* binding.displaydate.setText("(" + HandyObject.parseDateToYMD(binding.etfrom.getText().toString()) + ") - " + "(" + HandyObject.parseDateToYMD(binding.etto.getText().toString()) + ")");*/
             binding.displaydate.setText("(" + HandyObject.parseDateToYMDNew(binding.etfrom.getText().toString()) + ") - " + "(" + HandyObject.parseDateToYMDNew(binding.etto.getText().toString()) + ")");
             TSWeekChildFragment fgm = new TSWeekChildFragment();
@@ -367,6 +454,7 @@ public class TimeSheetFragment extends Fragment {
             binding.etfrom.setText("");
             binding.etto.setText("");
         }
+        } catch (Exception e){}
     }
 
     public void OnClickEtFrom() {
@@ -398,6 +486,56 @@ public class TimeSheetFragment extends Fragment {
             bundle.putString("weekstartdate", HandyObject.getSelectedNextWeek_FirstDateSlash(getActivity(), fromMonth_SelDate));
             fgm.setArguments(bundle);
             replaceChildFragment(fgm);
+        }
+    }
+
+    public void OnClickPreviousDate() {
+        if (countDay == 1) {
+            HandyObject.showAlert(getActivity(), getString(R.string.selectedweekdate));
+        } else if (countDay > 1) {
+            countDay--;
+            calendarDay.add(calendarDay.HOUR_OF_DAY, -24);
+          //  binding.displaydate.setText(HandyObject.getDateFromPickerNew(calendarDay.getTime()));
+            //   DayJobStatusApi(HandyObject.parseDateToYMD(binding.currentdate.getText().toString()));
+            //DayJobStatusApi(HandyObject.parseDateToYMDNew(binding.currentdate.getText().toString()));
+            DayTimesheetDetailFragment frgm = new DayTimesheetDetailFragment();
+            Bundle bundle = new Bundle();
+            // bundle.putString(AppConstants.SELECTED_JOBDAYSTATUS, HandyObject.parseDateToMDY(date));
+            bundle.putString(AppConstants.SELECTED_JOBDAYSTATUS, HandyObject.getDateFromPickerNew(calendarDay.getTime()));
+            frgm.setArguments(bundle);
+            //activity.replaceFragment(frgm);
+            replaceChildFragment(frgm);
+        }
+    }
+
+    public void OnClickNextDate() {
+        long selectedMilli = calendarDay.getTimeInMillis();
+        Date datePickerDate = new Date(selectedMilli);
+
+        SimpleDateFormat datePickerDate_f = new SimpleDateFormat("MM/dd/yyyy");
+        String formattedDate = datePickerDate_f.format(datePickerDate);
+        String formattedDatenew = datePickerDate_f.format(new Date());
+        if (formattedDate.split("/")[1].equalsIgnoreCase(formattedDatenew.split("/")[1])) {
+            HandyObject.showAlert(getActivity(), "Can't Select Future date");
+        }
+        else if (datePickerDate.after(new Date())) {
+            HandyObject.showAlert(getActivity(), "Can't Select Future date");
+        } else if (countDay == 7) {
+            HandyObject.showAlert(getActivity(), getString(R.string.selectedweekdate));
+        } else if (countDay < 7) {
+          //  calendarDay.add(calendarDay.HOUR_OF_DAY, -24);
+            countDay++;
+            calendarDay.add(calendarDay.HOUR_OF_DAY, 24);
+         //   binding.currentdate.setText(HandyObject.getDateFromPickerNew(calendar.getTime()));
+            // DayJobStatusApi(HandyObject.parseDateToYMD(binding.currentdate.getText().toString()));
+          //  DayJobStatusApi(HandyObject.parseDateToYMDNew(binding.currentdate.getText().toString()));
+            DayTimesheetDetailFragment frgm = new DayTimesheetDetailFragment();
+            Bundle bundle = new Bundle();
+            // bundle.putString(AppConstants.SELECTED_JOBDAYSTATUS, HandyObject.parseDateToMDY(date));
+            bundle.putString(AppConstants.SELECTED_JOBDAYSTATUS, HandyObject.getDateFromPickerNew(calendarDay.getTime()));
+            frgm.setArguments(bundle);
+            replaceChildFragment(frgm);
+            //calendarDay.add(calendarDay.HOUR_OF_DAY, 24);
         }
     }
 
@@ -467,6 +605,25 @@ public class TimeSheetFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Log.e("onDestyMain","onDestyMain");
+    }
+
+    private int setCountForDateChange(String day) {
+        if (day.equalsIgnoreCase("Monday")) {
+            countDay = 1;
+        } else if (day.equalsIgnoreCase("Tuesday")) {
+            countDay = 2;
+        } else if (day.equalsIgnoreCase("Wednesday")) {
+            countDay = 3;
+        } else if (day.equalsIgnoreCase("Thursday")) {
+            countDay = 4;
+        } else if (day.equalsIgnoreCase("Friday")) {
+            countDay = 5;
+        } else if (day.equalsIgnoreCase("Saturday")) {
+            countDay = 6;
+        } else if (day.equalsIgnoreCase("Sunday")) {
+            countDay = 7;
+        }
+        return countDay;
     }
 
     /*public void OnClickBack() {

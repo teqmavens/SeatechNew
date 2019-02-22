@@ -284,6 +284,40 @@
                         app:layout_constraintTop_toTopOf="@+id/previousweek" />
 
 
+
+
+
+
+
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/previousdate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/smallpadding"
+                        android:drawablePadding="2dp"
+                        android:onClick="@{()->frgmtimesheet.OnClickPreviousDate()}"
+                        android:text="@string/previousdate"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintLeft_toRightOf="@+id/displaydate"
+                        app:layout_constraintTop_toTopOf="@+id/displaydate" />
+
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/nextdate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/mediumtextsize"
+                        android:drawablePadding="2dp"
+                        android:onClick="@{()->frgmtimesheet.OnClickNextDate()}"
+                        android:text="@string/nextdate"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/verysmalltextsize"
+                        app:layout_constraintLeft_toRightOf="@+id/previousdate"
+                        app:layout_constraintTop_toTopOf="@+id/previousdate" />
+
+
                 </android.support.constraint.ConstraintLayout>
 
 

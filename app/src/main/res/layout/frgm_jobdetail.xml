@@ -302,7 +302,7 @@
                         android:layout_alignParentRight="true"
                         android:paddingRight="@dimen/smallpadding"
                         android:paddingTop="12dp"
-                        android:text="dsfcdsfds"
+                        android:text=""
                         android:textColor="@color/black"
                         android:textSize="@dimen/drawablepadding"
                         android:textStyle="bold" />

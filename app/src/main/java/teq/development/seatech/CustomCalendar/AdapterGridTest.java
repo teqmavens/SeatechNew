@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import teq.development.seatech.Dashboard.DashBoardActivity;
 import teq.development.seatech.Dashboard.Skeleton.ScheduleFilterSkeleton;
@@ -38,21 +39,15 @@ public class AdapterGridTest extends BaseAdapter implements Filterable {
     private LayoutInflater infalter;
     Context c;
     // ArrayList<CalTimeline_Skeleton> parentArrayList;
-    ArrayList<ScheduleFilterSkeleton.SchedulesData> parentArrayList;
+    ArrayList<ScheduleFilterSkeleton.SchedulesData> parentArrayList,original_arraylist;
     AdapterChildGrid adapter;
+    private ItemFilter mFilter;
     SimpleDateFormat df;
-
-//    public AdapterGridTest(Context c, ArrayList<CalTimeline_Skeleton> parentArrayList) {
-//        this.c = c;
-//        this.parentArrayList = parentArrayList;
-//        infalter = (LayoutInflater) c
-//                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        //ScheduleFilterSkeleton.SchedulesData
-//    }
 
     public AdapterGridTest(Context c, ArrayList<ScheduleFilterSkeleton.SchedulesData> parentArrayList) {
         this.c = c;
         this.parentArrayList = parentArrayList;
+        original_arraylist = parentArrayList;
         infalter = (LayoutInflater) c
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         df = new SimpleDateFormat("yyyy-MM-dd");
@@ -90,98 +85,133 @@ public class AdapterGridTest extends BaseAdapter implements Filterable {
         }
 
         viewholder.text.setText(parentArrayList.get(position).tech);
-      //  df.pa
 
         try{
-            //Log.e("EEEEEEEEE",df.parse(parentArrayList.get(position).date).toString());
-            //Log.e("WWWWWWWWWW",new Date().toString());
+
             if(df.parse(parentArrayList.get(position).date).compareTo(df.parse(df.format(new Date()))) == 0) {
                 viewholder.parentll.setBackgroundColor(Color.parseColor("#A9A9A9"));
+            } else {
+                viewholder.parentll.setBackgroundColor(Color.parseColor("#ffffff"));
             }
         } catch (Exception e){}
 
-//        if(parentArrayList != null) {
-//            if(parentArrayList.get(position).date.equalsIgnoreCase("2019-01-16")){
-//                viewholder.parentll.setBackgroundColor(Color.parseColor("#A9A9A9"));
-//            }
-//        }
-
-        // viewholder.text.setText(parentArrayList.get(position).getTechname());
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(c);
-//        viewholder.recyclerviewChild.setLayoutManager(linearLayoutManager);
-//        adapter = new AdapterChildGrid(parentArrayList.get(position).getArrayList());
-//        viewholder.recyclerviewChild.setAdapter(adapter);
-
         View view;
         viewholder.dynamicll.removeAllViews();
-        // viewholder.dynamicll.setTag(parentArrayList.get(position).eventData.);
 
         if (parentArrayList.get(position).eventData != null) {
             for (int i = 0; i < parentArrayList.get(position).eventData.size(); i++) {
-                view = infalter.inflate(R.layout.gridchild_item, viewholder.dynamicll, false);
-//            TextView ticketNo = (TextView)view.findViewById(R.id.ticketNo);
-//            ticketNo.setText(parentArrayList.get(position).getArrayList().get(i).getEventJobID());
-//            viewholder.dynamicll.addView(ticketNo);
 
+                if(parentArrayList.get(position).eventData.get(i).jobid != null && !parentArrayList.get(position).eventData.get(i).jobid.isEmpty()) {
+                    view = infalter.inflate(R.layout.gridchild_item, viewholder.dynamicll, false);
+                    final LinearLayout llchild = (LinearLayout) view.findViewById(R.id.llchild);
+                    final TextView ticketNo = (TextView) llchild.findViewById(R.id.ticketNo);
+                    TextView duration = (TextView) llchild.findViewById(R.id.duration);
+                    TextView Customername = (TextView) llchild.findViewById(R.id.Customername);
+                    final ImageView pdficon = (ImageView) llchild.findViewById(R.id.pdficon);
+                    TextView apptype_symbol = (TextView) llchild.findViewById(R.id.apptype_symbol);
+                    TextView appconfirm_symbol = (TextView) llchild.findViewById(R.id.appconfirm_symbol);
+                    TextView urgent_symbol = (TextView) llchild.findViewById(R.id.urgent_symbol);
+                    TextView need_parts = (TextView) llchild.findViewById(R.id.need_parts);
 
-                final LinearLayout llchild = (LinearLayout) view.findViewById(R.id.llchild);
-                final TextView ticketNo = (TextView) llchild.findViewById(R.id.ticketNo);
-                TextView duration = (TextView) llchild.findViewById(R.id.duration);
-                TextView Customername = (TextView) llchild.findViewById(R.id.Customername);
-                final ImageView pdficon = (ImageView) llchild.findViewById(R.id.pdficon);
+                    // try{
+                    llchild.setBackgroundColor(Color.parseColor(parentArrayList.get(position).eventData.get(i).region_color));
+                    //   } catch (NumberFormatException e){}
+                    ticketNo.setText(parentArrayList.get(position).eventData.get(i).jobid);
+                    duration.setText(parentArrayList.get(position).eventData.get(i).duration);
+                    Customername.setText(parentArrayList.get(position).eventData.get(i).customer_name);
+                    apptype_symbol.setText(parentArrayList.get(position).eventData.get(i).appointment_type_symbol);
+                    appconfirm_symbol.setText(parentArrayList.get(position).eventData.get(i).appointment_confirm_symbol);
+                    urgent_symbol.setText(parentArrayList.get(position).eventData.get(i).urgent_symbol);
 
-                // try{
-                llchild.setBackgroundColor(Color.parseColor(parentArrayList.get(position).eventData.get(i).region_color));
-                //   } catch (NumberFormatException e){}
-                ticketNo.setText(parentArrayList.get(position).eventData.get(i).jobid);
-                duration.setText(parentArrayList.get(position).eventData.get(i).duration);
-                Customername.setText(parentArrayList.get(position).eventData.get(i).customer_name);
+                    if(parentArrayList.get(position).eventData.get(i).need_parts.equalsIgnoreCase("1")){
+                        need_parts.setVisibility(View.VISIBLE);
+                    }
 
-                if(parentArrayList.get(position).eventData.get(i).sales_order != null  && !parentArrayList.get(position).eventData.get(i).sales_order.isEmpty()) {
-                    pdficon.setVisibility(View.VISIBLE);
-                } else {
-                    pdficon.setVisibility(View.GONE);
+                    if(parentArrayList.get(position).eventData.get(i).sales_order.equalsIgnoreCase("")) {
+                        pdficon.setVisibility(View.GONE);
+                    } else {
+                        pdficon.setVisibility(View.VISIBLE);
+                    }
+
+                    ticketNo.setId(Integer.parseInt(parentArrayList.get(position).eventData.get(i).jobid));
+                    pdficon.setId(i);
+                    llchild.setId(i);
+                    ticketNo.setTextColor(Color.parseColor(parentArrayList.get(position).eventData.get(i).region_text_color));
+                    duration.setTextColor(Color.parseColor(parentArrayList.get(position).eventData.get(i).region_text_color));
+                    Customername.setTextColor(Color.parseColor(parentArrayList.get(position).eventData.get(i).region_text_color));
+
+                    ticketNo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // HandyObject.showAlert(c, String.valueOf(ticketNo.getId()));
+                        }
+                    });
+
+                    pdficon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int id = pdficon.getId();
+                            Intent intent = new Intent();
+                            intent.setDataAndType(Uri.parse(parentArrayList.get(position).eventData.get(id).sales_order), "application/pdf");
+                            Intent chooserIntent = Intent.createChooser(intent, "Open Report");
+                            ((Activity) c).startActivity(chooserIntent);
+                        }
+                    });
+
+                    llchild.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int id = llchild.getId();
+                            //   HandyObject.showAlert(c,String.valueOf(parentArrayList.get(position).eventData.get(id).jobid));
+                            displyPopup(v, parentArrayList.get(position).eventData.get(id));
+                        }
+                    });
+                    viewholder.dynamicll.addView(llchild);
                 }
 
-                ticketNo.setId(Integer.parseInt(parentArrayList.get(position).eventData.get(i).jobid));
-                pdficon.setId(i);
-                llchild.setId(i);
-                ticketNo.setTextColor(Color.parseColor(parentArrayList.get(position).eventData.get(i).region_text_color));
-                duration.setTextColor(Color.parseColor(parentArrayList.get(position).eventData.get(i).region_text_color));
-                Customername.setTextColor(Color.parseColor(parentArrayList.get(position).eventData.get(i).region_text_color));
-
-                ticketNo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                       // HandyObject.showAlert(c, String.valueOf(ticketNo.getId()));
-                    }
-                });
-
-                pdficon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int id = pdficon.getId();
-                        Intent intent = new Intent();
-                        intent.setDataAndType(Uri.parse(parentArrayList.get(position).eventData.get(id).sales_order), "application/pdf");
-                        Intent chooserIntent = Intent.createChooser(intent, "Open Report");
-                        ((Activity) c).startActivity(chooserIntent);
-                    }
-                });
-
-                llchild.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int id = llchild.getId();
-                        //   HandyObject.showAlert(c,String.valueOf(parentArrayList.get(position).eventData.get(id).jobid));
-                        displyPopup(v, parentArrayList.get(position).eventData.get(id));
-                    }
-                });
-                viewholder.dynamicll.addView(llchild);
             }
         }
 
         return convertView;
     }
+
+    private class ItemFilter extends Filter {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            String filterString = constraint.toString().toLowerCase();
+            FilterResults results = new FilterResults();
+            final List<ScheduleFilterSkeleton.SchedulesData> list = original_arraylist;
+
+            int count = list.size();
+            final ArrayList<ScheduleFilterSkeleton.SchedulesData> nlist = new ArrayList<ScheduleFilterSkeleton.SchedulesData>(count);
+            //String filterableString;
+            for (int i = 0; i < count; i++) {
+                ScheduleFilterSkeleton.SchedulesData filterableString = list.get(i);
+                nlist.add(filterableString);
+                for(int k=0; k<filterableString.eventData.size();k++) {
+                 //   filterableString.eventData.clear();
+                    if (filterableString.eventData.get(k).region_name.toLowerCase().contains(filterString)) {
+                       // nlist.add(filterableString);
+                        nlist.get(i).eventData.set(k,filterableString.eventData.get(k));
+                    } else {
+                        nlist.get(i).eventData.clear();
+                    }
+                }
+            }
+            results.values = nlist;
+            results.count = nlist.size();
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            parentArrayList = (ArrayList<ScheduleFilterSkeleton.SchedulesData>) results.values;
+            notifyDataSetChanged();
+        }
+    }
+
+
 
     private void displyPopup(View view, ScheduleFilterSkeleton.EventData ske) {
         final PopupWindow popup = new PopupWindow(c);
@@ -232,7 +262,10 @@ public class AdapterGridTest extends BaseAdapter implements Filterable {
 
     @Override
     public Filter getFilter() {
-        return null;
+        if (mFilter == null) {
+            mFilter = new ItemFilter();
+        }
+        return mFilter;
     }
 
     public class ViewHolder {

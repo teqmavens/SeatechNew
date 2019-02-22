@@ -208,7 +208,7 @@
                     android:layout_alignParentRight="true"
                     android:paddingRight="@dimen/smallpadding"
                     android:paddingTop="12dp"
-                    android:text="dsfcdsfds"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="@dimen/drawablepadding"
                     android:textStyle="bold" />
@@ -282,7 +282,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rcyviewts"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
+                    android:layout_height="144dp"
                     android:scrollbarSize="6dp"
                     android:scrollbarThumbVertical="@drawable/thumb_scroll"
                     android:scrollbars="vertical"

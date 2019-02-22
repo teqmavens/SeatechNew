@@ -70,17 +70,6 @@ public class AdapterJosbForYou extends RecyclerView.Adapter<AdapterJosbForYou.Vi
             }
         }
 
-//        if(jobsArrayList.get(position).getJobticketNo().equalsIgnoreCase("111111")) {
-//            binding.lltop.setBackgroundColor(Color.TRANSPARENT);
-//        } else {
-//            if(Integer.parseInt(jobsArrayList.get(position).getJob_completed()) > 0) {
-//                binding.lltop.setBackgroundColor(Color.parseColor("#A9A9A9"));
-//            } else {
-//                binding.lltop.setBackgroundColor(Color.TRANSPARENT);
-//            }
-//        }
-
-
         binding.getRoot().findViewById(R.id.startimage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

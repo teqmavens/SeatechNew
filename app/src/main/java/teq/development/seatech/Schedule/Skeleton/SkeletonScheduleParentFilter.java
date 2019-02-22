@@ -24,4 +24,14 @@ public class SkeletonScheduleParentFilter {
     }
 
     ArrayList<ScheduleFilterSkeleton.TechnicianData> arrayListTechnician;
+
+    public ArrayList<ScheduleFilterSkeleton.JobsData> getArrayListJobs() {
+        return arrayListJobs;
+    }
+
+    public void setArrayListJobs(ArrayList<ScheduleFilterSkeleton.JobsData> arrayListJobs) {
+        this.arrayListJobs = arrayListJobs;
+    }
+
+    ArrayList<ScheduleFilterSkeleton.JobsData> arrayListJobs;
 }

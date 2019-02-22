@@ -137,6 +137,7 @@ public class HandyObject {
         database.delete(ParseOpenHelper.TABLE_NOTIFICATIONS, null, null);
         database.delete(ParseOpenHelper.TABLE_CHATPARENTLEFT, null, null);
         database.delete(ParseOpenHelper.TABLE_CHATMSGS, null, null);
+        database.delete(ParseOpenHelper.TABLE_SCHEDULEDATA, null, null);
         stopAlarm(context);
        /* String deviceToken = HandyObject.getPrams(context, AppConstants.DEVICE_TOKEN);
         HandyObject.putPrams(context, AppConstants.DEVICE_TOKEN, deviceToken);*/
@@ -304,6 +305,13 @@ public class HandyObject {
     public static String getDateFromPickerDayStatusNew(Date date) {
         //   dateCount = 0;
         SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        String formattedDate = df.format(date);
+        return formattedDate;
+    }
+
+    public static String getDateFromCalendar(Date date) {
+        //   dateCount = 0;
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = df.format(date);
         return formattedDate;
     }
@@ -648,6 +656,42 @@ public class HandyObject {
     public static String parseDateToYMDSchedule(String time) {
         String inputPattern = "MMM dd,yyyy";
         String outputPattern = "yyyy-MM-dd";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
+    public static String parseDateToMDYSchedule(String time) {
+        String inputPattern = "MMM dd,yyyy";
+        String outputPattern = "MM/dd/yyyy";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
+    public static String parseDateToDMSCalendar(String time) {
+        String inputPattern = "MM/dd/yyyy";
+        String outputPattern = "dd MMM";
         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
         SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
 

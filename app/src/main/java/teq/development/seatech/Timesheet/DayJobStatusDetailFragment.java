@@ -124,10 +124,24 @@ public class DayJobStatusDetailFragment extends Fragment implements View.OnClick
                                         //   HandyObject.showAlert(getActivity(),"null");
                                         binding.dataCardView.setVisibility(View.INVISIBLE);
                                         binding.nodataCardView.setVisibility(View.VISIBLE);
+
+                                        binding.lltop.setVisibility(View.INVISIBLE);
+                                        binding.totaltimeKey.setVisibility(View.INVISIBLE);
+                                        binding.totaltimeValue.setVisibility(View.INVISIBLE);
+                                        binding.totalWeekHrKey.setVisibility(View.INVISIBLE);
+                                        binding.totalWeekHrValue.setVisibility(View.INVISIBLE);
+                                        binding.view1.setVisibility(View.INVISIBLE);
                                     } else {
                                         //  HandyObject.showAlert(getActivity(),"notnull");
                                         binding.dataCardView.setVisibility(View.VISIBLE);
                                         binding.nodataCardView.setVisibility(View.INVISIBLE);
+
+                                        binding.lltop.setVisibility(View.VISIBLE);
+                                        binding.totaltimeKey.setVisibility(View.VISIBLE);
+                                        binding.totaltimeValue.setVisibility(View.VISIBLE);
+                                        binding.totalWeekHrKey.setVisibility(View.VISIBLE);
+                                        binding.totalWeekHrValue.setVisibility(View.VISIBLE);
+                                        binding.view1.setVisibility(View.VISIBLE);
 
                                         for (int i = 0; i < jsonArray.length(); i++) {
                                             JSONObject jobjInside = jsonArray.getJSONObject(i);
@@ -194,28 +208,30 @@ public class DayJobStatusDetailFragment extends Fragment implements View.OnClick
             case R.id.nextdate:
                 long selectedMilli = calendar.getTimeInMillis();
                 Date datePickerDate = new Date(selectedMilli);
-                /*if (datePickerDate.after(new Date())) {
+                SimpleDateFormat datePickerDate_f = new SimpleDateFormat("MM/dd/yyyy");
+                String formattedDate = datePickerDate_f.format(datePickerDate);
+                String formattedDatenew = datePickerDate_f.format(new Date());
+                if (formattedDate.split("/")[1].equalsIgnoreCase(formattedDatenew.split("/")[1])) {
                     HandyObject.showAlert(getActivity(), "Can't Select Future date");
-                } else {
-                    binding.etfrom.setText(HandyObject.getDateFromPicker(myCalendarFrom.getTime()));
-                }*/
-                if (datePickerDate.after(new Date())) {
+                }
+                else if (datePickerDate.after(new Date())) {
                     HandyObject.showAlert(getActivity(), "Can't Select Future date");
                 } else if (count == 7) {
                     HandyObject.showAlert(getActivity(), getString(R.string.selectedweekdate));
                 } else if (count < 7) {
-                    calendar.add(calendar.HOUR_OF_DAY, -24);
+                  //  calendar.add(calendar.HOUR_OF_DAY, -24);
                     count++;
                     calendar.add(calendar.HOUR_OF_DAY, 24);
                     binding.currentdate.setText(HandyObject.getDateFromPickerNew(calendar.getTime()));
                     // DayJobStatusApi(HandyObject.parseDateToYMD(binding.currentdate.getText().toString()));
                     DayJobStatusApi(HandyObject.parseDateToYMDNew(binding.currentdate.getText().toString()));
-                    calendar.add(calendar.HOUR_OF_DAY, 24);
+                  //  calendar.add(calendar.HOUR_OF_DAY, 24);
                 }
                 break;
         }
     }
 
+    //Method will check count for Monday to Sunday format.
     private int setCountForDateChange(String day) {
         if (day.equalsIgnoreCase("Monday")) {
             count = 1;
@@ -232,20 +248,6 @@ public class DayJobStatusDetailFragment extends Fragment implements View.OnClick
         } else if (day.equalsIgnoreCase("Sunday")) {
             count = 7;
         }
-
-
-       /* if (day.equalsIgnoreCase("Monday")) {
-            count = 1;
-        } else if (day.equalsIgnoreCase("Tuesday")) {
-            count = 2;
-        } else if (day.equalsIgnoreCase("Wednesday")) {
-            count = 3;
-        } else if (day.equalsIgnoreCase("Thursday")) {
-            count = 4;
-        } else if (day.equalsIgnoreCase("Friday")) {
-            count = 5;
-        }*/
-
         return count;
     }
 

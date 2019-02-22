@@ -84,7 +84,6 @@ public class JobDetailStaticFragment extends Fragment {
     Gson gson;
     Cursor cursor;
     Context context;
-    ImageLoader imageLoader;
     String selc_ticketno;
     String pdfUrl = "";
     String selectedJobId = "";
@@ -103,12 +102,16 @@ public class JobDetailStaticFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.frgm_jobdetailstatic, container, false);
         binding = DataBindingUtil.bind(rootView);
         binding.setFrgmjobdetailstatic(this);
+        arralistAllJobs = new ArrayList<>();
+        arrayListLaborPerf = new ArrayList<>();
+        arrayListOffTheRecord = new ArrayList<>();
         new databsefetch().execute();
         return rootView;
     }
 
     public void OnClickViewComment() {
         dialogViewComment("viewcommment", arrayListLaborPerf);
+        //dialogViewComment("viewcommment", arrayNewCheck);
     }
 
     public void OnClickOffTheRecord() {
@@ -146,9 +149,9 @@ public class JobDetailStaticFragment extends Fragment {
             cursor.moveToFirst();
             if (cursor != null) {
                 if (cursor.getCount() > 0) {
-                    arralistAllJobs = new ArrayList<>();
+                    /*arralistAllJobs = new ArrayList<>();
                     arrayListLaborPerf = new ArrayList<>();
-                    arrayListOffTheRecord = new ArrayList<>();
+                    arrayListOffTheRecord = new ArrayList<>();*/
                     while (!cursor.isAfterLast()) {
                         Type type = new TypeToken<AllJobsSkeleton>() {
                         }.getType();
@@ -459,7 +462,7 @@ public class JobDetailStaticFragment extends Fragment {
                                     skeleton.setSupplyamount(jobjInside.getString("supply_amount"));
                                     skeleton.setJobdescription(jobjInside.getString("job_description"));
                                     skeleton.setJobmsgCount(jobjInside.getString("job_message_count"));
-                                    skeleton.setTime("");
+                                    skeleton.setTime(jobjInside.getString("estimate_hours"));
                                     skeleton.setSalesorder(jobjInside.getString("sales_order"));
                                     skeleton.setTechSupervisor(jobjInside.getString("supervisor"));
                                     skeleton.setOtherMembers(jobjInside.getString("other_member"));
@@ -470,7 +473,7 @@ public class JobDetailStaticFragment extends Fragment {
                                     skeleton.setHullid(jobjInside.getString("hull_id"));
                                     skeleton.setCaptainname(jobjInside.getString("captain_name"));
                                     skeleton.setPromisedate(jobjInside.getString("promise_ending_date"));
-                                    skeleton.setRep(jobjInside.getString("rep"));
+                                    skeleton.setRep(jobjInside.getString("sup_rep_name"));
                                     skeleton.setJobselection(jobjInside.getString("job_selection"));
                                     skeleton.setIfbid(jobjInside.getString("bid_hours"));
                                     skeleton.setQcPerson(jobjInside.getString("qc"));
