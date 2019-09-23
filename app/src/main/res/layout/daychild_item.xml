@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/llchild"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="4dp"
+    android:background="@android:color/holo_red_dark"
+    android:orientation="vertical">
+
+    <!--<TextView-->
+    <!--android:id="@+id/ticketNo"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:textColor="@color/black"-->
+    <!--android:text="TicketNo"/>-->
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="@dimen/verysmallpadding">
+
+        <TextView
+            android:id="@+id/apptype_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="F"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:background="#FFFF00"
+            android:textColor="@color/black"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/appconfirm_symbol" />
+
+        <TextView
+            android:id="@+id/appconfirm_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="#03A9F3"
+            android:text="C"
+            android:textColor="@color/black"
+            app:layout_constraintLeft_toRightOf="@+id/apptype_symbol"
+            app:layout_constraintRight_toLeftOf="@+id/urgent_symbol" />
+
+        <TextView
+            android:id="@+id/urgent_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:gravity="center"
+            android:text="U"
+            android:textColor="@color/black"
+            app:layout_constraintLeft_toRightOf="@+id/appconfirm_symbol"
+            app:layout_constraintRight_toLeftOf="@+id/need_parts" />
+
+        <TextView
+            android:id="@+id/need_parts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="N"
+            android:visibility="gone"
+            android:background="#008000"
+            android:textColor="@color/black"
+            app:layout_constraintLeft_toRightOf="@+id/urgent_symbol"
+            app:layout_constraintRight_toLeftOf="@+id/have_parts" />
+        <TextView
+            android:id="@+id/have_parts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="H"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            app:layout_constraintLeft_toRightOf="@+id/need_parts"
+            app:layout_constraintRight_toLeftOf="@+id/pdficon" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/pdficon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/verysmallpadding"
+            android:visibility="invisible"
+            app:layout_constraintLeft_toRightOf="@+id/have_parts"
+            app:layout_constraintRight_toLeftOf="@+id/ticketNo"
+            app:srcCompat="@drawable/pdficon" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/ticketNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/verysmallpadding"
+            android:gravity="center"
+            android:text="TicketNo"
+            android:textColor="@color/black"
+            app:layout_constraintLeft_toRightOf="@+id/pdficon"
+            app:layout_constraintRight_toLeftOf="@+id/duration"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/verysmallpadding"
+            android:text="00:00hrs"
+            android:textColor="@color/black"
+            app:layout_constraintLeft_toRightOf="@+id/ticketNo"
+            app:layout_constraintRight_toLeftOf="@+id/Customername"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/Customername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/verysmallpadding"
+            android:gravity="center"
+            android:text="custname"
+            android:textColor="@color/black"
+            app:layout_constraintLeft_toRightOf="@+id/duration"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+        <RelativeLayout
+            android:background="@color/lightgray"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/smallpadding"
+                android:textSize="@dimen/verysmalltextsize"
+                android:layout_marginTop="@dimen/verysmallpadding"
+                android:text="19 Fabuary"/>
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/cross"
+                android:layout_width="@dimen/verysmalltextsize"
+                android:layout_height="@dimen/verysmalltextsize"
+                android:layout_toRightOf="@+id/day"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/verysmallpadding"
+                android:layout_marginLeft="@dimen/extralarge_textsize"
+                android:layout_marginRight="@dimen/smallpadding"
+                app:srcCompat="@drawable/cross"/>
+
+        </RelativeLayout>
+
+        <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!---->
+        <!--&gt;-->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:background="@color/lightgray"
+            android:padding="@dimen/smallpadding"
+            android:scrollbarSize="4dp"
+            android:scrollbars="vertical"
+            android:scrollbarThumbVertical="@drawable/thumb_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <!--</RelativeLayout>-->
+
+</LinearLayout>

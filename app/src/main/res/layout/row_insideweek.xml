@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="rowinsideweek"
+            type="teq.development.seatech.Schedule.Skeleton.ScheduleWeekViewSkeleton.Scheduled"></variable>
+
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/lltop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/verysmallpadding"
+        android:paddingRight="@dimen/verysmallpadding"
+        android:paddingTop="@dimen/verysmalltextsize"
+        android:paddingBottom="@dimen/verysmalltextsize">
+
+        <TextView
+            android:id="@+id/jobid"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".11"
+            android:gravity="center"
+            android:text="@{rowinsideweek.jobid}"
+            android:textColor="@color/appbasiccolor" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:layout_weight=".11"
+            android:gravity="center"
+            android:text="@{rowinsideweek.frmt_start_time}"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:layout_weight=".11"
+            android:gravity="center"
+            android:text="@{rowinsideweek.duration}"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:layout_weight=".16"
+            android:gravity="center"
+            android:text="@{rowinsideweek.customer_name}"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:layout_weight=".18"
+            android:gravity="center"
+            android:text="@{rowinsideweek.tech_name}"
+            android:textColor="#000000" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:layout_weight=".09"
+            android:gravity="center">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/needpart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="2dp"-->
+            <!--android:layout_weight=".11"-->
+            <!--android:gravity="center"-->
+            <!--android:text="Need Part"-->
+            <!--android:textColor="#000000" />-->
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:gravity="center"
+            android:layout_weight=".14">
+            <TextView
+                android:id="@+id/region"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:gravity="center"
+                android:text="@{rowinsideweek.region_name}"
+                android:textColor="#000000" />
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/regionimg"
+                android:layout_toRightOf="@+id/region"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/verysmallpadding"
+                android:layout_marginLeft="2dp" />
+
+        </RelativeLayout>
+
+     <!--   <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:layout_weight=".12"
+            android:gravity="center"
+            android:text="Region"
+            android:drawableRight=""
+            android:textColor="#000000" />-->
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_weight=".1">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/editweek"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/smallpadding"
+                app:srcCompat="@drawable/editweek"/>
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/smallpadding"
+                app:srcCompat="@drawable/delete_week"
+                android:layout_toRightOf="@+id/editweek"/>
+
+        </RelativeLayout>
+
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="2dp"-->
+            <!--android:layout_weight=".1"-->
+            <!--android:gravity="center"-->
+            <!--android:text="Actiondsss"-->
+            <!--android:textColor="#000000" />-->
+
+    </LinearLayout>
+
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:background="@color/black"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_height="1dp">-->
+        <!--</View>-->
+
+    </RelativeLayout>
+
+</layout>
