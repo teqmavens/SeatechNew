@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -32,6 +33,8 @@ import teq.development.seatech.Dashboard.DashBoardActivity;
 import teq.development.seatech.Dashboard.Skeleton.ScheduleFilterSkeleton;
 import teq.development.seatech.Profile.MyProfileFragment;
 import teq.development.seatech.R;
+import teq.development.seatech.Schedule.JobDetailStaticSchedule;
+import teq.development.seatech.Schedule.ScheduleParent;
 import teq.development.seatech.Utils.AppConstants;
 import teq.development.seatech.Utils.HandyObject;
 
@@ -43,9 +46,11 @@ public class AdapterGridTest extends BaseAdapter implements Filterable {
     AdapterChildGrid adapter;
     private ItemFilter mFilter;
     SimpleDateFormat df;
+    ScheduleParent activity;
 
     public AdapterGridTest(Context c, ArrayList<ScheduleFilterSkeleton.SchedulesData> parentArrayList) {
         this.c = c;
+        activity = (ScheduleParent) c;
         this.parentArrayList = parentArrayList;
         original_arraylist = parentArrayList;
         infalter = (LayoutInflater) c
@@ -112,19 +117,24 @@ public class AdapterGridTest extends BaseAdapter implements Filterable {
                     TextView appconfirm_symbol = (TextView) llchild.findViewById(R.id.appconfirm_symbol);
                     TextView urgent_symbol = (TextView) llchild.findViewById(R.id.urgent_symbol);
                     TextView need_parts = (TextView) llchild.findViewById(R.id.need_parts);
+                    TextView have_parts = (TextView) llchild.findViewById(R.id.have_parts);
 
                     // try{
                     llchild.setBackgroundColor(Color.parseColor(parentArrayList.get(position).eventData.get(i).region_color));
                     //   } catch (NumberFormatException e){}
                     ticketNo.setText(parentArrayList.get(position).eventData.get(i).jobid);
-                    duration.setText(parentArrayList.get(position).eventData.get(i).duration);
+                    duration.setText(parentArrayList.get(position).eventData.get(i).duration+" hrs");
                     Customername.setText(parentArrayList.get(position).eventData.get(i).customer_name);
                     apptype_symbol.setText(parentArrayList.get(position).eventData.get(i).appointment_type_symbol);
                     appconfirm_symbol.setText(parentArrayList.get(position).eventData.get(i).appointment_confirm_symbol);
                     urgent_symbol.setText(parentArrayList.get(position).eventData.get(i).urgent_symbol);
 
-                    if(parentArrayList.get(position).eventData.get(i).need_parts.equalsIgnoreCase("1")){
+                    if(parentArrayList.get(position).eventData.get(i).need_parts != null && !parentArrayList.get(position).eventData.get(i).need_parts.isEmpty()){
                         need_parts.setVisibility(View.VISIBLE);
+                    }
+
+                    if(parentArrayList.get(position).eventData.get(i).have_parts != null && !parentArrayList.get(position).eventData.get(i).have_parts.isEmpty()){
+                        have_parts.setVisibility(View.VISIBLE);
                     }
 
                     if(parentArrayList.get(position).eventData.get(i).sales_order.equalsIgnoreCase("")) {
@@ -144,6 +154,12 @@ public class AdapterGridTest extends BaseAdapter implements Filterable {
                         @Override
                         public void onClick(View v) {
                             // HandyObject.showAlert(c, String.valueOf(ticketNo.getId()));
+                            JobDetailStaticSchedule jb = new JobDetailStaticSchedule();
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("position", position);
+                            bundle.putString("position_ticketId",String.valueOf(ticketNo.getId()));
+                            jb.setArguments(bundle);
+                            activity.replaceFragmentWithBack(jb);
                         }
                     });
 
@@ -243,7 +259,7 @@ public class AdapterGridTest extends BaseAdapter implements Filterable {
         jobticketvalue.setText(ske.jobid);
         customervalue.setText(ske.customer_name);
         startdatetimevalue.setText(ske.start_date_time);
-        durationvalue.setText(ske.duration);
+        durationvalue.setText(ske.duration+" hrs");
         techniciansvalue.setText(ske.other_members);
 
         cross.setOnClickListener(new View.OnClickListener() {

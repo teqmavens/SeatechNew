@@ -138,6 +138,10 @@ public class HandyObject {
         database.delete(ParseOpenHelper.TABLE_CHATPARENTLEFT, null, null);
         database.delete(ParseOpenHelper.TABLE_CHATMSGS, null, null);
         database.delete(ParseOpenHelper.TABLE_SCHEDULEDATA, null, null);
+        database.delete(ParseOpenHelper.TABLE_SCHEDULECALENDARDATA, null, null);
+        database.delete(ParseOpenHelper.TABLE_SCHEDULEWEEKDATA, null, null);
+        database.delete(ParseOpenHelper.TABLE_SCHEDULEDAYDATA, null, null);
+        database.delete(ParseOpenHelper.TABLE_STARTJOB, null, null);
         stopAlarm(context);
        /* String deviceToken = HandyObject.getPrams(context, AppConstants.DEVICE_TOKEN);
         HandyObject.putPrams(context, AppConstants.DEVICE_TOKEN, deviceToken);*/
@@ -617,6 +621,24 @@ public class HandyObject {
         return prevdate;
     }
 
+    public static String parseDateToMM(String time) {
+        String inputPattern = "MMMM yyyy";
+        String outputPattern = "MM-yyyy";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
     public static String parseDateToYMD(String time) {
         String inputPattern = "MMM dd yyyy";
         String outputPattern = "yyyy-MM-dd";
@@ -974,5 +996,95 @@ public class HandyObject {
                     5 * 60 * 1000,
                     pendingIntent);
         }
+    }
+
+    public static int CheckLeftMarginDay(String check) {
+
+        int marginleft = 0;
+
+        if(check.equalsIgnoreCase("12:00AM")) {
+            marginleft = 0;
+        } else if(check.equalsIgnoreCase("12:30AM")) {
+            marginleft = 25;
+        } else if(check.equalsIgnoreCase("01:00AM")) {
+            marginleft = 50;
+        } else if(check.equalsIgnoreCase("01:30AM")) {
+            marginleft = 75;
+        } else if(check.equalsIgnoreCase("02:00AM")) {
+            marginleft = 100;
+        } else if(check.equalsIgnoreCase("02:30AM")) {
+            marginleft = 125;
+        } else if(check.equalsIgnoreCase("03:00AM")) {
+            marginleft = 150;
+        } else if(check.equalsIgnoreCase("03:30AM")) {
+            marginleft = 175;
+        } else if(check.equalsIgnoreCase("04:00AM")) {
+            marginleft = 200;
+        } else if(check.equalsIgnoreCase("04:30AM")) {
+            marginleft = 225;
+        } else if(check.equalsIgnoreCase("05:00AM")) {
+            marginleft = 250;
+        } else if(check.equalsIgnoreCase("05:30AM")) {
+            marginleft = 275;
+        } else if(check.equalsIgnoreCase("06:00AM")) {
+            marginleft = 300;
+        } else if(check.equalsIgnoreCase("06:30AM")) {
+            marginleft = 325;
+        } else if(check.equalsIgnoreCase("07:00AM")) {
+            marginleft = 350;
+        } else if(check.equalsIgnoreCase("07:30AM")) {
+            marginleft = 375;
+        } else if(check.equalsIgnoreCase("08:00AM")) {
+            marginleft = 400;
+        } else if(check.equalsIgnoreCase("08:30AM")) {
+            marginleft = 425;
+        } else if(check.equalsIgnoreCase("09:00AM")) {
+            marginleft = 450;
+        } else if(check.equalsIgnoreCase("09:30AM")) {
+            marginleft = 475;
+        } else if(check.equalsIgnoreCase("10:00AM")) {
+            marginleft = 500;
+        } else if(check.equalsIgnoreCase("10:30AM")) {
+            marginleft = 525;
+        } else if(check.equalsIgnoreCase("11:00AM")) {
+            marginleft = 550;
+        } else if(check.equalsIgnoreCase("11:30AM")) {
+            marginleft = 575;
+        } else if(check.equalsIgnoreCase("12:00PM")) {
+            marginleft = 600;
+        } else if(check.equalsIgnoreCase("12:30AM")) {
+            marginleft = 625;
+        } else if(check.equalsIgnoreCase("01:00PM")) {
+            marginleft = 650;
+        } else if(check.equalsIgnoreCase("01:30AM")) {
+            marginleft = 675;
+        } else if(check.equalsIgnoreCase("02:00PM")) {
+            marginleft = 700;
+        } else if(check.equalsIgnoreCase("02:30AM")) {
+            marginleft = 725;
+        } else if(check.equalsIgnoreCase("03:00PM")) {
+            marginleft = 750;
+        } else if(check.equalsIgnoreCase("03:30AM")) {
+            marginleft = 775;
+        } else if(check.equalsIgnoreCase("04:00PM")) {
+            marginleft = 800;
+        } else if(check.equalsIgnoreCase("04:30AM")) {
+            marginleft = 825;
+        } else if(check.equalsIgnoreCase("05:00PM")) {
+            marginleft = 850;
+        } else if(check.equalsIgnoreCase("05:30AM")) {
+            marginleft = 875;
+        } else if(check.equalsIgnoreCase("06:00PM")) {
+            marginleft = 900;
+        } else if(check.equalsIgnoreCase("06:30AM")) {
+            marginleft = 925;
+        } else if(check.equalsIgnoreCase("07:00PM")) {
+            marginleft = 950;
+        } else if(check.equalsIgnoreCase("07:30AM")) {
+            marginleft = 975;
+        } else if(check.equalsIgnoreCase("08:00PM")) {
+            marginleft = 1000;
+        }
+        return marginleft;
     }
 }

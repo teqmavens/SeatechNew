@@ -33,16 +33,26 @@
                     android:id="@+id/jobid"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight=".2"
+                    android:layout_weight=".17"
                     android:gravity="center"
                     android:text="@{dayjobskeleton.job_id}"
                     android:textColor="@color/appbasiccolor"
                     android:textSize="@dimen/drawablepadding" />
 
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/customername"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight=".2"
+                    android:layout_weight=".17"
+                    android:gravity="center"
+                    android:text="@{dayjobskeleton.customer_name}"
+                    android:textColor="@color/appbasiccolor"
+                    android:textSize="@dimen/drawablepadding" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".17"
                     android:gravity="center"
                     android:text="@{dayjobskeleton.labour_code}"
                     android:textColor="@color/black"
@@ -51,7 +61,7 @@
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight=".2"
+                    android:layout_weight=".16"
                     android:gravity="center"
                     android:text="@{dayjobskeleton.starttime}"
                     android:textColor="@color/black"
@@ -60,7 +70,7 @@
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight=".2"
+                    android:layout_weight=".16"
                     android:gravity="center"
                     android:text="@{dayjobskeleton.endtime}"
                     android:textColor="@color/black"
@@ -69,7 +79,7 @@
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight=".2"
+                    android:layout_weight=".16"
                     android:gravity="center"
                     android:text="@{dayjobskeleton.hours}"
                     android:textColor="@color/black"

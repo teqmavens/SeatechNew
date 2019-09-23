@@ -488,7 +488,8 @@ public class ScheduleTechDialog extends DialogFragment {
         View layout = LayoutInflater.from(getActivity()).inflate(R.layout.selecttechnician, null);
         popup.setContentView(layout);
         popup.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popup.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+    //    popup.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        popup.setHeight(520);
         popup.setWidth(480);
         // popup.setHeight(500);
         //   popup.setWidth(420);

@@ -102,8 +102,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:numColumns="@integer/grid_columns"
-        android:horizontalSpacing="1dp"
-        android:verticalSpacing="1dp"
+        android:horizontalSpacing="2dp"
+        android:verticalSpacing="2dp"
         android:background="#e5e5e5"
         android:stretchMode="columnWidth"
         tools:listitem="@layout/gridtest_item">

@@ -7,18 +7,18 @@
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/cross"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginLeft="-4dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginLeft="-8dp"
         android:layout_toRightOf="@+id/card"
-        app:srcCompat="@drawable/cross"/>
+        app:srcCompat="@drawable/crossblacksmall"/>
 
     <android.support.v7.widget.CardView
         android:id="@+id/card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@android:color/transparent"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="15dp"
         app:cardElevation="@dimen/verysmallpadding">
 
         <android.support.constraint.ConstraintLayout
@@ -40,7 +40,7 @@
                 android:id="@+id/jobticketvalue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="jvalue"
+                android:text=""
                 app:layout_constraintLeft_toRightOf="@+id/jobticketkey"
                 android:textColor="@color/white"
                 android:textSize="@dimen/verysmalltextsize" />
@@ -59,7 +59,7 @@
                 android:id="@+id/customervalue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="cvalue"
+                android:text=""
                 app:layout_constraintTop_toTopOf="@+id/customerkey"
                 app:layout_constraintLeft_toLeftOf="@+id/jobticketvalue"
                 android:textColor="@color/white"
@@ -79,7 +79,7 @@
                 android:id="@+id/startdatetimevalue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="datevalue"
+                android:text=""
                 app:layout_constraintTop_toTopOf="@+id/startdatetimekey"
                 app:layout_constraintLeft_toLeftOf="@+id/customervalue"
                 android:textColor="@color/white"
@@ -99,7 +99,7 @@
                 android:id="@+id/durationvalue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="durationvalue"
+                android:text=""
                 app:layout_constraintTop_toTopOf="@+id/durationkey"
                 app:layout_constraintLeft_toLeftOf="@+id/startdatetimevalue"
                 android:textColor="@color/white"
@@ -119,7 +119,7 @@
                 android:id="@+id/techniciansvalue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/technician_schedule"
+                android:text=""
                 app:layout_constraintTop_toTopOf="@+id/techniciankey"
                 app:layout_constraintLeft_toLeftOf="@+id/durationvalue"
                 android:textColor="@color/white"

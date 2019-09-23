@@ -228,16 +228,6 @@ public class JobDetailFragment extends Fragment {
                 arrayListUpdateImage.addAll(intent.getStringArrayListExtra("updateImageArray"));
                 adapterUploadedImages.notifyDataSetChanged();
             }
-
-            /*HandyObject.showAlert(getActivity(), String.valueOf(posi));
-            AllJobsSkeleton ske = new AllJobsSkeleton();
-            ske.setArrayList(arralistAllJobs.get(posi).getArrayList());
-            ske.setArrayListLaborPerf(arralistAllJobs.get(posi).getArrayListLaborPerf());
-            ske.setArrayListOffTheRecord(arralistAllJobs.get(posi).getArrayListOffTheRecord());
-            ske.setArrayListImages(arrayListUpdateImage);
-            ske.setArrayListParts(arralistAllJobs.get(posi).getArrayListParts());
-            arralistAllJobs.set(posi, ske);
-            adapterjobspinner.notifyDataSetChanged();*/
         }
     };
     private BroadcastReceiver NeddPartReciever = new BroadcastReceiver() {
@@ -502,20 +492,6 @@ public class JobDetailFragment extends Fragment {
                 binding.recyclerparts.setAdapter(adapterParts);
             }
             new Urgentdatafetch().execute();
-           /* if (arralistAllJobs.get(position).getArrayListUrgent().size() == 0) {
-                binding.llheaderur.setVisibility(View.GONE);
-                binding.nourgentmsg.setVisibility(View.VISIBLE);
-                binding.rcyviewUrgentmsg.setVisibility(View.GONE);
-            } else {
-                binding.llheaderur.setVisibility(View.VISIBLE);
-                binding.nourgentmsg.setVisibility(View.GONE);
-                binding.rcyviewUrgentmsg.setVisibility(View.VISIBLE);
-                LinearLayoutManager lLManagerparts = new LinearLayoutManager(getActivity());
-                lLManagerparts.setOrientation(LinearLayoutManager.VERTICAL);
-                binding.rcyviewUrgentmsg.setLayoutManager(lLManagerparts);
-                AdapterDashbrdUrgentMsg adapterurgentmsg = new AdapterDashbrdUrgentMsg(context, arralistAllJobs.get(position).getArrayListUrgent(), JobDetailFragment.this);
-                binding.rcyviewUrgentmsg.setAdapter(adapterurgentmsg);
-            }*/
 
             binding.rcyviewDashbrdnotes.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -771,10 +747,6 @@ public class JobDetailFragment extends Fragment {
         dialogNeedChangeOrder();
     }
 
-//    public void onClickAddDashboardNotes() {
-//        HandyObject.showAlert(context,"Still Need to add api");
-//    }
-
     public void OnClickViewComment() {
         dialogViewComment("viewcommment", arrayListLaborPerf);
     }
@@ -932,28 +904,6 @@ public class JobDetailFragment extends Fragment {
         super.onDestroyView();
         Log.e("onDestryViewRUNNNN", "onDestryViewRUNNNN");
         vmjobdetail.callOnDestroyView();
-       /* try {
-            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(reciever);
-            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(JobUpdatereciever);
-            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(LastOffTechreciever);
-            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(UpdateImageReciever);
-            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(NeddPartReciever);
-            if (updatereciver == true) {
-                updatereciver = false;
-                HandyObject.putPrams(context, AppConstants.ISJOB_RUNNING, "no");
-            } else {
-                HandyObject.putPrams(context, AppConstants.ISJOB_RUNNING, "yes");
-            }
-            HandyObject.putPrams(context, AppConstants.ISJOB_NEWTYPE, "no");
-            HandyObject.putPrams(context, AppConstants.JOBRUNNING_ETLABORPERFORM, binding.etLaborperform.getText().toString());
-            HandyObject.putPrams(context, AppConstants.JOBRUNNING_CENTERTIME, arralistJobTime.get(1).getHrminutes());
-            HandyObject.putIntPrams(context, AppConstants.JOBRUNNING_INDEX, binding.jobspinner.getSelectedItemPosition());
-            HandyObject.putIntPrams(context, AppConstants.JOBLABORCODE_INDEX, binding.spinnerLc.getSelectedItemPosition());
-            HandyObject.putIntPrams(context, AppConstants.JOBSTARTTIME_INDEX, binding.timespinner.getSelectedItemPosition());
-            Log.e("onDestroyViewJob", "onDestroyViewJob");
-        } catch (Exception e) {
-        }*/
-
     }
 
     boolean isJobRunning() {
@@ -963,94 +913,6 @@ public class JobDetailFragment extends Fragment {
             return false;
         }
     }
-
-   /* private void SubmitMyLaborPerf_Task(String techid, final String jobid, String notes, String type) {
-
-        HandyObject.showProgressDialog(getActivity());
-        DashboardNotes_Skeleton dashnotes_ske = new DashboardNotes_Skeleton();
-        dashnotes_ske.setCreatedAt(HandyObject.ParseDateTimeForNotes(new Date()));
-        final String insertedTime = HandyObject.ParseDateTimeForNotes(new Date());
-        dashnotes_ske.setNoteWriter(techid);
-        dashnotes_ske.setNotes(notes);
-        dashnotes_ske.setTechid(techid);
-        dashnotes_ske.setJobid(jobid);
-        dashnotes_ske.setType(type);
-        ArrayList<DashboardNotes_Skeleton> addtech = new ArrayList<>();
-        addtech.add(dashnotes_ske);
-        String OffTheRecord = gson.toJson(addtech);
-        insertIntoDB(HandyObject.ParseDateTimeForNotes(new Date()), OffTheRecord, techid, jobid, notes, type);
-        //  HandyObject.getApiManagerMain().submitTechLaborPerf(techid, jobid, notes, type, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
-        if (HandyObject.checkInternetConnection(getActivity())) {
-            HandyObject.getApiManagerMain().submitTechLaborPerf(OffTheRecord, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
-                    .enqueue(new Callback<ResponseBody>() {
-                        @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            try {
-                                String jsonResponse = response.body().string();
-                                Log.e("responseMyLaborPerform", jsonResponse);
-                                JSONObject jsonObject = new JSONObject(jsonResponse);
-                                if (jsonObject.getString("status").toLowerCase().equals("success")) {
-                                    JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                        JSONObject jobjInside = jsonArray.getJSONObject(i);
-                                        String jobid = jobjInside.getString("job_id");
-                                        arrayListLaborPerf.clear();
-                                        JSONArray jArray_OffTheRecord = jobjInside.getJSONArray("TechLabourPerformed");
-                                        ArrayList<DashboardNotes_Skeleton> arraylistOffTheRecord = new ArrayList<>();
-                                        for (int k = 0; k < jArray_OffTheRecord.length(); k++) {
-                                            JSONObject jobj_dashnotes = jArray_OffTheRecord.getJSONObject(k);
-                                            DashboardNotes_Skeleton dashnotes_ske = new DashboardNotes_Skeleton();
-                                            dashnotes_ske.setCreatedAt(jobj_dashnotes.getString("created_at"));
-                                            dashnotes_ske.setNoteWriter(jobj_dashnotes.getString("written_by"));
-                                            dashnotes_ske.setNotes(jobj_dashnotes.getString("notes"));
-                                            arraylistOffTheRecord.add(dashnotes_ske);
-                                            arrayListLaborPerf.add(dashnotes_ske);
-                                        }
-                                        String OffTheRecord = gson.toJson(arraylistOffTheRecord);
-                                        ContentValues cv = new ContentValues();
-                                        cv.put(ParseOpenHelper.JOBSTECHLABORPERFORMCURRDAY, OffTheRecord);
-                                        database.update(ParseOpenHelper.TABLENAME_ALLJOBSCURRENTDAY, cv, ParseOpenHelper.TECHIDCURRDAY + " =? AND " + ParseOpenHelper.JOBIDCURRDAY + " = ?",
-                                                new String[]{HandyObject.getPrams(getContext(), AppConstants.LOGINTEQ_ID), jobid});
-                                    }
-
-                                    //Delete related row from database
-                                    database.delete(ParseOpenHelper.TABLE_SUBMITMYLABOR_NEWOFFRECORD, ParseOpenHelper.SUBMITLABORJOBID + " =? AND " + ParseOpenHelper.SUBMITLABORTIME + " = ?",
-                                            new String[]{jobid, insertedTime});
-                                    binding.etLaborperform.setText("");
-                                    HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
-                                } else {
-                                    HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
-                                    if (jsonObject.getString("message").equalsIgnoreCase("Session Expired")) {
-                                        HandyObject.clearpref(getActivity());
-                                        App.appInstance.stopTimer();
-                                        Intent intent_reg = new Intent(getActivity(), LoginActivity.class);
-                                        startActivity(intent_reg);
-                                        getActivity().finish();
-                                        getActivity().overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
-                                    }
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            } finally {
-                                HandyObject.stopProgressDialog();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            Log.e("responseError", t.getMessage());
-                            HandyObject.stopProgressDialog();
-                        }
-                    });
-
-        } else {
-            HandyObject.showAlert(getActivity(), getString(R.string.fetchdata_whenonline));
-            HandyObject.stopProgressDialog();
-            binding.etLaborperform.setText("");
-        }
-    }*/
 
     private void insertIntoDB(String time, String offTheRecord, String techid, String jobid, String notes, String type) {
         ContentValues cv = new ContentValues();

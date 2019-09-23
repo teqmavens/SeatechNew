@@ -297,11 +297,9 @@ public class AdapterChatMessages extends RecyclerView.Adapter<AdapterChatMessage
                                 notifyDataSetChanged();
                             }
                         }
-                    } catch (Exception e) {
-                    }
+                    } catch (Exception e) {}
                 }
             }, 10);
         }
     };
-
 }

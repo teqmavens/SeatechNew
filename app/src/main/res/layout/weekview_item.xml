@@ -131,6 +131,7 @@
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
+            android:visibility="gone"
             android:background="@color/black">
         </View>
 
@@ -140,6 +141,7 @@
             android:textColor="#000000"
             android:gravity="center"
             android:layout_marginLeft="2dp"
+            android:visibility="gone"
             android:layout_height="match_parent"
             android:text="Action" />
 

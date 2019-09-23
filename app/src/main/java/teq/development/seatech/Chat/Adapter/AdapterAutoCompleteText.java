@@ -85,13 +85,15 @@ public class AdapterAutoCompleteText extends ArrayAdapter<String>{
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             List<String> filterList = (ArrayList<String>) results.values;
-            if (results != null && results.count > 0) {
-                clear();
-                for (String people : filterList) {
-                    add(people);
-                    notifyDataSetChanged();
+            try {
+                if (results != null && results.count > 0) {
+                    clear();
+                    for (String people : filterList) {
+                        add(people);
+                        notifyDataSetChanged();
+                    }
                 }
-            }
+            } catch (Exception e) {}
         }
     };
 }

@@ -1,6 +1,7 @@
 package teq.development.seatech.Schedule;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -43,7 +44,7 @@ public class WeekViewFragment extends Fragment {
 
     RecyclerView recyclerView;
     TextView noevent;
-    ArrayList<ScheduleFilterSkeleton.SchedulesData> arrayListWeekView,arrayListMain;
+    ArrayList<ScheduleWeekViewSkeleton.AllData> arrayListWeekView, arrayListMain;
     ArrayList<String> arrayListchecking;
     WeekViewAdapter adapter;
     SQLiteDatabase database;
@@ -63,22 +64,56 @@ public class WeekViewFragment extends Fragment {
         arrayListMain = new ArrayList<>();
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
         noevent = (TextView) rootView.findViewById(R.id.noevent);
+        adapter = new WeekViewAdapter(getActivity(), arrayListMain);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
         if (HandyObject.weekcount == 0) {
-          //  new DatabaseFetch().execute();
-            // RunTimelineTask();
+            new DatabaseFetch().execute();
             String todaydate = HandyObject.getCurrentWeek_FirstDateSchedule(getActivity());
-            GetScheduledWeekData(todaydate);
+
+            if(ScheduleParent.IsSearchable) {
+           //     HandyObject.showAlert(getActivity(), "filter");
+                String regionfilter = "";
+                if (ScheduleParent.regionList.get(ScheduleParent.binding.regionspinner.getSelectedItemPosition()).region_name.equalsIgnoreCase("-- All --")) {
+                    regionfilter = "";
+                } else {
+                    regionfilter = ScheduleParent.regionList.get(ScheduleParent.binding.regionspinner.getSelectedItemPosition()).id;
+                }
+                String jobfilter = ScheduleParent.binding.etJobticketno.getText().toString().split("-")[0];
+                String techids = android.text.TextUtils.join(",", ScheduleParent.techincianSel_ID);
+                String custids = android.text.TextUtils.join(",", ScheduleParent.customeSel_ID);
+                GetScheduledWeekData(todaydate,custids,techids,regionfilter,jobfilter);
+            } else {
+                GetScheduledWeekData(todaydate,"","","","");
+            }
+
         } else {
             if (getArguments() != null) {
                 String coming_date = getArguments().getString("weekdate");
-                GetScheduledWeekData(coming_date);
+                if(ScheduleParent.IsSearchable) {
+                    HandyObject.showAlert(getActivity(), "filter");
+                    String regionfilter = "";
+                    if (ScheduleParent.regionList.get(ScheduleParent.binding.regionspinner.getSelectedItemPosition()).region_name.equalsIgnoreCase("-- All --")) {
+                        regionfilter = "";
+                    } else {
+                        regionfilter = ScheduleParent.regionList.get(ScheduleParent.binding.regionspinner.getSelectedItemPosition()).id;
+                    }
+                    String jobfilter = ScheduleParent.binding.etJobticketno.getText().toString().split("-")[0];
+                    String techids = android.text.TextUtils.join(",", ScheduleParent.techincianSel_ID);
+                    String custids = android.text.TextUtils.join(",", ScheduleParent.customeSel_ID);
+                    GetScheduledWeekData(coming_date,custids,techids,regionfilter,jobfilter);
+                } else {
+                    GetScheduledWeekData(coming_date,"","","","");
+                }
             }
 
-           // RunTimelineTask();
+            // RunTimelineTask();
         }
     }
 
-    private class DatabaseFetch extends AsyncTask<ArrayList<ScheduleFilterSkeleton.SchedulesData>, Void, ArrayList<ScheduleFilterSkeleton.SchedulesData>> {
+    private class DatabaseFetch extends AsyncTask<ArrayList<ScheduleWeekViewSkeleton.AllData>, Void, ArrayList<ScheduleWeekViewSkeleton.AllData>> {
 
         @Override
         protected void onPreExecute() {
@@ -89,62 +124,73 @@ public class WeekViewFragment extends Fragment {
         }
 
         @Override
-        protected ArrayList<ScheduleFilterSkeleton.SchedulesData> doInBackground(ArrayList<ScheduleFilterSkeleton.SchedulesData>... arrayLists) {
+        protected ArrayList<ScheduleWeekViewSkeleton.AllData> doInBackground(ArrayList<ScheduleWeekViewSkeleton.AllData>... arrayLists) {
             Gson gson = new Gson();
-            cursor = database.query(ParseOpenHelper.TABLE_SCHEDULEDATA, null, null, null, null, null, null);
+            cursor = database.query(ParseOpenHelper.TABLE_SCHEDULEWEEKDATA, null, null, null, null, null, null);
             cursor.moveToFirst();
             if (cursor != null) {
                 if (cursor.getCount() > 0) {
                     while (!cursor.isAfterLast()) {
-                        Type typetech = new TypeToken<ArrayList<ScheduleFilterSkeleton.SchedulesData>>() {}.getType();
-                        String data = cursor.getString(cursor.getColumnIndex(ParseOpenHelper.SCHEDULEDDATA));
-                        ArrayList<ScheduleFilterSkeleton.SchedulesData> arrayList = gson.fromJson(data, typetech);
+                        Type typetech = new TypeToken<ArrayList<ScheduleWeekViewSkeleton.AllData>>() {
+                        }.getType();
+                        String data = cursor.getString(cursor.getColumnIndex(ParseOpenHelper.SCHEDULEWEEKDATA));
+                        ArrayList<ScheduleWeekViewSkeleton.AllData> arrayList = gson.fromJson(data, typetech);
                         arrayListWeekView.addAll(arrayList);
                         cursor.moveToNext();
                     }
                     cursor.close();
-                } else {}
-            } else {}
+                } else {
+                }
+            } else {
+            }
             return arrayListWeekView;
         }
 
         @Override
-        protected void onPostExecute(ArrayList<ScheduleFilterSkeleton.SchedulesData> arrayList) {
+        protected void onPostExecute(ArrayList<ScheduleWeekViewSkeleton.AllData> arrayList) {
             super.onPostExecute(arrayList);
             //HandyObject.showAlert(context, String.valueOf(cursor.getCount()));
             if (cursor != null) {
                 if (cursor.getCount() > 0) {
-//                    adapter = new AdapterGridTest(getActivity(),arrayList);
-//                    binding.gridView1.setAdapter(adapter);
                     arrayListMain.addAll(arrayList);
-                    Log.e("S",String.valueOf(arrayListMain.size()));
-//                    for (int i=0;i<arrayListMain.size();i++) {
-//                        Log.e("Length",String.valueOf(i));
-//                        if(arrayList.get(i).date.equalsIgnoreCase("2019-01-24")) {
-//                            arrayListMain.remove(i);
+//                    if (getArguments() != null && getArguments().containsKey("regionfilter")) {
+//                        for (int i = 0; i < arrayListMain.size(); i++) {
+//                            for (int k = 0; k < arrayListMain.get(i).scheduled.size(); k++) {
+//                                if (arrayListMain.get(i).scheduled.get(k).region_name.toLowerCase().contains(getArguments().getString("regionfilter").toLowerCase()) && arrayListMain.get(i).scheduled.get(k).jobid.toLowerCase().contains(getArguments().getString("jobfilter"))) {
+//                                    arrayListMain.get(i).scheduled.set(k, arrayListMain.get(i).scheduled.get(k));
+//                                } else {
+//                                    arrayListMain.get(i).scheduled.set(k, new ScheduleWeekViewSkeleton.Scheduled());
+//                                    //   arrayList.get(i).scheduled.remove(k);
+//                                }
+//                            }
+//
+//
+//                            for (int m = arrayListMain.get(i).scheduled.size() - 1; m >= 0; m--) {
+//                                if (arrayListMain.get(i).scheduled.get(m).jobid != null && !arrayListMain.get(i).scheduled.get(m).jobid.isEmpty()) {
+//
+//                                } else {
+//                                    arrayListMain.get(i).scheduled.remove(m);
+//                                }
+//                            }
+//                        }
+//
+//                        for (int ab = arrayListMain.size() - 1; ab >= 0; ab--) {
+//                            if (arrayListMain.get(ab).scheduled.size() == 0) {
+//                                arrayListMain.remove(ab);
+//                            }
 //                        }
 //                    }
-                    for (int i=0;i<arrayListMain.size();i++) {
-                        Log.e("Length",String.valueOf(i));
-                        if(arrayList.get(i).date.equalsIgnoreCase("2019-01-24")) {
-                            arrayListchecking.remove(i);
-                        }
-                    }
-                   // Log.e("SSSSSSS",String.valueOf(arrayListMain.size()));
-                    Log.e("SSSSSSS",String.valueOf(arrayListMain.size()));
                     adapter.notifyDataSetChanged();
-                } else {}
+                } else {
+                }
             }
         }
     }
 
     // Get WeekView Data to update events
-    private void GetScheduledWeekData(String seldate) {
-        //HandyObject.showProgressDialog(this);
-//
-//        HandyObject.showAlert(getActivity(),HandyObject.parseDateToYMDSchedule(seldate.split("-")[0])+"_______"+HandyObject.parseDateToYMDSchedule(seldate.split("-")[1]));
-
-        HandyObject.getApiManagerMain().GetScheduleWeekViewData(HandyObject.parseDateToYMDSchedule(seldate.split("-")[0]),HandyObject.parseDateToYMDSchedule(seldate.split("-")[1]))
+    private void GetScheduledWeekData(String seldate,String customerids,String techids,String regionid,String ticketid) {
+        HandyObject.showProgressDialog(getActivity());
+        HandyObject.getApiManagerMain().GetScheduleWeekViewData(HandyObject.parseDateToYMDSchedule(seldate.split("-")[0]), HandyObject.parseDateToYMDSchedule(seldate.split("-")[1]),customerids,techids,regionid,ticketid)
                 .enqueue(new Callback<ScheduleWeekViewSkeleton>() {
                     @Override
                     public void onResponse(Call<ScheduleWeekViewSkeleton> call, Response<ScheduleWeekViewSkeleton> response) {
@@ -153,56 +199,64 @@ public class WeekViewFragment extends Fragment {
                             String status = skeleton.status;
 
                             if (status.equalsIgnoreCase("success")) {
-                                ArrayList<ScheduleWeekViewSkeleton.AllData> arrayList = new ArrayList<>();
-                                arrayList = skeleton.data;
-                                if(arrayList.size() == 0) {
+                                //  ArrayList<ScheduleWeekViewSkeleton.AllData> arrayList = new ArrayList<>();
+                                arrayListMain.clear();
+                              //  arrayListMain = skeleton.data;
+                                arrayListMain.addAll(skeleton.data);
+
+                                if (HandyObject.weekcount == 0) {
+                                    insertDB_WeekData(arrayListMain);
+                                }
+
+
+                                if (arrayListMain.size() == 0) {
                                     noevent.setVisibility(View.VISIBLE);
                                     recyclerView.setVisibility(View.INVISIBLE);
                                 } else {
-                                    if(getArguments() != null && getArguments().containsKey("regionfilter")) {
-                                        for (int i = 0; i < arrayList.size(); i++) {
-                                            for (int k = 0; k < arrayList.get(i).scheduled.size(); k++) {
-                                                if (arrayList.get(i).scheduled.get(k).region_name.toLowerCase().contains(getArguments().getString("regionfilter").toLowerCase()) && arrayList.get(i).scheduled.get(k).jobid.toLowerCase().contains(getArguments().getString("jobfilter"))) {
-                                                    arrayList.get(i).scheduled.set(k, arrayList.get(i).scheduled.get(k));
-                                                } else {
-                                                    arrayList.get(i).scheduled.set(k, new ScheduleWeekViewSkeleton.Scheduled());
-                                                    //   arrayList.get(i).scheduled.remove(k);
-                                                }
-                                            }
-
-
-                                            for (int m = arrayList.get(i).scheduled.size() - 1; m >= 0; m--) {
-                                                if (arrayList.get(i).scheduled.get(m).jobid != null && !arrayList.get(i).scheduled.get(m).jobid.isEmpty()) {
-
-                                                } else {
-                                                    arrayList.get(i).scheduled.remove(m);
-                                                }
-                                            }
-                                        }
-
-                                        for(int ab = arrayList.size()-1 ;ab>=0;ab--) {
-                                            if(arrayList.get(ab).scheduled.size() == 0) {
-                                                arrayList.remove(ab);
-                                            }
-                                        }
-                                    } else {
-                                        HandyObject.showAlert(getActivity(),"Nofilter");
-                                    }
-
-                                    if(arrayList.size() == 0) {
-                                        noevent.setVisibility(View.VISIBLE);
-                                        recyclerView.setVisibility(View.INVISIBLE);
-                                    } else {
-                                        noevent.setVisibility(View.INVISIBLE);
-                                        recyclerView.setVisibility(View.VISIBLE);
-                                        adapter = new WeekViewAdapter(getActivity(), arrayList);
-                                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-                                        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                                        recyclerView.setLayoutManager(linearLayoutManager);
-                                        recyclerView.setAdapter(adapter);
-                                    }
-
-
+//                                    if (getArguments() != null && getArguments().containsKey("regionfilter")) {
+//                                        for (int i = 0; i < arrayListMain.size(); i++) {
+//                                            for (int k = 0; k < arrayListMain.get(i).scheduled.size(); k++) {
+//                                                if (arrayListMain.get(i).scheduled.get(k).region_name.toLowerCase().contains(getArguments().getString("regionfilter").toLowerCase()) && arrayListMain.get(i).scheduled.get(k).jobid.toLowerCase().contains(getArguments().getString("jobfilter"))) {
+//                                                    arrayListMain.get(i).scheduled.set(k, arrayListMain.get(i).scheduled.get(k));
+//                                                } else {
+//                                                    arrayListMain.get(i).scheduled.set(k, new ScheduleWeekViewSkeleton.Scheduled());
+//                                                    //   arrayList.get(i).scheduled.remove(k);
+//                                                }
+//                                            }
+//
+//
+//                                            for (int m = arrayListMain.get(i).scheduled.size() - 1; m >= 0; m--) {
+//                                                if (arrayListMain.get(i).scheduled.get(m).jobid != null && !arrayListMain.get(i).scheduled.get(m).jobid.isEmpty()) {
+//
+//                                                } else {
+//                                                    arrayListMain.get(i).scheduled.remove(m);
+//                                                }
+//                                            }
+//                                        }
+//
+//                                        for (int ab = arrayListMain.size() - 1; ab >= 0; ab--) {
+//                                            if (arrayListMain.get(ab).scheduled.size() == 0) {
+//                                                arrayListMain.remove(ab);
+//                                            }
+//                                        }
+//                                    } else {
+//                                        HandyObject.showAlert(getActivity(), "Nofilter");
+//                                    }
+//
+//                                    if (arrayListMain.size() == 0) {
+//                                        noevent.setVisibility(View.VISIBLE);
+//                                        recyclerView.setVisibility(View.INVISIBLE);
+//                                    } else {
+//                                        noevent.setVisibility(View.INVISIBLE);
+//                                        recyclerView.setVisibility(View.VISIBLE);
+////                                        adapter = new WeekViewAdapter(getActivity(), arrayListMain);
+////                                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+////                                        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+////                                        recyclerView.setLayoutManager(linearLayoutManager);
+////                                        recyclerView.setAdapter(adapter);
+//                                        adapter.notifyDataSetChanged();
+//                                    }
+                                    adapter.notifyDataSetChanged();
                                 }
 
                             } else {
@@ -231,5 +285,14 @@ public class WeekViewFragment extends Fragment {
                         HandyObject.stopProgressDialog();
                     }
                 });
+    }
+
+    private void insertDB_WeekData(ArrayList<ScheduleWeekViewSkeleton.AllData> arrayList) {
+        Gson gson = new Gson();
+        database.delete(ParseOpenHelper.TABLE_SCHEDULEWEEKDATA, null, null);
+        String ScheduledList = gson.toJson(arrayList);
+        ContentValues cv = new ContentValues();
+        cv.put(ParseOpenHelper.SCHEDULEWEEKDATA, ScheduledList);
+        long idd = database.insert(ParseOpenHelper.TABLE_SCHEDULEWEEKDATA, null, cv);
     }
 }

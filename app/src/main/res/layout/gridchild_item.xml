@@ -67,6 +67,16 @@
             android:background="#008000"
             android:textColor="@color/black"
             app:layout_constraintLeft_toRightOf="@+id/urgent_symbol"
+            app:layout_constraintRight_toLeftOf="@+id/have_parts" />
+        <TextView
+            android:id="@+id/have_parts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="H"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            app:layout_constraintLeft_toRightOf="@+id/need_parts"
             app:layout_constraintRight_toLeftOf="@+id/pdficon" />
 
         <android.support.v7.widget.AppCompatImageView
@@ -75,7 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/verysmallpadding"
             android:visibility="invisible"
-            app:layout_constraintLeft_toRightOf="@+id/need_parts"
+            app:layout_constraintLeft_toRightOf="@+id/have_parts"
             app:layout_constraintRight_toRightOf="parent"
             app:srcCompat="@drawable/pdficon" />
 

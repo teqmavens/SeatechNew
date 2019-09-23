@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import teq.development.seatech.R;
 import teq.development.seatech.Timesheet.DayJobStatusDetailFragment;
 import teq.development.seatech.Timesheet.DayJobStatus_Skeleton;
+import teq.development.seatech.Timesheet.DayTimesheetDetailFragment;
 import teq.development.seatech.databinding.RowDayjobstatusBinding;
 
 public class AdapterDayJobStatus extends RecyclerView.Adapter<AdapterDayJobStatus.ViewHolder> {
@@ -60,7 +61,14 @@ public class AdapterDayJobStatus extends RecyclerView.Adapter<AdapterDayJobStatu
             mbinding.getRoot().findViewById(R.id.jobid).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((DayJobStatusDetailFragment) frgm).onClickTicketNo(position);
+
+                    if(frgm instanceof DayJobStatusDetailFragment) {
+                        ((DayJobStatusDetailFragment) frgm).onClickTicketNo(position);
+                    } else {
+                        ((DayTimesheetDetailFragment) frgm).onClickTicketNo(position);
+                    }
+
+
                 }
             });
             mbinding.executePendingBindings();

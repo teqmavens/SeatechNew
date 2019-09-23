@@ -23,6 +23,17 @@ public class ScheduleFilterSkeleton {
     @SerializedName("schedules")
     public ArrayList<SchedulesData> schedulesData = null;
 
+    @SerializedName("customers")
+    public ArrayList<CustomerData> customerData = null;
+
+    public class CustomerData {
+        @SerializedName("id")
+        public String id;
+
+        @SerializedName("name")
+        public String name;
+    }
+
     public class RegionData {
         @SerializedName("id")
         public String id;
@@ -85,8 +96,11 @@ public class ScheduleFilterSkeleton {
         @SerializedName("urgent_symbol")
         public String urgent_symbol;
 
-        @SerializedName("need_parts")
+        @SerializedName("need_part")
         public String need_parts;
+
+        @SerializedName("have_part")
+        public String have_parts;
 
         @SerializedName("region_color")
         public String region_color;

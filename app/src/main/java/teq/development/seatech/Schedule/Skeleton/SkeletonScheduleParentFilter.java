@@ -7,6 +7,16 @@ import teq.development.seatech.Dashboard.Skeleton.ScheduleFilterSkeleton;
 public class SkeletonScheduleParentFilter {
     ArrayList<ScheduleFilterSkeleton.RegionData> arrayListRegion;
 
+    public ArrayList<ScheduleFilterSkeleton.CustomerData> getArrayListCustomer() {
+        return arrayListCustomer;
+    }
+
+    public void setArrayListCustomer(ArrayList<ScheduleFilterSkeleton.CustomerData> arrayListCustomer) {
+        this.arrayListCustomer = arrayListCustomer;
+    }
+
+    ArrayList<ScheduleFilterSkeleton.CustomerData> arrayListCustomer;
+
     public ArrayList<ScheduleFilterSkeleton.RegionData> getArrayListRegion() {
         return arrayListRegion;
     }

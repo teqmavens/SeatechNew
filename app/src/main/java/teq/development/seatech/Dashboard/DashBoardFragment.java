@@ -57,6 +57,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import teq.development.seatech.App;
+import teq.development.seatech.BuildConfig;
 import teq.development.seatech.Dashboard.Adapter.AdapterDashbrdUrgentMsg;
 import teq.development.seatech.Dashboard.Adapter.AdapterJosbForYou;
 import teq.development.seatech.Dashboard.Skeleton.AllJobsSkeleton;
@@ -108,6 +109,13 @@ public class DashBoardFragment extends Fragment implements SwipeRefreshLayout.On
         View rootView = inflater.inflate(R.layout.frgm_dashboard, container, false);
         binding = DataBindingUtil.bind(rootView);
         binding.setFrgmdashboard(this);
+
+
+//        if (BuildConfig.DEBUG) {
+//            HandyObject.showAlert(getActivity(), "debug");
+//        } else {
+//            HandyObject.showAlert(getActivity(), "release");
+//        }
         // SwipeRefreshLayout swipeview = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeview);
         binding.swipeview.setOnRefreshListener(this);
         binding.map.onCreate(savedInstanceState);
@@ -392,7 +400,7 @@ public class DashBoardFragment extends Fragment implements SwipeRefreshLayout.On
             HandyObject.showProgressDialogDash(context, "Reconnecting");
         }
 
-       // HandyObject.showAlert(getActivity(), HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID));
+        // HandyObject.showAlert(getActivity(), HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID));
 
 
         HandyObject.getApiManagerTypeJobs().getDashboradData(HandyObject.getPrams(getActivity(), AppConstants.LOGINTEQ_ID), date, HandyObject.getPrams(getActivity(), AppConstants.LOGIN_SESSIONID))
@@ -640,7 +648,6 @@ public class DashBoardFragment extends Fragment implements SwipeRefreshLayout.On
                                 //  adapterjobs.notifyDataSetChanged();
                                 adapterjobs = new AdapterJosbForYou(context, jobsArrayList, DashBoardFragment.this, isJobRunning());
                                 binding.rcyviewJobs.setAdapter(adapterjobs);
-
                             } else {
                                 HandyObject.showAlert(getActivity(), jsonObject.getString("message"));
                                 clearLists();
@@ -965,7 +972,7 @@ public class DashBoardFragment extends Fragment implements SwipeRefreshLayout.On
     private void GetScheduledFilterData() {
         //HandyObject.showProgressDialog(this);
         String todaydate = HandyObject.getCurrentWeek_FirstDateSchedule(getActivity());
-        HandyObject.getApiManagerMain().GetScheduleFilterData(HandyObject.parseDateToYMDSchedule(todaydate.split("-")[0]), HandyObject.parseDateToYMDSchedule(todaydate.split("-")[1]))
+        HandyObject.getApiManagerMain().GetScheduleFilterData(HandyObject.parseDateToYMDSchedule(todaydate.split("-")[0]), HandyObject.parseDateToYMDSchedule(todaydate.split("-")[1]),"","","","")
                 .enqueue(new Callback<ScheduleFilterSkeleton>() {
                     @Override
                     public void onResponse(Call<ScheduleFilterSkeleton> call, Response<ScheduleFilterSkeleton> response) {
@@ -978,12 +985,14 @@ public class DashBoardFragment extends Fragment implements SwipeRefreshLayout.On
                             ArrayList<ScheduleFilterSkeleton.TechnicianData> arrayListTechnician = new ArrayList<>();
                             ArrayList<ScheduleFilterSkeleton.JobsData> arrayListJobs = new ArrayList<>();
                             ArrayList<ScheduleFilterSkeleton.SchedulesData> arrayListSchedules = new ArrayList<>();
+                            ArrayList<ScheduleFilterSkeleton.CustomerData> arrayListCustomer = new ArrayList<>();
                             if (status.equalsIgnoreCase("success")) {
                                 arrayListRegion = skeleton.regionData;
                                 arrayListTechnician = skeleton.techniciansData;
                                 arrayListSchedules = skeleton.schedulesData;
                                 arrayListJobs = skeleton.jobsData;
-                                insertDB_ScheduleFilter(arrayListRegion, arrayListTechnician, arrayListSchedules,arrayListJobs);
+                                arrayListCustomer = skeleton.customerData;
+                                insertDB_ScheduleFilter(arrayListRegion, arrayListTechnician, arrayListSchedules, arrayListJobs, arrayListCustomer);
                             } else {
                                 //  HandyObject.showAlert(context, status);
                                 if (status.equalsIgnoreCase("logout")) {
@@ -1012,15 +1021,17 @@ public class DashBoardFragment extends Fragment implements SwipeRefreshLayout.On
                 });
     }
 
-    public void insertDB_ScheduleFilter(ArrayList<ScheduleFilterSkeleton.RegionData> arrayListRegion, ArrayList<ScheduleFilterSkeleton.TechnicianData> arrayListTechnician, ArrayList<ScheduleFilterSkeleton.SchedulesData> arrayListSchedules,ArrayList<ScheduleFilterSkeleton.JobsData> arrayListJobs) {
+    public void insertDB_ScheduleFilter(ArrayList<ScheduleFilterSkeleton.RegionData> arrayListRegion, ArrayList<ScheduleFilterSkeleton.TechnicianData> arrayListTechnician, ArrayList<ScheduleFilterSkeleton.SchedulesData> arrayListSchedules, ArrayList<ScheduleFilterSkeleton.JobsData> arrayListJobs, ArrayList<ScheduleFilterSkeleton.CustomerData> arrayListCustomers) {
         database.delete(ParseOpenHelper.TABLE_SCHEDULEFILTER, null, null);
         String RegionList = gson.toJson(arrayListRegion);
         String TechnicianList = gson.toJson(arrayListTechnician);
         String JobsList = gson.toJson(arrayListJobs);
+        String CustomersList = gson.toJson(arrayListCustomers);
         ContentValues cv = new ContentValues();
         cv.put(ParseOpenHelper.SCHEDULEFILTER_REGIONDATA, RegionList);
         cv.put(ParseOpenHelper.SCHEDULEFILTER_TECHDATA, TechnicianList);
         cv.put(ParseOpenHelper.SCHEDULEFILTER_JOBSDATA, JobsList);
+        cv.put(ParseOpenHelper.SCHEDULEFILTER_CUSTOMERDATA, CustomersList);
         long idd = database.insert(ParseOpenHelper.TABLE_SCHEDULEFILTER, null, cv);
         insertDB_ScheduleData(arrayListSchedules);
     }

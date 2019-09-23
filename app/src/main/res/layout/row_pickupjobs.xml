@@ -28,7 +28,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight=".22"
                 android:gravity="center"
-
                 android:textColor="@color/black"
                 android:textSize="@dimen/verysmalltextsize" />
 

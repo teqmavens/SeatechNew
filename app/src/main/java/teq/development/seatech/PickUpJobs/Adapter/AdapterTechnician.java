@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import teq.development.seatech.PickUpJobs.TechinicianSkeleton;
 import teq.development.seatech.R;
+import teq.development.seatech.Schedule.ScheduleParent;
 import teq.development.seatech.databinding.RowTechnicianBinding;
 
 public class AdapterTechnician extends RecyclerView.Adapter<AdapterTechnician.ViewHolder> {
@@ -43,6 +44,11 @@ public class AdapterTechnician extends RecyclerView.Adapter<AdapterTechnician.Vi
             }
         });
         holder.mbinding.checkbox.setChecked(arrayListTech.get(position).isStatus());
+//        if(arrayListTech.get(position).isStatus()) {
+//            ScheduleParent.binding.etFilterTechnician.setText("Selected");
+//        } else {
+//            ScheduleParent.binding.etFilterTechnician.setText("");
+//        }
     }
 
     @Override

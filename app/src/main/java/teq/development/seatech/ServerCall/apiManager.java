@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class apiManager {
     //http://tqmstaging.com
-//132.148.241.93/seatech
+    //132.148.241.93/seatech
     private static Retrofit retrofit = null;
     private static Retrofit retrofitadmin, retrofitjobs, retrofitmain = null;
     private static String MainBaseApiURL = "http://132.148.241.93/seatech/";

@@ -25,7 +25,6 @@
                 android:id="@+id/lltop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="@dimen/smallpadding"
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.AppCompatCheckBox
@@ -37,7 +36,7 @@
                     android:textSize="@dimen/smalltextsize"
                     android:textStyle="bold" />
                 <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="left|center_vertical"
                     android:text="@{rowtechnician.name}"

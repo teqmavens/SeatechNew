@@ -15,6 +15,7 @@ import teq.development.seatech.Dashboard.Skeleton.NotificationSkeleton;
 import teq.development.seatech.Dashboard.Skeleton.ReadNotificationSkeleton;
 import teq.development.seatech.Dashboard.Skeleton.ScheduleFilterSkeleton;
 import teq.development.seatech.Schedule.Skeleton.ScheduleCalendarViewSkeleton;
+import teq.development.seatech.Schedule.Skeleton.ScheduleDayViewSkeleton;
 import teq.development.seatech.Schedule.Skeleton.ScheduleWeekViewSkeleton;
 import teq.development.seatech.Timesheet.DayJobStatus_Skeleton;
 
@@ -320,7 +321,11 @@ public interface apiCall {
     @Headers("tokenID: 1234567890234dfg456")
     Call<ScheduleFilterSkeleton> GetScheduleFilterData(
             @Field("start_time") String start_time,
-            @Field("end_time") String end_time
+            @Field("end_time") String end_time,
+            @Field("customer_ids") String customer_ids,
+            @Field("tech_ids") String tech_ids,
+            @Field("region_id") String region_id,
+            @Field("ticket_id") String ticket_id
     );
 
     //Get Week Data for schedule section
@@ -329,7 +334,23 @@ public interface apiCall {
     @Headers("tokenID: 1234567890234dfg456")
     Call<ScheduleWeekViewSkeleton> GetScheduleWeekViewData(
             @Field("start_date") String start_date,
-            @Field("end_date") String end_date
+            @Field("end_date") String end_date,
+            @Field("customer_ids") String customer_ids,
+            @Field("tech_ids") String tech_ids,
+            @Field("region_id") String region_id,
+            @Field("ticket_id") String ticket_id
+    );
+
+    //Get DayView Data for schedule section
+    @FormUrlEncoded
+    @POST("schedule/day-view-api.json")
+    @Headers("tokenID: 1234567890234dfg456")
+    Call<ScheduleDayViewSkeleton> GetScheduleDayViewData(
+            @Field("to_date") String to_date,
+            @Field("customer_ids") String customer_ids,
+            @Field("tech_ids") String tech_ids,
+            @Field("region_id") String region_id,
+            @Field("ticket_id") String ticket_id
     );
 
     //Get Calendar Data for schedule section
@@ -338,6 +359,10 @@ public interface apiCall {
     @Headers("tokenID: 1234567890234dfg456")
     Call<ScheduleCalendarViewSkeleton> GetScheduleCalendarViewData(
             @Field("start_date") String start_date,
-            @Field("end_date") String end_date
+            @Field("end_date") String end_date,
+            @Field("customer_ids") String customer_ids,
+            @Field("tech_ids") String tech_ids,
+            @Field("region_id") String region_id,
+            @Field("ticket_id") String ticket_id
     );
 }

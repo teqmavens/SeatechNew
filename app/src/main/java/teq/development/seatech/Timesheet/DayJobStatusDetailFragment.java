@@ -147,6 +147,7 @@ public class DayJobStatusDetailFragment extends Fragment implements View.OnClick
                                             JSONObject jobjInside = jsonArray.getJSONObject(i);
                                             DayJobStatus_Skeleton ske = new DayJobStatus_Skeleton();
                                             ske.setJob_id(jobjInside.getString("job_id"));
+                                            ske.setCustomer_name(jobjInside.getString("customer_name"));
                                             ske.setLabour_code(jobjInside.getString("labour_code"));
                                             ske.setStarttime(jobjInside.getString("start_time"));
                                             ske.setEndtime(jobjInside.getString("end_time"));

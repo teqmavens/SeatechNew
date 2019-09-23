@@ -13,12 +13,15 @@ import java.util.ArrayList;
 
 import teq.development.seatech.Dashboard.Skeleton.ScheduleFilterSkeleton;
 import teq.development.seatech.R;
+import teq.development.seatech.Schedule.ScheduleParent;
 import teq.development.seatech.Schedule.Skeleton.ScheduleWeekViewSkeleton;
 
 public class WeekViewAdapter extends RecyclerView.Adapter<WeekViewAdapter.ViewHolder> {
     Context c;
+
     // ArrayList<ScheduleFilterSkeleton.SchedulesData> arrayListWeekView;
     ArrayList<ScheduleWeekViewSkeleton.AllData> arrayListWeekView;
+
 
     public WeekViewAdapter(Context c, ArrayList<ScheduleWeekViewSkeleton.AllData> arrayListWeekView) {
         this.c = c;
@@ -39,7 +42,7 @@ public class WeekViewAdapter extends RecyclerView.Adapter<WeekViewAdapter.ViewHo
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(c);
         holder.insiderecycler.setLayoutManager(linearLayoutManager);
-        AdapterInsideWeek adapter = new AdapterInsideWeek(arrayListWeekView.get(position).scheduled);
+        AdapterInsideWeek adapter = new AdapterInsideWeek(arrayListWeekView.get(position).scheduled,c );
         holder.insiderecycler.setAdapter(adapter);
     }
 

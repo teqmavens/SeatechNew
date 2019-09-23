@@ -28,6 +28,9 @@ public class ParseOpenHelper extends SQLiteOpenHelper {
     public static final String TABLE_CHATMSGS = "tablechatmsgs";
     public static final String TABLE_SCHEDULEFILTER = "tableschedulefilter";
     public static final String TABLE_SCHEDULEDATA = "tablescheduledata";
+    public static final String TABLE_SCHEDULECALENDARDATA = "tablecalendardata";
+    public static final String TABLE_SCHEDULEWEEKDATA = "tableweekdata";
+    public static final String TABLE_SCHEDULEDAYDATA = "tabledaydata";
     public static final String TABLE_STARTJOB = "tablestartjob";
 
 
@@ -189,13 +192,24 @@ public class ParseOpenHelper extends SQLiteOpenHelper {
     public static final String SCHEDULEFILTER_REGIONDATA = "regionData";
     public static final String SCHEDULEFILTER_TECHDATA = "technicianData";
     public static final String SCHEDULEFILTER_JOBSDATA = "jobsData";
+    public static final String SCHEDULEFILTER_CUSTOMERDATA = "customerData";
 
-    //schedule data table keys
+    //schedule timeline data table keys
     public static final String SCHEDULEDDATA = "scheduledData";
+
+    //schedule Calendar data table keys
+    public static final String SCHEDULECALENDARDATA = "schedulecalendarData";
+
+    //schedule Week data table keys
+    public static final String SCHEDULEWEEKDATA = "scheduleweekData";
+
+    //schedule Day data table keys
+    public static final String SCHEDULEDAYDATA = "scheduledayData";
 
     //Start job table keys
     public static final String ISJOBSTARTED = "isjobstarted";
     public static final String JOBSTARTED_JOBID = "jobstartedjobid";
+
 
     public synchronized static ParseOpenHelper getInstance(Context ctx) {
         /**
@@ -235,8 +249,11 @@ public class ParseOpenHelper extends SQLiteOpenHelper {
         db.execSQL("create table tablechatparentleft(CHATparent_teqid TEXT,CHATparent_jobid TEXT,CHATparent_cusname TEXT,CHATparent_custype TEXT," +
                 "CHATparent_bmy TEXT,CHATparent_bname TEXT,CHATparent_newmsg TEXT);");
         db.execSQL("create table tablechatmsgs(CHAT_teqid TEXT,CHAT_jobid TEXT,CHAT_rest TEXT);");
-        db.execSQL("create table tableschedulefilter(regionData TEXT,technicianData TEXT,jobsData TEXT);");
+        db.execSQL("create table tableschedulefilter(regionData TEXT,technicianData TEXT,jobsData TEXT,customerData TEXT);");
         db.execSQL("create table tablescheduledata(scheduledData TEXT);");
+        db.execSQL("create table tablecalendardata(schedulecalendarData TEXT);");
+        db.execSQL("create table tableweekdata(scheduleweekData TEXT);");
+        db.execSQL("create table tabledaydata(scheduledayData TEXT);");
         db.execSQL("create table tablestartjob(isjobstarted TEXT,jobstartedjobid TEXT);");
     }
 
@@ -258,6 +275,9 @@ public class ParseOpenHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHATMSGS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SCHEDULEFILTER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SCHEDULEDATA);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SCHEDULECALENDARDATA);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SCHEDULEWEEKDATA);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SCHEDULEDAYDATA);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_STARTJOB);
         onCreate(db);
     }

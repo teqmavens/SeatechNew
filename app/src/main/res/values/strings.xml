@@ -419,5 +419,8 @@
     <string name="fri">FRI</string>
     <string name="sat">SAT</string>
     <string name="last_date">30</string>
+    <string name="day">Day</string>
+    <string name="fieldblankfilter">Please select filter fields first.</string>
+    <string name="withoutinter_nofilter">Without internet connection you are not able to filter data.</string>
 
 </resources>
